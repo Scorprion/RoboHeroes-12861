@@ -14,31 +14,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-
-@Autonomous(name = "AutonomousA_C_2", group = "Auto")
-public class AutonomousA_C_2 extends LinearOpMode {
+@Autonomous(name = "AutonomousB_D_3", group = "Auto")
+public class AutonomousB_D_3 extends LinearOpMode {
 
     HardwareMapInit robot  = new HardwareMapInit();   // Use a Pushbot's hardware
     public boolean colorFound = false;
@@ -101,29 +79,41 @@ public class AutonomousA_C_2 extends LinearOpMode {
 
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold. After that, it drops our team marker
-            // Detects a change in the color and then stops robot after the red or blue values
-            // reach a certain threshold
             if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(700);
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
+                //turn 180 degrees
+                //turn(-0.3, 4);
+                //Drop the team marker, wait a second, then reset the dropper
                 robot.Marker.setPosition(0);
                 sleep(1000);
                 robot.Marker.setPosition(1);
+                //Set the boolean "colorFound" to true to stop the repeating while loop
                 colorFound = true;
             }
         }
     }
 
     public void movement() {
-        forward(-0.4, 1.25); //Move back -0.4 seconds for 1.25 seconds
-        cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        turn(-0.4, 0.9);
-        forward(0.5, 1);
+        forward(-0.4, 1.1);
+        sleep(1000);
+        forward(0.4, 0.35);
+        sleep(1000);
+        robot.Left.setPower(0);
+        robot.Right.setPower(0);
+        sleep(1000);
+        turn(0.4, 1.4);
+        sleep(1000);
+        //turn(-0.4, 1.45);
+        forward(-0.4, 1.825);
+        sleep(1000);
+        turn(0.4, 0.45);
+        cs();
+        turn(-0.4, 1.4);
+        forward(0.4, 1.5);
         //stop all motion
         stopMotion();
     }
-
 
     public void forward(double speed, double seconds) {
         double time = seconds * 1000;
