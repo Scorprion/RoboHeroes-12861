@@ -118,8 +118,8 @@ public class AutonomousA_C_2 extends LinearOpMode {
     public void movement() {
         forward(-0.4, 1.25); //Move back -0.4 seconds for 1.25 seconds
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        turn(-0.4, 0.9);
-        forward(0.5, 1);
+
+        forward(0.5, 1.4);
         //stop all motion
         stopMotion();
     }
