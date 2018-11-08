@@ -95,22 +95,26 @@ public class AutonomousB_D_3 extends LinearOpMode {
     }
 
     public void movement() {
-        forward(-0.4, 1.1);
+        forward(-0.4, 1);
         sleep(1000);
         forward(0.4, 0.35);
         sleep(1000);
         robot.Left.setPower(0);
         robot.Right.setPower(0);
         sleep(1000);
-        turn(0.4, 1.4);
+        turn(0.4, 1.225);
         sleep(1000);
         //turn(-0.4, 1.45);
         forward(-0.4, 1.825);
         sleep(1000);
-        turn(0.4, 0.45);
+        turn(0.45, 0.45);
         cs();
-        turn(-0.4, 1.4);
-        forward(0.4, 1.5);
+        forward(0.4, 1);
+        robot.Left.setPower(0);
+        robot.Right.setPower(0.5);
+        sleep(1500);
+        forward(-0.4, 2);
+
         //stop all motion
         stopMotion();
     }
