@@ -36,8 +36,9 @@ public class AutonomousB_D_2 extends LinearOpMode {
 
 
     public void movement() {
-        forward(-0.4, 1.25);
+        forward(-0.4, 1.35);
         sleep(1000);
+        turn(0.1,0.25);
         //stop all motion
         stopMotion();
     }
@@ -68,4 +69,3 @@ public class AutonomousB_D_2 extends LinearOpMode {
         robot.Left.setPower(0);
         robot.Right.setPower(0);
     }
-}
