@@ -18,7 +18,7 @@ public class ArmControl extends OpMode {
 
     public void init() {
         //Initializing the motors for the arm
-        Shoulder = hardwareMap.dcMotor.get("Shoulder");
+        Shoulder = hardwareMap.dcMotor.get("ShoulderL");
         Elbow = hardwareMap.dcMotor.get("Elbow");
         Clamp = hardwareMap.servo.get("Clamp");
     }
@@ -48,8 +48,11 @@ public class ArmControl extends OpMode {
         if(gamepad1.y) {
             Clamp.setPosition(0.5);
         }
-        if(gamepad1.y) {
+        if(gamepad1.a) {
             Clamp.setPosition(0);
+        }
+        if(gamepad1.dpad_down) {
+            Elbow.setPower(ElbowSpeed * -0.5);
         }
 
     }
