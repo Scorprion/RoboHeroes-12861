@@ -17,7 +17,7 @@ public class New6wheelDriveTrain extends OpMode{
         public DcMotor ShoulderR;
         public DcMotor ShoulderL;
         double speed = 0;
-        public DcMotor Elbow;
+        public DcMotor ElbowL;
         public Servo Clamp;
         double ShoulderSpeed = 0;
         double ElbowSpeed = 0;
@@ -31,7 +31,7 @@ public class New6wheelDriveTrain extends OpMode{
 
         public void init() {
             ShoulderL = hardwareMap.dcMotor.get("ShoulderL");
-            Elbow = hardwareMap.dcMotor.get("Elbow");
+            ElbowL = hardwareMap.dcMotor.get("ElbowL");
             Clamp = hardwareMap.servo.get("Clamp");
             DriveR = hardwareMap.dcMotor.get("DriveR");
             DriveL = hardwareMap.dcMotor.get("DriveL");
@@ -43,65 +43,68 @@ public class New6wheelDriveTrain extends OpMode{
 
         @Override
         public void loop() {
+            if(gamepad1.left_stick_y !=0) {
+                speed = gamepad1.left_stick_y * 1;
+            }
 
-            speed = gamepad1.left_stick_y * 1;
-
-
-            if (gamepad1.right_stick_x >= 0.1) {
+            if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x != 0) {
 
                 DriveL.setPower(-1);
                 DriveR.setPower (1);
-            } else if (gamepad1.right_stick_x >= 0.9) {
+            } else if (gamepad1.left_stick_x >= 0.9 || gamepad1.left_stick_x != 0) {
 
                 DriveL.setPower(-1);
                 DriveR.setPower(1);
-            }
-            if (gamepad1.right_stick_x <= -0.1) {
+            } else if (gamepad1.left_stick_x <= -0.1 || gamepad1.left_stick_x != 0) {
 
                 DriveL.setPower(1);
                 DriveR.setPower(-1);
-            } else if (gamepad1.right_stick_x <= -0.9) {
+            } else if (gamepad1.left_stick_x <= -0.9 || gamepad1.left_stick_x != 0) {
 
                 DriveL.setPower(1);
                 DriveR.setPower(-1);
-            }
-            if (gamepad1.a) {
 
-                ShoulderL.setPower(1);
-                ShoulderR.setPower(-1);
+            } else {
+                DriveL.setPower(0);
+                DriveL.setPower(0);
+                speed = 0;
             }
-            if(gamepad1.left_stick_y != 0) {
-                ShoulderSpeed = gamepad1.left_stick_y * 0.75;
+
+            if(gamepad2.left_stick_y != 0) {
+                ShoulderSpeed = gamepad2.left_stick_y * 0.75;
                 ShoulderL.setPower(ShoulderSpeed);
             } else {
                 ShoulderSpeed = 0;
             }
 
-            if(gamepad1.right_stick_y != 0) {
-                ElbowSpeed = gamepad1.right_stick_y * -0.5;
-                Elbow.setPower(ElbowSpeed);
+            if(gamepad2.right_stick_y != 0) {
+                ElbowSpeed = gamepad2.right_stick_y * -0.5;
+                ElbowL.setPower(ElbowSpeed);
             } else {
                 ElbowSpeed = 0;
             }
 
-            if(gamepad1.x){
+            if(gamepad2.x){
                 Clamp.setPosition(1);
             }
 
-            if(gamepad1.y) {
+            if(gamepad2.y) {
                 Clamp.setPosition(0.5);
             }
-            if(gamepad1.y) {
+            if(gamepad2.a) {
                 Clamp.setPosition(0);
+            }
+            if(gamepad1.dpad_down) {
+                ElbowSpeed= ElbowSpeed * 0.5;
             }
 
 
-
-
-            DriveL.setPower(speed);
-            DriveR.setPower(speed);
-
-
+            if(gamepad1.right_stick_y !=0 ) {
+                DriveL.setPower(speed);
+                DriveR.setPower(speed);
+            } else{
+                speed = 0;
+            }
 
         }
 }
