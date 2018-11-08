@@ -66,7 +66,7 @@ public class TankDrivefor2019ExampleBot extends OpMode {
         Arm = hardwareMap.dcMotor.get("flip");
         PushyObject = hardwareMap.servo.get("Door");
 
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
 
         telemetry.addData("Say", "Press 'Start' and 'A' to begin.");
@@ -77,7 +77,7 @@ public class TankDrivefor2019ExampleBot extends OpMode {
         Mechaturn = gamepad1.left_stick_x * 1;
         speed = gamepad1.left_stick_y * 1;
         rise = gamepad1.right_stick_y * 1;
-        turn = gamepad1.right_stick_x;
+        turn = gamepad1.right_stick_x * -1;
         ArmSpeed = gamepad2.right_stick_y;
 
         if (gamepad1.right_stick_x >= 0.1) {
@@ -86,8 +86,8 @@ public class TankDrivefor2019ExampleBot extends OpMode {
             backRight.setPower(0.9 * turn);
         } else if (gamepad1.right_stick_x >= 0.9) {
 
-            backLeft.setPower(-1);
-            backRight.setPower(1);
+            backLeft.setPower(1);
+            backRight.setPower(-1);
         }
         if (gamepad1.right_stick_x <= -0.1) {
 
@@ -95,8 +95,8 @@ public class TankDrivefor2019ExampleBot extends OpMode {
             backRight.setPower(0.9 * turn);
         } else if (gamepad1.right_stick_x <= -0.9) {
 
-            backLeft.setPower(1);
-            backRight.setPower(-1);
+            backLeft.setPower(-1);
+            backRight.setPower(1);
         }
 
 
