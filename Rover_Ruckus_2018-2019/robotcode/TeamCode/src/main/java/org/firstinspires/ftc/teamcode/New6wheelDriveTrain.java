@@ -9,18 +9,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name= "ExampleBot2019-2", group= "Pushbot")
+@TeleOp(name= "New6wheelDriveTrain", group= "Pushbot")
 public class New6wheelDriveTrain extends OpMode{
 
         public DcMotor DriveR;
         public DcMotor DriveL;
         public DcMotor ShoulderR;
         public DcMotor ShoulderL;
-        double speed = 0;
         public DcMotor ElbowL;
         public Servo Clamp;
         double ShoulderSpeed = 0;
         double ElbowSpeed = 0;
+        double speed = 0;
 
         //Initializing the motors for the arm
 
@@ -43,30 +43,18 @@ public class New6wheelDriveTrain extends OpMode{
 
         @Override
         public void loop() {
-            if(gamepad1.left_stick_y !=0) {
+
+            if (gamepad1.left_stick_y != 0) {
                 speed = gamepad1.left_stick_y * 1;
-            }
-
-            if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x != 0) {
-
-                DriveL.setPower(-1);
-                DriveR.setPower (1);
-            } else if (gamepad1.left_stick_x >= 0.9 || gamepad1.left_stick_x != 0) {
-
-                DriveL.setPower(-1);
-                DriveR.setPower(1);
-            } else if (gamepad1.left_stick_x <= -0.1 || gamepad1.left_stick_x != 0) {
-
-                DriveL.setPower(1);
-                DriveR.setPower(-1);
-            } else if (gamepad1.left_stick_x <= -0.9 || gamepad1.left_stick_x != 0) {
-
-                DriveL.setPower(1);
-                DriveR.setPower(-1);
-
+                DriveL.setPower(-speed);
+                DriveR.setPower (speed);
+            }else if (gamepad1.left_stick_x >= -0.1 || gamepad1.left_stick_x <= -0.9) {
+                speed = gamepad1.left_stick_y * 1;
+                DriveL.setPower(speed);
+                DriveR.setPower (-speed);
             } else {
                 DriveL.setPower(0);
-                DriveL.setPower(0);
+                DriveR.setPower(0);
                 speed = 0;
             }
 
@@ -75,6 +63,12 @@ public class New6wheelDriveTrain extends OpMode{
                 ShoulderL.setPower(ShoulderSpeed);
             } else {
                 ShoulderSpeed = 0;
+            }
+
+            if(gamepad1.a) {
+                DriveR.setPower(1);
+            } else {
+                DriveR.setPower(0);
             }
 
             if(gamepad2.right_stick_y != 0) {
@@ -95,15 +89,17 @@ public class New6wheelDriveTrain extends OpMode{
                 Clamp.setPosition(0);
             }
             if(gamepad1.dpad_down) {
-                ElbowSpeed= ElbowSpeed * 0.5;
+                ElbowSpeed *= 0.5;
             }
 
 
-            if(gamepad1.right_stick_y !=0 ) {
+            if(gamepad1.left_stick_y !=0 ) {
                 DriveL.setPower(speed);
                 DriveR.setPower(speed);
             } else{
                 speed = 0;
+                DriveL.setPower(0);
+                DriveR.setPower(0);
             }
 
         }
