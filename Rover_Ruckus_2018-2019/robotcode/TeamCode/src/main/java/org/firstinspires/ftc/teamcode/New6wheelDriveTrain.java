@@ -17,7 +17,10 @@ public class New6wheelDriveTrain extends OpMode{
         public DcMotor ShoulderR;
         public DcMotor ShoulderL;
         public DcMotor ElbowL;
+        public DcMotor Winch1;
+        public DcMotor Winch2;
         public Servo Clamp;
+        public Servo Dropper;
         double ShoulderSpeed = 0;
         double ElbowSpeed = 0;
         double speed = 0;
@@ -33,9 +36,11 @@ public class New6wheelDriveTrain extends OpMode{
             ShoulderL = hardwareMap.dcMotor.get("ShoulderL");
             ElbowL = hardwareMap.dcMotor.get("ElbowL");
             Clamp = hardwareMap.servo.get("Clamp");
+            Dropper = hardwareMap.servo.get("Dropper");
             DriveR = hardwareMap.dcMotor.get("DriveR");
             DriveL = hardwareMap.dcMotor.get("DriveL");
-
+            Winch1 = hardwareMap.dcMotor.get("Winch1");
+            Winch2 = hardwareMap.dcMotor.get("Winch2");
 
             DriveL.setDirection(DcMotor.Direction.REVERSE);
             ShoulderL.setDirection(DcMotor.Direction.REVERSE);
@@ -52,11 +57,22 @@ public class New6wheelDriveTrain extends OpMode{
                 speed = gamepad1.left_stick_y * 1;
                 DriveL.setPower(speed);
                 DriveR.setPower (-speed);
-            } else {
+            } else if (gamepad1.left_stick_y == 0 || gamepad1.left_stick_x == 0){
                 DriveL.setPower(0);
                 DriveR.setPower(0);
                 speed = 0;
             }
+            if (gamepad1.a){
+                Winch1.setPower(1);
+                Winch2.setPower(1);
+            }else{
+                Winch1.setPower(0);
+                Winch2.setPower(0);
+            }
+            if (gamepad1.y){
+                Dropper.setPosition(1);
+            }
+
 
             if(gamepad2.left_stick_y != 0) {
                 ShoulderSpeed = gamepad2.left_stick_y * 0.75;
