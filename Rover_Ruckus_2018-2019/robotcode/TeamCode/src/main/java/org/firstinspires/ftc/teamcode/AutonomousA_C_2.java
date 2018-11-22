@@ -56,7 +56,6 @@ public class AutonomousA_C_2 extends LinearOpMode {
         movement();
     }
 
-
     public void cs() {
         //Making sure the motors go backward at 0.3 speed
         robot.Left.setPower(0);

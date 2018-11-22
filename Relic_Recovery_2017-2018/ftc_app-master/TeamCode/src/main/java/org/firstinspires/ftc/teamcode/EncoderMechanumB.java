@@ -26,8 +26,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @Autonomous(name = "EncMechanumB", group = "PushBot")
-public class
-EncoderMechanumB extends LinearOpMode  {
+public class EncoderMechanumB extends LinearOpMode  {
     public static final String TAG = "Vuforia VuMark Sample";
 
     OpenGLMatrix lastLocation = null;

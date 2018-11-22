@@ -23,7 +23,6 @@ public class NewTestRobot extends OpMode {
         DriveL = hardwareMap.dcMotor.get("DriveL");
 
         DriveR.setDirection(DcMotor.Direction.REVERSE);
-
     }
 
     @Override
