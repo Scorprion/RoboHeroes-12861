@@ -85,9 +85,7 @@ public class AutonomousB_D extends LinearOpMode {
                 //turn 180 degrees
                 //turn(-0.3, 4);
                 //Drop the team marker, wait a second, then reset the dropper
-                robot.Marker.setPosition(0);
                 sleep(1000);
-                robot.Marker.setPosition(1);
                 //Set the boolean "colorFound" to true to stop the repeating while loop
                 colorFound = true;
             }

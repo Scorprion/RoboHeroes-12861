@@ -17,10 +17,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit
 public class HardwareMapInit {
 
     public NormalizedColorSensor Color_Sensor;
-    public NormalizedColorSensor Color_Sensor2;
     public DcMotor Right;
     public DcMotor Left;
-    public Servo Marker;
     public View relativeLayout;
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
@@ -30,13 +28,11 @@ public class HardwareMapInit {
         hwMap = ahwMap;
 
         Color_Sensor = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
-        Color_Sensor2 = hwMap.get(NormalizedColorSensor.class, "ColorSensor2");
 
         Right = hwMap.get(DcMotor.class, "Right");
         Left = hwMap.get(DcMotor.class, "Left");
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        Marker = hwMap.get(Servo.class, "Marker");
 
         // Set them to 0
         Right.setPower(0);

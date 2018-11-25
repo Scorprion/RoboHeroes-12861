@@ -55,7 +55,7 @@ public class ColorTesting extends LinearOpMode {
         //Color_Sensor2 = hwmap.get(NormalizedColorSensor.class, "ColorSensor2");
         waitForStart();
         robot.Right.setPower(0.2);
-        robot.Left.setPower(-0.2);
+        robot.Left.setPower(0.2);
         cs();
     }
 

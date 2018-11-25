@@ -107,9 +107,7 @@ public class AutonomousA_C extends LinearOpMode {
                 sleep(700);
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
-                robot.Marker.setPosition(0);
                 sleep(1000);
-                robot.Marker.setPosition(1);
                 colorFound = true;
             }
         }
