@@ -19,30 +19,30 @@ public class HardwareAtlas {
     //public DistanceSensor DistanceSensor;
 
     //Servos
-    public Servo Clamp;
+    private Servo Clamp;
     public Servo Marker;
 
     //Right motors
-    public DcMotor RShoulder;
-    public DcMotor RElbow;
+    private DcMotor RShoulder;
+    private DcMotor RElbow;
     public DcMotor Right;
 
     //Left motors
-    public DcMotor LShoulder;
-    public DcMotor LElbow;
+    private DcMotor LShoulder;
+    private DcMotor LElbow;
     public DcMotor Left;
 
     //IMU sensor
-    BNO055IMU imu;
+    public BNO055IMU imu;
 
     // State used for updating telemetry
-    Orientation angles;
-    Acceleration gravity;
+    public Orientation angles;
+    public Acceleration gravity;
 
 
     HardwareMap hwMap = null;
 
-    public void init(HardwareMap ahwMap) {
+    public HardwareAtlas(HardwareMap ahwMap) {
         hwMap = ahwMap;
         ColorSensor = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = hwMap.get(DistanceSensor.class, "DistanceSensor");
