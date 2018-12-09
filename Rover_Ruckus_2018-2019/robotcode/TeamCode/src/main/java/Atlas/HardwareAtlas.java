@@ -83,9 +83,9 @@ public class HardwareAtlas {
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
         RShoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         RElbow.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LShoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LElbow.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

@@ -2,12 +2,15 @@ package Atlas.Autonomous.MoveMethods;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Hardware;
 
 import Atlas.Autonomous.AtlasAuto;
 import Atlas.HardwareAtlas;
 
 public class AtlasEncoderDrive extends LinearOpMode {
-    public void encoderDrive(HardwareAtlas robot, double speed, double linch, double rinch,
+    HardwareAtlas robot = new HardwareAtlas();
+
+    public void encoderDrive(double speed, double linch, double rinch,
                              double timeoutS) {
 
         double countsPerRot = 2240; // The counts per rotation
@@ -15,13 +18,15 @@ public class AtlasEncoderDrive extends LinearOpMode {
         double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
         double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
 
-        int newLeftTartget, newRightTarget;
+        int newLeftTarget, newRightTarget;
 
         if(opModeIsActive()) {
             //Get new targets for the wheels based on the wheel's countsPerInch
             //and how far you still need to go off the motors' current position
-            newLeftTartget = robot.Left.getCurrentPosition() + (int)(linch * countsPerInch);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int)(linch * countsPerInch);
             newRightTarget = robot.Right.getCurrentPosition() + (int)(rinch * countsPerInch);
+            robot.Left.setTargetPosition(newLeftTarget);
+            robot.Right.setTargetPosition(newRightTarget);
 
             //Set the mode of the encoders to "RUN_TO_POSITION" mode
             robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -30,8 +35,9 @@ public class AtlasEncoderDrive extends LinearOpMode {
             //Resetting timer
             robot.runtime.reset();
 
-            robot.Left.setPower(speed);
-            robot.Right.setPower(speed);
+            //Set the speed of the motors to the speed specified
+            robot.Left.setPower(Math.abs(speed));
+            robot.Right.setPower(Math.abs(speed));
 
             //While the program is still running, the runtime seconds is less than
             //the given time in seconds, and both the left and right motors are busy, then
@@ -40,7 +46,7 @@ public class AtlasEncoderDrive extends LinearOpMode {
             while(opModeIsActive() && (robot.runtime.seconds() < timeoutS) &&
                     (robot.Left.isBusy() && robot.Right.isBusy())) {
                 telemetry.addData("Path 1", "Running to %4d :%4d",
-                        newLeftTartget, newRightTarget);
+                        newLeftTarget, newRightTarget);
                 telemetry.addData("Path 2", "Running to %4d :%4d",
                         robot.Left.getCurrentPosition(), robot.Right.getCurrentPosition());
                 telemetry.update();
@@ -57,6 +63,6 @@ public class AtlasEncoderDrive extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
+        robot.init(hardwareMap);
     }
 }

@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import java.util.concurrent.TimeUnit;
+
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
 public class AtlasTeleOp extends OpMode {
 
@@ -26,9 +28,6 @@ public class AtlasTeleOp extends OpMode {
     double ElbowSpeed = 0;
     double turnspeed = 0;
     double speed = 0;
-    double time = 500;
-    boolean timePass = false;
-    ElapsedTime passedtime = new ElapsedTime();
 
     //Initializing the motors for the arm
 
@@ -94,22 +93,16 @@ public class AtlasTeleOp extends OpMode {
 
         //The clamp
         if (gamepad2.x) {
-            timePass = false;
-            passedtime.reset();
             Clamp.setPosition(1);
-            if(passedtime.milliseconds() <= 500 && !timePass) {
-                timePass = true;
-                Clamp.setPosition(0.5);
+            try {
+                TimeUnit.MILLISECONDS.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }
-        if (gamepad2.y) {
-            Clamp.setPosition(1);
+            Clamp.setPosition(0.5);
         }
         if (gamepad2.a) {
             Clamp.setPosition(0);
-        }
-        if (gamepad2.b) {
-            Clamp.setPosition(0.25);
         }
 
         if(gamepad1.a) {

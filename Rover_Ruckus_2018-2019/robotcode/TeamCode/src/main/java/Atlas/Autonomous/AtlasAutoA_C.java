@@ -64,7 +64,7 @@ public class AtlasAutoA_C extends LinearOpMode {
         robot.Left.setPower(0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(0.2);
         sleep(250); //added second pause also for debugging
-        while(!colorFound) {
+        while(!colorFound && opModeIsActive()) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
             robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");

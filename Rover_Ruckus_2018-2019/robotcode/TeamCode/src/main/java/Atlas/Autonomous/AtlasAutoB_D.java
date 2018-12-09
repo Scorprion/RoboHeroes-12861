@@ -44,7 +44,7 @@ public class AtlasAutoB_D extends LinearOpMode {
         //added second pause also for debugging
         sleep(250);
 
-        while(!colorFound) {
+        while(!colorFound && opModeIsActive()) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
             robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");

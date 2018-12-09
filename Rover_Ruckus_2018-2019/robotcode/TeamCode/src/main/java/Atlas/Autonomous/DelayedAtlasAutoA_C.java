@@ -64,7 +64,7 @@ public class DelayedAtlasAutoA_C extends LinearOpMode {
         robot.Right.setPower(0.2);
         sleep(250); //Debugging
 
-        while(!colorFound) {
+        while(!colorFound && opModeIsActive()) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
             robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");

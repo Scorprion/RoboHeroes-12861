@@ -14,9 +14,13 @@ import Atlas.HardwareAtlas;
 public class AtlasAuto extends LinearOpMode {
     HardwareAtlas robot = new HardwareAtlas(); //Using the robot hardware
 
+    //Set the move and turn speed for the robot
     double moveSpeed = 0.6;
     double turnSpeed = 0.5;
+
+    //Use the AtlasEncoderDrive class to control the encoders
     AtlasEncoderDrive drive = new AtlasEncoderDrive();
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -30,6 +34,7 @@ public class AtlasAuto extends LinearOpMode {
 
         waitForStart();
 
-        drive.encoderDrive(robot, moveSpeed, 5, 5, 5);
+        drive.encoderDrive(moveSpeed, 5, 5, 2.0);
+        drive.encoderDrive(0.2, 3, 3.0, 1.0);
     }
 }
