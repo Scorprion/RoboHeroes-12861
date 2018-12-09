@@ -8,9 +8,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
-public class    AtlasTeleOp extends OpMode {
+public class AtlasTeleOp extends OpMode {
 
     public DcMotor Right;
     public DcMotor Left;
@@ -25,6 +26,9 @@ public class    AtlasTeleOp extends OpMode {
     double ElbowSpeed = 0;
     double turnspeed = 0;
     double speed = 0;
+    double time = 500;
+    boolean timePass = false;
+    ElapsedTime passedtime = new ElapsedTime();
 
     //Initializing the motors for the arm
 
@@ -57,7 +61,7 @@ public class    AtlasTeleOp extends OpMode {
         //Turning
         if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
             Left.setPower(turnspeed);
-            Right.setPower(turnspeed * 0.99999);
+            Right.setPower(turnspeed);
         } else {
             Left.setPower(0);
             Right.setPower(0);
@@ -66,7 +70,7 @@ public class    AtlasTeleOp extends OpMode {
         //Moving
         if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
             Left.setPower(-speed);
-            Right.setPower(speed * 1.25);
+            Right.setPower(speed);
         } else {
             Left.setPower(0);
             Right.setPower(0);
@@ -88,14 +92,18 @@ public class    AtlasTeleOp extends OpMode {
             ElbowSpeed = 0;
         }
 
-        telemetry.addData("", Marker.getPosition());
-
         //The clamp
         if (gamepad2.x) {
+            timePass = false;
+            passedtime.reset();
             Clamp.setPosition(1);
+            if(passedtime.milliseconds() <= 500 && !timePass) {
+                timePass = true;
+                Clamp.setPosition(0.5);
+            }
         }
         if (gamepad2.y) {
-            Clamp.setPosition(0.5);
+            Clamp.setPosition(1);
         }
         if (gamepad2.a) {
             Clamp.setPosition(0);

@@ -42,7 +42,7 @@ import Atlas.HardwareAtlas;
 @Autonomous(name = "AtlasColorSensorTest", group = "RoboBot")
 public class AtlasColorSensorTest extends LinearOpMode {
 
-    HardwareAtlas robot  = new HardwareAtlas();   // Use a Pushbot's hardware
+    HardwareAtlas robot = new HardwareAtlas();
     public float previousRed = 1000, previousBlue = 1000;
     public NormalizedColorSensor ColorSensor;
     public NormalizedColorSensor ColorSensor2;
@@ -50,7 +50,6 @@ public class AtlasColorSensorTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-
         // Turn on light through the program
         if (ColorSensor instanceof SwitchableLight) {
             ((SwitchableLight) ColorSensor).enableLight(true);

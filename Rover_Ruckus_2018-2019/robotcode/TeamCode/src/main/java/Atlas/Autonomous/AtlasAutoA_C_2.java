@@ -42,19 +42,19 @@ import Atlas.HardwareAtlas;
 @Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
 public class AtlasAutoA_C_2 extends LinearOpMode {
 
-    HardwareAtlas robot  = new HardwareAtlas();   // Use a Pushbot's hardware
+    HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-
         // Turn on light through the program
         if (robot.ColorSensor instanceof SwitchableLight) {
             ((SwitchableLight) robot.ColorSensor).enableLight(true);
         }
 
         waitForStart();
+        robot.Clamp.setPosition(0);
         movement();
     }
 
@@ -71,32 +71,12 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
             robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            telemetry.addLine()
-                    .addData("H", "%.3f", hsvValues[0])
-                    .addData("S", "%.3f", hsvValues[1])
-                    .addData("V", "%.3f", hsvValues[2]);
-            telemetry.addLine()
-                    .addData("a", "%.3f", colors.alpha)
-                    .addData("r", "%.3f", colors.red)
-                    .addData("g", "%.3f", colors.green)
-                    .addData("b", "%.3f", colors.blue);
             int color = colors.toColor();
-            telemetry.addLine("raw Android color: ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            telemetry.addLine("normalized color:  ")
-                    .addData("a", Color.alpha(color))
-                    .addData("r", Color.red(color))
-                    .addData("g", Color.green(color))
-                    .addData("b", Color.blue(color));
-            telemetry.update();
 
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold. After that, it drops our team marker
@@ -121,10 +101,10 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
         forward(0.4, 2.2); //Move forward 0.4 speed for 2.2 seconds
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
         forward(-0.3, 0.5); //Move backward -0.3 speed for 0.5 seconds
-        turn(0.3, 0.9); //turn ccw for 0.3 speed for 0.9 seconds
-        robot.Left.setPower(-0.425); //Move backwards at a gradual slope for 3.5 seconds
+        turn(0.3, 0.8); //turn ccw for 0.3 speed for 0.9 seconds
+        robot.Left.setPower(-0.45); //Move backwards at a gradual slope for 3.5 seconds
         robot.Right.setPower(-0.5);
-        sleep(3500);
+        sleep(3700);
         //stop all motion
         stopMotion();
     }

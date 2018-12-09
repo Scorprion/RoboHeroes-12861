@@ -20,12 +20,11 @@ import Atlas.HardwareAtlas;
 @Autonomous(name = "AtlasAutoB_D_2", group = "Auto")
 public class AtlasAutoB_D_2 extends LinearOpMode {
 
-    HardwareAtlas robot  = new HardwareAtlas();   // Use a Pushbot's hardware
+    HardwareAtlas robot = new HardwareAtlas();
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-
         // Turn on light through the program
         if (robot.ColorSensor instanceof SwitchableLight) {
             ((SwitchableLight) robot.ColorSensor).enableLight(true);

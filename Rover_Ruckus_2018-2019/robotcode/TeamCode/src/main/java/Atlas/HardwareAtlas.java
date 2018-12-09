@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -19,7 +20,7 @@ public class HardwareAtlas {
     //public DistanceSensor DistanceSensor;
 
     //Servos
-    private Servo Clamp;
+    public Servo Clamp;
     public Servo Marker;
 
     //Right motors
@@ -39,10 +40,12 @@ public class HardwareAtlas {
     public Orientation angles;
     public Acceleration gravity;
 
+    // The elapsed time
+    public ElapsedTime runtime = new ElapsedTime();
 
     HardwareMap hwMap = null;
 
-    public HardwareAtlas(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
         ColorSensor = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = hwMap.get(DistanceSensor.class, "DistanceSensor");

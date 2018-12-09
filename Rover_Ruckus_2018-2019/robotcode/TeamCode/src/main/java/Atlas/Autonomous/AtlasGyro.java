@@ -56,10 +56,11 @@ public class AtlasGyro extends LinearOpMode {
     // Main logic
     //----------------------------------------------------------------------------------------------
 
-    HardwareAtlas robot = new HardwareAtlas(hardwareMap);
+    HardwareAtlas robot = new HardwareAtlas();
 
 
     @Override public void runOpMode() {
+        robot.init(hardwareMap);
         // Set up our telemetry dashboard
         composeTelemetry();
 
