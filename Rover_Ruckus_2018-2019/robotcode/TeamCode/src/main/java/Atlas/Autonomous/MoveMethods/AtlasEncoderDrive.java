@@ -14,7 +14,7 @@ public class AtlasEncoderDrive extends LinearOpMode {
                              double timeoutS) {
 
         double countsPerRot = 2240; // The counts per rotation
-        double gearBoxRatio = 40; // The gear box ratio for the motors
+        double gearBoxRatio = 0.025; // The gear box ratio for the motors
         double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
         double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
 
