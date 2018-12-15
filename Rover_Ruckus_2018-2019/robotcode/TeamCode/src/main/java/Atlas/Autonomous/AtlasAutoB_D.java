@@ -74,21 +74,17 @@ public class AtlasAutoB_D extends LinearOpMode {
     public void movement() {
         forward(0.4, 1.25); //Move forward 0.4 speed for 1.25 seconds
         sleep(1000);
-        forward(-0.4, 0.2); //Move backward -0.4 speed for 0.2 seconds
+        forward(-0.4, 0.5); //Move backward -0.4 speed for 0.5 seconds
         sleep(1000);
-        robot.Left.setPower(0); //Debugging
-        robot.Right.setPower(0);
+        turn(0.4, 0.65); //Turn ccw 0.4 speed for 0.5 seconds
         sleep(1000);
-        turn(0.4, 0.5); //Turn ccw 0.4 speed for 0.5 seconds
-        sleep(1000);
-        forward(0.4, 1.75); //Move forward 0.4 speed for 1.75 seconds
+        forward(0.4, 1.95); //Move forward 0.4 speed for 1.75 seconds
         sleep(1000);
         turn(0.4, 0.45); //Turn ccw 0.4 speed for 0.45 seconds
         forward(0.3, 1); //Move forward 0.3 speed for 1 second
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        turn(0.3, 0.9); //Turn ccw 0.3 speed for 0.9 seconds
-        robot.Left.setPower(-0.425); //Move backwards at a gradual slope for 3.5 seconds
-        robot.Right.setPower(-0.5);
+        robot.Left.setPower(-0.5); //Move backwards at a gradual slope for 3.5 seconds
+        robot.Right.setPower(-0.425);
         sleep(3500);
         //stop all motion
         stopMotion();

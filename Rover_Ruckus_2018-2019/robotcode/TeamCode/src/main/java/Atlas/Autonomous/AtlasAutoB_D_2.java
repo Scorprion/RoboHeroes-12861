@@ -38,9 +38,7 @@ public class AtlasAutoB_D_2 extends LinearOpMode {
     public void movement() {
         forward(0.4, 1.4); //Move forward 0.4 speed for 1.25 seconds
         sleep(1000);
-        robot.Left.setPower(0); //Debugging
-        robot.Right.setPower(0);
-        sleep(1000);
+        stopMotion();
     }
 
     public void forward(double speed, double seconds) {

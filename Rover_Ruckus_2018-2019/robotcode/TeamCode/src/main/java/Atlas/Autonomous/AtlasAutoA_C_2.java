@@ -98,7 +98,7 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
     }
     public void movement() {
         telemetry.update();
-        forward(0.4, 2.2); //Move forward 0.4 speed for 2.2 seconds
+        forward(0.4, 1.9); //Move forward 0.4 speed for 1.9 seconds
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
         forward(-0.3, 0.5); //Move backward -0.3 speed for 0.5 seconds
         turn(0.3, 0.8); //turn ccw for 0.3 speed for 0.9 seconds
