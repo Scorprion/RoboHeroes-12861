@@ -1,4 +1,4 @@
-package Atlas.Autonomous;
+package Atlas.Autonomous.DelayedAuto;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -39,8 +39,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import Atlas.HardwareAtlas;
 
 
-@Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
-public class AtlasAutoA_C_2 extends LinearOpMode {
+@Autonomous(name = "DelayedAtlasAutoA_C", group = "Delayed")
+public class DelayedAtlasAutoA_C extends LinearOpMode {
 
     HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
@@ -63,8 +63,7 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
         sleep(1000);
         robot.Left.setPower(0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(0.2);
-        sleep(250); //Debugging
-
+        sleep(250); //added second pause also for debugging
         while(!colorFound && opModeIsActive()) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
@@ -83,28 +82,25 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold
             if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(800);
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
                 sleep(1000);
-                telemetry.addData("", robot.Marker);
                 robot.Marker.setPosition(0); //Drop the team marker
                 sleep(1000);
-                forward(0.4, 0.5);
                 //Set the boolean "colorFound" to true to stop the repeating while loop
                 colorFound = true;
             }
         }
     }
+
     public void movement() {
-        telemetry.update();
-        forward(0.4, 1.9); //Move forward 0.4 speed for 1.9 seconds
+        sleep(10000);
+        forward(0.4, 2.2); //Move forward 0.4 speed for 2.2 seconds
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        forward(-0.3, 0.5); //Move backward -0.3 speed for 0.5 seconds
-        turn(0.4, 0.8); //turn ccw for 0.3 speed for 0.9 seconds
-        robot.Left.setPower(-0.45); //Move backwards at a gradual slope for 3.5 seconds
-        robot.Right.setPower(-0.5);
-        sleep(3700);
+        forward(-0.3, 0.5); //Move backwards -0.3 speed for 0.5 seconds
+        turn(-0.3, 1.15); //turn cw at -0.3 speed for 0.75 seconds
+        forward(-0.4, 2.25); //Move backward -0.4 speed for 2.25 seconds
         //stop all motion
         stopMotion();
     }

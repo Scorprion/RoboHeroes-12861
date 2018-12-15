@@ -1,4 +1,4 @@
-package Atlas.Autonomous;
+package Atlas.Autonomous.DelayedAuto;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -39,8 +39,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import Atlas.HardwareAtlas;
 
 
-@Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
-public class AtlasAutoA_C_2 extends LinearOpMode {
+@Autonomous(name = "DelayedAtlasAutoA_C_2", group = "Delayed")
+public class DelayedAtlasAutoA_C_2 extends LinearOpMode {
 
     HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
@@ -83,7 +83,7 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold
             if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(600);
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
                 sleep(1000);
@@ -98,6 +98,7 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
     }
     public void movement() {
         telemetry.update();
+        sleep(10000);
         forward(0.4, 1.9); //Move forward 0.4 speed for 1.9 seconds
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
         forward(-0.3, 0.5); //Move backward -0.3 speed for 0.5 seconds

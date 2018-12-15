@@ -1,4 +1,4 @@
-package Atlas.Autonomous;
+package Atlas.Autonomous.DelayedAuto;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -14,33 +14,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
 import Atlas.HardwareAtlas;
 
 
-@Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
-public class AtlasAutoA_C_2 extends LinearOpMode {
+@Autonomous(name = "DelayedAtlasAutoB_D", group = "Delayed")
+public class DelayedAtlasAutoB_D extends LinearOpMode {
 
     HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
@@ -54,16 +32,17 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
         }
 
         waitForStart();
-        robot.Clamp.setPosition(0);
         movement();
     }
 
     public void cs() {
-        //Making sure the motors go forward at 0.2 speed
-        sleep(1000);
+        //Making sure the motors go backward at 0.3 speed
+        robot.Left.setPower(0);
+        robot.Right.setPower(0);
         robot.Left.setPower(0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(0.2);
-        sleep(250); //Debugging
+        //added second pause also for debugging
+        sleep(250);
 
         while(!colorFound && opModeIsActive()) {
             float[] hsvValues = new float[3];
@@ -80,35 +59,37 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
 
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold. After that, it drops our team marker
-            // Detects a change in the color and then stops robot after the red or blue values
-            // reach a certain threshold
             if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
                 sleep(1000);
-                telemetry.addData("", robot.Marker);
-                robot.Marker.setPosition(0); //Drop the team marker
+                robot.Marker.setPosition(0); //Drops the team marker
                 sleep(1000);
-                forward(0.4, 0.5);
                 //Set the boolean "colorFound" to true to stop the repeating while loop
                 colorFound = true;
             }
         }
     }
+
     public void movement() {
-        telemetry.update();
-        forward(0.4, 1.9); //Move forward 0.4 speed for 1.9 seconds
+        sleep(8000);
+        forward(0.4, 1.25); //Move forward 0.4 speed for 1.25 seconds
+        sleep(1000);
+        forward(-0.4, 0.5); //Move backward -0.4 speed for 0.5 seconds
+        sleep(1000);
+        turn(0.4, 0.65); //Turn ccw 0.4 speed for 0.5 seconds
+        sleep(1000);
+        forward(0.4, 1.95); //Move forward 0.4 speed for 1.75 seconds
+        sleep(1000);
+        turn(0.4, 0.45); //Turn ccw 0.4 speed for 0.45 seconds
+        forward(0.3, 1); //Move forward 0.3 speed for 1 second
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        forward(-0.3, 0.5); //Move backward -0.3 speed for 0.5 seconds
-        turn(0.4, 0.8); //turn ccw for 0.3 speed for 0.9 seconds
-        robot.Left.setPower(-0.45); //Move backwards at a gradual slope for 3.5 seconds
-        robot.Right.setPower(-0.5);
-        sleep(3700);
+        robot.Left.setPower(-0.5); //Move backwards at a gradual slope for 3.5 seconds
+        robot.Right.setPower(-0.425);
+        sleep(3500);
         //stop all motion
         stopMotion();
     }
-
 
     public void forward(double speed, double seconds) {
         double time = seconds * 1000;
