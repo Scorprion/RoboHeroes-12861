@@ -101,7 +101,7 @@ public class AtlasAutoA_C_2 extends LinearOpMode {
         forward(0.4, 1.9); //Move forward 0.4 speed for 1.9 seconds
         cs(); //Uses the color sensor method to stop, drop, and turn the robot
         forward(-0.3, 0.5); //Move backward -0.3 speed for 0.5 seconds
-        turn(0.4, 0.8); //turn ccw for 0.3 speed for 0.9 seconds
+        turn(0.4, 0.6); //turn ccw for 0.3 speed for 0.6 seconds
         robot.Left.setPower(-0.45); //Move backwards at a gradual slope for 3.5 seconds
         robot.Right.setPower(-0.5);
         sleep(3700);

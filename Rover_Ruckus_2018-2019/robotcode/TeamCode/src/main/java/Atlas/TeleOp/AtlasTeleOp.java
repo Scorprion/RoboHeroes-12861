@@ -58,7 +58,7 @@ public class AtlasTeleOp extends OpMode {
         telemetry.addData("The speed for both motors", speed);
         telemetry.addData("The speed for both motors in turning", turnspeed);
         //Turning
-        if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
+        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
             Left.setPower(turnspeed);
             Right.setPower(turnspeed);
         } else {
@@ -95,6 +95,7 @@ public class AtlasTeleOp extends OpMode {
         if (gamepad2.x) {
             Clamp.setPosition(1);
             try {
+                //Wait 250 milliseconds before stopping the movement of the clamp
                 TimeUnit.MILLISECONDS.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
