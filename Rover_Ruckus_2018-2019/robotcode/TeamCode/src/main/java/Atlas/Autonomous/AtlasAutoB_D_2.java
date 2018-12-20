@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import Atlas.HardwareAtlas;
+import Atlas.Autonomous.Init.HardwareAtlas;
 
 
 @Autonomous(name = "AtlasAutoB_D_2", group = "Auto")

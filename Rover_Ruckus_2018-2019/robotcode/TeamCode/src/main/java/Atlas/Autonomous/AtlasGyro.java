@@ -48,7 +48,7 @@ import org.firstinspires.ftc.teamcode.HardwareMapInit;
 
 import java.util.Locale;
 
-import Atlas.HardwareAtlas;
+import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "Sensor: BNO055 IMU", group = "Sensor")
 @Disabled

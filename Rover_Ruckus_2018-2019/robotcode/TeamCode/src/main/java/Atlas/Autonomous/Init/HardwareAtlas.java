@@ -1,4 +1,4 @@
-package Atlas;
+package Atlas.Autonomous.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
