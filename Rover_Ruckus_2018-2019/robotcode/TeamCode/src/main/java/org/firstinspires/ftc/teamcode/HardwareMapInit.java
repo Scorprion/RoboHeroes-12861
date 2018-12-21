@@ -17,6 +17,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit
 public class HardwareMapInit {
 
     public NormalizedColorSensor Color_Sensor;
+    public NormalizedColorSensor Color2;
+    public NormalizedColorSensor Color3;
     public DcMotor Right;
     public DcMotor Left;
     public View relativeLayout;
@@ -28,6 +30,8 @@ public class HardwareMapInit {
         hwMap = ahwMap;
 
         Color_Sensor = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
+        Color2 = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
+        Color3 = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
 
         Right = hwMap.get(DcMotor.class, "Right");
         Left = hwMap.get(DcMotor.class, "Left");

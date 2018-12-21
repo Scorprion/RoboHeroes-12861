@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 
 @Autonomous(name = "ColorTesting", group = "RoboBot")
-@Disabled
 public class ColorTesting extends LinearOpMode {
 
     HardwareMapInit robot  = new HardwareMapInit();   // Use a Pushbot's hardware
@@ -56,51 +55,62 @@ public class ColorTesting extends LinearOpMode {
         }
         //Color_Sensor2 = hwmap.get(NormalizedColorSensor.class, "ColorSensor2");
         waitForStart();
-        robot.Right.setPower(0.2);
-        robot.Left.setPower(0.2);
         cs();
     }
 
     public void cs() {
-        while(opModeIsActive()) {
+        while(opModeIsActive() || true) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
             Color_Sensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
             NormalizedRGBA colors = Color_Sensor.getNormalizedColors();
+            NormalizedRGBA colors2 = robot.Color2.getNormalizedColors();
+            NormalizedRGBA colors3 = robot.Color3.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            telemetry.addLine()
-                    .addData("H", "%.3f", hsvValues[0])
-                    .addData("S", "%.3f", hsvValues[1])
-                    .addData("V", "%.3f", hsvValues[2]);
-            telemetry.addLine()
-                    .addData("a", "%.3f", colors.alpha)
-                    .addData("r", "%.3f", colors.red)
-                    .addData("g", "%.3f", colors.green)
-                    .addData("b", "%.3f", colors.blue);
             int color = colors.toColor();
+            int color2 = colors2.toColor();
+            int color3 = colors3.toColor();
             telemetry.addLine("raw Android color: ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
+                    .addData("a1", "%02x", Color.alpha(color))
+                    .addData("r1", "%02x", Color.red(color))
+                    .addData("g1", "%02x", Color.green(color))
+                    .addData("b1", "%02x", Color.blue(color))
+                    .addData("a2", "%02x", Color.alpha(color2))
+                    .addData("r2", "%02x", Color.red(color2))
+                    .addData("g2", "%02x", Color.green(color2))
+                    .addData("b2", "%02x", Color.blue(color2))
+                    .addData("a3", "%02x", Color.alpha(color3))
+                    .addData("r3", "%02x", Color.red(color3))
+                    .addData("g3", "%02x", Color.green(color3))
+                    .addData("b3", "%02x", Color.blue(color3));
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
             telemetry.addLine("normalized color:  ")
-                    .addData("a", Color.alpha(color))
-                    .addData("r", Color.red(color))
-                    .addData("g", Color.green(color))
-                    .addData("b", Color.blue(color));
+                    .addData("a1", Color.alpha(color))
+                    .addData("r1", Color.red(color))
+                    .addData("g1", Color.green(color))
+                    .addData("b1", Color.blue(color));
+            telemetry.addLine("");
+                    telemetry.addData("a2", Color.alpha(color2))
+                    .addData("r2", Color.red(color2))
+                    .addData("g2", Color.green(color2))
+                    .addData("b2", Color.blue(color2));
+            telemetry.addLine("");
+                    telemetry.addData("a3", Color.alpha(color3))
+                    .addData("r3", Color.red(color3))
+                    .addData("g3", Color.green(color3))
+                    .addData("b3", Color.blue(color3));
             telemetry.update();
-
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold
             if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
             }
+            sleep(100);
         }
 
         
