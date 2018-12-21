@@ -478,7 +478,7 @@ public class PIDIMU extends LinearOpMode
         }
 
         /**
-         * Retruns the current difference of the input from the setpoint
+         * Returns the current difference of the input from the setpoint
          * @return the current error
          */
         public synchronized double getError() {

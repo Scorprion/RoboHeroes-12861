@@ -22,6 +22,7 @@ public class AtlasAuto extends AggregatedClass {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        robot.init(hardwareMap);
         //Resetting left and right wheel encoders
         robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
