@@ -20,17 +20,18 @@ public class HardwareAtlas {
     //public DistanceSensor DistanceSensor;
 
     //Servos
-    public Servo Clamp;
+    public Servo RClamp;
+    public Servo LClamp;
     public Servo Marker;
 
     //Right motors
-    private DcMotor RShoulder;
-    private DcMotor RElbow;
+    public DcMotor RShoulder;
+    public DcMotor RElbow;
     public DcMotor Right;
 
     //Left motors
-    private DcMotor LShoulder;
-    private DcMotor LElbow;
+    public DcMotor LShoulder;
+    public DcMotor LElbow;
     public DcMotor Left;
 
     //IMU sensor
@@ -60,17 +61,20 @@ public class HardwareAtlas {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        Clamp = hwMap.get(Servo.class, "Clamp");
+        RClamp = hwMap.get(Servo.class, "RClamp");
+        LClamp = hwMap.get(Servo.class, "LClamp");
         Marker = hwMap.get(Servo.class, "Marker");
 
         RShoulder = hwMap.get(DcMotor.class, "RShoulder");
         RElbow = hwMap.get(DcMotor.class, "RElbow");
         Right = hwMap.get(DcMotor.class, "Right");
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
+        Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         LShoulder = hwMap.get(DcMotor.class, "LShoulder");
         LElbow = hwMap.get(DcMotor.class, "LElbow");
         Left = hwMap.get(DcMotor.class, "Left");
+        Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         RShoulder.setPower(0);
         RElbow.setPower(0);

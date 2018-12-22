@@ -12,109 +12,149 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
 
+import Atlas.Autonomous.Init.HardwareAtlas;
+
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
 public class AtlasTeleOp extends OpMode {
-
-    public DcMotor Right;
-    public DcMotor Left;
-    public DcMotor RShoulder;
-    public DcMotor LShoulder;
-    public DcMotor LElbow;
-    public DcMotor Winch1;
-    public DcMotor Winch2;
-    public Servo Clamp;
-    public Servo Marker;
     double ShoulderSpeed = 0;
     double ElbowSpeed = 0;
     double turnspeed = 0;
     double speed = 0;
+    double RElbowSpeed = 0;
+    double LElbowSpeed = 0;
+    
+    //Set the speed of the motors when the Left or Right sticks are not idle
 
-    //Initializing the motors for the arm
-
-
-    //Set the speed of the motors when the left or right sticks are not idle
-
+    HardwareAtlas robot = new HardwareAtlas();
+    
     public void init() {
-        LShoulder = hardwareMap.dcMotor.get("LShoulder");
-        LElbow = hardwareMap.dcMotor.get("LElbow");
-        Marker = hardwareMap.servo.get("Marker");
-        Clamp = hardwareMap.servo.get("Clamp");
-        Right = hardwareMap.dcMotor.get("Right");
-        Left = hardwareMap.dcMotor.get("Left");
+        robot.init(hardwareMap);
         /*Winch1 = hardwareMap.dcMotor.get("Winch1");
         Winch2 = hardwareMap.dcMotor.get("Winch2");*/
 
 
 
         //DriveL.setDirection(DcMotor.Direction.REVERSE);
-        LShoulder.setDirection(DcMotor.Direction.REVERSE);
+        robot.LShoulder.setDirection(DcMotor.Direction.REVERSE);
 
     }
 
     @Override
     public void loop() {
-        turnspeed = gamepad1.left_stick_x * 1;
-        speed = gamepad1.left_stick_y * 1;
+        ShoulderSpeed = 0.65;
+        RElbowSpeed = gamepad2.right_stick_y * 0.5;
+        LElbowSpeed = gamepad2.left_stick_y * 0.5;
+        turnspeed = gamepad1.right_stick_x;
+        speed = gamepad1.left_stick_y;
         telemetry.addData("The speed for both motors", speed);
         telemetry.addData("The speed for both motors in turning", turnspeed);
-        //Turning
-        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-            Left.setPower(turnspeed);
-            Right.setPower(turnspeed);
-        } else {
-            Left.setPower(0);
-            Right.setPower(0);
-        }
 
-        //Moving
-        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-            Left.setPower(-speed);
-            Right.setPower(speed);
-        } else {
-            Left.setPower(0);
-            Right.setPower(0);
-        }
-
-        //The shoulder
-        if (gamepad2.left_stick_y != 0) {
-            ShoulderSpeed = gamepad2.left_stick_y * 0.75;
-            LShoulder.setPower(ShoulderSpeed);
+        /*
+        -----------------------------
+        |                           |
+        |                           |
+        |         Gamepad 2         |
+        |                           |
+        |                           |
+        -----------------------------
+         */
+        //The Shoulders
+        if (gamepad2.a) {
+            robot.LShoulder.setPower(ShoulderSpeed);
+            robot.RShoulder.setPower(ShoulderSpeed);
         } else {
             ShoulderSpeed = 0;
         }
 
-        //The elbow
-        if (gamepad2.right_stick_y != 0) {
-            ElbowSpeed = gamepad2.right_stick_y * -0.5;
-            LElbow.setPower(ElbowSpeed);
+        if (gamepad2.b) {
+            robot.LShoulder.setPower(-ShoulderSpeed);
+            robot.RShoulder.setPower(-ShoulderSpeed);
+        } else {
+            ShoulderSpeed = 0;
+        }
+
+
+        //The LElbow
+        if (gamepad2.left_stick_y > 0.1 || gamepad2.left_stick_y < -0.1) {
+            robot.LElbow.setPower(LElbowSpeed);
         } else {
             ElbowSpeed = 0;
         }
 
-        //The clamp
-        if (gamepad2.x) {
-            Clamp.setPosition(1);
+        if (gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1) {
+            robot.RElbow.setPower(RElbowSpeed);
+        }
+
+        //The LClamp
+        if (gamepad2.left_trigger > 0.1 || gamepad2.left_trigger < -0.1) {
+            robot.LClamp.setPosition(1);
             try {
                 //Wait 250 milliseconds before stopping the movement of the clamp
                 TimeUnit.MILLISECONDS.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Clamp.setPosition(0.5);
+            robot.LClamp.setPosition(0.5);
         }
-        if (gamepad2.a) {
-            Clamp.setPosition(0);
+        if (gamepad2.left_bumper) {
+            robot.LClamp.setPosition(0);
         }
 
+        //The RClamp
+        if (gamepad2.right_trigger > 0.1 || gamepad2.right_trigger < -0.1) {
+            robot.RClamp.setPosition(1);
+            try {
+                //Wait 250 milliseconds before stopping the movement of the clamp
+                TimeUnit.MILLISECONDS.sleep(250);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            robot.RClamp.setPosition(0.5);
+        }
+        if (gamepad2.right_bumper) {
+            robot.RClamp.setPosition(0);
+        }
+
+
+
+        /*
+        -----------------------------
+        |                           |
+        |                           |
+        |         Gamepad 1         |
+        |                           |
+        |                           |
+        -----------------------------
+         */
+        //Turning
+        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
+            robot.Left.setPower(turnspeed);
+            robot.Right.setPower(turnspeed);
+        } else {
+            robot.Left.setPower(0);
+            robot.Right.setPower(0);
+        }
+
+        //Moving
+        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
+            robot.Left.setPower(-speed);
+            robot.Right.setPower(speed);
+        } else {
+            robot.Left.setPower(0);
+            robot.Right.setPower(0);
+        }
+
+        //Tilting and resetting back our marker servo platform
         if(gamepad1.a) {
-            Marker.setPosition(1.0);
+            robot.Marker.setPosition(1.0);
         }
         if(gamepad1.b) {
-            Marker.setPosition(0);
+            robot.Marker.setPosition(0);
         }
-
         //The winch
-        if (gamepad2.x) {
+
+        /*if (gamepad2.robot.Left_bumper) {
+
             Winch1.setPower(1);
             Winch2.setPower(1);
         } else {
@@ -122,7 +162,7 @@ public class AtlasTeleOp extends OpMode {
             Winch2.setPower(0);
 
 
-        }
+        }*/
 
     }
 }
