@@ -114,7 +114,7 @@ public class AtlasTeleOp extends OpMode {
         }
 
         //The winch
-        /*if (gamepad2.left_bumper) {
+        if (gamepad2.x) {
             Winch1.setPower(1);
             Winch2.setPower(1);
         } else {
@@ -122,7 +122,7 @@ public class AtlasTeleOp extends OpMode {
             Winch2.setPower(0);
 
 
-        }*/
+        }
 
     }
 }
