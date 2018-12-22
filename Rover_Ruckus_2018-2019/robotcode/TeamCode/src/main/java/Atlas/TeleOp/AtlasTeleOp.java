@@ -18,7 +18,7 @@ public class AtlasTeleOp extends OpMode {
     double LElbowSpeed = 0;
 
     DcMotor Winch;
-    
+
     //Set the speed of the motors when the Left or Right sticks are not idle
 
     HardwareAtlas robot = new HardwareAtlas();

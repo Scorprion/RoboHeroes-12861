@@ -33,6 +33,9 @@ public class HardwareAtlas {
     public DcMotor LElbow;
     public DcMotor Left;
 
+    //Winch
+    public DcMotor Winch;
+
     //IMU sensor
     public BNO055IMU imu;
 
@@ -73,6 +76,8 @@ public class HardwareAtlas {
         LElbow = hwMap.get(DcMotor.class, "LElbow");
         Left = hwMap.get(DcMotor.class, "Left");
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        Winch = hwMap.get(DcMotor.class, "Winch");
 
         RShoulder.setPower(0);
         RElbow.setPower(0);
