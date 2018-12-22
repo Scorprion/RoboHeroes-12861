@@ -54,7 +54,7 @@ public class DelayedAtlasAutoA_C extends LinearOpMode {
         }
 
         waitForStart();
-        robot.Clamp.setPosition(0);
+        robot.RClamp.setPosition(0);
         movement();
     }
 
