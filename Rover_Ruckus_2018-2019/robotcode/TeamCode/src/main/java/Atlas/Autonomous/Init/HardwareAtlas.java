@@ -20,7 +20,6 @@ public class HardwareAtlas {
     //public DistanceSensor DistanceSensor;
 
     //Servos
-    public Servo RClamp;
     public Servo LClamp;
     public Servo Marker;
 
@@ -61,7 +60,6 @@ public class HardwareAtlas {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        RClamp = hwMap.get(Servo.class, "RClamp");
         LClamp = hwMap.get(Servo.class, "LClamp");
         Marker = hwMap.get(Servo.class, "Marker");
 
