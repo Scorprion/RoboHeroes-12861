@@ -14,10 +14,6 @@ public class AggregatedClass extends LinearOpMode {
      * Since we couldn't use interfaces or anything like that to be able to implement different set
      * methods like
      * @param encoderDrive
-     *
-     *
-     *
-     *
     */
 
     //Using our robot's hardware
