@@ -14,6 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.HardwareMapInit;
 
+import Atlas.Autonomous.SensorTesting.PIDIMU;
+
 public class HardwareAtlas {
     //Sensors
     public NormalizedColorSensor ColorSensor;
