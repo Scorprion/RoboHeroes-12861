@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import android.view.View;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -25,6 +27,7 @@ public class HardwareMapInit {
     public View relativeLayout;
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
+    public ModernRoboticsI2cGyro gyro;
 
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -37,6 +40,7 @@ public class HardwareMapInit {
 
         Right = hwMap.get(DcMotor.class, "Right");
         Left = hwMap.get(DcMotor.class, "Left");
+
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
 
 

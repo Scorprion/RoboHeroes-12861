@@ -2,6 +2,7 @@ package TestBot.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -30,6 +31,7 @@ public class HardwareTestBot {
 
     // The elapsed time
     public ElapsedTime runtime = new ElapsedTime();
+    public ModernRoboticsI2cGyro gyro;
 
     HardwareMap hwMap = null;
 

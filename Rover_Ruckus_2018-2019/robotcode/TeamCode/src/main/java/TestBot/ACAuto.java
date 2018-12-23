@@ -29,12 +29,14 @@
 
 package TestBot;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import TestBot.Init.HardwareTestBot;
 
@@ -79,6 +81,11 @@ public class ACAuto extends LinearOpMode {
     final double countsPerInch = (countsPerRot * driveGearReduction) / (wheelDiamInch * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
+    final double HEADING_THRESHOLD = 1 ;
+    final double P_TURN_COEFF = 0.1; // Larger is more responsive, but also less stable
+    final double P_DRIVE_COEFF = 0.15; // Larger is more responsive, but also less stable
+
+
 
     @Override
     public void runOpMode() {
@@ -110,22 +117,137 @@ public class ACAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  24,  24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        encoderDrive(DRIVE_SPEED,  -24,  -24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  4,  4, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        gyroTurn(P_TURN_COEFF,45);
+        encoderDrive(DRIVE_SPEED,  4,  4, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        gyroTurn(P_TURN_COEFF,45);
+        encoderDrive(DRIVE_SPEED, 4, 4, 5.0);
+        sleep(500);
+        encoderDrive(DRIVE_SPEED, 24,24,7.0);
         sleep(1000);     // pause for servos to move
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
+    public void gyroTurn (  double speed, double angle) {
 
-    /*
-     *  Method to perfmorm a relative move, based on encoder counts.
-     *  Encoders are not reset as the move is based on the current position.
-     *  Move will stop if any of three conditions occur:
-     *  1) Move gets to the desired position
-     *  2) Move runs out of time
-     *  3) Driver stops the opmode running.
-     */
+        // keep looping while we are still active, and not on heading.
+        while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
+            // Update telemetry & Allow time for other processes to run.
+            telemetry.update();
+        }
+    }
+    boolean onHeading(double speed, double angle, double PCoeff) {
+        double   error ;
+        double   steer ;
+        boolean  onTarget = false ;
+        double leftSpeed;
+        double rightSpeed;
+
+        // determine turn power based on +/- error
+        error = getError(angle);
+
+        if (Math.abs(error) <= HEADING_THRESHOLD) {
+            steer = 0.0;
+            leftSpeed  = 0.0;
+            rightSpeed = 0.0;
+            onTarget = true;
+        }
+        else {
+            steer = getSteer(error, PCoeff);
+            rightSpeed  = speed * steer;
+            leftSpeed   = -rightSpeed;
+        }
+
+        // Send desired speeds to motors.
+        robot.Left.setPower(leftSpeed);
+        robot.Right.setPower(rightSpeed);
+
+        // Display it for the driver.
+        telemetry.addData("Target", "%5.2f", angle);
+        telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
+        telemetry.addData("Speed.", "%5.2f:%5.2f", leftSpeed, rightSpeed);
+
+        return onTarget;
+    }
+    public void gyroDrive ( double speed,
+                            double distance,
+                            double angle) {
+
+        int newLeftTarget, newRightTarget, moveCounts;
+        double max, error, steer, leftSpeed, rightSpeed;
+
+        // Ensure that the OpMode is still active
+        if (opModeIsActive()) {
+
+            // Determine the new target position and pass to motor controller
+            moveCounts = (int) (distance * countsPerInch); // Parse to an int and set to moveCounts
+            newLeftTarget = robot.Left.getCurrentPosition() + moveCounts;
+            newRightTarget = robot.Right.getCurrentPosition() + moveCounts;
+
+            // Set Target and Turn On RUN_TO_POSITION
+            robot.Left.setTargetPosition(newLeftTarget);
+            robot.Right.setTargetPosition(newRightTarget);
+            robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // Start motion
+            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
+            robot.Left.setPower(speed);
+            robot.Right.setPower(speed);
+
+            // Keep looping while we are still active and BOTH motors are running
+            while (opModeIsActive() &&
+                    (robot.Left.isBusy() && robot.Right.isBusy())) {
+
+                // Adjust relative speed based on heading error
+                error = getError(angle);
+                steer = getSteer(error, P_DRIVE_COEFF);
+
+                // if driving in reverse, the motor correction also needs to be reversed
+                if (distance < 0)
+                    steer *= -1.0;
+
+                leftSpeed = speed - steer;
+                rightSpeed = speed + steer;
+
+                // Normalize speeds if either one exceeds +/- 1.0;
+                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
+                if (max > 1.0) {
+                    leftSpeed /= max;
+                    rightSpeed /= max;
+                }
+
+                robot.Left.setPower(leftSpeed);
+                robot.Right.setPower(rightSpeed);
+
+                /*
+                 *  Method to perfmorm a relative move, based on encoder counts.
+                 *  Encoders are not reset as the move is based on the current position.
+                 *  Move will stop if any of three conditions occur:
+                 *  1) Move gets to the desired position
+                 *  2) Move runs out of time
+                 *  3) Driver stops the opmode running.
+                 */
+            }
+        }
+}
+    public double getError(double targetAngle) {
+        robot.gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
+        double robotError;
+
+        // calculate error in -179 to +180 range  (
+        robotError = targetAngle - robot.gyro.getIntegratedZValue();
+        while (robotError > 180)  robotError -= 360;
+        while (robotError <= -180) robotError += 360;
+        return robotError;
+    }
+
+
+    public double getSteer(double error, double PCoeff) {
+        return Range.clip(error * PCoeff, -1, 1);
+    }
+
     public void encoderDrive(double speed,
                              double leftInches, double rightInches,
                              double timeoutS) {
