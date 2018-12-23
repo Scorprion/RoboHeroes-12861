@@ -22,6 +22,7 @@ public class HardwareAtlas {
     //Servos
     public Servo LClamp;
     public Servo Marker;
+    public Servo Latching;
 
     //Right motors
     public DcMotor RShoulder;
@@ -32,6 +33,7 @@ public class HardwareAtlas {
     public DcMotor LShoulder;
     public DcMotor LElbow;
     public DcMotor Left;
+    public DcMotor Middle;
 
     //Winch
     public DcMotor Winch;
@@ -65,19 +67,20 @@ public class HardwareAtlas {
 
         LClamp = hwMap.get(Servo.class, "LClamp");
         Marker = hwMap.get(Servo.class, "Marker");
+        Latching = hwMap.get(Servo.class, "Latching");
 
         RShoulder = hwMap.get(DcMotor.class, "RShoulder");
         RElbow = hwMap.get(DcMotor.class, "RElbow");
         Right = hwMap.get(DcMotor.class, "Right");
-        Right.setDirection(DcMotorSimple.Direction.REVERSE);
         Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         LShoulder = hwMap.get(DcMotor.class, "LShoulder");
         LElbow = hwMap.get(DcMotor.class, "LElbow");
         Left = hwMap.get(DcMotor.class, "Left");
+        Left.setDirection(DcMotorSimple.Direction.REVERSE);
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Winch = hwMap.get(DcMotor.class, "Winch");
+        Winch = hwMap.get(DcMotor.class,"Winch");
 
         RShoulder.setPower(0);
         RElbow.setPower(0);

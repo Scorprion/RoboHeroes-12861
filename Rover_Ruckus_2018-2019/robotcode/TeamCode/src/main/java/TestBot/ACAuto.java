@@ -118,12 +118,12 @@ public class ACAuto extends LinearOpMode {
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SPEED,  4,  4, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        gyroTurn(P_TURN_COEFF,45);
+        encoderDrive(DRIVE_SPEED,-8,8,5);
         encoderDrive(DRIVE_SPEED,  4,  4, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-        gyroTurn(P_TURN_COEFF,45);
+        encoderDrive(DRIVE_SPEED,-8,8,5);
         encoderDrive(DRIVE_SPEED, 4, 4, 5.0);
         sleep(500);
-        encoderDrive(DRIVE_SPEED, 24,24,7.0);
+        encoderDrive(DRIVE_SPEED, -24,-24,7.0);
         sleep(1000);     // pause for servos to move
 
         telemetry.addData("Path", "Complete");
@@ -233,7 +233,7 @@ public class ACAuto extends LinearOpMode {
         }
 }
     public double getError(double targetAngle) {
-        robot.gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
+        robot.gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("Gyro");
         double robotError;
 
         // calculate error in -179 to +180 range  (

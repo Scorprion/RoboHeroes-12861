@@ -23,12 +23,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import TestBot.Init.HardwareTestBot;
+
 @Autonomous(name="Drive Avoid PID", group="Exercises")
 //@Disabled
 public class PIDIMU extends LinearOpMode
 {
-    DcMotor                 leftMotor;
-    DcMotor                 rightMotor;
+    DcMotor                 Left;
+    DcMotor                 Right;
     DigitalChannel          touch;
     BNO055IMU               imu;
     Orientation             lastAngles = new Orientation();
@@ -40,16 +42,12 @@ public class PIDIMU extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        leftMotor = hardwareMap.dcMotor.get("left_motor");
+        HardwareTestBot robot   = new HardwareTestBot();
 
-        rightMotor = hardwareMap.dcMotor.get("right_motor");
-        rightMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
         // get a reference to REV Touch sensor.
-        touch = hardwareMap.digitalChannel.get("touch_sensor");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -114,8 +112,8 @@ public class PIDIMU extends LinearOpMode
             telemetry.update();
 
             // set power levels.
-            leftMotor.setPower(-power + correction);
-            rightMotor.setPower(-power);
+            Left.setPower(-power + correction);
+            Right.setPower(-power);
 
             // We record the sensor values because we will test them in more than
             // one place with time passing between those places. See the lesson on
@@ -128,14 +126,14 @@ public class PIDIMU extends LinearOpMode
             if (!touched || aButton || bButton)
             {
                 // backup.
-                leftMotor.setPower(power);
-                rightMotor.setPower(power);
+                Left.setPower(power);
+                Right.setPower(power);
 
                 sleep(500);
 
                 // stop.
-                leftMotor.setPower(0);
-                rightMotor.setPower(0);
+                Left.setPower(0);
+                Right.setPower(0);
 
                 // turn 90 degrees right.
                 if (!touched || aButton) rotate(-90, power);
@@ -146,8 +144,8 @@ public class PIDIMU extends LinearOpMode
         }
 
         // turn the motors off.
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+        Right.setPower(0);
+        Left.setPower(0);
     }
 
     /**
@@ -223,29 +221,29 @@ public class PIDIMU extends LinearOpMode
             // On right turn we have to get off zero first.
             while (opModeIsActive() && getAngle() == 0)
             {
-                leftMotor.setPower(-power);
-                rightMotor.setPower(power);
+                Left.setPower(-power);
+                Right.setPower(power);
                 sleep(100);
             }
 
             do
             {
                 power = pidRotate.performPID(getAngle()); // power will be - on right turn.
-                leftMotor.setPower(power);
-                rightMotor.setPower(-power);
+                Left.setPower(power);
+                Right.setPower(-power);
             } while (opModeIsActive() && !pidRotate.onTarget());
         }
         else    // left turn.
             do
             {
                 power = pidRotate.performPID(getAngle()); // power will be + on left turn.
-                leftMotor.setPower(power);
-                rightMotor.setPower(-power);
+                Left.setPower(power);
+                Right.setPower(-power);
             } while (opModeIsActive() && !pidRotate.onTarget());
 
         // turn the motors off.
-        rightMotor.setPower(0);
-        leftMotor.setPower(0);
+        Right.setPower(0);
+        Left.setPower(0);
 
         // wait for rotation to stop.
         sleep(500);

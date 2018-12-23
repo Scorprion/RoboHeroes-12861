@@ -28,6 +28,7 @@ public class HardwareMapInit {
     HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
     public ModernRoboticsI2cGyro gyro;
+    BNO055IMU imu;
 
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map

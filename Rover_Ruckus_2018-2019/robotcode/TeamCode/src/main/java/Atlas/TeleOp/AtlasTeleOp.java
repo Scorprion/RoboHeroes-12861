@@ -3,6 +3,7 @@ package Atlas.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,14 +19,17 @@ public class AtlasTeleOp extends OpMode {
     double LElbowSpeed = 0;
 
     DcMotor Winch;
+    Servo Latching;
+
 
     //Set the speed of the motors when the Left or Right sticks are not idle
 
     HardwareAtlas robot = new HardwareAtlas();
-    
+
     public void init() {
         robot.init(hardwareMap);
         Winch = hardwareMap.dcMotor.get("Winch");
+        Latching = hardwareMap.servo.get("Latching");
         //DriveL.setDirection(DcMotor.Direction.REVERSE);
     }
 
@@ -98,7 +102,7 @@ public class AtlasTeleOp extends OpMode {
          */
         //Turning
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-            robot.Left.setPower(turnspeed);
+            robot.Left.setPower(-turnspeed);
             robot.Right.setPower(turnspeed);
         } else {
             robot.Left.setPower(0);
@@ -107,7 +111,7 @@ public class AtlasTeleOp extends OpMode {
 
         //Moving
         if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-            robot.Left.setPower(-speed);
+            robot.Left.setPower(speed);
             robot.Right.setPower(speed);
         } else {
             robot.Left.setPower(0);
@@ -115,10 +119,10 @@ public class AtlasTeleOp extends OpMode {
         }
 
         //Tilting and resetting back our marker servo platform
-        if(gamepad1.a) {
+        if (gamepad1.a) {
             robot.Marker.setPosition(1.0);
         }
-        if(gamepad1.b) {
+        if (gamepad1.b) {
             robot.Marker.setPosition(0);
         }
         //The winch
@@ -129,5 +133,17 @@ public class AtlasTeleOp extends OpMode {
         if (gamepad1.right_trigger > 0.1) {
             Winch.setPower(-gamepad1.right_trigger);
         }
-    }
+        //The latching
+        if (gamepad1.left_bumper) {
+            Latching.setPosition(1);
+
+        } else if (gamepad1.right_bumper) {
+            Latching.setPosition(0);
+
+        } else
+            Latching.setPosition(0.5);
+        }
+
+
+
 }
