@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import TestBot.Init.HardwareTestBot;
@@ -72,8 +73,8 @@ public class ACAuto extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
     //TODO get encoders to work and find a way to put it into our aggregated program
-    final double countsPerRot = 2240; // The counts per rotation
-    final double driveGearReduction = 4.0; // The gear box ratio for the motors
+    final double countsPerRot = 1120; // The counts per rotation
+    final double driveGearReduction = 1; // The gear box ratio for the motors
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
     final double countsPerInch = (countsPerRot * driveGearReduction) / (wheelDiamInch * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
@@ -109,8 +110,8 @@ public class ACAuto extends LinearOpMode {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  48,  48, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
-
+        encoderDrive(DRIVE_SPEED,  24,  24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  -24,  -24, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         sleep(1000);     // pause for servos to move
 
         telemetry.addData("Path", "Complete");
@@ -147,7 +148,7 @@ public class ACAuto extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
             robot.Left.setPower(-Math.abs(speed));
-            robot.Right.setPower(-Math.abs(speed));
+            robot.Right.setPower(Math.abs(speed));
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
