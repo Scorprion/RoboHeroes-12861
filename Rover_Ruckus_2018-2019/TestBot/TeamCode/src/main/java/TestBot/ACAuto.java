@@ -46,35 +46,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import TestBot.Init.AggregatedTestBot;
 import TestBot.Init.HardwareTestBot;
 
-/**
- * This file illustrates the concept of driving a path based on encoder counts.
- * It uses the common Pushbot hardware class to define the drive on the robot.
- * The code is structured as a LinearOpMode
- *
- * The code REQUIRES that you DO have encoders on the wheels,
- *   otherwise you would use: PushbotAutoDriveByTime;
- *
- *  This code ALSO requires that the drive Motors have been configured such that a positive
- *  power command moves them forwards, and causes the encoders to count UP.
- *
- *   The desired path in this example is:
- *   - Drive forward for 48 inches
- *   - Spin right for 12 Inches
- *   - Drive Backwards for 24 inches
- *   - Stop and close the claw.
- *
- *  The code is written using a method called: encoderDrive(speed, leftInches, rightInches, timeoutS)
- *  that performs the actual movement.
- *  This methods assumes that each movement is relative to the last stopping place.
- *  There are other ways to perform encoder based moves, but this method is probably the simplest.
- *  This code uses the RUN_TO_POSITION mode to enable the Motor controllers to generate the run profile
- *
- * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
- */
-
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
-public class ACAuto extends LinearOpMode {
+public class ACAuto extends AggregatedTestBot {
 
     /* Declare OpMode members. */
     HardwareTestBot robot = new HardwareTestBot();   // Use a Pushbot's hardware
@@ -184,56 +157,4 @@ public class ACAuto extends LinearOpMode {
             //  sleep(250);   // optional pause after each move
         }
     }
-
-    public void proportional(double turnSpeed, double targetAngle, int corrections) {
-        //Number of times you go back and forth to get closer to the target
-        int times = 1;
-        double newTurnSpeed = 0;
-
-        while (robot.angles.firstAngle < targetAngle && opModeIsActive()) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("The angle is:", normalizeAngle(robot.angles.firstAngle));
-            telemetry.update();
-        }
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-
-        while (corrections > times && robot.angles.firstAngle != targetAngle) {
-            double angle = normalizeAngle(robot.angles.firstAngle);
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            if(angle > targetAngle) {
-                robot.Left.setPower(-newTurnSpeed);
-                robot.Right.setPower(newTurnSpeed);
-            } else {
-                robot.Left.setPower(newTurnSpeed);
-                robot.Right.setPower(-newTurnSpeed);
-            }
-        }
-    }
-
-    //Convert the angle from -179 and 180 degrees to 0 and 360 degrees
-    public double normalizeAngle(double angle) {
-        if(angle >= -180 && angle < 0) {
-            angle += 360;
-        }
-        return angle;
-    }
-
-    public double getTurnSpeed(double s, int r) {
-        s /= Math.pow(2, r);
-        return s;
-    }
-
-    /*public double getError(double tangle, double cangle) {
-        double robotError = 0;
-
-        if(cangle > 180) {
-            robotError = cangle + tangle;
-        }
-        if(cangle <= -180) {
-            robotError = cangle - tangle;
-        }
-
-        return robotError;
-    }*/
 }

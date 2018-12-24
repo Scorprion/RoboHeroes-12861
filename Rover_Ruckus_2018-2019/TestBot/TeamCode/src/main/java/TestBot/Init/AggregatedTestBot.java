@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 public class AggregatedTestBot extends LinearOpMode {
     /**
      * A program that houses all of our methods needed to run our robot's
@@ -19,8 +23,8 @@ public class AggregatedTestBot extends LinearOpMode {
     HardwareTestBot robot = new HardwareTestBot();
 
     //Defining final variables for the encoders
-    final double countsPerRot = 1120; // The counts per rotation
-    final double gearBoxRatio = 1; // The gear box ratio for the motors
+    final double countsPerRot = 2240; // The counts per rotation
+    final double gearBoxRatio = 0.5; // The gear box ratio for the motors
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
     final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
 
@@ -37,7 +41,7 @@ public class AggregatedTestBot extends LinearOpMode {
      * @param linches the distance for the left motor to turn (in inches)
      * @param rinches the distance for the right motor to turn (in inches)
      */
-    public void encoderDrive(double speed,
+    public void encoderDrives(double speed,
                              double linches, double rinches) {
         int newLeftTarget;
         int newRightTarget;
@@ -87,4 +91,56 @@ public class AggregatedTestBot extends LinearOpMode {
             //  sleep(250);   // optional pause after each move
         }
     }
+
+    public void proportional(double turnSpeed, double targetAngle, int corrections) {
+        //Number of times you go back and forth to get closer to the target
+        int times = 1;
+        double newTurnSpeed = 0;
+
+        while (robot.angles.firstAngle < targetAngle && opModeIsActive()) {
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("The angle is:", normalizeAngle(robot.angles.firstAngle));
+            telemetry.update();
+        }
+        robot.Left.setPower(0);
+        robot.Right.setPower(0);
+
+        while (corrections > times && robot.angles.firstAngle != targetAngle) {
+            double angle = normalizeAngle(robot.angles.firstAngle);
+            newTurnSpeed = getTurnSpeed(turnSpeed, times);
+            if(angle > targetAngle) {
+                robot.Left.setPower(-newTurnSpeed);
+                robot.Right.setPower(newTurnSpeed);
+            } else {
+                robot.Left.setPower(newTurnSpeed);
+                robot.Right.setPower(-newTurnSpeed);
+            }
+        }
+    }
+
+    //Convert the angle from -179 and 180 degrees to 0 and 360 degrees
+    public double normalizeAngle(double angle) {
+        if(angle >= -180 && angle < 0) {
+            angle += 360;
+        }
+        return angle;
+    }
+
+    public double getTurnSpeed(double s, int r) {
+        s /= Math.pow(2, r);
+        return s;
+    }
+
+    /*public double getError(double tangle, double cangle) {
+        double robotError = 0;
+
+        if(cangle > 180) {
+            robotError = cangle + tangle;
+        }
+        if(cangle <= -180) {
+            robotError = cangle - tangle;
+        }
+
+        return robotError;
+    }*/
 }
