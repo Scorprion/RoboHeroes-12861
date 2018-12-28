@@ -92,45 +92,6 @@ public class AggregatedTestBot extends LinearOpMode {
         }
     }
 
-    public void proportional(double turnSpeed, double targetAngle, int corrections) {
-        //Number of times you go back and forth to get closer to the target
-        int times = 1;
-        double newTurnSpeed = 0;
-
-        while (robot.angles.firstAngle < targetAngle && opModeIsActive()) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("The angle is:", normalizeAngle(robot.angles.firstAngle));
-            telemetry.update();
-        }
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-
-        while (corrections > times && robot.angles.firstAngle != targetAngle) {
-            double angle = normalizeAngle(robot.angles.firstAngle);
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            if(angle > targetAngle) {
-                robot.Left.setPower(-newTurnSpeed);
-                robot.Right.setPower(newTurnSpeed);
-            } else {
-                robot.Left.setPower(newTurnSpeed);
-                robot.Right.setPower(-newTurnSpeed);
-            }
-        }
-    }
-
-    //Convert the angle from -179 and 180 degrees to 0 and 360 degrees
-    public double normalizeAngle(double angle) {
-        if(angle >= -180 && angle < 0) {
-            angle += 360;
-        }
-        return angle;
-    }
-
-    public double getTurnSpeed(double s, int r) {
-        s /= Math.pow(2, r);
-        return s;
-    }
-
     /*public double getError(double tangle, double cangle) {
         double robotError = 0;
 

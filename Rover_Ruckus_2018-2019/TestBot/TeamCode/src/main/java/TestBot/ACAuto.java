@@ -43,11 +43,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import java.util.Locale;
+
 import TestBot.Init.AggregatedTestBot;
 import TestBot.Init.HardwareTestBot;
 
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
-public class ACAuto extends AggregatedTestBot {
+public class ACAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareTestBot robot = new HardwareTestBot();   // Use a Pushbot's hardware
@@ -96,11 +98,11 @@ public class ACAuto extends AggregatedTestBot {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(driveSpeed, 12, 12);  // S1: Forward 47 Inches with 5 Sec timeout
+        //encoderDrive(driveSpeed, 12, 12);  // S1: Forward 47 Inches with 5 Sec timeout
         sleep(1000);
-        robot.Right.setPower(-0.5);
-        robot.Left.setPower(0.5);
-        proportional(turnSpeed, 90, 5);
+        robot.Left.setPower(-turnSpeed);
+        robot.Right.setPower(turnSpeed);
+        proportional(turnSpeed,90, 5);
 
 
         telemetry.addData("Path", "Complete");
@@ -156,5 +158,110 @@ public class ACAuto extends AggregatedTestBot {
 
             //  sleep(250);   // optional pause after each move
         }
+    }
+
+    /*public enum direction {
+        CW, CCW
+    }*/
+
+    public void proportional(double turnSpeed, double targetAngle, int corrections) {
+        //Number of times you go back and forth to get closer to the target
+        /*if(val == CW) {
+            robot.Left.setPower(-turnSpeed);
+            robot.Right.setPower(turnSpeed);
+        } else if(val == CCW){
+            robot.Left.setPower(turnSpeed);
+            robot.Right.setPower(-turnSpeed);
+        }*/
+        double newTurnSpeed = 0;
+        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double angle = normalizeAngle(robot.angles.firstAngle);
+        boolean loop = true;
+        while(loop && opModeIsActive()) {
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angle = normalizeAngle(robot.angles.firstAngle);
+            if(angle > targetAngle) {
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
+                loop = false;
+            }
+        }
+
+        for(int times = 0; corrections > times && robot.angles.firstAngle != targetAngle; times++) {
+            newTurnSpeed = getTurnSpeed(turnSpeed, times);
+            angle = normalizeAngle(robot.angles.firstAngle);
+            int s = assignSign(newTurnSpeed, angle, targetAngle);
+            turnOtherway(newTurnSpeed, angle, targetAngle);
+            if(checkSurpassed(s, targetAngle)) {
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
+                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
+                telemetry.addData("Speed:", newTurnSpeed);
+                telemetry.update();
+            }
+        }
+
+        sleep(20000);
+    }
+
+
+    //Turns ccw or cw based on which way it passed the target angle
+    public void turnOtherway(double newTurnSpeed, double angle, double targetAngle) {
+        if(angle > targetAngle) {
+            robot.Left.setPower(-newTurnSpeed);
+            robot.Right.setPower(newTurnSpeed);
+        } else {
+            robot.Left.setPower(newTurnSpeed);
+            robot.Right.setPower(-newTurnSpeed);
+        }
+    }
+    //Convert the angle from -179 and 180 degrees to 0 and 360 degrees
+    public double normalizeAngle(double angle) {
+        if(angle >= -180 && angle < 0) {
+            angle += 360;
+        }
+        return angle;
+    }
+
+    public double getTurnSpeed(double s, int r) {
+        //s /= Math.pow(2, r);
+        s /= 2 * (r + 1);
+        return s;
+    }
+
+    public int assignSign(double newTurnSpeed, double angle, double targetAngle) {
+        int sign = 1;
+        if(angle > targetAngle) {
+            sign = -1;
+        }
+        return sign;
+    }
+
+    public boolean checkSurpassed(int sign, double targetAngle) {
+        boolean loop = true;
+        while(loop && opModeIsActive()) {
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            double angle = normalizeAngle(robot.angles.firstAngle);
+            if(sign == 1) {
+                if(angle > targetAngle) {
+                    robot.Left.setPower(0);
+                    robot.Right.setPower(0);
+                    loop = false;
+                    return true;
+                }
+            } else if(sign == -1) {
+                if(angle < targetAngle) {
+                    robot.Left.setPower(0);
+                    robot.Right.setPower(0);
+                    loop = false;
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+
+    public double getError(double tangle, double cangle) {
+        return tangle - cangle;
     }
 }
