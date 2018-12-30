@@ -29,12 +29,16 @@
 
 package TestBot;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -43,27 +47,27 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import java.sql.Driver;
 import java.util.Locale;
 
-import TestBot.Init.AggregatedTestBot;
 import TestBot.Init.HardwareTestBot;
 
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
-public class ACAuto extends LinearOpMode {
+public class ACAuto extends AggregatedTestBot {
 
     /* Declare OpMode members. */
-    HardwareTestBot robot = new HardwareTestBot();   // Use a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
+    public boolean colorFound = false;
 
     final double countsPerRot = 1120; // The counts per rotation
     final double driveGearReduction = 1; // The drive gear reduction value for the robot
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
     final double countsPerInch = (countsPerRot * driveGearReduction) / (wheelDiamInch * 3.1415);
     static final double driveSpeed = 0.6;
-    static final double turnSpeed = 0.5;
     final double HEADING_THRESHOLD = 1;
     final double P_TURN_COEFF = 0.1; // Larger is more responsive, but also less stable
     final double P_DRIVE_COEFF = 0.15; // Larger is more responsive, but also less stable
+    public final double turnSpeed = 0.5;
 
     double speed = 0.5;
 
@@ -95,22 +99,41 @@ public class ACAuto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+           movement();
 
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        //encoderDrive(driveSpeed, 12, 12);  // S1: Forward 47 Inches with 5 Sec timeout
-        sleep(1000);
-        robot.Left.setPower(-turnSpeed);
-        robot.Right.setPower(turnSpeed);
-        proportional(turnSpeed,90, 5);
 
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
 
-    public void encoderDrive(double speed,
-                             double linches, double rinches) {
+    public void cs() {
+        sleep(1000);
+        encoderDrive(-0.4, 13, 13, 5); //Drive backwards at 0.4 speed for 13 inches
+        sleep(500);
+        while(!colorFound && opModeIsActive()) {
+            float[] hsvValues = new float[3];
+            final float values[] = hsvValues;
+            robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
+            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            if(Color.red(color) >= 90 && Color.green(color) >= 80) {
+                sleep(1000);
+                proportional(turnSpeed, 0, 3);
+                sleep(1000);
+                encoderDrive(0.4, 9,9, 5);
+            }
+        }
+    }
+
+    public void encoderDrive(double speed, double linches, double rinches, double timeoutS) {
         int newLeftTarget;
         int newRightTarget;
 
@@ -137,14 +160,12 @@ public class ACAuto extends LinearOpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
-                    (robot.Left.isBusy() && robot.Right.isBusy())) {
-
+            while (opModeIsActive() && (robot.Left.isBusy() && robot.Right.isBusy())&& (runtime.seconds() < timeoutS)) {
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d",
-                        robot.Left.getCurrentPosition(),
-                        robot.Right.getCurrentPosition());
+                telemetry.addData("Path2", "Running at %7d :%7d");
+                robot.Left.getCurrentPosition();
+                robot.Right.getCurrentPosition();
                 telemetry.update();
             }
 
@@ -164,104 +185,12 @@ public class ACAuto extends LinearOpMode {
         CW, CCW
     }*/
 
-    public void proportional(double turnSpeed, double targetAngle, int corrections) {
-        //Number of times you go back and forth to get closer to the target
-        /*if(val == CW) {
-            robot.Left.setPower(-turnSpeed);
-            robot.Right.setPower(turnSpeed);
-        } else if(val == CCW){
-            robot.Left.setPower(turnSpeed);
-            robot.Right.setPower(-turnSpeed);
-        }*/
-        double newTurnSpeed = 0;
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double angle = normalizeAngle(robot.angles.firstAngle);
-        boolean loop = true;
-        while(loop && opModeIsActive()) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            if(angle > targetAngle) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                loop = false;
-            }
-        }
-
-        for(int times = 0; corrections > times && robot.angles.firstAngle != targetAngle; times++) {
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            int s = assignSign(newTurnSpeed, angle, targetAngle);
-            turnOtherway(newTurnSpeed, angle, targetAngle);
-            if(checkSurpassed(s, targetAngle)) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
-                telemetry.addData("Speed:", newTurnSpeed);
-                telemetry.update();
-            }
-        }
-
-        sleep(20000);
-    }
-
-
-    //Turns ccw or cw based on which way it passed the target angle
-    public void turnOtherway(double newTurnSpeed, double angle, double targetAngle) {
-        if(angle > targetAngle) {
-            robot.Left.setPower(-newTurnSpeed);
-            robot.Right.setPower(newTurnSpeed);
-        } else {
-            robot.Left.setPower(newTurnSpeed);
-            robot.Right.setPower(-newTurnSpeed);
-        }
-    }
-    //Convert the angle from -179 and 180 degrees to 0 and 360 degrees
-    public double normalizeAngle(double angle) {
-        if(angle >= -180 && angle < 0) {
-            angle += 360;
-        }
-        return angle;
-    }
-
-    public double getTurnSpeed(double s, int r) {
-        //s /= Math.pow(2, r);
-        s /= 2 * (r + 1);
-        return s;
-    }
-
-    public int assignSign(double newTurnSpeed, double angle, double targetAngle) {
-        int sign = 1;
-        if(angle > targetAngle) {
-            sign = -1;
-        }
-        return sign;
-    }
-
-    public boolean checkSurpassed(int sign, double targetAngle) {
-        boolean loop = true;
-        while(loop && opModeIsActive()) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double angle = normalizeAngle(robot.angles.firstAngle);
-            if(sign == 1) {
-                if(angle > targetAngle) {
-                    robot.Left.setPower(0);
-                    robot.Right.setPower(0);
-                    loop = false;
-                    return true;
-                }
-            } else if(sign == -1) {
-                if(angle < targetAngle) {
-                    robot.Left.setPower(0);
-                    robot.Right.setPower(0);
-                    loop = false;
-                    return true;
-                }
-            }
-        }
-        return true;
-    }
-
-    public double getError(double tangle, double cangle) {
-        return tangle - cangle;
+    public void movement() {
+        // Step through each leg of the path,
+        // Note: Reverse movement is obtained by setting a negative distance (not speed)
+        //encoderDrive(driveSpeed, 12, 12);  // S1: Forward 47 Inches with 5 Sec timeout
+        sleep(1000);
+        encoderDrive(driveSpeed, 4, 4, 5);
+        proportional(turnSpeed, 60, 4); //Turn ccw to 45 degrees with 3 corrections
     }
 }
