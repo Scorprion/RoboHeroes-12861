@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: tensorflow-lite-0.0.0-nightly:@aar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../RoboHeroes-12861-master/RoboHeroes-12861-master/Rover_Ruckus_2018-2019/caches/transforms-1/files-1.1/tensorflow-lite-0.0.0-nightly.aar/25b08626a77926ca0b488e0a22beaa0e/res" />
+      <root url="jar://$PROJECT_DIR$/../../../RoboHeroes-12861-master/RoboHeroes-12861-master/Rover_Ruckus_2018-2019/caches/transforms-1/files-1.1/tensorflow-lite-0.0.0-nightly.aar/25b08626a77926ca0b488e0a22beaa0e/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

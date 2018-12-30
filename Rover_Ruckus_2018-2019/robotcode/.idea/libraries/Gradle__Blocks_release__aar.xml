@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: Blocks-release:@aar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../../RoboHeroes-12861-master/RoboHeroes-12861-master/Rover_Ruckus_2018-2019/caches/transforms-1/files-1.1/Blocks-release.aar/e0a10af2f88025c1003a282548dac6ba/res" />
+      <root url="jar://$PROJECT_DIR$/../../../RoboHeroes-12861-master/RoboHeroes-12861-master/Rover_Ruckus_2018-2019/caches/transforms-1/files-1.1/Blocks-release.aar/e0a10af2f88025c1003a282548dac6ba/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/libs/Blocks-release-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
