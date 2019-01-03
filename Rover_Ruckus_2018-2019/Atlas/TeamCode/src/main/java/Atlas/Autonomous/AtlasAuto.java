@@ -35,6 +35,5 @@ public class AtlasAuto extends AggregatedClass {
 
         //Since this class extends from the AggregatedClass, it can just call to the encoderDrive
         //method initialized there
-        encoderDrive(moveSpeed, 5, 5, 2.0);
     }
 }

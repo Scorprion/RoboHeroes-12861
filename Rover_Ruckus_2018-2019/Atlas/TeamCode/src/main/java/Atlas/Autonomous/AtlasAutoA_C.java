@@ -14,11 +14,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
-public class AtlasAutoA_C extends LinearOpMode {
+public class AtlasAutoA_C extends AggregatedClass {
 
     HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
@@ -39,10 +40,10 @@ public class AtlasAutoA_C extends LinearOpMode {
     public void cs() {
         //Making sure the motors go forward at 0.2 speed
         sleep(1000);
-        robot.Left.setPower(0.2); //Move toward the blue line at 0.2 speed
-        robot.Right.setPower(0.2);
+        robot.Left.setPower(0.8); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(0.8);
         sleep(250); //added second pause also for debugging
-        while(!colorFound && opModeIsActive()) {
+        while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
             robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
@@ -59,31 +60,55 @@ public class AtlasAutoA_C extends LinearOpMode {
             // reach a certain threshold. After that, it drops our team marker
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold
-            if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
+            if (Color.green(color) >= 80 && Color.red(color) >= 90) {
                 sleep(700);
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                sleep(1000);
-                robot.Marker.setPosition(0); //Drop the team marker
-                sleep(1000);
+                proportional(1, 90, 3);
+                sleep(500);
                 //Set the boolean "colorFound" to true to stop the repeating while loop
                 colorFound = true;
-            }
+            } else if (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192);
+        }
+    }
+
+    public void cs2() {
+        sleep(1000);
+        robot.Left.setPower(0.8); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(0.8);
+        sleep(250); //added second pause also for debugging
+        while (opModeIsActive() && !colorFound) {
+            float[] hsvValues = new float[3];
+            final float values[] = hsvValues;
+            robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
+            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140);
+            sleep(500);
+
         }
     }
 
     public void movement() {
-        forward(0.4, 2); //Move forward 0.4 speed for 2 seconds
-        cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        forward(-0.3, 0.5); //Move backwards -0.3 speed for 0.5 seconds
-        turn(-0.3, 1.15); //turn cw at -0.3 speed for 0.75 seconds
-        forward(-0.4, 2.25); //Move backward -0.4 speed for 2.25 seconds
-        //stop all motion
-        stopMotion();
+        encoderDrives(1, 4, 4);
+        sleep(500);
+        proportional(1, 30, 4);
+        sleep(500);
+        encoderDrives(1, 13, 13);
+        sleep(5000);
+        proportional(1, 90, 4);
+        cs();
     }
+}
 
 
-    public void forward(double speed, double seconds) {
+
+   /* public void forward(double speed, double seconds) {
         double time = seconds * 1000;
 
         //Move at the speed "speed" and pause for "seconds" amount of time before stopping
@@ -110,3 +135,4 @@ public class AtlasAutoA_C extends LinearOpMode {
         robot.Right.setPower(0);
     }
 }
+*/

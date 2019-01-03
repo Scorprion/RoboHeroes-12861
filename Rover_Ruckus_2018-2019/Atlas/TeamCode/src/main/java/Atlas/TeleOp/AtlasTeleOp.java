@@ -2,6 +2,7 @@ package Atlas.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -19,7 +20,7 @@ public class AtlasTeleOp extends OpMode {
     double LElbowSpeed = 0;
 
     DcMotor Winch;
-    Servo Latching;
+    CRServo Latching;
 
 
     //Set the speed of the motors when the Left or Right sticks are not idle
@@ -29,7 +30,7 @@ public class AtlasTeleOp extends OpMode {
     public void init() {
         robot.init(hardwareMap);
         Winch = hardwareMap.dcMotor.get("Winch");
-        Latching = hardwareMap.servo.get("Latching");
+        Latching = hardwareMap.crservo.get("Latching");
         //DriveL.setDirection(DcMotor.Direction.REVERSE);
     }
 
@@ -111,8 +112,8 @@ public class AtlasTeleOp extends OpMode {
 
         //Moving
         if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-            robot.Left.setPower(speed);
-            robot.Right.setPower(speed);
+            robot.Left.setPower(-speed);
+            robot.Right.setPower(-speed);
         } else {
             robot.Left.setPower(0);
             robot.Right.setPower(0);
@@ -133,15 +134,20 @@ public class AtlasTeleOp extends OpMode {
         if (gamepad1.right_trigger > 0.1) {
             Winch.setPower(-gamepad1.right_trigger);
         }
-        //The latching
-        if (gamepad1.left_bumper) {
-            Latching.setPosition(1);
 
-        } else if (gamepad1.right_bumper) {
-            Latching.setPosition(0);
+        if (gamepad1.y) {
+            Winch.setPower(0);
+        }
+
+        //The latching
+        if (gamepad1.dpad_up) {
+            Latching.setPower(1);
+
+        } else if (gamepad1.dpad_down) {
+            Latching.setPower(-1);
 
         } else
-            Latching.setPosition(0.5);
+            Latching.setPower(0);
         }
 
 

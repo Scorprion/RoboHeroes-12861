@@ -2,6 +2,7 @@ package Atlas.Autonomous.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -24,7 +25,7 @@ public class HardwareAtlas {
     //Servos
     public Servo LClamp;
     public Servo Marker;
-    public Servo Latching;
+    public CRServo Latching;
 
     //Right motors
     public DcMotor RShoulder;
@@ -68,8 +69,8 @@ public class HardwareAtlas {
         imu.initialize(parameters);
 
         LClamp = hwMap.get(Servo.class, "LClamp");
+        Latching = hwMap.get(CRServo.class, "Latching");
         Marker = hwMap.get(Servo.class, "Marker");
-        Latching = hwMap.get(Servo.class, "Latching");
 
         RShoulder = hwMap.get(DcMotor.class, "RShoulder");
         RElbow = hwMap.get(DcMotor.class, "RElbow");

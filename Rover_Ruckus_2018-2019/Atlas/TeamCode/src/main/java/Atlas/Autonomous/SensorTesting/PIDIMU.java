@@ -23,8 +23,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-import TestBot.Init.HardwareTestBot;
-
+import Atlas.Autonomous.Init.HardwareAtlas;
+import Atlas.Autonomous.Init.HardwareAtlas;
 @Autonomous(name="Drive Avoid PID", group="Exercises")
 //@Disabled
 public class PIDIMU extends LinearOpMode
@@ -42,7 +42,7 @@ public class PIDIMU extends LinearOpMode
     @Override
     public void runOpMode() throws InterruptedException
     {
-        HardwareTestBot robot   = new HardwareTestBot();
+        HardwareAtlas robot   = new HardwareAtlas();
 
 
 
