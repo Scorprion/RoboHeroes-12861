@@ -112,8 +112,8 @@ public class AtlasTeleOp extends OpMode {
 
         //Moving
         if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-            robot.Left.setPower(-speed);
-            robot.Right.setPower(-speed);
+            robot.Left.setPower(speed);
+            robot.Right.setPower(speed);
         } else {
             robot.Left.setPower(0);
             robot.Right.setPower(0);

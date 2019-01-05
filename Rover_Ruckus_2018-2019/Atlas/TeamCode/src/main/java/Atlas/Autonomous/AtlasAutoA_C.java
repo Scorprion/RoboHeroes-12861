@@ -14,6 +14,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
@@ -21,7 +25,6 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
 public class AtlasAutoA_C extends AggregatedClass {
 
-    HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
 
     @Override
@@ -40,8 +43,8 @@ public class AtlasAutoA_C extends AggregatedClass {
     public void cs() {
         //Making sure the motors go forward at 0.2 speed
         sleep(1000);
-        robot.Left.setPower(0.8); //Move toward the blue line at 0.2 speed
-        robot.Right.setPower(0.8);
+        robot.Left.setPower(-0.2); //Move at 0.2 speed
+        robot.Right.setPower(-0.2);
         sleep(250); //added second pause also for debugging
         while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
@@ -61,12 +64,15 @@ public class AtlasAutoA_C extends AggregatedClass {
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold
             if (Color.green(color) >= 80 && Color.red(color) >= 90) {
-                sleep(700);
-                proportional(1, 90, 3);
+                stopMotors();
+                sleep(500);
+                proportional(1, 4, 3);
                 sleep(500);
                 //Set the boolean "colorFound" to true to stop the repeating while loop
                 colorFound = true;
-            } else if (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192);
+            } else if (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192) {
+
+            }
         }
     }
 
@@ -88,17 +94,29 @@ public class AtlasAutoA_C extends AggregatedClass {
             colors.blue /= max;
             color = colors.toColor();
 
-            if (Color.blue(color) >= 125 || Color.red(color) >= 140);
-            sleep(500);
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
+                sleep(500);
+                robot.Marker.setPosition(0);
+            }
+
 
         }
     }
 
     public void movement() {
+        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        robot.Latching.setPower(0.75);
+        robot.Winch.setPower(-1);
+        sleep(3250);
+        robot.Latching.setPower(-1);
+        sleep(500);
+        robot.Latching.setPower(0);
+        robot.Winch.setPower(0);
+        stopMotors();
+        sleep(2000);
         encoderDrives(1, 4, 4);
-        sleep(500);
         proportional(1, 30, 4);
-        sleep(500);
+        sleep(1000);
         encoderDrives(1, 13, 13);
         sleep(5000);
         proportional(1, 90, 4);

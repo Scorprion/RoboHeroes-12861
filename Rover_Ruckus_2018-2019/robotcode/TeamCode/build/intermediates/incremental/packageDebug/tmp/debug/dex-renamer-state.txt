@@ -1,4 +1,0 @@
-#Sun Dec 09 15:42:29 PST 2018
-base.0=C\:\\Users\\Ronnie Zhang\\Downloads\\RoboHeroes-12861\\Rover_Ruckus_2018-2019\\robotcode\\TeamCode\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex
