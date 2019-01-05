@@ -26,6 +26,7 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 public class AtlasAutoA_C extends AggregatedClass {
 
     public boolean colorFound = false;
+    int counter = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -41,10 +42,9 @@ public class AtlasAutoA_C extends AggregatedClass {
     }
 
     public void cs() {
-        //Making sure the motors go forward at 0.2 speed
         sleep(1000);
-        robot.Left.setPower(-0.2); //Move at 0.2 speed
-        robot.Right.setPower(-0.2);
+        robot.Left.setPower(-0.3); //Move at 0.3 speed backwards
+        robot.Right.setPower(-0.3);
         sleep(250); //added second pause also for debugging
         while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
@@ -60,23 +60,36 @@ public class AtlasAutoA_C extends AggregatedClass {
             color = colors.toColor();
 
             // Detects a change in the color and then stops robot after the red or blue values
-            // reach a certain threshold. After that, it drops our team marker
-            // Detects a change in the color and then stops robot after the red or blue values
-            // reach a certain threshold
-            if (Color.green(color) >= 80 && Color.red(color) >= 90) {
-                stopMotors();
-                sleep(500);
-                proportional(1, 4, 3);
-                sleep(500);
-                //Set the boolean "colorFound" to true to stop the repeating while loop
-                colorFound = true;
-            } else if (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192) {
+            // reach a certain threshold. After that, it drops our team marker (the marker() method)
+            //   Detects the gold mineral                                 Detects silver mineral
+            if ((Color.green(color) >= 80 && Color.red(color) >= 90) || (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192)) {
+                counter++;
+            }
 
+
+            if (Color.green(color) >= 80 && Color.red(color) >= 90 && counter == 1) {
+                counter1();
+                marker();
+            }
+            else if (Color.green(color) >= 80 && Color.red(color) >= 90 && counter == 2) {
+                counter2();
+                marker();
+            }
+            else if (Color.green(color) >= 80 && Color.red(color) >= 90 && counter == 3) {
+                counter3();
+                marker();
+            }
+            else if (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192 && counter == 3) {
+                counter3();
+                marker();
+            }
+            else {
+                stopMotors();
             }
         }
     }
 
-    public void cs2() {
+    public void marker() {
         sleep(1000);
         robot.Left.setPower(0.8); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(0.8);
@@ -98,14 +111,12 @@ public class AtlasAutoA_C extends AggregatedClass {
                 sleep(500);
                 robot.Marker.setPosition(0);
             }
-
-
         }
     }
 
     public void movement() {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        robot.Latching.setPower(0.75);
+        /*robot.Latching.setPower(0.75);
         robot.Winch.setPower(-1);
         sleep(3250);
         robot.Latching.setPower(-1);
@@ -113,16 +124,19 @@ public class AtlasAutoA_C extends AggregatedClass {
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(2000);
-        encoderDrives(1, 4, 4);
-        proportional(1, 30, 4);
-        sleep(1000);
+        sleep(2000);*/
+        //encoderDrives(1, 4, 4);
+        sleep(500);
+        proportional(0.5, 300, 4, 5);
+        /*sleep(1000);
         encoderDrives(1, 13, 13);
-        sleep(5000);
-        proportional(1, 90, 4);
-        cs();
+        sleep(500);
+        encoderDrives(-0.5, 4, 0);
+        cs();*/
     }
 }
+
+
 
 
 

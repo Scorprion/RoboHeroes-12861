@@ -8,6 +8,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import java.sql.Time;
+
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 public class AggregatedClass extends LinearOpMode {
@@ -149,7 +151,7 @@ public class AggregatedClass extends LinearOpMode {
     }
 
     //Can turn up to 4 degrees accurately
-    public void proportional(double turnSpeed, double targetAngle, int corrections) {
+    public void proportional(double turnSpeed, double targetAngle, int corrections,int TimeoutSec) {
         if(targetAngle < 0) {
             targetAngle = 360;
         }
@@ -157,8 +159,14 @@ public class AggregatedClass extends LinearOpMode {
         while(Math.abs(targetAngle) >= 360) {
             targetAngle = Math.abs(targetAngle) - 360;
         }
-        optimizeTurn(targetAngle, turnSpeed, corrections);
+        robot.runtime.reset(); //Resetting timer
 
+        //In case we accidentally add a timeout for 30 seconds or longer
+        if(TimeoutSec >= 30) {
+            telemetry.addLine("The time out is currently greater than or equal to 30 seconds, you might need to change something");
+            telemetry.update();
+        }
+        optimizeTurn(targetAngle, turnSpeed, corrections, TimeoutSec);
         /*double newTurnSpeed = 0;
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double angle = normalizeAngle(robot.angles.firstAngle);
@@ -225,9 +233,9 @@ public class AggregatedClass extends LinearOpMode {
         return sign;
     }
 
-    public boolean checkSurpassed(int sign, double targetAngle) {
+    public boolean checkSurpassed(int sign, double targetAngle, double TimeoutSec) {
         boolean loop = true;
-        while(loop && opModeIsActive()) {
+        while(loop && opModeIsActive() || robot.runtime.seconds() < TimeoutSec) {
             robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double angle = normalizeAngle(robot.angles.firstAngle);
             telemetry.addData("Error:", getError(targetAngle, angle));
@@ -254,6 +262,129 @@ public class AggregatedClass extends LinearOpMode {
 
     public double getError(double tangle, double cangle) {
         return tangle - cangle;
+    }
+
+    public void ccw(double turnSpeed, double targetAngle, int corrections, double TimeoutSec) {
+        double newTurnSpeed = 0;
+        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double angle = normalizeAngle(robot.angles.firstAngle);
+        boolean loop = true;
+        while(opModeIsActive() && loop || robot.runtime.seconds() < TimeoutSec) {
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angle = normalizeAngle(robot.angles.firstAngle);
+            if(angle <= targetAngle) {
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
+                loop = false;
+            }
+        }
+
+        for(int times = 0; corrections > times && robot.angles.firstAngle != targetAngle
+                || robot.runtime.seconds() < TimeoutSec; times++) {
+            newTurnSpeed = getTurnSpeed(turnSpeed, times);
+            angle = normalizeAngle(robot.angles.firstAngle);
+            int s = assignSign(angle, targetAngle);
+            turnOtherway(newTurnSpeed, angle, targetAngle);
+            if(checkSurpassed(s, targetAngle, TimeoutSec)) {
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
+                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
+                telemetry.addData("Speed:", newTurnSpeed);
+                telemetry.addData("Sign:", s);
+                telemetry.addData("Angle:", angle);
+                telemetry.update();
+            }
+        }
+
+        sleep(20000);
+    }
+
+    public void cw(double turnSpeed, double targetAngle, int corrections, double TimeoutSec) {
+        double newTurnSpeed = 0;
+        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        double angle = normalizeAngle(robot.angles.firstAngle);
+        boolean loop = true;
+        while(opModeIsActive() && loop || robot.runtime.seconds() < TimeoutSec) {
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angle = normalizeAngle(robot.angles.firstAngle);
+            if(angle >= targetAngle) {
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
+                loop = false;
+            }
+        }
+
+        for(int times = 0; corrections > times || robot.angles.firstAngle != targetAngle
+                && robot.runtime.seconds() < TimeoutSec; times++) {
+            newTurnSpeed = getTurnSpeed(turnSpeed, times);
+            angle = normalizeAngle(robot.angles.firstAngle);
+            int s = assignSign(angle, targetAngle);
+            turnOtherway(newTurnSpeed, angle, targetAngle);
+            if(checkSurpassed(s, targetAngle, TimeoutSec)) {
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
+                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
+                telemetry.addData("Speed:", newTurnSpeed);
+                telemetry.addData("Sign:", s);
+                telemetry.addData("Angle:", angle);
+                telemetry.update();
+            }
+        }
+    }
+
+    public void optimizeTurn(double targetAngle, double speed, int corrections, double TimeoutSec) {
+        if (targetAngle > 180) {
+            robot.Left.setPower(speed);
+            robot.Right.setPower(-speed);
+            ccw(speed, targetAngle, corrections, TimeoutSec);
+        } else if (targetAngle <= 180) {
+            robot.Left.setPower(-speed);
+            robot.Right.setPower(speed);
+            cw(speed, targetAngle, corrections, TimeoutSec);
+        }
+    }
+
+
+    /*
+     * Added alternative method for using proportional control in case we don't want to use a timeout
+     */
+    public void proportional(double turnSpeed, double targetAngle, int corrections) {
+        if(targetAngle < 0) {
+            targetAngle = 360;
+        }
+
+        while(Math.abs(targetAngle) >= 360) {
+            targetAngle = Math.abs(targetAngle) - 360;
+        }
+
+        optimizeTurn(targetAngle, turnSpeed, corrections);
+    }
+
+    public boolean checkSurpassed(int sign, double targetAngle) {
+        boolean loop = true;
+        while(loop && opModeIsActive()) {
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            double angle = normalizeAngle(robot.angles.firstAngle);
+            telemetry.addData("Error:", getError(targetAngle, angle));
+            telemetry.addData("Angle:", angle);
+            telemetry.update();
+            if(sign == 1) {
+                if(angle > targetAngle) {
+                    robot.Left.setPower(0);
+                    robot.Right.setPower(0);
+                    loop = false;
+                    return true;
+                }
+            } else {
+                if(angle < targetAngle) {
+                    robot.Left.setPower(0);
+                    robot.Right.setPower(0);
+                    loop = false;
+                    return true;
+                }
+            }
+        }
+        return true;
     }
 
     public void ccw(double turnSpeed, double targetAngle, int corrections) {
@@ -324,12 +455,12 @@ public class AggregatedClass extends LinearOpMode {
 
     public void optimizeTurn(double targetAngle, double speed, int corrections) {
         if (targetAngle <= 180) {
-            robot.Left.setPower(speed);
-            robot.Right.setPower(-speed);
-            ccw(speed, targetAngle, corrections);
-        } else if (targetAngle > 180) {
             robot.Left.setPower(-speed);
             robot.Right.setPower(speed);
+            ccw(speed, targetAngle, corrections);
+        } else if (targetAngle > 180) {
+            robot.Left.setPower(speed);
+            robot.Right.setPower(-speed);
             cw(speed, targetAngle, corrections);
         }
     }
@@ -337,5 +468,17 @@ public class AggregatedClass extends LinearOpMode {
     public void stopMotors() {
         robot.Left.setPower(0);
         robot.Right.setPower(0);
+    }
+
+    public void counter1() {
+        proportional(0.5, 110, 3,5);
+    }
+
+    public void counter2() {
+        proportional(0.5, 90, 3,5);
+    }
+
+    public void counter3() {
+        proportional(0.5, 70, 3,5);
     }
 }
