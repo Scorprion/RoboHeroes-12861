@@ -42,14 +42,20 @@ public class AtlasAutoA_C extends AggregatedClass {
     }
 
     public void cs() {
-        sleep(1000);
-        robot.Left.setPower(-0.3); //Move at 0.3 speed backwards
-        robot.Right.setPower(-0.3);
-        sleep(250); //added second pause also for debugging
+        //for measuring the distance
+        robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        robot.Left.setPower(0.2); //Move at 0.2 speed backwards
+        robot.Right.setPower(0.2);
+        robot.runtime.reset();
         while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
-            robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             int color = colors.toColor();
@@ -59,33 +65,82 @@ public class AtlasAutoA_C extends AggregatedClass {
             colors.blue /= max;
             color = colors.toColor();
 
+            telemetry.addData("Counter:", counter);
+            telemetry.addData("Left Encoder:", robot.Left.getCurrentPosition() + (int)countsPerInch);
+            telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int)countsPerInch);
+            telemetry.update();
+
             // Detects a change in the color and then stops robot after the red or blue values
             // reach a certain threshold. After that, it drops our team marker (the marker() method)
             //   Detects the gold mineral                                 Detects silver mineral
-            if ((Color.green(color) >= 80 && Color.red(color) >= 90) || (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192)) {
-                counter++;
-            }
+            /*if ((Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100)
+                    || Math.abs(Color.red(color) - Color.blue(color)) < 20) {
+
+            }*/
 
 
-            if (Color.green(color) >= 80 && Color.red(color) >= 90 && counter == 1) {
+            /*if(Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100 && counter == 1) {
                 counter1();
                 marker();
-            }
-            else if (Color.green(color) >= 80 && Color.red(color) >= 90 && counter == 2) {
+            } else if(Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100 && counter == 2) {
                 counter2();
                 marker();
-            }
-            else if (Color.green(color) >= 80 && Color.red(color) >= 90 && counter == 3) {
+            } else if(Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100 && counter == 3) {
                 counter3();
                 marker();
-            }
-            else if (Color.red(color) >= 192 && Color.blue(color) >= 192 && Color.green(color) >= 192 && counter == 3) {
+            } else if(checkSilver(color)) {
                 counter3();
                 marker();
-            }
-            else {
+            } else if(robot.runtime.seconds() > 5) {
                 stopMotors();
+                telemetry.addLine("The sampling failed rip");
+            }*/
+
+
+            /**
+             * Testing with encoders for distance
+             */
+
+            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+                if(robot.Left.getCurrentPosition() + (int)countsPerInch < 12 && robot.Right.getCurrentPosition() + (int)countsPerInch < 12) {
+                    position1();
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch >= 12 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 12) {
+                    position2();
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch >= 24 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 24) {
+                    position3();
+                } else {
+                    stopMotors();
+                }
             }
+
+
+
+
+
+            /*if ((Color.red(color) >= 80 && Color.blue(color) <= 79) || (Color.red(color) >= 70)) {
+                counter++;
+                sleep(100);
+            }
+
+            if (Color.red(color) >= 80 && Color.blue(color) <= 79 && counter == 1) {
+                position1();
+                marker();
+            }
+            else if (Color.red(color) >= 80 && Color.blue(color) <= 79 && counter == 2) {
+                position2();
+                marker();
+            }
+            else if (Color.red(color) >= 80 && Color.blue(color) <= 79 && counter == 3) {
+                position3();
+                marker();
+            }
+            else if (Color.red(color) >= 80 && counter == 3) {
+                position3();
+                marker();
+            }
+            else if(robot.runtime.seconds() > 5) {
+                stopMotors();
+            }*/
         }
     }
 
@@ -97,7 +152,6 @@ public class AtlasAutoA_C extends AggregatedClass {
         while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
-            robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             int color = colors.toColor();
@@ -125,14 +179,15 @@ public class AtlasAutoA_C extends AggregatedClass {
         robot.Winch.setPower(0);
         stopMotors();
         sleep(2000);*/
-        //encoderDrives(1, 4, 4);
+        encoderDrives(1, 4, 4);
         sleep(500);
-        proportional(0.5, 300, 4, 5);
-        /*sleep(1000);
-        encoderDrives(1, 13, 13);
+        proportional(0.5, 60, 3, 3);
         sleep(500);
-        encoderDrives(-0.5, 4, 0);
-        cs();*/
+        encoderDrives(0.4, 30, 30);
+        sleep(500);
+        proportional(0.5, 95, 3, 4);
+        sleep(500);
+        cs();
     }
 }
 
@@ -141,7 +196,7 @@ public class AtlasAutoA_C extends AggregatedClass {
 
 
    /* public void forward(double speed, double seconds) {
-        double time = seconds * 1000;
+        double time = seconds * 1000;/
 
         //Move at the speed "speed" and pause for "seconds" amount of time before stopping
         robot.Left.setPower(speed);

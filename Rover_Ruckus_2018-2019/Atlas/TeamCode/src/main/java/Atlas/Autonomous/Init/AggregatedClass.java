@@ -1,5 +1,7 @@
 package Atlas.Autonomous.Init;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -30,7 +32,7 @@ public class AggregatedClass extends LinearOpMode {
     final double countsPerRot = 2240; // The counts per rotation
     final double gearBoxRatio = 0.5; // The gear box ratio for the motors
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
-    final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
+    public final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
     //public static final double turnSpeed = 0.5;
 
     @Override
@@ -55,8 +57,13 @@ public class AggregatedClass extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.Left.getCurrentPosition() + (int)(linches * countsPerInch);
-            newRightTarget = robot.Right.getCurrentPosition() + (int)(rinches * countsPerInch);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int)(-linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int)(-rinches * countsPerInch);
+
+            //Both negative cw
+            //Both positive backward
+            //Left negative cw
+            //Right negative backward
             robot.Left.setTargetPosition(newLeftTarget);
             robot.Right.setTargetPosition(newRightTarget);
 
@@ -151,7 +158,7 @@ public class AggregatedClass extends LinearOpMode {
     }
 
     //Can turn up to 4 degrees accurately
-    public void proportional(double turnSpeed, double targetAngle, int corrections,int TimeoutSec) {
+    public void proportional(double turnSpeed, double targetAngle, int corrections, int TimeoutSec) {
         if(targetAngle < 0) {
             targetAngle = 360;
         }
@@ -166,7 +173,7 @@ public class AggregatedClass extends LinearOpMode {
             telemetry.addLine("The time out is currently greater than or equal to 30 seconds, you might need to change something");
             telemetry.update();
         }
-        optimizeTurn(targetAngle, turnSpeed, corrections, TimeoutSec);
+        optimizeTurn(normalizeAngle(robot.angles.firstAngle), targetAngle, turnSpeed, corrections, TimeoutSec);
         /*double newTurnSpeed = 0;
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double angle = normalizeAngle(robot.angles.firstAngle);
@@ -235,7 +242,7 @@ public class AggregatedClass extends LinearOpMode {
 
     public boolean checkSurpassed(int sign, double targetAngle, double TimeoutSec) {
         boolean loop = true;
-        while(loop && opModeIsActive() || robot.runtime.seconds() < TimeoutSec) {
+        while(loop && opModeIsActive() && robot.runtime.seconds() < TimeoutSec) {
             robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             double angle = normalizeAngle(robot.angles.firstAngle);
             telemetry.addData("Error:", getError(targetAngle, angle));
@@ -269,7 +276,7 @@ public class AggregatedClass extends LinearOpMode {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double angle = normalizeAngle(robot.angles.firstAngle);
         boolean loop = true;
-        while(opModeIsActive() && loop || robot.runtime.seconds() < TimeoutSec) {
+        while(opModeIsActive() && loop && robot.runtime.seconds() < TimeoutSec) {
             robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             angle = normalizeAngle(robot.angles.firstAngle);
             if(angle <= targetAngle) {
@@ -295,8 +302,6 @@ public class AggregatedClass extends LinearOpMode {
                 telemetry.update();
             }
         }
-
-        sleep(20000);
     }
 
     public void cw(double turnSpeed, double targetAngle, int corrections, double TimeoutSec) {
@@ -304,7 +309,7 @@ public class AggregatedClass extends LinearOpMode {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double angle = normalizeAngle(robot.angles.firstAngle);
         boolean loop = true;
-        while(opModeIsActive() && loop || robot.runtime.seconds() < TimeoutSec) {
+        while(opModeIsActive() && loop && robot.runtime.seconds() < TimeoutSec) {
             robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             angle = normalizeAngle(robot.angles.firstAngle);
             if(angle >= targetAngle) {
@@ -314,7 +319,7 @@ public class AggregatedClass extends LinearOpMode {
             }
         }
 
-        for(int times = 0; corrections > times || robot.angles.firstAngle != targetAngle
+        for(int times = 0; corrections > times && robot.angles.firstAngle != targetAngle
                 && robot.runtime.seconds() < TimeoutSec; times++) {
             newTurnSpeed = getTurnSpeed(turnSpeed, times);
             angle = normalizeAngle(robot.angles.firstAngle);
@@ -332,20 +337,24 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    public void optimizeTurn(double targetAngle, double speed, int corrections, double TimeoutSec) {
-        if (targetAngle > 180) {
+    public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections, double TimeoutSec) {
+        double ct = currentAngle - targetAngle, tc = targetAngle - currentAngle;
+
+        if (ct < tc) {
             robot.Left.setPower(speed);
             robot.Right.setPower(-speed);
-            ccw(speed, targetAngle, corrections, TimeoutSec);
-        } else if (targetAngle <= 180) {
+            cw(speed, targetAngle, corrections, TimeoutSec);
+        } else if (ct > tc) {
             robot.Left.setPower(-speed);
             robot.Right.setPower(speed);
-            cw(speed, targetAngle, corrections, TimeoutSec);
+            ccw(speed, targetAngle, corrections, TimeoutSec);
         }
     }
 
 
-    /*
+
+
+    /**
      * Added alternative method for using proportional control in case we don't want to use a timeout
      */
     public void proportional(double turnSpeed, double targetAngle, int corrections) {
@@ -357,7 +366,7 @@ public class AggregatedClass extends LinearOpMode {
             targetAngle = Math.abs(targetAngle) - 360;
         }
 
-        optimizeTurn(targetAngle, turnSpeed, corrections);
+        optimizeTurn(normalizeAngle(robot.angles.firstAngle), targetAngle, turnSpeed, corrections);
     }
 
     public boolean checkSurpassed(int sign, double targetAngle) {
@@ -417,8 +426,6 @@ public class AggregatedClass extends LinearOpMode {
                 telemetry.update();
             }
         }
-
-        sleep(20000);
     }
 
     public void cw(double turnSpeed, double targetAngle, int corrections) {
@@ -453,15 +460,17 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    public void optimizeTurn(double targetAngle, double speed, int corrections) {
-        if (targetAngle <= 180) {
-            robot.Left.setPower(-speed);
-            robot.Right.setPower(speed);
-            ccw(speed, targetAngle, corrections);
-        } else if (targetAngle > 180) {
+    public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections) {
+        double tc = targetAngle - currentAngle;
+
+        if (Math.abs(tc) > 180) {
             robot.Left.setPower(speed);
             robot.Right.setPower(-speed);
             cw(speed, targetAngle, corrections);
+        } else if (Math.abs(tc) <= 180) {
+            robot.Left.setPower(-speed);
+            robot.Right.setPower(speed);
+            ccw(speed, targetAngle, corrections);
         }
     }
 
@@ -470,15 +479,38 @@ public class AggregatedClass extends LinearOpMode {
         robot.Right.setPower(0);
     }
 
-    public void counter1() {
-        proportional(0.5, 110, 3,5);
+    //An attempt at making a method comparing rgb values to detect the silver
+    /*public boolean checkSilver(int color) {
+        if(Math.abs(Color.red(color) - Color.blue(color)) < 15 && Math.abs(Color.green(color) - Color.blue(color)) < 15 && Math.abs(Color.green(color) - Color.red(color)) < 15) {
+            return true;
+        } else {
+            return false;
+        }
+    }*/
+
+    public void position1() {
+        sleep(400);
+        proportional(0.5, 340, 3,5);
+        telemetry.addLine("Found gold at 1");
+        telemetry.update();
+        encoderDrives(0.5, 4, 4);
     }
 
-    public void counter2() {
-        proportional(0.5, 90, 3,5);
+    public void position2() {
+        sleep(400);
+        proportional(0.5, 360, 3,5);
+        telemetry.addLine("Found gold at 2");
+        telemetry.update();
+        encoderDrives(0.5, 4, 4);
     }
 
-    public void counter3() {
-        proportional(0.5, 70, 3,5);
+    public void position3() {
+        sleep(400);
+        proportional(0.5,360, 3,5);
+        telemetry.addLine("Found gold at 3");
+        telemetry.update();
+        encoderDrives(0.5, 8, 8);
+        sleep(500);
+        proportional(0.5, 20, 3, 5);
     }
 }
