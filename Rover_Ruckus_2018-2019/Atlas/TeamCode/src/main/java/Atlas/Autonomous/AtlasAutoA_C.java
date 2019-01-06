@@ -24,8 +24,6 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
 public class AtlasAutoA_C extends AggregatedClass {
-
-    public boolean colorFound = false;
     int counter = 0;
 
     @Override
@@ -102,12 +100,12 @@ public class AtlasAutoA_C extends AggregatedClass {
              */
 
             if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
-                if(robot.Left.getCurrentPosition() + (int)countsPerInch < 12 && robot.Right.getCurrentPosition() + (int)countsPerInch < 12) {
-                    position1();
-                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch >= 12 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 12) {
-                    position2();
-                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch >= 24 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 24) {
-                    position3();
+                if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
+                    position1AC();
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
+                    position2AC();
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 3030 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 3030) {
+                    position3AC();
                 } else {
                     stopMotors();
                 }
@@ -144,30 +142,6 @@ public class AtlasAutoA_C extends AggregatedClass {
         }
     }
 
-    public void marker() {
-        sleep(1000);
-        robot.Left.setPower(0.8); //Move toward the blue line at 0.2 speed
-        robot.Right.setPower(0.8);
-        sleep(250); //added second pause also for debugging
-        while (opModeIsActive() && !colorFound) {
-            float[] hsvValues = new float[3];
-            final float values[] = hsvValues;
-            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
-
-            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
-                robot.Marker.setPosition(0);
-            }
-        }
-    }
-
     public void movement() {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         /*robot.Latching.setPower(0.75);
@@ -180,13 +154,9 @@ public class AtlasAutoA_C extends AggregatedClass {
         stopMotors();
         sleep(2000);*/
         encoderDrives(1, 4, 4);
-        sleep(500);
         proportional(0.5, 60, 3, 3);
-        sleep(500);
         encoderDrives(0.4, 30, 30);
-        sleep(500);
         proportional(0.5, 95, 3, 4);
-        sleep(500);
         cs();
     }
 }

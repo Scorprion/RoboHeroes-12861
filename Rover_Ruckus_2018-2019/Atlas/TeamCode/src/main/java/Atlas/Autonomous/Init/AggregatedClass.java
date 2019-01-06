@@ -5,6 +5,7 @@ import android.graphics.Color;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -34,6 +35,8 @@ public class AggregatedClass extends LinearOpMode {
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
     public final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
     //public static final double turnSpeed = 0.5;
+    public boolean colorFound = false;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -287,7 +290,7 @@ public class AggregatedClass extends LinearOpMode {
         }
 
         for(int times = 0; corrections > times && robot.angles.firstAngle != targetAngle
-                || robot.runtime.seconds() < TimeoutSec; times++) {
+                && robot.runtime.seconds() < TimeoutSec; times++) {
             newTurnSpeed = getTurnSpeed(turnSpeed, times);
             angle = normalizeAngle(robot.angles.firstAngle);
             int s = assignSign(angle, targetAngle);
@@ -295,6 +298,7 @@ public class AggregatedClass extends LinearOpMode {
             if(checkSurpassed(s, targetAngle, TimeoutSec)) {
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
+                telemetry.addData("Corrections:", corrections);
                 telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
                 telemetry.addData("Speed:", newTurnSpeed);
                 telemetry.addData("Sign:", s);
@@ -328,6 +332,7 @@ public class AggregatedClass extends LinearOpMode {
             if(checkSurpassed(s, targetAngle, TimeoutSec)) {
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
+                telemetry.addData("Corrections:", corrections);
                 telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
                 telemetry.addData("Speed:", newTurnSpeed);
                 telemetry.addData("Sign:", s);
@@ -419,6 +424,7 @@ public class AggregatedClass extends LinearOpMode {
             if(checkSurpassed(s, targetAngle)) {
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
+                telemetry.addData("Corrections:", corrections);
                 telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
                 telemetry.addData("Speed:", newTurnSpeed);
                 telemetry.addData("Sign:", s);
@@ -451,6 +457,7 @@ public class AggregatedClass extends LinearOpMode {
             if(checkSurpassed(s, targetAngle)) {
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
+                telemetry.addData("Corrections:", corrections);
                 telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
                 telemetry.addData("Speed:", newTurnSpeed);
                 telemetry.addData("Sign:", s);
@@ -488,29 +495,79 @@ public class AggregatedClass extends LinearOpMode {
         }
     }*/
 
-    public void position1() {
-        sleep(400);
+    public void position1AC() {
+      /*  sleep(400);
         proportional(0.5, 340, 3,5);
         telemetry.addLine("Found gold at 1");
         telemetry.update();
-        encoderDrives(0.5, 4, 4);
+        encoderDrives(0.5, 4, 4); */
+      sleep(400);
+      encoderDrives(0.5, 7,7);
+      sleep(500);
+      encoderDrives(0.5,12, -12);
+      telemetry.addLine("Found gold at 1");
+      telemetry.update();
+      encoderDrives(0.5, 7, 7);
+      sleep(500);
+      proportional(0.5, 300, 3, 4);
+      markerAC();
     }
 
-    public void position2() {
-        sleep(400);
+    public void position2AC() {
+       /* sleep(400);
         proportional(0.5, 360, 3,5);
         telemetry.addLine("Found gold at 2");
         telemetry.update();
-        encoderDrives(0.5, 4, 4);
+        encoderDrives(0.5, 4, 4); */
+        encoderDrives(0.5, 6,6);
+        sleep(500);
+        encoderDrives(0.5, 12, -12);
+        telemetry.addLine("Found gold at 2");
+        telemetry.update();
+        markerAC();
     }
 
-    public void position3() {
-        sleep(400);
-        proportional(0.5,360, 3,5);
+
+    public void position3AC() {
+        sleep(500); // For debugging
+        encoderDrives(0.5, 7, 7);
+        sleep(500);
+        encoderDrives(0.5, 12, -12);
         telemetry.addLine("Found gold at 3");
         telemetry.update();
-        encoderDrives(0.5, 8, 8);
-        sleep(500);
-        proportional(0.5, 20, 3, 5);
+        encoderDrives(0.5, 3, 3);
+        proportional(0.5, 30, 2, 3);
+        markerAC();
+    }
+
+    //TODO Finish this method
+    /*public double inRange(double range1, double range2) {
+        double range = range1 * countsPerInch;
+        return range;
+    }*/
+
+    public void markerAC() { ;
+        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(-0.2);
+        while (opModeIsActive() && !colorFound) {
+            float[] hsvValues = new float[3];
+            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
+                sleep(500);
+                encoderDrives(0.5, 6, 6);
+                sleep(200);
+                robot.Marker.setPosition(0);
+                proportional(0.5, 50, 2);
+                encoderDrives(1, -73, -73);
+            }
+        }
     }
 }
+

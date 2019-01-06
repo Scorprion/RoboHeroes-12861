@@ -20,6 +20,7 @@ import Atlas.Autonomous.SensorTesting.PIDIMU;
 public class HardwareAtlas {
     //Sensors
     public NormalizedColorSensor ColorSensor;
+    public NormalizedColorSensor BottomCS;
     //public DistanceSensor DistanceSensor;
 
     //Servos
@@ -56,6 +57,7 @@ public class HardwareAtlas {
     public void init(HardwareMap ahwMap) {
         hwMap = ahwMap;
         ColorSensor = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
+        BottomCS = hwMap.get(NormalizedColorSensor.class, "BottomCS");
         //DistanceSensor = hwMap.get(DistanceSensor.class, "DistanceSensor");
 
         //IMU sensor
