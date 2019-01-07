@@ -77,13 +77,13 @@ public class HardwareAtlas {
         RShoulder = hwMap.get(DcMotor.class, "RShoulder");
         RElbow = hwMap.get(DcMotor.class, "RElbow");
         Right = hwMap.get(DcMotor.class, "Right");
-        Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         LShoulder = hwMap.get(DcMotor.class, "LShoulder");
         LElbow = hwMap.get(DcMotor.class, "LElbow");
         Left = hwMap.get(DcMotor.class, "Left");
         Left.setDirection(DcMotorSimple.Direction.REVERSE);
-        Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Winch = hwMap.get(DcMotor.class,"Winch");
 

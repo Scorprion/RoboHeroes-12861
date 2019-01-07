@@ -14,11 +14,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 
 @Autonomous(name = "AtlasAutoB_D", group = "Auto")
-public class AtlasAutoB_D extends LinearOpMode {
+public class AtlasAutoB_D extends AggregatedClass {
 
     HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
@@ -36,18 +41,20 @@ public class AtlasAutoB_D extends LinearOpMode {
     }
 
     public void cs() {
-        //Making sure the motors go backward at 0.3 speed
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-        robot.Left.setPower(0.2); //Move toward the blue line at 0.2 speed
-        robot.Right.setPower(0.2);
-        //added second pause also for debugging
-        sleep(250);
+        //for measuring the distance
+        robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        while(!colorFound && opModeIsActive()) {
+        robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        robot.Right.setPower(0.2);
+        robot.Left.setPower(0.2); //Move at 0.2 speed backwards
+
+        robot.runtime.reset();
+        while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
             final float values[] = hsvValues;
-            robot.ColorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             int color = colors.toColor();
@@ -57,63 +64,43 @@ public class AtlasAutoB_D extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
 
-            // Detects a change in the color and then stops robot after the red or blue values
-            // reach a certain threshold. After that, it drops our team marker
-            if(Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                sleep(1000);
-                robot.Marker.setPosition(0); //Drops the team marker
-                sleep(1000);
-                //Set the boolean "colorFound" to true to stop the repeating while loop
-                colorFound = true;
+            telemetry.addData("Left Encoder:", robot.Left.getCurrentPosition() + (int) countsPerInch);
+            telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int) countsPerInch);
+            telemetry.update();
+
+            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+                if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
+                    position1BD(1);
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
+                    position2BD(1);
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 3030 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 3030) {
+                    position3BD(1);
+                } else {
+                    stopMotors();
+                }
             }
         }
+
     }
 
     public void movement() {
-        forward(0.4, 1.25); //Move forward 0.4 speed for 1.25 seconds
+        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        /*robot.Latching.setPower(0.75);
+        robot.Winch.setPower(-1);
+        sleep(3250);
+        robot.Latching.setPower(-1);
+        sleep(500);
+        robot.Latching.setPower(0);
+        robot.Winch.setPower(0);
+        stopMotors();
+        sleep(2000);*/
+        encoderDrives(1, 4, 4);
         sleep(1000);
-        forward(-0.4, 0.5); //Move backward -0.4 speed for 0.5 seconds
-        sleep(1000);
-        turn(0.4, 0.65); //Turn ccw 0.4 speed for 0.5 seconds
-        sleep(1000);
-        forward(0.4, 1.95); //Move forward 0.4 speed for 1.75 seconds
-        sleep(1000);
-        turn(0.4, 0.45); //Turn ccw 0.4 speed for 0.45 seconds
-        forward(0.3, 1); //Move forward 0.3 speed for 1 second
-        cs(); //Uses the color sensor method to stop, drop, and turn the robot
-        robot.Left.setPower(-0.5); //Move backwards at a gradual slope for 3.5 seconds
-        robot.Right.setPower(-0.425);
-        sleep(3500);
-        //stop all motion
-        stopMotion();
-    }
-
-    public void forward(double speed, double seconds) {
-        double time = seconds * 1000;
-
-        //Move at the speed "speed" and pause for "seconds" amount of time before stopping
-        robot.Left.setPower(speed);
-        robot.Right.setPower(speed);
-        sleep((long)time);
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void turn(double speed, double seconds) {
-        double time = seconds * 1000;
-
-        //turn at speed "speed" and pause for "seconds" amount of time before stopping
-        robot.Left.setPower(-speed);
-        robot.Right.setPower(speed);
-        sleep((long)time);
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void stopMotion() {
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
+        proportional(0.5, 60, 3, 3);
+        sleep(250);
+        encoderDrives(0.4, 28, 28);
+        sleep(250);
+        proportional(0.5, 85, 3,4);
+        cs();
     }
 }

@@ -37,7 +37,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
+@Disabled
 @Autonomous(name = "ColorTesting", group = "RoboBot")
 public class ColorTesting extends LinearOpMode {
 

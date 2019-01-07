@@ -14,11 +14,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 
 @Autonomous(name = "AtlasAutoB_D_2", group = "Auto")
-public class AtlasAutoB_D_2 extends LinearOpMode {
+public class AtlasAutoB_D_2 extends AggregatedClass {
 
     HardwareAtlas robot = new HardwareAtlas();
 
@@ -33,38 +38,73 @@ public class AtlasAutoB_D_2 extends LinearOpMode {
         waitForStart();
         movement();
     }
+    public void cs() {
+        //for measuring the distance
+        robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        robot.Right.setPower(0.2);
+        robot.Left.setPower(0.2); //Move at 0.2 speed backwards
+
+        robot.runtime.reset();
+        while (opModeIsActive() && !colorFound) {
+            float[] hsvValues = new float[3];
+            final float values[] = hsvValues;
+            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            telemetry.addData("Left Encoder:", robot.Left.getCurrentPosition() + (int) countsPerInch);
+            telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int) countsPerInch);
+            telemetry.update();
+
+            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+                if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
+                    position1BD(2);
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
+                    position2BD(2);
+                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 3030 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 3030) {
+                    position3BD(2);
+                } else {
+                    stopMotors();
+                }
+            }
+        }
+
+    }
 
 
     public void movement() {
-        forward(0.4, 1.4); //Move forward 0.4 speed for 1.25 seconds
+        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        robot.Latching.setPower(0.8);
+        robot.Winch.setPower(-1);
+        sleep(3250);
+        encoderDrives(0.5, 1, -1);
+        sleep(250);
+        robot.Latching.setPower(-1);
+        sleep(500);
+        encoderDrives(0.5, -1, 1);
+        sleep(250);
+        robot.Latching.setPower(0);
+        robot.Winch.setPower(0);
+        stopMotors();
         sleep(1000);
-        stopMotion();
-    }
-
-    public void forward(double speed, double seconds) {
-        double time = seconds * 1000;
-
-        //Move at the speed "speed" and pause for "seconds" amount of time before stopping
-        robot.Left.setPower(speed);
-        robot.Right.setPower(speed);
-        sleep((long)time);
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void turn(double speed, double seconds) {
-        double time = seconds * 1000;
-
-        //turn at speed "speed" and pause for "seconds" amount of time before stopping
-        robot.Left.setPower(-speed);
-        robot.Right.setPower(speed);
-        sleep((long)time);
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void stopMotion() {
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
+        encoderDrives(1, 5, 5);
+        sleep(1000);
+        //proportional(0.5, 60, 3);
+        encoderDrives(0.5, -8, 8);
+        sleep(250);
+        encoderDrives(0.4, 29, 29);
+        sleep(250);
+        proportional(0.4, 93, 3,4);
+        cs();
     }
 }

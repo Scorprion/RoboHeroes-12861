@@ -24,7 +24,6 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
 public class AtlasAutoA_C extends AggregatedClass {
-    int counter = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -33,6 +32,7 @@ public class AtlasAutoA_C extends AggregatedClass {
         if (robot.ColorSensor instanceof SwitchableLight) {
             ((SwitchableLight) robot.ColorSensor).enableLight(true);
         }
+
 
         waitForStart();
         robot.LClamp.setPosition(0);
@@ -47,9 +47,9 @@ public class AtlasAutoA_C extends AggregatedClass {
         robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-
-        robot.Left.setPower(0.2); //Move at 0.2 speed backwards
         robot.Right.setPower(0.2);
+        robot.Left.setPower(0.2); //Move at 0.2 speed backwards
+
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound) {
             float[] hsvValues = new float[3];
@@ -63,7 +63,6 @@ public class AtlasAutoA_C extends AggregatedClass {
             colors.blue /= max;
             color = colors.toColor();
 
-            telemetry.addData("Counter:", counter);
             telemetry.addData("Left Encoder:", robot.Left.getCurrentPosition() + (int)countsPerInch);
             telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int)countsPerInch);
             telemetry.update();
@@ -98,18 +97,18 @@ public class AtlasAutoA_C extends AggregatedClass {
             /**
              * Testing with encoders for distance
              */
-
             if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
                 if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
-                    position1AC();
+                    position1AC(1);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
-                    position2AC();
+                    position2AC(1);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 3030 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 3030) {
-                    position3AC();
+                    position3AC(1);
                 } else {
                     stopMotors();
                 }
             }
+
 
 
 
@@ -144,52 +143,28 @@ public class AtlasAutoA_C extends AggregatedClass {
 
     public void movement() {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        /*robot.Latching.setPower(0.75);
+        robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
-        sleep(3250);
+        sleep(2000);
+        encoderDrives(0.5, 1, -1);
+        sleep(250);
         robot.Latching.setPower(-1);
         sleep(500);
+        encoderDrives(0.5, -1, 1);
+        sleep(250);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(2000);*/
-        encoderDrives(1, 4, 4);
-        proportional(0.5, 60, 3, 3);
-        encoderDrives(0.4, 30, 30);
-        proportional(0.5, 95, 3, 4);
+        sleep(1000);
+        encoderDrives(1, 5, 5);
+        sleep(1000);
+        //proportional(0.5, 60, 3);
+        encoderDrives(0.5, -8, 8);
+        sleep(250);
+        encoderDrives(0.4, 28, 28);
+        sleep(250);
+        proportional(0.4, 90, 3,4);
         cs();
     }
 }
 
-
-
-
-
-   /* public void forward(double speed, double seconds) {
-        double time = seconds * 1000;/
-
-        //Move at the speed "speed" and pause for "seconds" amount of time before stopping
-        robot.Left.setPower(speed);
-        robot.Right.setPower(speed);
-        sleep((long)time);
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void turn(double speed, double seconds) {
-        double time = seconds * 1000;
-
-        //turn at speed "speed" and pause for "seconds" amount of time before stopping
-        robot.Left.setPower(-speed);
-        robot.Right.setPower(speed);
-        sleep((long)time);
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void stopMotion() {
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-}
-*/
