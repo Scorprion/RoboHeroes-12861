@@ -52,6 +52,7 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "Sensor: BNO055 IMU", group = "Sensor")
 @Disabled
+
 public class AtlasGyro extends LinearOpMode {
     //----------------------------------------------------------------------------------------------
     // Main logic

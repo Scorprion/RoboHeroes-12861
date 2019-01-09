@@ -15,6 +15,9 @@ import java.sql.Time;
 
 import Atlas.Autonomous.Init.HardwareAtlas;
 
+import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
+import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
+
 public class AggregatedClass extends LinearOpMode {
     /**
      * A program that houses all of our methods needed to run our robot's
@@ -36,6 +39,9 @@ public class AggregatedClass extends LinearOpMode {
     protected final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
+    public enum direction {
+        CW, CCW
+    }
 
 
     @Override
@@ -161,7 +167,15 @@ public class AggregatedClass extends LinearOpMode {
     }
 
     //Can turn up to 4 degrees accurately
-    public void proportional(double turnSpeed, double targetAngle, int corrections, int TimeoutSec) {
+    public void proportional(AggregatedClass.direction direc, double turnSpeed, double targetAngle, int corrections, int TimeoutSec) {
+        int direction = 0;
+        if(direc == CW) {
+            //Set direction to 1 if the user passes "CW" for the direction
+            direction = 1;
+        } else {
+            direction = 0;
+        }
+
         if (targetAngle < 0) {
             targetAngle = 360;
         }
@@ -178,7 +192,7 @@ public class AggregatedClass extends LinearOpMode {
         }
 
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        optimizeTurn(normalizeAngle(robot.angles.firstAngle), targetAngle, turnSpeed, corrections, TimeoutSec);
+        setDirection(turnSpeed, targetAngle, corrections, direction, TimeoutSec);
         /*double newTurnSpeed = 0;
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double angle = normalizeAngle(robot.angles.firstAngle);
@@ -345,7 +359,7 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections, double TimeoutSec) {
+    /*public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections, double TimeoutSec) {
         if (currentAngle == 0) {
             currentAngle = 360;
         }
@@ -365,13 +379,20 @@ public class AggregatedClass extends LinearOpMode {
             robot.Right.setPower(speed);
             ccw(speed, targetAngle, corrections, TimeoutSec);
         }
-    }
+    }*/
 
 
     /**
      * Added alternative method for using proportional control in case we don't want to use a timeout
      */
-    public void proportional(double turnSpeed, double targetAngle, int corrections) {
+    public void proportional(AggregatedClass.direction direc, double turnSpeed, double targetAngle, int corrections) {
+        int direction = 0;
+        if(direc == CW) {
+            direction = 1;
+        } else {
+            direction = 0;
+        }
+
         if (targetAngle < 0) {
             targetAngle = 360;
         }
@@ -381,7 +402,7 @@ public class AggregatedClass extends LinearOpMode {
         }
 
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        optimizeTurn(normalizeAngle(robot.angles.firstAngle), targetAngle, turnSpeed, corrections);
+        setDirection(turnSpeed, targetAngle, corrections, direction);
     }
 
     public boolean checkSurpassed(int sign, double targetAngle) {
@@ -477,7 +498,39 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections) {
+    public void setDirection(double speed, double targetAngle, int corrections, int direction) {
+        //Clockwise
+        if(direction == 1) {
+            robot.Left.setPower(speed);
+            robot.Right.setPower(-speed);
+            cw(speed, targetAngle, corrections);
+        }
+
+        //Counter Clockwise
+        if(direction == 0) {
+            robot.Left.setPower(-speed);
+            robot.Right.setPower(speed);
+            ccw(speed, targetAngle, corrections);
+        }
+    }
+
+    public void setDirection(double speed, double targetAngle, int corrections, int direction, double TimeoutSec) {
+        //Clockwise
+        if(direction == 1) {
+            robot.Left.setPower(speed);
+            robot.Right.setPower(-speed);
+            cw(speed, targetAngle, corrections, TimeoutSec);
+        }
+
+        //Counter Clockwise
+        if(direction == 0) {
+            robot.Left.setPower(-speed);
+            robot.Right.setPower(speed);
+            ccw(speed, targetAngle, corrections, TimeoutSec);
+        }
+    }
+
+    /*public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections) {
         double tc = targetAngle - currentAngle;
 
         if (Math.abs(tc) > 180) {
@@ -493,7 +546,7 @@ public class AggregatedClass extends LinearOpMode {
             robot.Right.setPower(speed);
             ccw(speed, targetAngle, corrections);
         }
-    }
+    }*/
 
     public void stopMotors() {
         robot.Left.setPower(0);
@@ -570,7 +623,7 @@ public class AggregatedClass extends LinearOpMode {
         telemetry.addLine("Found gold at 3");
         telemetry.update();
         encoderDrives(0.5, 3, 3);
-        proportional(0.5, 30, 2);
+        proportional(CW, 0.5, 30, 2);
         encoderDrives(0.5, 4, 4);
         if (program == 1) {
             markerAC();
@@ -665,7 +718,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(200);
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -6, -6);
-                proportional(0.3, 75, 2);
+                proportional(CW, 0.3, 75, 2);
                 encoderDrives(1, -69, -75);
             }
         }
@@ -688,7 +741,7 @@ public class AggregatedClass extends LinearOpMode {
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
-                proportional(0.5, 135, 2);
+                proportional(CW,0.5, 135, 2);
                 encoderDrives(1, -69, -75);
             }
         }

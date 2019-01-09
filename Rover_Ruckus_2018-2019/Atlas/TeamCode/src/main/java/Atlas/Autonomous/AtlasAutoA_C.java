@@ -21,6 +21,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
+import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
+
 
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
 public class AtlasAutoA_C extends AggregatedClass {
@@ -163,7 +165,7 @@ public class AtlasAutoA_C extends AggregatedClass {
         sleep(250);
         encoderDrives(0.4, 28, 28);
         sleep(250);
-        proportional(0.4, 90, 3,4);
+        proportional(CW, 0.4, 90, 3,4);
         cs();
     }
 }
