@@ -16,7 +16,7 @@ public class AtlasTeleOp extends OpMode {
     double ElbowSpeed = 0;
     double turnspeed = 0;
     double speed = 0;
-    double RElbowSpeed = 0;
+
     double LElbowSpeed = 0;
 
     DcMotor Winch;
@@ -37,7 +37,7 @@ public class AtlasTeleOp extends OpMode {
     @Override
     public void loop() {
         ShoulderSpeed = gamepad2.right_trigger;
-        RElbowSpeed = gamepad2.right_stick_y * 0.7;
+
         LElbowSpeed = gamepad2.left_stick_y * 0.7;
         turnspeed = gamepad1.right_stick_x;
         speed = gamepad1.left_stick_y;
@@ -56,12 +56,11 @@ public class AtlasTeleOp extends OpMode {
         //The Shoulders
         if (gamepad2.right_trigger >= 0.1) {
             robot.LShoulder.setPower(ShoulderSpeed);
-            robot.RShoulder.setPower(ShoulderSpeed);
         }
 
         if (gamepad2.left_trigger >= 0.1) {
             robot.LShoulder.setPower(-ShoulderSpeed);
-            robot.RShoulder.setPower(-ShoulderSpeed);
+
         }
 
         //The LElbow
@@ -72,7 +71,7 @@ public class AtlasTeleOp extends OpMode {
         }
 
         if (gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1) {
-            robot.RElbow.setPower(-RElbowSpeed);
+
         }
 
         //The LClamp

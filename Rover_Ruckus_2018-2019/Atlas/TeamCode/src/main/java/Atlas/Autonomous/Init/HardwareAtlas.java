@@ -29,8 +29,6 @@ public class HardwareAtlas {
     public CRServo Latching;
 
     //Right motors
-    public DcMotor RShoulder;
-    public DcMotor RElbow;
     public DcMotor Right;
 
     //Left motors
@@ -74,8 +72,6 @@ public class HardwareAtlas {
         Latching = hwMap.get(CRServo.class, "Latching");
         Marker = hwMap.get(Servo.class, "Marker");
 
-        RShoulder = hwMap.get(DcMotor.class, "RShoulder");
-        RElbow = hwMap.get(DcMotor.class, "RElbow");
         Right = hwMap.get(DcMotor.class, "Right");
         //Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -87,8 +83,7 @@ public class HardwareAtlas {
 
         Winch = hwMap.get(DcMotor.class,"Winch");
 
-        RShoulder.setPower(0);
-        RElbow.setPower(0);
+
         Right.setPower(0);
         LShoulder.setPower(0);
         LElbow.setPower(0);
@@ -96,8 +91,6 @@ public class HardwareAtlas {
 
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
-        RShoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        RElbow.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LShoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         LElbow.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
