@@ -1,10 +1,6 @@
 package Atlas.Autonomous.Temporary;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -15,9 +11,6 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "EnocderB_D", group = "Auto")
 public class EncoderB_D extends AggregatedClass {
-    HardwareAtlas robot = new HardwareAtlas(); //Using the robot hardware
-
-    //Use the AtlasEncoderDrive class to control the encoders
 
     @Override
     public void runOpMode() throws InterruptedException {

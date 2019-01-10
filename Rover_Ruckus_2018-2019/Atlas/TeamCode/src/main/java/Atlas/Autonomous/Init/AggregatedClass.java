@@ -4,18 +4,12 @@ import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import java.sql.Time;
-
-import Atlas.Autonomous.Init.HardwareAtlas;
-
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
 import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 
 public class AggregatedClass extends LinearOpMode {
@@ -30,13 +24,13 @@ public class AggregatedClass extends LinearOpMode {
      */
 
     //Using our robot's hardware
-    protected HardwareAtlas robot = new HardwareAtlas();
+    public HardwareAtlas robot = new HardwareAtlas();
 
     //Defining final variables for the encoders
     final double countsPerRot = 2240; // The counts per rotation
     final double gearBoxRatio = 0.5; // The gear box ratio for the motors
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
-    protected final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
+    public final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
     public enum direction {

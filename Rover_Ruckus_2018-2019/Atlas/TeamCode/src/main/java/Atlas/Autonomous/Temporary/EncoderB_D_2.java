@@ -1,17 +1,12 @@
 package Atlas.Autonomous.Temporary;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import Atlas.Autonomous.Init.AggregatedClass;
-import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "EnocderB_D_2", group = "Auto")
 public class EncoderB_D_2 extends AggregatedClass {
