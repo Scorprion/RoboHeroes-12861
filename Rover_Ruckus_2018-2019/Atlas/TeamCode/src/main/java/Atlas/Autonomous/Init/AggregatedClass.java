@@ -698,6 +698,35 @@ public class AggregatedClass extends LinearOpMode {
         return range;
     }*/
 
+    //Going to opposing crater
+    public void markerAC2() {
+        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(-0.2);
+        sleep(700);
+        while (opModeIsActive() && !colorFound) {
+            float[] hsvValues = new float[3];
+            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
+                sleep(500);
+                encoderDrives(0.5, 6, 6);
+                sleep(200);
+                robot.Marker.setPosition(0);
+                encoderDrives(0.3, -6, -6);
+                //proportional(CW, 0.3, 75, 2);
+                encoderDrives(0.5, -10.5, 10.5, 2);
+                encoderDrives(1, -69, -75);
+            }
+        }
+    }
+
+    //Going to team crater
     public void markerAC() {
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
@@ -718,7 +747,8 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(200);
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -6, -6);
-                proportional(CW, 0.3, 75, 2);
+                //proportional(CW, 0.3, 75, 2);
+                encoderDrives(0.5, 14, -14, 2);
                 encoderDrives(1, -69, -75);
             }
         }
@@ -741,7 +771,8 @@ public class AggregatedClass extends LinearOpMode {
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
-                proportional(CW,0.5, 135, 2);
+                encoderDrives(0.5, -14.6, 14.6);
+                //proportional(CW,0.5, 135, 2);
                 encoderDrives(1, -69, -75);
             }
         }
