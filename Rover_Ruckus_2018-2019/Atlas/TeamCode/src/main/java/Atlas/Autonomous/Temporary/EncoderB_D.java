@@ -37,7 +37,7 @@ public class EncoderB_D extends AggregatedClass {
         stopMotors();
 
         //Enocders
-        encoderDrives(0.5, 35, 35);
+        encoderDrives(0.5, 31, 31);
         encoderDrives(0.5, -4, -4);
         encoderDrives(0.5, -12, 12);
         encoderDrives(0.5, 39, 39);
