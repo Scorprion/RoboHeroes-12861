@@ -15,7 +15,6 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "EnocderB_D_2", group = "Auto")
 public class EncoderB_D_2 extends AggregatedClass {
-    HardwareAtlas robot = new HardwareAtlas(); //Using the robot hardware
 
     //Use the AtlasEncoderDrive class to control the encoders
 

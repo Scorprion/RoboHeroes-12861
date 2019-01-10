@@ -22,7 +22,6 @@ public class EncoderA_C extends AggregatedClass {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-
         waitForStart();
         movement();
     }
