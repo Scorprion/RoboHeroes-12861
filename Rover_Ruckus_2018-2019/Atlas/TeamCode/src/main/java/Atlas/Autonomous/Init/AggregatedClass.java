@@ -116,8 +116,8 @@ public class AggregatedClass extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.Left.getCurrentPosition() + (int) (linches * countsPerInch);
-            newRightTarget = robot.Right.getCurrentPosition() + (int) (rinches * countsPerInch);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int) (-linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int) (-rinches * countsPerInch);
             robot.Left.setTargetPosition(newLeftTarget);
             robot.Right.setTargetPosition(newRightTarget);
 
@@ -709,13 +709,13 @@ public class AggregatedClass extends LinearOpMode {
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
-                encoderDrives(0.5, 6, 6);
+                encoderDrives(0.5, 8, 8);
                 sleep(200);
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -6, -6);
                 //proportional(CW, 0.3, 75, 2);
-                encoderDrives(0.5, -10.5, 10.5, 2);
-                encoderDrives(1, -69, -75);
+                encoderDrives(0.5, -15, 15, 2);
+                encoderDrives(1, 80, 75);
             }
         }
     }
@@ -742,7 +742,7 @@ public class AggregatedClass extends LinearOpMode {
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -6, -6);
                 //proportional(CW, 0.3, 75, 2);
-                encoderDrives(0.5, 14, -14, 2);
+                encoderDrives(0.5, -8, 8, 2);
                 encoderDrives(1, -69, -75);
             }
         }
@@ -765,9 +765,9 @@ public class AggregatedClass extends LinearOpMode {
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
-                encoderDrives(0.5, -14.6, 14.6);
+                sleep(500);
                 //proportional(CW,0.5, 135, 2);
-                encoderDrives(1, -69, -75);
+                encoderDrives(1, -75, -70);
             }
         }
     }

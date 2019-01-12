@@ -38,11 +38,11 @@ public class EncoderB_D extends AggregatedClass {
 
         //Enocders
         encoderDrives(0.5, 31, 31);
-        encoderDrives(0.5, -4, -4);
+        encoderDrives(0.5, -12, -12);
         encoderDrives(0.5, -12, 12);
-        encoderDrives(0.5, 39, 39);
-        encoderDrives(0.5, -6, 6);
-        encoderDrives(0.5, 39, 39);
+        encoderDrives(0.5, 46, 46);
+        encoderDrives(0.5, -5, 5);
+        encoderDrives(0.5, 20, 20);
 
         //ColorSensor
         markerBD();

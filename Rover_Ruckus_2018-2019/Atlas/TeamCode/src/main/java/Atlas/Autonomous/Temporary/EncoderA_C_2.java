@@ -10,6 +10,7 @@ import Atlas.Autonomous.Init.AggregatedClass;
 
 @Autonomous(name = "EnocderA_C_2", group = "Auto")
 public class EncoderA_C_2 extends AggregatedClass {
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
