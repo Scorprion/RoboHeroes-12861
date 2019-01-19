@@ -3,6 +3,7 @@ package Atlas.Autonomous;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -61,7 +62,7 @@ public class AtlasAutoB_D_2 extends AggregatedClass {
             telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int) countsPerInch);
             telemetry.update();
 
-            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+            if(Color.red(color) >= 85 && Color.blue(color) <= 74) {
                 if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
                     position1BD(2);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
@@ -79,7 +80,7 @@ public class AtlasAutoB_D_2 extends AggregatedClass {
 
     public void movement() {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        robot.Latching.setPower(0.8);
+        /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         sleep(3250);
         encoderDrives(0.5, 1, -1);
@@ -91,7 +92,7 @@ public class AtlasAutoB_D_2 extends AggregatedClass {
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(1000);
+        sleep(1000);*/
         encoderDrives(1, 5, 5);
         sleep(1000);
         //proportional(0.5, 60, 3);

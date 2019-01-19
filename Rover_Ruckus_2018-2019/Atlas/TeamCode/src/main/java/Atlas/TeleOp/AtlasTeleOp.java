@@ -12,6 +12,8 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
 public class AtlasTeleOp extends OpMode {
+    boolean switchedS = false;
+    double controlSpeed = 1;
     double ShoulderSpeed = 0;
     double ElbowSpeed = 0;
     double turnspeed = 0;
@@ -36,13 +38,14 @@ public class AtlasTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        ShoulderSpeed = gamepad2.right_trigger;
 
-        LElbowSpeed = gamepad2.left_stick_y;
+        ShoulderSpeed = gamepad2.right_trigger * controlSpeed;
+        LElbowSpeed = gamepad2.left_stick_y * controlSpeed;
         turnspeed = gamepad1.right_stick_x;
         speed = gamepad1.left_stick_y;
-        telemetry.addData("The speed for both motors", speed);
-        telemetry.addData("The speed for both motors in turning", turnspeed);
+        telemetry.addData("Elbow Speed:", LElbowSpeed);
+        telemetry.addData("Shoulder Speed:", ShoulderSpeed);
+        telemetry.update();
 
         /*
         -----------------------------
@@ -72,6 +75,17 @@ public class AtlasTeleOp extends OpMode {
 
         if (gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1) {
 
+        }
+
+        //Controlling arm speed
+        if (gamepad2.a) {
+            if(switchedS) {
+                controlSpeed = 1;
+                switchedS = false;
+            } else if(!switchedS){
+                controlSpeed = 0.5;
+                switchedS = true;
+            }
         }
 
         //The LClamp

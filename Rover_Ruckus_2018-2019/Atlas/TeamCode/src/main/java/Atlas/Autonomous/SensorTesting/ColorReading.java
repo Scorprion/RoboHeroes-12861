@@ -11,6 +11,9 @@ import Atlas.Autonomous.Init.AggregatedClass;
 @Autonomous(name = "ColorReading", group = "Auto")
 public class ColorReading extends AggregatedClass {
 
+    private float[] hsvValues = new float[3];
+    private float[] hsvDefault = {};
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
@@ -18,7 +21,7 @@ public class ColorReading extends AggregatedClass {
 
         while(opModeIsActive()) {
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            float[] hsvValues = new float[3];
+
             final float values[] = hsvValues;
 
             Color.colorToHSV(colors.toColor(), hsvValues);

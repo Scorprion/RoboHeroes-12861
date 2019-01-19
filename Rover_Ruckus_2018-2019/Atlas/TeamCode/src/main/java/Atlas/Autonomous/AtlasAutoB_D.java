@@ -3,6 +3,7 @@ package Atlas.Autonomous;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -63,7 +64,7 @@ public class AtlasAutoB_D extends AggregatedClass {
             telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int) countsPerInch);
             telemetry.update();
 
-            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+            if(Color.red(color) >= 85 && Color.blue(color) <= 74) {
                 if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
                     position1BD(1);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {

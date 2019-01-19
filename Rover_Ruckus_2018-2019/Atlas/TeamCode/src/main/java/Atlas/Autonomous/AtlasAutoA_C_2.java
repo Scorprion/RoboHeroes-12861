@@ -3,6 +3,7 @@ package Atlas.Autonomous;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -15,6 +16,7 @@ import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
+import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 
 
 @Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
@@ -64,13 +66,13 @@ public class AtlasAutoA_C_2 extends AggregatedClass {
             telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int) countsPerInch);
             telemetry.update();
 
-            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+            if(Color.red(color) >= 85 && Color.blue(color) <= 74) {
                 if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
-                    position1BD(2);
+                    position1AC(2);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
-                    position2BD(2);
+                    position2AC(2);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 3030 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 3030) {
-                    position3BD(2);
+                    position3AC(2);
                 } else {
                     stopMotors();
                 }
@@ -91,7 +93,7 @@ public class AtlasAutoA_C_2 extends AggregatedClass {
         sleep(2000);*/
         encoderDrives(0.5, 5, 5);
         sleep(1000);
-        //proportional(0.5, 60, 3);
+        proportional(CW, 0.5, 60, 3);
         encoderDrives(0.5, -8, 8);
         sleep(250);
         encoderDrives(0.4, 29, 29);

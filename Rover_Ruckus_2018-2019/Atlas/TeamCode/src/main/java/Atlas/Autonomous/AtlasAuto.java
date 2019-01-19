@@ -1,12 +1,14 @@
 package Atlas.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "AtlasAuto", group = "Atlas")
+@Disabled
 public class AtlasAuto extends AggregatedClass {
     HardwareAtlas robot = new HardwareAtlas(); //Using the robot hardware
 

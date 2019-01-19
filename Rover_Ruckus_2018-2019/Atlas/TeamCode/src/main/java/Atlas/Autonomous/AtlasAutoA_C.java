@@ -3,6 +3,7 @@ package Atlas.Autonomous;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
@@ -14,10 +15,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import Atlas.Autonomous.Init.AggregatedClass;
 
 import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
+import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
 
 
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
 public class AtlasAutoA_C extends AggregatedClass {
+    boolean loop = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,12 +48,15 @@ public class AtlasAutoA_C extends AggregatedClass {
         robot.Left.setPower(0.2); //Move at 0.2 speed backwards
 
         robot.runtime.reset();
+
         while (opModeIsActive() && !colorFound) {
-            float[] hsvValues = new float[3];
-            final float values[] = hsvValues;
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
             int color = colors.toColor();
+
+            colors.red -= Color.red(defaultRed);
+            colors.green -= Color.green(defaultGreen);
+            colors.blue -= Color.blue(defaultBlue);
+
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -70,28 +76,10 @@ public class AtlasAutoA_C extends AggregatedClass {
             }*/
 
 
-            /*if(Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100 && counter == 1) {
-                counter1();
-                marker();
-            } else if(Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100 && counter == 2) {
-                counter2();
-                marker();
-            } else if(Color.red(color) > Color.blue(color) + 100 && Color.green(color) > Color.blue(color) + 100 && counter == 3) {
-                counter3();
-                marker();
-            } else if(checkSilver(color)) {
-                counter3();
-                marker();
-            } else if(robot.runtime.seconds() > 5) {
-                stopMotors();
-                telemetry.addLine("The sampling failed rip");
-            }*/
-
-
             /**
              * Testing with encoders for distance
              */
-            if(Color.red(color) >= 80 && Color.blue(color) <= 79) {
+            if(Color.red(color) >= 85 && Color.blue(color) <= 74) {
                 if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
                     position1AC(1);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
@@ -102,9 +90,6 @@ public class AtlasAutoA_C extends AggregatedClass {
                     stopMotors();
                 }
             }
-
-
-
 
 
 
@@ -137,7 +122,7 @@ public class AtlasAutoA_C extends AggregatedClass {
 
     public void movement() {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        robot.Latching.setPower(0.8);
+        /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         sleep(2000);
         encoderDrives(0.5, 1, -1);
@@ -149,11 +134,11 @@ public class AtlasAutoA_C extends AggregatedClass {
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(1000);
+        sleep(1000);*/
+        calibrateCS();
         encoderDrives(1, 5, 5);
         sleep(1000);
-        //proportional(0.5, 60, 3);
-        encoderDrives(0.5, -8, 8);
+        proportional(CW, 0.5, 60, 3);
         sleep(250);
         encoderDrives(0.4, 28, 28);
         sleep(250);
