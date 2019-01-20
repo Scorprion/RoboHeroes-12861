@@ -18,8 +18,8 @@ import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
 
 
-@Autonomous(name = "AtlasAutoA_C", group = "Auto")
-public class AtlasAutoA_C extends AggregatedClass {
+@Autonomous(name = "AtlasAutoA_C_Test", group = "Test")
+public class AtlasAutoA_C_Test extends AggregatedClass {
     boolean loop = true;
 
     @Override
@@ -136,16 +136,20 @@ public class AtlasAutoA_C extends AggregatedClass {
         stopMotors();
         sleep(1000);*/
         //calibrateCS();
-        encoderDrives(0.3, 6, 6);
+        encoderDrives(0.4, 18, 18);
+        sleep(500);
+        position1AC();
+        encoderDrives(0.4, -5, -5);
+        sleep(500);
+        PIDCCW(0.4, 0.4, 0, 40);
         sleep(1000);
-        PIDCCW(0.5, 0.5, 0, 60);
-        //proportional(CW, 0.5, 52, 3);
+        encoderDrives(0.4, 12, 12);
         sleep(500);
-        encoderDrives(0.4, 26, 26);
-        sleep(250);
-        PIDCCW(0.42, 0.5, 0, 88);
+        encoderDrives(0.4, -11, -11);
         sleep(500);
-        cs();
+        PIDCW(0.3, 0.4, 0, 320);
+        sleep(500);
+        encoderDrives(0.4, 12, 12);
     }
 }
 

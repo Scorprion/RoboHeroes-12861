@@ -168,401 +168,79 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    //Can turn up to 4 degrees accurately
-    /*public void proportional(AggregatedClass.direction direc, double turnSpeed, double targetAngle, int corrections, int TimeoutSec) {
-        int direction = 0;
-        if(direc == CW) {
-            //Set direction to 1 if the user passes "CW" for the direction
-            direction = 1;
-        } else {
-            direction = 0;
-        }
-
-        if (targetAngle < 0) {
-            targetAngle = 360;
-        }
-
-        while (Math.abs(targetAngle) >= 360) {
-            targetAngle = Math.abs(targetAngle) - 360;
-        }
-        robot.runtime.reset(); //Resetting timer
-
-        //In case we accidentally add a timeout for 30 seconds or longer
-        if (TimeoutSec >= 30) {
-            telemetry.addLine("The time out is currently greater than or equal to 30 seconds, you might need to change something");
-            telemetry.update();
-        }
-
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        setDirection(turnSpeed, targetAngle, corrections, direction, TimeoutSec);
-        double newTurnSpeed = 0;
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double angle = normalizeAngle(robot.angles.firstAngle);
-        boolean loop = true;
-        while(opModeIsActive() && loop) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            if(angle >= targetAngle) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                loop = false;
-            }
-        }
-
-        for(int times = 1; corrections > times && robot.angles.firstAngle != targetAngle; times++) {
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            int s = assignSign(newTurnSpeed, angle, targetAngle);
-            turnOtherway(newTurnSpeed, angle, targetAngle);
-            if(checkSurpassed(s, targetAngle)) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
-                telemetry.addData("Speed:", newTurnSpeed);
-                telemetry.addData("Sign:", s);
-                telemetry.addData("Angle:", angle);
-                telemetry.update();
-            }
-        }
-
-        sleep(20000);
-
-
-    //Turns ccw or cw based on which way it passed the target angle
-    public void turnOtherway(double newTurnSpeed, double angle, double targetAngle) {
-        if (angle > targetAngle) {
-            robot.Left.setPower(-newTurnSpeed);
-            robot.Right.setPower(newTurnSpeed);
-        } else {
-            robot.Left.setPower(newTurnSpeed);
-            robot.Right.setPower(-newTurnSpeed);
-        }
-    }
-
-    //Convert the angle from -179 and 180 degrees to 0 and 360 degrees
-    public double normalizeAngle(double angle) {
-        if (angle > -180 && angle < 0) {
-            angle += 360;
-        }
-        return angle;
-    }
-
-    public double getTurnSpeed(double s, int r) {
-        //s /= Math.pow(2, r);
-        s /= 2 * (r + 1);
-        return s;
-    }
-
-    public int assignSign(double angle, double targetAngle) {
-        int sign = 1;
-        if (angle >= targetAngle) {
-            return -1;
-        }
-        return sign;
-    }
-
-    public boolean checkSurpassed(int sign, double targetAngle, double TimeoutSec) {
-        boolean loop = true;
-        while (loop && opModeIsActive() && robot.runtime.seconds() < TimeoutSec) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double angle = normalizeAngle(robot.angles.firstAngle);
-            telemetry.addData("Error:", getError(targetAngle, angle));
-            telemetry.addData("Angle:", angle);
-            telemetry.update();
-            if (sign == 1) {
-                if (angle > targetAngle) {
-                    robot.Left.setPower(0);
-                    robot.Right.setPower(0);
-                    loop = false;
-                    return true;
-                }
-            } else {
-                if (angle < targetAngle) {
-                    robot.Left.setPower(0);
-                    robot.Right.setPower(0);
-                    loop = false;
-                    return true;
-                }
-            }
-        }
-        return true;
-    }
-
-    public double getError(double tangle, double cangle) {
-        return tangle - cangle;
-    }
-
-    public void ccw(double turnSpeed, double targetAngle, int corrections, double TimeoutSec) {
-        double newTurnSpeed = 0;
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double angle = normalizeAngle(robot.angles.firstAngle);
-        boolean loop = true;
-        while (opModeIsActive() && loop && robot.runtime.seconds() < TimeoutSec) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            if (angle <= targetAngle) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                loop = false;
-            }
-        }
-
-        for (int times = 1; corrections > times && robot.angles.firstAngle != targetAngle
-                && robot.runtime.seconds() < TimeoutSec; times++) {
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            int s = assignSign(angle, targetAngle);
-            turnOtherway(newTurnSpeed, angle, targetAngle);
-            if (checkSurpassed(s, targetAngle, TimeoutSec)) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                telemetry.addData("Corrections:", corrections);
-                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
-                telemetry.addData("Speed:", newTurnSpeed);
-                telemetry.addData("Sign:", s);
-                telemetry.addData("Angle:", angle);
-                telemetry.update();
-            }
-        }
-    }
-
-    public void cw(double turnSpeed, double targetAngle, int corrections, double TimeoutSec) {
-        double newTurnSpeed = 0;
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double angle = normalizeAngle(robot.angles.firstAngle);
-        boolean loop = true;
-        while (opModeIsActive() && loop && robot.runtime.seconds() < TimeoutSec) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            if (angle > targetAngle) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                loop = false;
-            }
-        }
-
-        for (int times = 1; corrections > times && robot.angles.firstAngle != targetAngle
-                && robot.runtime.seconds() < TimeoutSec; times++) {
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            int s = assignSign(angle, targetAngle);
-            turnOtherway(newTurnSpeed, angle, targetAngle);
-            if (checkSurpassed(s, targetAngle, TimeoutSec)) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                telemetry.addData("Corrections:", corrections);
-                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
-                telemetry.addData("Speed:", newTurnSpeed);
-                telemetry.addData("Sign:", s);
-                telemetry.addData("Angle:", angle);
-                telemetry.update();
-            }
-        }
-    }
-
-    /*public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections, double TimeoutSec) {
-        if (currentAngle == 0) {
-            currentAngle = 360;
-        }
-        double tc = targetAngle - currentAngle, ct = currentAngle - targetAngle;
-
-        //TODO Fix the bug where it sometimes chooses the inefficient route
-        if (tc < ct) {
-            telemetry.addData("Needs to go clockwise:", Math.abs(tc));
-            telemetry.update();
-            robot.Left.setPower(speed);
-            robot.Right.setPower(-speed);
-            cw(speed, targetAngle, corrections, TimeoutSec);
-        } else if (tc > ct) {
-            telemetry.addData("Needs to go counter clockwise:", Math.abs(tc));
-            telemetry.update();
-            robot.Left.setPower(-speed);
-            robot.Right.setPower(speed);
-            ccw(speed, targetAngle, corrections, TimeoutSec);
-        }
-    }*/
-
-
-    /**
-     * Added alternative method for using proportional control in case we don't want to use a timeout
-     */
-    /*public void proportional(AggregatedClass.direction direc, double turnSpeed, double targetAngle, int corrections) {
-        int direction;
-        if(direc == CW) {
-            direction = 1;
-        } else {
-            direction = 0;
-        }
-
-        if (targetAngle < 0) {
-            targetAngle = 360;
-        }
-
-        while (Math.abs(targetAngle) >= 360) {
-            targetAngle = Math.abs(targetAngle) - 360;
-        }
-
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        setDirection(turnSpeed, targetAngle, corrections, direction);
-    }
-
-    public boolean checkSurpassed(int sign, double targetAngle) {
-        boolean loop = true;
-        while (loop && opModeIsActive()) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            double angle = normalizeAngle(robot.angles.firstAngle);
-            telemetry.addData("Error:", getError(targetAngle, angle));
-            telemetry.addData("Angle:", angle);
-            telemetry.update();
-            if (sign == 1) {
-                if (angle > targetAngle) {
-                    robot.Left.setPower(0);
-                    robot.Right.setPower(0);
-                    loop = false;
-                    return true;
-                }
-            } else {
-                if (angle < targetAngle) {
-                    robot.Left.setPower(0);
-                    robot.Right.setPower(0);
-                    loop = false;
-                    return true;
-                }
-            }
-        }
-        return true;
-    }
-
-    public void ccw(double turnSpeed, double targetAngle, int corrections) {
-        double newTurnSpeed = 0;
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double angle = normalizeAngle(robot.angles.firstAngle);
-        boolean loop = true;
-        while (opModeIsActive() && loop) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            if (angle <= targetAngle) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                loop = false;
-            }
-        }
-
-        for (int times = 1; corrections > times && robot.angles.firstAngle != targetAngle; times++) {
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            int s = assignSign(angle, targetAngle);
-            turnOtherway(newTurnSpeed, angle, targetAngle);
-            if (checkSurpassed(s, targetAngle)) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                telemetry.addData("Corrections:", corrections);
-                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
-                telemetry.addData("Speed:", newTurnSpeed);
-                telemetry.addData("Sign:", s);
-                telemetry.addData("Angle:", angle);
-                telemetry.update();
-            }
-        }
-    }
-
-    public void cw(double turnSpeed, double targetAngle, int corrections) {
-        double newTurnSpeed = 0;
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        double angle = normalizeAngle(robot.angles.firstAngle);
-        boolean loop = true;
-        while (opModeIsActive() && loop) {
-            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            if (angle >= targetAngle) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                loop = false;
-            }
-        }
-
-        for (int times = 1; corrections > times && robot.angles.firstAngle != targetAngle; times++) {
-            newTurnSpeed = getTurnSpeed(turnSpeed, times);
-            angle = normalizeAngle(robot.angles.firstAngle);
-            int s = assignSign(angle, targetAngle);
-            turnOtherway(newTurnSpeed, angle, targetAngle);
-            if (checkSurpassed(s, targetAngle)) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
-                telemetry.addData("Corrections:", corrections);
-                telemetry.addData("Error:", getError(targetAngle, normalizeAngle(robot.angles.firstAngle)));
-                telemetry.addData("Speed:", newTurnSpeed);
-                telemetry.addData("Sign:", s);
-                telemetry.addData("Angle:", angle);
-                telemetry.update();
-            }
-        }
-    }
-
-    public void setDirection(double speed, double targetAngle, int corrections, int direction) {
-        //Clockwise
-        if(direction == 1) {
-            robot.Left.setPower(speed);
-            robot.Right.setPower(-speed);
-            cw(speed, targetAngle, corrections);
-        }
-
-        //Counter Clockwise
-        if(direction == 0) {
-            robot.Left.setPower(-speed);
-            robot.Right.setPower(speed);
-            ccw(speed, targetAngle, corrections);
-        }
-    }
-
-    public void setDirection(double speed, double targetAngle, int corrections, int direction, double TimeoutSec) {
-        //Clockwise
-        if(direction == 1) {
-            robot.Left.setPower(speed);
-            robot.Right.setPower(-speed);
-            cw(speed, targetAngle, corrections, TimeoutSec);
-        }
-
-        //Counter Clockwise
-        if(direction == 0) {
-            robot.Left.setPower(-speed);
-            robot.Right.setPower(speed);
-            ccw(speed, targetAngle, corrections, TimeoutSec);
-        }
-    }
-
-    /*public void optimizeTurn(double currentAngle, double targetAngle, double speed, int corrections) {
-        double tc = targetAngle - currentAngle;
-
-        if (Math.abs(tc) > 180) {
-            telemetry.addData("Needs to go clockwise:", Math.abs(tc));
-            telemetry.update();
-            robot.Left.setPower(speed);
-            robot.Right.setPower(-speed);
-            cw(speed, targetAngle, corrections);
-        } else if (Math.abs(tc) <= 180) {
-            telemetry.addData("Needs to go counter clockwise:", Math.abs(tc));
-            telemetry.update();
-            robot.Left.setPower(-speed);
-            robot.Right.setPower(speed);
-            ccw(speed, targetAngle, corrections);
-        }
-    }*/
-
-    protected double error = 0;
-    protected double Poutput;
-    protected double Ioutput;
-    protected double Doutput;
-    protected double slope;
-    protected double pasterror = 0;
-    protected double angle = 0;
+    private double error = 0;
+    private double Poutput;
+    private double Ioutput;
+    private double Doutput;
+    private double slope;
+    private double pasterror = 0;
+    private double angle = 0;
     protected Orientation sensor;
-    protected double output;
-    protected boolean atAngle = false;
-    protected boolean firstTime = true;
-    protected void PID(double P, double I, double D, double target) {
+    private double output;
+    private boolean atAngle = false;
+    private boolean firstTime = true;
+    protected void PIDCCW (double P, double I, double D, double target) {
         target /= 100;
+        atAngle = false;
+        Ioutput = 0;
+        while (opModeIsActive() && !atAngle) {
+            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            angle = normalizeAngle(sensor.firstAngle);
+            error = target - (angle / 100); // The target is our setpoint and our sensor is our IMU output
 
+            Poutput = P * error;
+
+            // The accumulator
+            Ioutput = Ioutput + (I * error) / 100;
+
+            // The slope is the "derivative" of the error
+            if (firstTime) {
+                slope = 0;
+                Doutput = -D * slope;
+                firstTime = false;
+            } else {
+                slope = pasterror - error;
+                Doutput = -D * slope;
+            }
+
+            pasterror = error;
+
+            // The output of the PID controller
+            output = Poutput + Ioutput + Doutput;
+
+            if (Math.round(error * 100) == 0) {
+                atAngle = true;
+            }
+
+            if (output > 1) {
+                output = 1;
+            }
+
+            robot.Left.setPower(output);
+            robot.Right.setPower(-output);
+
+            telemetry.addData("Output:", output);
+            telemetry.addData("Target Angle:", target * 100);
+            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
+            telemetry.addData("Proportional:", Poutput);
+            telemetry.addData("Integral:", Ioutput);
+            telemetry.addData("Derivative:", Doutput);
+            telemetry.addData("Error:", error);
+            telemetry.update();
+
+        }
+        stopMotors();
+        /*while(opModeIsActive()) {
+            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
+            telemetry.update();
+
+        } */
+    }
+    protected void PIDCW (double P, double I, double D, double target) {
+        target /= 100;
+        atAngle = false;
+        Ioutput = 0;
         while(opModeIsActive() && !atAngle) {
             sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             angle = normalizeAngle(sensor.firstAngle);
@@ -596,8 +274,8 @@ public class AggregatedClass extends LinearOpMode {
                 output = 1;
             }
 
-            robot.Left.setPower(output);
-            robot.Right.setPower(-output);
+            robot.Left.setPower(-output);
+            robot.Right.setPower(output);
 
 
             telemetry.addData("Output:", output);
@@ -610,13 +288,15 @@ public class AggregatedClass extends LinearOpMode {
             telemetry.update();
         }
         stopMotors();
-        while(opModeIsActive()) {
+        /*while(opModeIsActive()) {
             sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
             telemetry.update();
 
-        }
+        }*/
     }
+
+
 
 
     public double normalizeAngle(double angle) {
@@ -644,7 +324,7 @@ public class AggregatedClass extends LinearOpMode {
      * @param program defines whether to drop our team marker in the depot or move aside (AC or AC2)
      */
     public void position1AC(int program) {
-      /*  sleep(400);
+      /*sleep(400);
         proportional(0.5, 340, 3,5);
         telemetry.addLine("Found gold at 1");
         telemetry.update();
