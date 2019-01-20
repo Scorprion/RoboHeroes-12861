@@ -601,7 +601,7 @@ public class AggregatedClass extends LinearOpMode {
 
 
             telemetry.addData("Output:", output);
-            telemetry.addData("Target Angle:", target);
+            telemetry.addData("Target Angle:", target * 100);
             telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
             telemetry.addData("Proportional:", Poutput);
             telemetry.addData("Integral:", Ioutput);
