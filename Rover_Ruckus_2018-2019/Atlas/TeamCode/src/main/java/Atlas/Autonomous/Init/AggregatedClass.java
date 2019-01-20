@@ -571,7 +571,7 @@ public class AggregatedClass extends LinearOpMode {
             Poutput = P * error;
 
             // The accumulator
-            Ioutput = Ioutput + I * error;
+            Ioutput = Ioutput + (I * error) / 100;
 
             // The slope is the "derivative" of the error
             if(firstTime) {
@@ -588,7 +588,7 @@ public class AggregatedClass extends LinearOpMode {
             // The output of the PID controller
             output = Poutput + Ioutput + Doutput;
 
-            if(Math.round(error * 10) == 0) {
+            if(Math.round(error * 100) == 0) {
                 atAngle = true;
             }
 
@@ -610,10 +610,12 @@ public class AggregatedClass extends LinearOpMode {
             telemetry.update();
         }
         stopMotors();
-        sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        telemetry.addData("Current Angle:", sensor.firstAngle);
-        telemetry.update();
-        sleep(10000);
+        while(opModeIsActive()) {
+            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
+            telemetry.update();
+
+        }
     }
 
 

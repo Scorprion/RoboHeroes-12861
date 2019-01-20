@@ -136,7 +136,8 @@ public class AtlasAutoA_C extends AggregatedClass {
         calibrateCS();
         encoderDrives(0.8, 6, 6);
         sleep(1000);*/
-        PID(0.2, 0, 0, 270);
+        sleep(100);
+        PID(1.05, 0.5, 0, 90);
         //proportional(CW, 0.5, 52, 3);
         /*sleep(1000);
         encoderDrives(0.4, 26, 26);
