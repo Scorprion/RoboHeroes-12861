@@ -53,9 +53,9 @@ public class AtlasAutoA_C extends AggregatedClass {
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
             int color = colors.toColor();
 
-            colors.red -= Color.red(defaultRed);
-            colors.green -= Color.green(defaultGreen);
-            colors.blue -= Color.blue(defaultBlue);
+            diffred = colors.red - Color.red(defaultRed);
+            diffblue = colors.blue - Color.blue(defaultBlue);
+
 
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
@@ -79,7 +79,7 @@ public class AtlasAutoA_C extends AggregatedClass {
             /**
              * Testing with encoders for distance
              */
-            if(Color.red(color) >= 85 && Color.blue(color) <= 74) {
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
                     position1AC(1);
                 } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
@@ -121,29 +121,28 @@ public class AtlasAutoA_C extends AggregatedClass {
     }
 
     public void movement() {
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        /*robot.Latching.setPower(0.8);
+        /*robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         sleep(2000);
-        encoderDrives(0.5, 1, -1);
+        robot.Sliding.setPosition(0);
         sleep(250);
         robot.Latching.setPower(-1);
         sleep(500);
-        encoderDrives(0.5, -1, 1);
-        sleep(250);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
-        stopMotors();
-        sleep(1000);*/
+        stopMotors();*/
+        /*sleep(1000);
         calibrateCS();
-        encoderDrives(1, 5, 5);
-        sleep(1000);
-        proportional(CW, 0.5, 60, 3);
+        encoderDrives(0.8, 6, 6);
+        sleep(1000);*/
+        PID(0.2, 0, 0, 270);
+        //proportional(CW, 0.5, 52, 3);
+        /*sleep(1000);
+        encoderDrives(0.4, 26, 26);
         sleep(250);
-        encoderDrives(0.4, 28, 28);
-        sleep(250);
-        proportional(CW, 0.4, 90, 3,4);
-        cs();
+        encoderDrives(0.4, -4, 4);
+        cs();*/
     }
 }
 

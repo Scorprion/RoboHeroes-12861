@@ -1,4 +1,4 @@
-package Atlas.Calibration;
+/*package Atlas.Calibration;
 
 import com.qualcomm.hardware.adafruit.AdafruitBNO055IMU;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -20,7 +20,6 @@ import java.util.Locale;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 @TeleOp(name = "Sensor: Color Calibration", group = "Sensor")
-@Disabled
 public class ColorSensorCalibration extends LinearOpMode {
     //----------------------------------------------------------------------------------------------
     // State
@@ -85,4 +84,4 @@ public class ColorSensorCalibration extends LinearOpMode {
             telemetry.update();
         }
     }
-}
+}*/

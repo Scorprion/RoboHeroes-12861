@@ -93,12 +93,12 @@ public class AtlasAutoA_C_2 extends AggregatedClass {
         sleep(2000);*/
         encoderDrives(0.5, 5, 5);
         sleep(1000);
-        proportional(CW, 0.5, 60, 3);
+        //proportional(CW, 0.5, 60, 3);
         encoderDrives(0.5, -8, 8);
         sleep(250);
         encoderDrives(0.4, 29, 29);
         sleep(250);
-        proportional(CCW, 0.5, 93, 3);
+        //proportional(CCW, 0.5, 93, 3);
         cs();
     }
 

@@ -92,11 +92,11 @@ public class AtlasAutoB_D extends AggregatedClass {
         sleep(2000);*/
         encoderDrives(1, 4, 4);
         sleep(1000);
-        proportional(CW,0.5, 60, 3, 3);
+        //proportional(CW,0.5, 60, 3, 3);
         sleep(250);
         encoderDrives(0.4, 28, 28);
         sleep(250);
-        proportional(CW,0.5, 85, 3,4);
+        //proportional(CW,0.5, 85, 3,4);
         cs();
     }
 }

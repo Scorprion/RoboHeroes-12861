@@ -1,5 +1,7 @@
 package Atlas.TeleOp;
 
+import android.transition.Slide;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -153,6 +155,14 @@ public class AtlasTeleOp extends OpMode {
         }
 
         //The latching
+        if (gamepad1.dpad_left){
+            robot.Sliding.setPosition(1);
+        }
+
+        if (gamepad1.dpad_right) {
+            robot.Sliding.setPosition(0);
+        }
+
         if (gamepad1.dpad_up) {
             Latching.setPower(1);
 

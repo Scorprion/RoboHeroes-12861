@@ -26,6 +26,7 @@ public class HardwareAtlas {
     //Servos
     public Servo LClamp;
     public Servo Marker;
+    public Servo Sliding;
     public CRServo Latching;
 
     //Right motors
@@ -71,6 +72,7 @@ public class HardwareAtlas {
         LClamp = hwMap.get(Servo.class, "LClamp");
         Latching = hwMap.get(CRServo.class, "Latching");
         Marker = hwMap.get(Servo.class, "Marker");
+        Sliding = hwMap.get(Servo.class, "Sliding");
 
         Right = hwMap.get(DcMotor.class, "Right");
         //Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
