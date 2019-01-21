@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
+import java.util.concurrent.TimeUnit;
+
 import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
 import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 
@@ -36,8 +38,10 @@ public class AggregatedClass extends LinearOpMode {
     public final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
+    public boolean markerFound = false;
 
     protected double diffred = 0, diffblue = 0;
+    private int posCounter = 1;
     protected int defaultRed = Color.red(67); //The default, constant red color value for our practice value
     protected int defaultBlue = Color.blue(86); //The default, constant red color value for our practice value
 
@@ -249,7 +253,7 @@ public class AggregatedClass extends LinearOpMode {
             Poutput = P * error;
 
             // The accumulator
-            Ioutput = Ioutput + (I * error) / 100;
+            Ioutput = Ioutput + ((I * error) / 100);
 
             // The slope is the "derivative" of the error
             if(firstTime) {
@@ -318,77 +322,143 @@ public class AggregatedClass extends LinearOpMode {
         defaultBlue = Color.blue(cs) - defaultBlue;
     }
 
+    public void AC_CS() throws InterruptedException {
+        robot.runtime.reset();
+        while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
+            int color = colors.toColor();
+
+            diffred = 0; //colors.red - Color.red(defaultRed);
+            diffblue = 0; //colors.blue - Color.blue(defaultBlue);
+
+
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            telemetry.addData("Red:", colors.red);
+            telemetry.addData("Calibrated Red:", diffred);
+            telemetry.addData("Blue:", colors.blue + diffblue);
+            telemetry.addData("Calibrated Blue:", diffblue);
+            telemetry.update();
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+                if(posCounter == 1) {
+                    telemetry.addLine("Gold found at 1");
+                    telemetry.update();
+                    colorFound = true;
+                    middleAC();
+                } else if(posCounter == 2) {
+                    telemetry.addLine("Gold found at 2");
+                    telemetry.update();
+                    colorFound = true;
+                    rightAC();
+                } else {
+                    telemetry.addLine("Gold found at 3");
+                    telemetry.update();
+                    colorFound = true;
+                    leftAC();
+                }
+            }
+        }
+
+        if(!colorFound && (robot.runtime.milliseconds() >= 500)) {
+            posCounter++;
+        }
+    }
+
+    public void AC_CS2() throws InterruptedException {
+        robot.runtime.reset();
+        while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
+            int color = colors.toColor();
+
+            diffred = 0; //colors.red - Color.red(defaultRed);
+            diffblue = 0; //colors.blue - Color.blue(defaultBlue);
+
+
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            telemetry.addData("Red:", colors.red);
+            telemetry.addData("Calibrated Red:", diffred);
+            telemetry.addData("Blue:", colors.blue + diffblue);
+            telemetry.addData("Calibrated Blue:", diffblue);
+            telemetry.update();
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+                if(posCounter == 1) {
+                    telemetry.addLine("Gold found at 1");
+                    telemetry.update();
+                    colorFound = true;
+                    middleAC2();
+                } else if(posCounter == 2) {
+                    telemetry.addLine("Gold found at 2");
+                    telemetry.update();
+                    colorFound = true;
+                    rightAC2();
+                } else {
+                    telemetry.addLine("Gold found at 3");
+                    telemetry.update();
+                    colorFound = true;
+                    leftAC2();
+                }
+            }
+        }
+
+        if(!colorFound && (robot.runtime.milliseconds() >= 500)) {
+            posCounter++;
+        }
+    }
+
     /**
      * Does the movements based on if the gold was found in the first position
-     *
-     * @param program defines whether to drop our team marker in the depot or move aside (AC or AC2)
      */
-    public void position1AC(int program) {
-      /*sleep(400);
-        proportional(0.5, 340, 3,5);
-        telemetry.addLine("Found gold at 1");
-        telemetry.update();
-        encoderDrives(0.5, 4, 4); */
-        sleep(400);
-        encoderDrives(0.5, 7, 7);
-        sleep(500);
-        encoderDrives(0.5, 12, -12);
-        telemetry.addLine("Found gold at 1");
-        telemetry.update();
-        sleep(500);
-        encoderDrives(0.5, 18, 18);
-        sleep(750);
-        encoderDrives(0.5, 6, -6);
-        sleep(250);
-        encoderDrives(0.5, 4, 4);
-        if (program == 1) {
+    public void middleAC() {
+            encoderDrives(0.4, 6, 6);
             markerAC();
-        } else {
-            encoderDrives(0.5, -6, -6);
-            encoderDrives(0.5, -8, 8);
-            encoderDrives(0.5, 72, 72);
-        }
+            encoderDrives(0.4, 6, 6);
+            markerAC2();
+
+    }
+    public void middleAC2() {
+        encoderDrives(0.4, 6, 6);
+        markerAC2();
     }
 
-    public void position2AC(int program) {
-       /* sleep(400);
-        proportional(0.5, 360, 3,5);
-        telemetry.addLine("Found gold at 2");
-        telemetry.update();
-        encoderDrives(0.5, 4, 4); */
-        encoderDrives(0.5, 4, 4);
-        sleep(500);
-        encoderDrives(0.5, 12, -12);
-        telemetry.addLine("Found gold at 2");
-        telemetry.update();
-        encoderDrives(0.5, 7, 7);
-        if (program == 1) {
+    public void rightAC() {
+            encoderDrives(0.3, 27, 27);
+            sleep(500);
+            encoderDrives(0.4, -4, -4);
+            sleep(500);
+            encoderDrives(0.4, 12, -12);
+            sleep(500);
+            encoderDrives(0.4, 8, 8);
+            sleep(500);
             markerAC();
-        } else {
-            encoderDrives(0.5, -6, -6);
-            encoderDrives(0.5, -8, 8);
-            encoderDrives(0.5, 72, 72);
         }
+
+    public void rightAC2() {
+        encoderDrives(0.3, 27, 27);
+        sleep(500);
+        encoderDrives(0.4, -4, -4);
+        sleep(500);
+        encoderDrives(0.4, 12, -12);
+        sleep(500);
+        encoderDrives(0.4, 8, 8);
+        sleep(500);
+        markerAC2();
     }
 
+    public void leftAC() {
 
-    public void position3AC(int program) {
-        sleep(500); // For debugging
-        encoderDrives(0.5, 7, 7);
-        sleep(500);
-        encoderDrives(0.5, 12, -12);
-        telemetry.addLine("Found gold at 3");
-        telemetry.update();
-        encoderDrives(0.5, 3, 3);
-        encoderDrives(0.5, -4, 4);
-        encoderDrives(0.5, 4, 4);
-        if (program == 1) {
-            markerAC();
-        } else {
-            encoderDrives(0.5, -6, -6);
-            encoderDrives(0.5, -8, 8);
-            encoderDrives(0.5, 72, 72);
-        }
+    }
+
+    public void leftAC2() {
+
     }
 
     public void position1BD(int program) {
@@ -473,24 +543,27 @@ public class AggregatedClass extends LinearOpMode {
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 encoderDrives(0.5, 8, 8);
-                sleep(200);
+                sleep(500);
                 robot.Marker.setPosition(0);
-                encoderDrives(0.3, -6, -6);
+                sleep(500);
+                /*encoderDrives(0.3, -8, -8);
                 //proportional(CW, 0.3, 75, 2);
-                encoderDrives(0.5, 15, -15);
-                encoderDrives(1, 80, 75);
+                sleep(500);
+                encoderDrives(1, -78, -77);*/
             }
         }
     }
 
     //Going to team crater
+    //Note: this method is the same program for all AC paths, whether the gold is in the center,
+    //left, or the right
     public void markerAC() {
         telemetry.addLine("Started CSing");
         telemetry.update();
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
-        sleep(700);
-        while (opModeIsActive() && !colorFound) {
+        sleep(800);
+        while (opModeIsActive() && !markerFound) {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
@@ -507,8 +580,9 @@ public class AggregatedClass extends LinearOpMode {
                     robot.Marker.setPosition(0);
                     encoderDrives(0.3, -8, -8);
                     //proportional(CW, 0.3, 75, 2);
-                    encoderDrives(0.5, 15, -15);
-                    encoderDrives(1, -69, -75);
+                    encoderDrives(0.4, -8,8);
+                    encoderDrives(0.5,-0.4, 0.4);
+                    encoderDrives(1, -78, -84);
             }
         }
     }

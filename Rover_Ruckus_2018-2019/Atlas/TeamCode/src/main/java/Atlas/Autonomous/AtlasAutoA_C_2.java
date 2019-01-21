@@ -22,84 +22,52 @@ import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 @Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
 public class AtlasAutoA_C_2 extends AggregatedClass {
 
-    HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        // Turn on light through the program
-        if (robot.ColorSensor instanceof SwitchableLight) {
-            ((SwitchableLight) robot.ColorSensor).enableLight(true);
-        }
-
         waitForStart();
-        robot.LClamp.setPosition(0);
         movement();
     }
 
-    public void cs() {
-        //for measuring the distance
-        robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        robot.Right.setPower(0.2);
-        robot.Left.setPower(0.2); //Move at 0.2 speed backwards
-
-        robot.runtime.reset();
-        while (opModeIsActive() && !colorFound) {
-            float[] hsvValues = new float[3];
-            final float values[] = hsvValues;
-            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
-
-            telemetry.addData("Left Encoder:", robot.Left.getCurrentPosition() + (int) countsPerInch);
-            telemetry.addData("Right Encoder", robot.Right.getCurrentPosition() + (int) countsPerInch);
-            telemetry.update();
-
-            if(Color.red(color) >= 85 && Color.blue(color) <= 74) {
-                if(robot.Left.getCurrentPosition() + (int)countsPerInch < 1515 && robot.Right.getCurrentPosition() + (int)countsPerInch < 1515) {
-                    position1AC(2);
-                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 3026 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 1530 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 1530) {
-                    position2AC(2);
-                } else if(robot.Left.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Right.getCurrentPosition() + (int)countsPerInch <= 4570 && robot.Left.getCurrentPosition() + (int)countsPerInch >= 3030 && robot.Right.getCurrentPosition() + (int)countsPerInch >= 3030) {
-                    position3AC(2);
-                } else {
-                    stopMotors();
-                }
-            }
-        }
-
-    }
-    public void movement() {
+    public void movement() throws InterruptedException {
         robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        /*robot.Latching.setPower(0.75);
+        /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
-        sleep(3250);
-        robot.Latching.setPower(-1);
+        sleep(2000);
+        robot.Sliding.setPosition(1);
         sleep(500);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(2000);*/
-        encoderDrives(0.5, 5, 5);
-        sleep(1000);
-        //proportional(CW, 0.5, 60, 3);
-        encoderDrives(0.5, -8, 8);
-        sleep(250);
-        encoderDrives(0.4, 29, 29);
-        sleep(250);
-        //proportional(CCW, 0.5, 93, 3);
-        cs();
+        sleep(1000);*/
+        //calibrateCS();
+        encoderDrives(0.4, 19, 19);
+        sleep(500);
+        AC_CS2();
+        if(!colorFound) {
+            encoderDrives(0.4, -6, -6);
+            sleep(500);
+            PIDCCW(0.4, 0.4, 0, 46);
+            sleep(500);
+            encoderDrives(0.4, 8, 8);
+            sleep(500);
+            encoderDrives(0.4, 2.25, -2.25);
+            sleep(500);
+            encoderDrives(0.4, 4.5, 4.5);
+            sleep(500);
+            AC_CS2();
+            /*if(!colorFound) {
+                sleep(500);
+                encoderDrives(0.4, -11, -11);
+                sleep(500);
+                PIDCW(0.3, 0.4, 0, 320);
+                sleep(500);
+                encoderDrives(0.4, 12, 12);
+                leftAC(2);
+            } */
+        }
     }
 
 
