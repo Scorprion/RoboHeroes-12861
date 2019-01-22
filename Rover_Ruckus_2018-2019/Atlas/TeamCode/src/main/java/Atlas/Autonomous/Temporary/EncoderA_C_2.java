@@ -1,6 +1,7 @@
 package Atlas.Autonomous.Temporary;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -14,32 +15,60 @@ public class EncoderA_C_2 extends AggregatedClass {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+        // Turn on light through the program
+        if (robot.ColorSensor instanceof SwitchableLight) {
+            ((SwitchableLight) robot.ColorSensor).enableLight(true);
+        }
 
         waitForStart();
+        robot.LClamp.setPosition(0);
         movement();
     }
 
 
-    public void movement() {
+    public void movement() throws InterruptedException{
         //Landing
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        robot.Latching.setPower(0.8);
+        /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         sleep(2000);
-        encoderDrives(0.5, 1, -1);
-        sleep(250);
-        robot.Latching.setPower(-1);
+        robot.Sliding.setPosition(1);
         sleep(500);
-        encoderDrives(0.5, -1, 1);
-        sleep(250);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
+        sleep(1000);*/
 
         //Enocders
-        encoderDrives(0.7, 38, 38, 5);
-
-        //ColorSensor
-        markerAC2();
+        robot.Left.setPower(-0.3);
+        robot.Right.setPower(-0.3);
+        sleep(500);
+        robot.Left.setPower(0.3);
+        robot.Right.setPower(0.3);
+        sleep(1000);
+        encoderDrives(0.4, 20, 20);
+        sleep(500);
+        AC_CS2();
+        if(!colorFound) {
+            encoderDrives(0.4, -6, -6);
+            sleep(500);
+            encoderDrives(0.3, -7, 7);
+            sleep(500);
+            encoderDrives(0.4, 8, 8);
+            sleep(500);
+            encoderDrives(0.2, 3.25, -3.25);
+            sleep(500);
+            encoderDrives(0.4, 4.75, 4.75);
+            sleep(500);
+            AC_CS2();
+            if(!colorFound) {
+                sleep(500);
+                encoderDrives(0.4, -11, -11);
+                sleep(500);
+                encoderDrives(0.3, 11, -11);
+                sleep(500);
+                encoderDrives(0.4, 12, 12);
+                leftAC2();
+            }
+        }
     }
 }
