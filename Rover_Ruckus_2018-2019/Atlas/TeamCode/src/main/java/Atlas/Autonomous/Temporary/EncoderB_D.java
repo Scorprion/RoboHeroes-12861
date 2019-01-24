@@ -33,35 +33,35 @@ public class EncoderB_D extends AggregatedClass {
         sleep(1000);*/
 
         //Enocders
-        robot.Left.setPower(-0.2);
-        robot.Right.setPower(-0.2);
-        sleep(500);
-        robot.Left.setPower(0.2);
-        robot.Right.setPower(0.2);
+        robot.Left.setPower(-0.15);
+        robot.Right.setPower(-0.15);
+        sleep(100);
+        robot.Left.setPower(0.15);
+        robot.Right.setPower(0.15);
         sleep(1000);
         encoderDrives(0.4, 19.75, 19.75);
-        sleep(500);
+        sleep(100);
         BD_CS();
         if (!colorFound) {
             encoderDrives(0.4, -6, -6);
-            sleep(500);
+            sleep(100);
             encoderDrives(0.3, -7, 7);
-            sleep(500);
+            sleep(100);
             encoderDrives(0.4, 8, 8);
-            sleep(500);
+            sleep(100);
             encoderDrives(0.2, 3.25, -3.25);
-            sleep(500);
+            sleep(100);
             encoderDrives(0.4, 4, 4);
-            sleep(500);
+            sleep(100);
             BD_CS();
             if (!colorFound) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.4, -11, -11);
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.3, 11, -11);
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.4, 12, 12);
-                leftBD();
+                rightBD();
             }
         }
     }

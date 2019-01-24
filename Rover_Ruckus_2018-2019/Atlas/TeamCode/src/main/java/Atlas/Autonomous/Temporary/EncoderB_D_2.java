@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import Atlas.Autonomous.Init.AggregatedClass;
 
-@Autonomous(name = "EnocderB_D_2", group = "Auto")
+@Autonomous(name = "EncoderB_D_2", group = "Auto")
 public class EncoderB_D_2 extends AggregatedClass {
 
     //Use the AtlasEncoderDrive class to control the encoders
@@ -35,11 +35,11 @@ public class EncoderB_D_2 extends AggregatedClass {
         sleep(1000);*/
 
         //Enocders
-        robot.Left.setPower(-0.2);
-        robot.Right.setPower(-0.2);
+        robot.Left.setPower(-0.15);
+        robot.Right.setPower(-0.15);
         sleep(500);
-        robot.Left.setPower(0.2);
-        robot.Right.setPower(0.2);
+        robot.Left.setPower(0.15);
+        robot.Right.setPower(0.15);
         sleep(1000);
         encoderDrives(0.4, 20, 20);
         sleep(500);
@@ -63,7 +63,7 @@ public class EncoderB_D_2 extends AggregatedClass {
                 encoderDrives(0.3, 11, -11);
                 sleep(500);
                 encoderDrives(0.4, 12, 12);
-                leftBD2();
+                rightBD2();
             }
         }
     }

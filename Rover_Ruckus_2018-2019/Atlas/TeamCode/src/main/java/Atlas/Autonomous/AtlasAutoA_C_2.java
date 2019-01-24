@@ -20,6 +20,7 @@ import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 
 
 @Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
+@Disabled
 public class AtlasAutoA_C_2 extends AggregatedClass {
 
     public boolean colorFound = false;

@@ -19,6 +19,7 @@ import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
 
 
 @Autonomous(name = "AtlasAutoA_C", group = "Auto")
+@Disabled
 public class AtlasAutoA_C extends AggregatedClass {
     boolean loop = true;
 

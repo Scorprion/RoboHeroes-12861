@@ -322,7 +322,7 @@ public class AggregatedClass extends LinearOpMode {
         defaultBlue = Color.blue(cs) - defaultBlue;
     }
 
-    public void BD_CS2() throws InterruptedException {
+    public void BD_CS2() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
@@ -350,17 +350,21 @@ public class AggregatedClass extends LinearOpMode {
                     colorFound = true;
                     middleBD2();
                 } else if (posCounter == 2) {
-                    telemetry.addLine("Gold found at Right 2");
+                    telemetry.addLine("Gold found at 2");
                     telemetry.update();
                     colorFound = true;
-                    rightBD2();
+                    leftBD2();
                 } else {
                     telemetry.addLine("Gold found at 3");
                     telemetry.update();
                     colorFound = true;
-                    leftBD2();
+                    rightBD2();
                 }
             }
+        }
+
+        if(!colorFound && (robot.runtime.milliseconds() >= 500)) {
+            posCounter++;
         }
     }
 
@@ -372,7 +376,6 @@ public class AggregatedClass extends LinearOpMode {
 
                 diffred = 0; //colors.red - Color.red(defaultRed);
                 diffblue = 0; //colors.blue - Color.blue(defaultBlue);
-
 
                 float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
                 colors.red /= max;
@@ -395,12 +398,12 @@ public class AggregatedClass extends LinearOpMode {
                         telemetry.addLine("Gold found at 2");
                         telemetry.update();
                         colorFound = true;
-                        rightBD();
+                        leftBD();
                     } else {
                         telemetry.addLine("Gold found at 3");
                         telemetry.update();
                         colorFound = true;
-                        leftBD();
+                        rightBD();
                     }
                 }
             }
@@ -441,12 +444,12 @@ public class AggregatedClass extends LinearOpMode {
                     telemetry.addLine("Gold found at 2");
                     telemetry.update();
                     colorFound = true;
-                    rightAC();
+                    leftAC();
                 } else {
                     telemetry.addLine("Gold found at 3");
                     telemetry.update();
                     colorFound = true;
-                    leftAC();
+                    rightAC();
                 }
             }
         }
@@ -487,7 +490,7 @@ public class AggregatedClass extends LinearOpMode {
                     telemetry.addLine("Gold found at 2");
                     telemetry.update();
                     colorFound = true;
-                    rightAC2();
+                    leftAC2();
                 }
             }
         }
@@ -518,19 +521,19 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5, 8, 8);
-                sleep(500);
+                sleep(100);
                 robot.Marker.setPosition(0);
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.3, -8, -8);
-                sleep(500);
-                encoderDrives(0.4, -10,10);
-                sleep(500);
+                sleep(100);
+                encoderDrives(0.4, -13,13);
+                sleep(100);
                 encoderDrives(0.4, -15.5, -15.5);
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5,3.5, -3.5);
-                sleep(500);
+                sleep(100);
                 encoderDrives(1, -59, -59);
             }
         }
@@ -551,115 +554,36 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5, 8, 8);
-                sleep(500);
+                sleep(100);
                 robot.Marker.setPosition(0);
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.3, -8, -8);
-                sleep(500);
-                encoderDrives(0.4, 11, -11);
-                sleep(500);
-                encoderDrives(0.4, -14, -14);
-                sleep(500);
-                encoderDrives(0.4, -4, 4);
-                sleep(500);
-                encoderDrives(1, -78, -75);
-            }
-        }
-    }
-
-    public void rightAC() {
-            encoderDrives(0.3, 27, 27);
-            sleep(500);
-            encoderDrives(0.4, -4, -4);
-            sleep(500);
-            encoderDrives(0.4, 19, -9);
-            sleep(500);
-            encoderDrives(0.4, 6, 6);
-            sleep(500);
-        telemetry.addLine("Started CSing");
-        telemetry.update();
-        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
-        robot.Right.setPower(-0.2);
-        sleep(800);
-        while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
-            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
-                encoderDrives(0.5, 6, 6);
-                sleep(500);
-                robot.Marker.setPosition(0);
-                encoderDrives(0.3, -8, -8);
-                //proportional(CW, 0.3, 75, 2);
-                encoderDrives(0.4, -16,16);
-                sleep(500);
-                encoderDrives(0.4, -16, -16);
-                sleep(500);
-                encoderDrives(0.5, 3, -3);
-                encoderDrives(1, -72, -72);
-            }
-        }
-    }
-
-    public void rightAC2() {
-        encoderDrives(0.3, 27, 27);
-        sleep(500);
-        encoderDrives(0.4, -4, -4);
-        sleep(500);
-        encoderDrives(0.4, 15, -9);
-        sleep(500);
-        encoderDrives(0.4, 6, 6);
-        sleep(500);
-        telemetry.addLine("Started CSing");
-        telemetry.update();
-        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
-        robot.Right.setPower(-0.2);
-        sleep(800);
-        while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
-            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
-                encoderDrives(0.5, 8, 8);
-                sleep(500);
-                robot.Marker.setPosition(0);
-                sleep(500);
-                encoderDrives(0.5, -12, -12);
-                sleep(500);
-                encoderDrives(0.5, 3.75, -3.75);
-                sleep(500);
-                encoderDrives(1, -76, -79);
+                sleep(100);
+                encoderDrives(0.4, 12, -12);
+                sleep(100);
+                encoderDrives(0.4, -19, -19);
+                sleep(100);
+                encoderDrives(1, -83, -80);
             }
         }
     }
 
     public void leftAC() {
-        encoderDrives(0.4, 22,22);
-        sleep(500);
-        encoderDrives(0.4, -12, 12);
-        sleep(500);
-        encoderDrives(0.4, 6, 5);
-
-
+            encoderDrives(0.3, 27, 27);
+            sleep(100);
+            encoderDrives(0.4, -4, -4);
+            sleep(100);
+            encoderDrives(0.4, 19, -9);
+            sleep(100);
+            encoderDrives(0.4, 6, 6);
+            sleep(100);
+        telemetry.addLine("Started CSing");
+        telemetry.update();
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
-        sleep(700);
+        sleep(800);
         while (opModeIsActive() && !markerFound) {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
@@ -671,27 +595,68 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
-                encoderDrives(0.5, 8, 6);
-                sleep(500);
+                sleep(100);
+                encoderDrives(0.5, 6, 6);
+                sleep(100);
                 robot.Marker.setPosition(0);
-                sleep(500);
-                encoderDrives(0.4, -6, -6);
-                sleep(500);
-                encoderDrives(0.3, -3, 3);
-                sleep(500);
-                encoderDrives(1, -78, -77);
+                encoderDrives(0.3, -8, -8);
+                sleep(100);
+                encoderDrives(0.4, -16,16);
+                sleep(100);
+                encoderDrives(0.4, -16, -16);
+                sleep(100);
+                encoderDrives(0.5, 3, -3);
+                sleep(100);
+                encoderDrives(1, -72, -72);
             }
         }
     }
 
     public void leftAC2() {
-        encoderDrives(0.4, 22,22);
-        sleep(500);
-        encoderDrives(0.4, -12, 12);
-        sleep(500);
-        encoderDrives(0.4, 6, 5);
+        encoderDrives(0.3, 27, 27);
+        sleep(100);
+        encoderDrives(0.4, -4, -4);
+        sleep(100);
+        encoderDrives(0.4, 15, -9);
+        sleep(100);
+        encoderDrives(0.4, 6, 6);
+        sleep(100);
+        telemetry.addLine("Started CSing");
+        telemetry.update();
+        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(-0.2);
+        sleep(800);
+        while (opModeIsActive() && !markerFound) {
+            float[] hsvValues = new float[3];
+            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
+                sleep(100);
+                encoderDrives(0.5, 8, 8);
+                sleep(100);
+                robot.Marker.setPosition(0);
+                sleep(100);
+                encoderDrives(0.5, -12, -12);
+                sleep(100);
+                encoderDrives(0.5, 3.75, -3.75);
+                sleep(100);
+                encoderDrives(1, -76, -79);
+            }
+        }
+    }
 
+    public void rightAC() {
+        encoderDrives(0.4, 22,22);
+        sleep(100);
+        encoderDrives(0.4, -12, 12);
+        sleep(100);
+        encoderDrives(0.4, 6, 5);
 
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
@@ -707,27 +672,68 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5, 8, 6);
-                sleep(500);
+                sleep(100);
                 robot.Marker.setPosition(0);
-                sleep(500);
-                encoderDrives(1, -46, -46);
+                sleep(100);
+                encoderDrives(0.4, -6, -6);
+                sleep(100);
+                encoderDrives(0.3, -3, 3);
+                sleep(100);
+                encoderDrives(1, -78, -77);
+            }
+        }
+    }
+
+    public void rightAC2() {
+        encoderDrives(0.4, 22,22);
+        sleep(100);
+        encoderDrives(0.4, -12, 12);
+        sleep(100);
+        encoderDrives(0.4, 6, 5);
+
+        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(-0.2);
+        sleep(700);
+        while (opModeIsActive() && !markerFound) {
+            float[] hsvValues = new float[3];
+            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            int color = colors.toColor();
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
+                sleep(100);
+                encoderDrives(0.5, 8, 6);
+                sleep(100);
+                robot.Marker.setPosition(0);
+                sleep(100);
+                encoderDrives(0.5, -15, 15);
+                sleep(100);
+                encoderDrives(0.5, 8, 8);
+                sleep(100);
+                encoderDrives(0.5, 4, -4);
+                sleep(100);
+                encoderDrives(1, 74, 74);
             }
         }
     }
 
     public void middleBD() {
         encoderDrives(0.4, 5, 5);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -8, -8);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -11.25, 11.25);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, 40, 40);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -4, 4);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, 28, 28);
         telemetry.addLine("Started CSing");
         telemetry.update();
@@ -745,34 +751,34 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5, 8, 8);
-                sleep(500);
+                sleep(100);
                 robot.Marker.setPosition(0);
-                sleep(500);
+                sleep(100);
                 encoderDrives(1, -76, -76);
             }
         }
     }
 
     public void middleBD2() {
-        encoderDrives(0.4, 7, 7);
-        sleep(500);
+        encoderDrives(0.4, 5, 5);
+        sleep(100);
         encoderDrives(0.5, -4, 4);
 
     }
 
-    public void rightBD() {
+    public void leftBD() {
         encoderDrives(0.4, 7, 7);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -14, -14);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -6, 6);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, 35, 35);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.5, -6, 6);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, 28, 28);
         telemetry.addLine("Started CSing");
         telemetry.update();
@@ -790,9 +796,9 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5, 8, 8);
-                sleep(500);
+                sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
                 encoderDrives(1, -76, -76);
@@ -800,22 +806,22 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    public void rightBD2() {
+    public void leftBD2() {
         encoderDrives(0.5, 8, 8);
-        sleep(500);
+        sleep(100);
     }
 
-    public void leftBD() {
+    public void rightBD() {
         encoderDrives(0.4, 8,8);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -14, -14);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.4, -18, 18);
-        sleep(500);
+        sleep(100);
         encoderDrives(1, 44, 44);
-        sleep(500);
+        sleep(100);
         encoderDrives(0.5, -4, 4);
-        sleep(500);
+        sleep(100);
         encoderDrives(1, 35,35);
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
@@ -831,19 +837,19 @@ public class AggregatedClass extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(500);
+                sleep(100);
                 encoderDrives(0.5, 8, 8);
-                sleep(500);
+                sleep(100);
                 robot.Marker.setPosition(0);
-                sleep(500);
+                sleep(100);
                 encoderDrives(1, -76, -76);
             }
         }
     }
 
-    public void leftBD2() {
+    public void rightBD2() {
         encoderDrives(0.4, 8, 8);
-        sleep(500);
+        sleep(100);
     }
 
     public void position1BD(int program) {

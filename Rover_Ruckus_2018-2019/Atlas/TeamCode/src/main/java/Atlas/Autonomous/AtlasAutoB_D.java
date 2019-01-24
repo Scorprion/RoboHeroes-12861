@@ -19,6 +19,7 @@ import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
 
 
 @Autonomous(name = "AtlasAutoB_D", group = "Auto")
+@Disabled
 public class AtlasAutoB_D extends AggregatedClass {
 
     HardwareAtlas robot = new HardwareAtlas();

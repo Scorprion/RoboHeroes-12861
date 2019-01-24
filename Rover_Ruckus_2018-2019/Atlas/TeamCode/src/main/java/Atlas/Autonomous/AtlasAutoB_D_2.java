@@ -19,9 +19,8 @@ import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
 
 
 @Autonomous(name = "AtlasAutoB_D_2", group = "Auto")
+@Disabled
 public class AtlasAutoB_D_2 extends AggregatedClass {
-
-    HardwareAtlas robot = new HardwareAtlas();
 
     @Override
     public void runOpMode() throws InterruptedException {
