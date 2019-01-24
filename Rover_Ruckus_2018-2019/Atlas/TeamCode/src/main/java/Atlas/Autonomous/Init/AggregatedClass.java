@@ -565,7 +565,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.4, -19, -19);
                 sleep(100);
-                encoderDrives(1, -83, -80);
+                encoderDrives(1, -78, -75);
             }
         }
     }
@@ -646,7 +646,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.5, 3.75, -3.75);
                 sleep(100);
-                encoderDrives(1, -76, -79);
+                encoderDrives(1, -73, -76);
             }
         }
     }
@@ -681,7 +681,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.3, -3, 3);
                 sleep(100);
-                encoderDrives(1, -78, -77);
+                encoderDrives(1, -76, -75);
             }
         }
     }
@@ -718,7 +718,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.5, 4, -4);
                 sleep(100);
-                encoderDrives(1, 74, 74);
+                encoderDrives(1, 72, 72);
             }
         }
     }
@@ -756,7 +756,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(1, -76, -76);
+                encoderDrives(1, -74, -74);
             }
         }
     }
@@ -801,7 +801,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
-                encoderDrives(1, -76, -76);
+                encoderDrives(1, -74, -74);
             }
         }
     }
@@ -842,7 +842,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(1, -76, -76);
+                encoderDrives(1, -74, -74);
             }
         }
     }

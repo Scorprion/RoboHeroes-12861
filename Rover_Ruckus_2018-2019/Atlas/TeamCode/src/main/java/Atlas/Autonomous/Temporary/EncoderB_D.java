@@ -22,7 +22,7 @@ public class EncoderB_D extends AggregatedClass {
 
     public void movement() throws InterruptedException{
         //Landing
-        /*robot.Latching.setPower(0.8);
+        robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         sleep(2000);
         robot.Sliding.setPosition(1);
@@ -30,9 +30,9 @@ public class EncoderB_D extends AggregatedClass {
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(1000);*/
+        sleep(1000);
 
-        //Enocders
+        //Encoders
         robot.Left.setPower(-0.15);
         robot.Right.setPower(-0.15);
         sleep(100);

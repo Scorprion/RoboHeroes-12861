@@ -38,7 +38,7 @@ public class EncoderA_C_2 extends AggregatedClass {
         stopMotors();
         sleep(1000);*/
 
-        //Enocders
+        //Encoders
         robot.Left.setPower(-0.15);
         robot.Right.setPower(-0.15);
         sleep(100);
