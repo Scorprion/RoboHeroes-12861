@@ -16,6 +16,8 @@ public class EncoderB_D extends AggregatedClass {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         waitForStart();
+        robot.LClamp.setPosition(250);
+        sleep(250);
         movement();
     }
 
@@ -24,9 +26,8 @@ public class EncoderB_D extends AggregatedClass {
         //Landing
         robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
-        sleep(2000);
         robot.Sliding.setPosition(1);
-        sleep(500);
+        sleep(2000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();

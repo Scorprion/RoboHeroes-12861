@@ -1,6 +1,7 @@
 package Atlas.Autonomous.Temporary;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -25,6 +26,7 @@ public class EncoderA_C extends AggregatedClass {
 
         waitForStart();
         robot.LClamp.setPosition(0);
+        sleep(200);
         movement();
     }
 
@@ -33,9 +35,8 @@ public class EncoderA_C extends AggregatedClass {
         //Landing
         robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
-        sleep(2000);
         robot.Sliding.setPosition(1);
-        sleep(100);
+        sleep(2000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();

@@ -18,21 +18,22 @@ public class EncoderB_D_2 extends AggregatedClass {
         robot.init(hardwareMap);
 
         waitForStart();
+        robot.LClamp.setPosition(0);
+        sleep(250);
         movement();
     }
 
 
     public void movement() throws InterruptedException {
         //Landing
-        /*robot.Latching.setPower(0.8);
+        robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
-        sleep(2000);
         robot.Sliding.setPosition(1);
-        sleep(500);
+        sleep(2000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(1000);*/
+        sleep(1000);
 
         //Enocders
         robot.Left.setPower(-0.15);

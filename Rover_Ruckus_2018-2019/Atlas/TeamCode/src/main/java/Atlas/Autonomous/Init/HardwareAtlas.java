@@ -89,6 +89,7 @@ public class HardwareAtlas {
         Right.setPower(0);
         LShoulder.setPower(0);
         LElbow.setPower(0);
+        LElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Left.setPower(0);
 
         // Make the motors not use encoders by default but you can set it to use encoders in the

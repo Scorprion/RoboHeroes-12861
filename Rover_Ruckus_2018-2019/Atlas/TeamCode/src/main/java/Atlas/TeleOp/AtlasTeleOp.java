@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,14 +15,16 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
 public class AtlasTeleOp extends OpMode {
-    boolean switchedS = false;
-    double controlSpeed = 1;
-    double ShoulderSpeed = 0;
-    double ElbowSpeed = 0;
-    double turnspeed = 0;
-    double speed = 0;
+    private ElapsedTime openClaw = new ElapsedTime();
+    private boolean switchedS = false;
+    private boolean usedRecently = false;
+    private double controlSpeed = 1;
+    private double ShoulderSpeed = 0;
+    private double ElbowSpeed = 0;
+    private double turnspeed = 0;
+    private double speed = 0;
 
-    double LElbowSpeed = 0;
+    private double LElbowSpeed = 0;
 
     DcMotor Winch;
     CRServo Latching;
@@ -43,10 +46,13 @@ public class AtlasTeleOp extends OpMode {
 
         ShoulderSpeed = gamepad2.right_trigger * controlSpeed;
         LElbowSpeed = gamepad2.left_stick_y * controlSpeed;
-        turnspeed = gamepad1.right_stick_x;
+        turnspeed = gamepad1.right_stick_x * 0.5;
         speed = gamepad1.left_stick_y;
         telemetry.addData("Elbow Speed:", LElbowSpeed);
         telemetry.addData("Shoulder Speed:", ShoulderSpeed);
+        telemetry.addData("Left and Right move power:", speed);
+        telemetry.addData("Slowdown used recently:", usedRecently);
+        telemetry.addData("Switched Speed:", switchedS);
         telemetry.update();
 
         /*
@@ -80,26 +86,24 @@ public class AtlasTeleOp extends OpMode {
         }
 
         //Controlling arm speed
-        if (gamepad2.a) {
-            if(switchedS) {
+        if (gamepad2.a && !usedRecently) {
+            if (switchedS) {
                 controlSpeed = 1;
                 switchedS = false;
-            } else if(!switchedS){
+            } else if (!switchedS) {
                 controlSpeed = 0.5;
                 switchedS = true;
             }
+            usedRecently = true;
+            robot.runtime.reset();
         }
 
         //The LClamp
         if (gamepad2.right_bumper) {
             robot.LClamp.setPosition(1);
-            try {
-                //Wait 250 milliseconds before stopping the movement of the clamp
-                TimeUnit.MILLISECONDS.sleep(250);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            robot.LClamp.setPosition(0.5);
+            openClaw.reset();
+            //Wait 250 milliseconds before stopping the movement of the clamp
+
         }
         if (gamepad2.left_bumper) {
             robot.LClamp.setPosition(0);
@@ -120,16 +124,16 @@ public class AtlasTeleOp extends OpMode {
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
             robot.Left.setPower(-turnspeed);
             robot.Right.setPower(turnspeed);
-        } else {
-            robot.Left.setPower(0);
-            robot.Right.setPower(0);
         }
 
         //Moving
         if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
             robot.Left.setPower(speed);
             robot.Right.setPower(speed);
-        } else {
+        }
+
+        //Making the robot stop when it's set to 0
+        if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0) {
             robot.Left.setPower(0);
             robot.Right.setPower(0);
         }
@@ -155,7 +159,7 @@ public class AtlasTeleOp extends OpMode {
         }
 
         //The latching
-        if (gamepad1.dpad_left){
+        if (gamepad1.dpad_left) {
             robot.Sliding.setPosition(1);
         }
 
@@ -171,8 +175,16 @@ public class AtlasTeleOp extends OpMode {
 
         } else
             Latching.setPower(0);
+
+        // Setting the used recently boolean to true after 200
+        // milliseconds after the a button was pressed
+        if (robot.runtime.milliseconds() > 200) {
+            usedRecently = false;
         }
 
-
-
+        // Setting the LClamp power to 0.5 after the open claw is greater than 250 milliseconds
+        if(openClaw.milliseconds() > 200 && openClaw.milliseconds() < 400) {
+            robot.LClamp.setPosition(0.5);
+        }
+    }
 }
