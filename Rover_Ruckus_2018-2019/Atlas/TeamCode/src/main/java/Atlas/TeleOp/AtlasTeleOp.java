@@ -19,7 +19,7 @@ public class AtlasTeleOp extends OpMode {
     private boolean switchedS = false;
     private boolean usedRecently = false;
     private double controlSpeed = 1;
-    private double ShoulderSpeed = 0;
+    private double upShoulderSpeed = 0, downShoulderSpeed = 0;
     private double ElbowSpeed = 0;
     private double turnspeed = 0;
     private double speed = 0;
@@ -44,12 +44,14 @@ public class AtlasTeleOp extends OpMode {
     @Override
     public void loop() {
 
-        ShoulderSpeed = gamepad2.right_trigger * controlSpeed;
+        upShoulderSpeed = gamepad2.right_trigger * controlSpeed;
+        downShoulderSpeed = gamepad2.left_trigger * controlSpeed;
         LElbowSpeed = gamepad2.left_stick_y * controlSpeed;
         turnspeed = gamepad1.right_stick_x * 0.5;
-        speed = gamepad1.left_stick_y;
+        speed = gamepad1.left_stick_y * 0.7;
         telemetry.addData("Elbow Speed:", LElbowSpeed);
-        telemetry.addData("Shoulder Speed:", ShoulderSpeed);
+        telemetry.addData("Up Shoulder Speed:", upShoulderSpeed);
+        telemetry.addData("Down Shoulder Speed:", downShoulderSpeed);
         telemetry.addData("Left and Right move power:", speed);
         telemetry.addData("Slowdown used recently:", usedRecently);
         telemetry.addData("Switched Speed:", switchedS);
@@ -66,11 +68,11 @@ public class AtlasTeleOp extends OpMode {
          */
         //The Shoulders
         if (gamepad2.right_trigger >= 0.1) {
-            robot.LShoulder.setPower(ShoulderSpeed);
+            robot.LShoulder.setPower(upShoulderSpeed);
         }
 
         if (gamepad2.left_trigger >= 0.1) {
-            robot.LShoulder.setPower(-ShoulderSpeed);
+            robot.LShoulder.setPower(-downShoulderSpeed);
 
         }
 
