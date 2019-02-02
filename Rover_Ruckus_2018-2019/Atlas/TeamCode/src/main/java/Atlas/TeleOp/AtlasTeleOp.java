@@ -44,8 +44,8 @@ public class AtlasTeleOp extends OpMode {
     @Override
     public void loop() {
 
-        upShoulderSpeed = gamepad2.right_trigger * controlSpeed;
-        downShoulderSpeed = gamepad2.left_trigger * controlSpeed;
+        upShoulderSpeed = (gamepad2.right_trigger * 0.7) * controlSpeed;
+        downShoulderSpeed = (gamepad2.left_trigger * 0.7) * controlSpeed;
         LElbowSpeed = gamepad2.left_stick_y * controlSpeed;
         turnspeed = gamepad1.right_stick_x * 0.5;
         speed = gamepad1.left_stick_y * 0.7;
@@ -81,10 +81,6 @@ public class AtlasTeleOp extends OpMode {
             robot.LElbow.setPower(LElbowSpeed);
         } else {
             ElbowSpeed = 0;
-        }
-
-        if (gamepad2.right_stick_y > 0.1 || gamepad2.right_stick_y < -0.1) {
-
         }
 
         //Controlling arm speed

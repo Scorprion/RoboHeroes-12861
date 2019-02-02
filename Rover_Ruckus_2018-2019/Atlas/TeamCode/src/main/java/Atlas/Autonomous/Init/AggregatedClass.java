@@ -36,11 +36,15 @@ public class AggregatedClass extends LinearOpMode {
     final double gearBoxRatio = 0.5; // The gear box ratio for the motors
     final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
     public final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
+
+    private NormalizedRGBA colors = new NormalizedRGBA();
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
     public boolean markerFound = false;
 
     protected double diffred = 0, diffblue = 0;
+    private double max = 0;
+    private int color = 0;
     private int posCounter = 1;
     protected int defaultRed = Color.red(67); //The default, constant red color value for our practice value
     protected int defaultBlue = Color.blue(86); //The default, constant red color value for our practice value
@@ -96,15 +100,10 @@ public class AggregatedClass extends LinearOpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
+            while(opModeIsActive() &&
                     (robot.Left.isBusy() && robot.Right.isBusy())) {
-
-                // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d",
-                        robot.Left.getCurrentPosition(),
-                        robot.Right.getCurrentPosition());
                 telemetry.update();
+                //Doing nothing
             }
 
             // Stop all motion;
@@ -325,18 +324,16 @@ public class AggregatedClass extends LinearOpMode {
     public void BD_CS2() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
-            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            int color = colors.toColor();
-
-            diffred = 0; //colors.red - Color.red(defaultRed);
-            diffblue = 0; //colors.blue - Color.blue(defaultBlue);
-
-
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors = robot.ColorSensor.getNormalizedColors();
+            color = colors.toColor();
+            max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
+
+            diffred = 0; //defaultRed - colors.red;
+            diffblue = 0; //defaultBlue - colors.blue;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
@@ -371,17 +368,15 @@ public class AggregatedClass extends LinearOpMode {
         public void BD_CS() throws InterruptedException {
             robot.runtime.reset();
             while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
-                NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-                int color = colors.toColor();
-
-                diffred = 0; //colors.red - Color.red(defaultRed);
-                diffblue = 0; //colors.blue - Color.blue(defaultBlue);
-
-                float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+                color = colors.toColor();
+                max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
                 colors.red /= max;
                 colors.green /= max;
                 colors.blue /= max;
                 color = colors.toColor();
+
+                diffred = 0; //defaultRed - colors.red;
+                diffblue = 0; //defaultBlue - colors.blue;
 
                 telemetry.addData("Red:", colors.red);
                 telemetry.addData("Calibrated Red:", diffred);
@@ -416,18 +411,15 @@ public class AggregatedClass extends LinearOpMode {
     public void AC_CS() throws InterruptedException {
         robot.runtime.reset();
         while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
-            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            int color = colors.toColor();
-
-            diffred = 0; //colors.red - Color.red(defaultRed);
-            diffblue = 0; //colors.blue - Color.blue(defaultBlue);
-
-
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            color = colors.toColor();
+            max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
+
+            diffred = 0; //defaultRed - colors.red;
+            diffblue = 0; //defaultBlue - colors.blue;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
@@ -462,18 +454,14 @@ public class AggregatedClass extends LinearOpMode {
     public void AC_CS2() throws InterruptedException {
         robot.runtime.reset();
         while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
-            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
-            int color = colors.toColor();
-
-            diffred = 0; //colors.red - Color.red(defaultRed);
-            diffblue = 0; //colors.blue - Color.blue(defaultBlue);
-
-
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
+
+            diffred = 0; //defaultRed - colors.red;
+            diffblue = 0; //defaultBlue - colors.blue;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
@@ -504,7 +492,7 @@ public class AggregatedClass extends LinearOpMode {
      * Does the movements based on if the gold was found in the first position
      */
     public void middleAC() {
-            encoderDrives(0.4, 6, 6);
+        encoderDrives(0.4, 6, 6);
         telemetry.addLine("Started CSing");
         telemetry.update();
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
