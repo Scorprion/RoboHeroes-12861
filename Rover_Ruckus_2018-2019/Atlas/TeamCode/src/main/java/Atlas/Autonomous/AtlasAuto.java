@@ -8,30 +8,23 @@ import Atlas.Autonomous.Init.AggregatedClass;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "AtlasAuto", group = "Atlas")
-@Disabled
 public class AtlasAuto extends AggregatedClass {
-    HardwareAtlas robot = new HardwareAtlas(); //Using the robot hardware
 
-    //Set the move and turn speed for the robot
-    double moveSpeed = 0.2;
-    double turnSpeed = 0.5;
-
-    //Use the AtlasEncoderDrive class to control the encoders
+    private double output = 1; // Needs to be 100 to get passed the "while" statement's conditions
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        //Resetting left and right wheel encoders
-        robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        //Set mode for the motors to make them run with encoders
-        robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStart();
 
-        //Since this class extends from the AggregatedClass, it can just call to the encoderDrive
-        //method initialized there
+        PID(1.3, 0.01, 0.7, 60);
+        sleep(100000);
+        /*encoderDrives(0.4, 5, 5);
+
+        PID(1.3, 0.01, 0.7, 88);
+
+        encoderDrives(0.4, 10, 10);
+        sleep(100000);*/
     }
 }
