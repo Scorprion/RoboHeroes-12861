@@ -16,9 +16,12 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
 public class AtlasTeleOp extends OpMode {
     private ElapsedTime openClaw = new ElapsedTime();
+    private ElapsedTime rmove = new ElapsedTime();
     private boolean switchedS = false;
     private boolean usedRecently = false;
-    private double controlSpeed = 1;
+    private boolean robotCSpeed = false; // the boolean for the robot's speed to be able to slow it down
+    private boolean robotUsedRecent = false;
+    private double controlSpeed = 1, robotControlSpeed = 0.7;
     private double upShoulderSpeed = 0, downShoulderSpeed = 0;
     private double ElbowSpeed = 0;
     private double turnspeed = 0;
@@ -43,18 +46,21 @@ public class AtlasTeleOp extends OpMode {
 
     @Override
     public void loop() {
-
         upShoulderSpeed = (gamepad2.right_trigger * 0.7) * controlSpeed;
         downShoulderSpeed = (gamepad2.left_trigger * 0.7) * controlSpeed;
         LElbowSpeed = gamepad2.left_stick_y * controlSpeed;
-        turnspeed = gamepad1.right_stick_x * 0.5;
-        speed = gamepad1.left_stick_y * 0.7;
+        turnspeed = gamepad1.right_stick_x * robotControlSpeed;
+        speed = gamepad1.left_stick_y * robotControlSpeed;
         telemetry.addData("Elbow Speed:", LElbowSpeed);
         telemetry.addData("Up Shoulder Speed:", upShoulderSpeed);
         telemetry.addData("Down Shoulder Speed:", downShoulderSpeed);
         telemetry.addData("Left and Right move power:", speed);
         telemetry.addData("Slowdown used recently:", usedRecently);
-        telemetry.addData("Switched Speed:", switchedS);
+        telemetry.addData("Switched Arm Speed:", switchedS);
+        telemetry.addData("Robot speed:", speed);
+        telemetry.addData("Robot turn speed:", turnspeed);
+        telemetry.addData("Robot switched", robotCSpeed);
+        telemetry.addData("Robot switched recently:", robotUsedRecent);
         telemetry.update();
 
         /*
@@ -156,6 +162,18 @@ public class AtlasTeleOp extends OpMode {
             Winch.setPower(0);
         }
 
+        if(gamepad1.x && !robotUsedRecent) {
+            if (robotCSpeed) {
+                robotControlSpeed = 0.7;
+                robotCSpeed = false;
+            } else if (!robotCSpeed) {
+                robotControlSpeed = 0.3;
+                robotCSpeed = true;
+            }
+            robotUsedRecent = true;
+            rmove.reset();
+        }
+
         //The latching
         if (gamepad1.dpad_left) {
             robot.Sliding.setPosition(1);
@@ -178,6 +196,10 @@ public class AtlasTeleOp extends OpMode {
         // milliseconds after the a button was pressed
         if (robot.runtime.milliseconds() > 200) {
             usedRecently = false;
+        }
+
+        if(rmove.milliseconds() > 200) {
+            robotUsedRecent = false;
         }
 
         // Setting the LClamp power to 0.5 after the open claw is greater than 250 milliseconds
