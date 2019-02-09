@@ -48,7 +48,7 @@ public class AtlasTeleOp extends OpMode {
     public void loop() {
         upShoulderSpeed = (gamepad2.right_trigger * 0.7) * controlSpeed;
         downShoulderSpeed = (gamepad2.left_trigger * 0.7) * controlSpeed;
-        LElbowSpeed = gamepad2.left_stick_y * controlSpeed;
+        LElbowSpeed = gamepad2.left_stick_y;
         turnspeed = gamepad1.right_stick_x * robotControlSpeed;
         speed = gamepad1.left_stick_y * robotControlSpeed;
         telemetry.addData("Elbow Speed:", LElbowSpeed);
