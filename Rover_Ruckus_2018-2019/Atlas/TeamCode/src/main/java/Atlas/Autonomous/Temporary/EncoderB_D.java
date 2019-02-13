@@ -27,7 +27,7 @@ public class EncoderB_D extends AggregatedClass {
         robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         robot.Sliding.setPosition(1);
-        sleep(2000);
+        sleep(3000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();

@@ -71,7 +71,7 @@ public class EncoderA_C extends AggregatedClass {
                 encoderDrives(0.3, 11, -11);
                 sleep(100);
                 encoderDrives(0.4, 12, 12);
-                rightAC();
+                AC_CS();
             }
         }
     }

@@ -369,52 +369,10 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-        public void BD_CS() throws InterruptedException {
-            robot.runtime.reset();
-            while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
-                color = colors.toColor();
-                max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-                colors.red /= max;
-                colors.green /= max;
-                colors.blue /= max;
-                color = colors.toColor();
-
-                diffred = 0; //defaultRed - colors.red;
-                diffblue = 0; //defaultBlue - colors.blue;
-
-                telemetry.addData("Red:", colors.red);
-                telemetry.addData("Calibrated Red:", diffred);
-                telemetry.addData("Blue:", colors.blue + diffblue);
-                telemetry.addData("Calibrated Blue:", diffblue);
-                telemetry.update();
-                if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
-                    if(posCounter == 1) {
-                        telemetry.addLine("Gold found at 1");
-                        telemetry.update();
-                        colorFound = true;
-                        middleBD();
-                    } else if(posCounter == 2) {
-                        telemetry.addLine("Gold found at 2");
-                        telemetry.update();
-                        colorFound = true;
-                        leftBD();
-                    } else {
-                        telemetry.addLine("Gold found at 3");
-                        telemetry.update();
-                        colorFound = true;
-                        rightBD();
-                    }
-                }
-            }
-
-        if(!colorFound && (robot.runtime.milliseconds() >= 500)) {
-            posCounter++;
-        }
-    }
-
-    public void AC_CS() throws InterruptedException {
+    public void BD_CS() {
         robot.runtime.reset();
-        while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+        while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+            colors = robot.ColorSensor.getNormalizedColors();
             color = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
@@ -430,13 +388,57 @@ public class AggregatedClass extends LinearOpMode {
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
-                if(posCounter == 1) {
+            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+                if (posCounter == 1) {
+                    telemetry.addLine("Gold found at 1");
+                    telemetry.update();
+                    colorFound = true;
+                    middleBD();
+                } else if (posCounter == 2) {
+                    telemetry.addLine("Gold found at 2");
+                    telemetry.update();
+                    colorFound = true;
+                    leftBD();
+                } else {
+                    telemetry.addLine("Gold found at 3");
+                    telemetry.update();
+                    colorFound = true;
+                    rightBD();
+                }
+            }
+        }
+
+        if(!colorFound && (robot.runtime.milliseconds() >= 500)) {
+            posCounter++;
+        }
+    }
+
+    public void AC_CS() {
+        robot.runtime.reset();
+        while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+            colors = robot.ColorSensor.getNormalizedColors();
+            color = colors.toColor();
+            max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            diffred = 0; //defaultRed - colors.red;
+            diffblue = 0; //defaultBlue - colors.blue;
+
+            telemetry.addData("Red:", colors.red);
+            telemetry.addData("Calibrated Red:", diffred);
+            telemetry.addData("Blue:", colors.blue + diffblue);
+            telemetry.addData("Calibrated Blue:", diffblue);
+            telemetry.update();
+            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+                if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
                     colorFound = true;
                     middleAC();
-                } else if(posCounter == 2) {
+                } else if (posCounter == 2) {
                     telemetry.addLine("Gold found at 2");
                     telemetry.update();
                     colorFound = true;
@@ -455,9 +457,11 @@ public class AggregatedClass extends LinearOpMode {
         }
     }
 
-    public void AC_CS2() throws InterruptedException {
+    public void AC_CS2() {
         robot.runtime.reset();
-        while(opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+        while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+            colors = robot.ColorSensor.getNormalizedColors();
+            color = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -472,17 +476,22 @@ public class AggregatedClass extends LinearOpMode {
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
-                if(posCounter == 1) {
+            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+                if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
                     colorFound = true;
                     middleAC2();
-                } else if(posCounter == 2) {
+                } else if (posCounter == 2) {
                     telemetry.addLine("Gold found at 2");
                     telemetry.update();
                     colorFound = true;
                     leftAC2();
+                } else {
+                    telemetry.addLine("Gold found at 3");
+                    telemetry.update();
+                    colorFound = true;
+                    rightAC2();
                 }
             }
         }
@@ -553,11 +562,10 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.3, -8, -8);
                 sleep(100);
-                encoderDrives(0.4, 12, -12);
+                encoderDrives(0.4, 15, -15);
                 sleep(100);
                 encoderDrives(0.4, -19, -19);
                 sleep(100);
-                encoderDrives(1, -78, -75);
             }
         }
     }
@@ -593,13 +601,10 @@ public class AggregatedClass extends LinearOpMode {
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -8, -8);
                 sleep(100);
-                encoderDrives(0.4, -16,16);
+                encoderDrives(0.4, -20,20);
                 sleep(100);
                 encoderDrives(0.4, -16, -16);
-                sleep(100);
-                encoderDrives(0.5, 3, -3);
-                sleep(100);
-                encoderDrives(1, -72, -72);
+
             }
         }
     }
@@ -611,7 +616,7 @@ public class AggregatedClass extends LinearOpMode {
         sleep(100);
         encoderDrives(0.4, 15, -9);
         sleep(100);
-        encoderDrives(0.4, 6, 6);
+        encoderDrives(0.4, 4, 4);
         sleep(100);
         telemetry.addLine("Started CSing");
         telemetry.update();
@@ -634,11 +639,8 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(0.5, -12, -12);
-                sleep(100);
-                encoderDrives(0.5, 3.75, -3.75);
-                sleep(100);
-                encoderDrives(1, -73, -76);
+                encoderDrives(0.5, -13, -11);
+
             }
         }
     }
@@ -671,9 +673,9 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.4, -6, -6);
                 sleep(100);
-                encoderDrives(0.3, -3, 3);
+                encoderDrives(0.3, -6, 6);
                 sleep(100);
-                encoderDrives(1, -76, -75);
+                encoderDrives(1, -20, -20);
             }
         }
     }
@@ -704,13 +706,9 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(0.5, -15, 15);
+                encoderDrives(0.5, -12, 12);
                 sleep(100);
-                encoderDrives(0.5, 8, 8);
-                sleep(100);
-                encoderDrives(0.5, 4, -4);
-                sleep(100);
-                encoderDrives(1, 72, 72);
+                encoderDrives(0.5, 15, 15);
             }
         }
     }
@@ -748,7 +746,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(1, -74, -74);
+                encoderDrives(1, -72, -72);
             }
         }
     }
@@ -793,7 +791,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
-                encoderDrives(1, -74, -74);
+                encoderDrives(1, -72, -72);
             }
         }
     }
@@ -834,7 +832,7 @@ public class AggregatedClass extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(1, -74, -74);
+                encoderDrives(1, -72, -72);
             }
         }
     }

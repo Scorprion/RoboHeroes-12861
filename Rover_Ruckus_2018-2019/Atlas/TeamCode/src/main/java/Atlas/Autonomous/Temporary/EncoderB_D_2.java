@@ -29,7 +29,7 @@ public class EncoderB_D_2 extends AggregatedClass {
         robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         robot.Sliding.setPosition(1);
-        sleep(2000);
+        sleep(3000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
@@ -54,7 +54,7 @@ public class EncoderB_D_2 extends AggregatedClass {
             sleep(500);
             encoderDrives(0.2, 3.25, -3.25);
             sleep(500);
-            encoderDrives(0.4, 4.25, 4.25);
+            encoderDrives(0.4, 4, 4);
             sleep(500);
             BD_CS2();
             if (!colorFound) {
