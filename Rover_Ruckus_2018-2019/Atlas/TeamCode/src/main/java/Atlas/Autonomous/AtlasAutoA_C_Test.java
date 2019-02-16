@@ -1,25 +1,20 @@
 package Atlas.Autonomous;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import Atlas.Autonomous.Init.AggregatedClass;
+import Atlas.Autonomous.Init.Aggregated;
 
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
+import static Atlas.Autonomous.Init.Aggregated.direction.CW;
+import static Atlas.Autonomous.Init.Aggregated.direction.CCW;
 
 
 @Autonomous(name = "AtlasAutoA_C_Test", group = "Test")
-public class AtlasAutoA_C_Test extends AggregatedClass {
+public class AtlasAutoA_C_Test extends Aggregated {
     boolean loop = true;
 
     @Override

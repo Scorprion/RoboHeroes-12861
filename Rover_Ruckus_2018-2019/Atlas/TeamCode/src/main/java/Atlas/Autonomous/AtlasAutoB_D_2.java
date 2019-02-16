@@ -12,15 +12,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import Atlas.Autonomous.Init.AggregatedClass;
-import Atlas.Autonomous.Init.HardwareAtlas;
+import Atlas.Autonomous.Init.Aggregated;
 
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
+import static Atlas.Autonomous.Init.Aggregated.direction.CCW;
 
 
 @Autonomous(name = "AtlasAutoB_D_2", group = "Auto")
 @Disabled
-public class AtlasAutoB_D_2 extends AggregatedClass {
+public class AtlasAutoB_D_2 extends Aggregated {
 
     @Override
     public void runOpMode() throws InterruptedException {

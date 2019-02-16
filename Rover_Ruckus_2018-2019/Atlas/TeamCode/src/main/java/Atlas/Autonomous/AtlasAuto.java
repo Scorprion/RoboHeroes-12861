@@ -1,16 +1,14 @@
 package Atlas.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
-import Atlas.Autonomous.Init.AggregatedClass;
-import Atlas.Autonomous.Init.HardwareAtlas;
+import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "AtlasAuto", group = "Atlas")
-public class AtlasAuto extends AggregatedClass {
+public class AtlasAuto extends Aggregated {
 
     private double output = 1; // Needs to be 100 to get passed the "while" statement's conditions
+    private double angle = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -18,8 +16,12 @@ public class AtlasAuto extends AggregatedClass {
 
         waitForStart();
 
-        PID(1.3, 0.01, 0.7, 60);
-        sleep(100000);
+        PID(0.7, 0.1, 1, 90);
+        while(opModeIsActive()) {
+            angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
+            telemetry.addData("Current Angle: ", angle);
+            telemetry.update();
+        }
         /*encoderDrives(0.4, 5, 5);
 
         PID(1.3, 0.01, 0.7, 88);

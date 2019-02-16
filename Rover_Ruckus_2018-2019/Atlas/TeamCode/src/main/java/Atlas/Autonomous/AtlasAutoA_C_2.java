@@ -1,27 +1,22 @@
 package Atlas.Autonomous;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import Atlas.Autonomous.Init.AggregatedClass;
-import Atlas.Autonomous.Init.HardwareAtlas;
+import Atlas.Autonomous.Init.Aggregated;
+import Atlas.Autonomous.Init.Backup_Agg;
 
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CCW;
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
+import static Atlas.Autonomous.Init.Backup_Agg.direction.CCW;
+import static Atlas.Autonomous.Init.Backup_Agg.direction.CW;
 
 
 @Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
 @Disabled
-public class AtlasAutoA_C_2 extends AggregatedClass {
+public class AtlasAutoA_C_2 extends Aggregated {
 
     public boolean colorFound = false;
 

@@ -12,15 +12,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import Atlas.Autonomous.Init.AggregatedClass;
+import Atlas.Autonomous.Init.Aggregated;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
-import static Atlas.Autonomous.Init.AggregatedClass.direction.CW;
+import static Atlas.Autonomous.Init.Aggregated.direction.CW;
 
 
 @Autonomous(name = "AtlasAutoB_D", group = "Auto")
 @Disabled
-public class AtlasAutoB_D extends AggregatedClass {
+public class AtlasAutoB_D extends Aggregated {
 
     HardwareAtlas robot = new HardwareAtlas();
     public boolean colorFound = false;

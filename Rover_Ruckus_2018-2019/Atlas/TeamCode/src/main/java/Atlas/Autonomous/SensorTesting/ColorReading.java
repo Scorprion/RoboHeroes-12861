@@ -6,10 +6,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
-import Atlas.Autonomous.Init.AggregatedClass;
+import Atlas.Autonomous.Init.Aggregated;
+import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "ColorReading", group = "Auto")
-public class ColorReading extends AggregatedClass {
+public class ColorReading extends Aggregated {
 
     private float[] hsvValues = new float[3];
     private float[] hsvDefault = {};

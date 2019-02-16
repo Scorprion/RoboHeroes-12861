@@ -1,20 +1,17 @@
-package Atlas.Autonomous.Temporary;
+package Atlas.Autonomous.Backup;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
-import Atlas.Autonomous.Init.AggregatedClass;
-import Atlas.Autonomous.Init.HardwareAtlas;
+import Atlas.Autonomous.Init.Backup_Agg;
+import Atlas.Autonomous.Init.Backup_Agg;
 
-@Autonomous(name = "EncoderA_C", group = "Auto")
-public class EncoderA_C extends AggregatedClass {
-
-    //Use the AtlasEncoderDrive class to control the encoders
+@Autonomous(name = "EnocderA_C_2", group = "Auto")
+public class EncoderA_C_2 extends Backup_Agg {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -26,12 +23,12 @@ public class EncoderA_C extends AggregatedClass {
 
         waitForStart();
         robot.LClamp.setPosition(0);
-        sleep(200);
+        sleep(250);
         movement();
     }
 
 
-    public void movement() throws InterruptedException {
+    public void movement() throws InterruptedException{
         //Landing
         robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
@@ -51,7 +48,7 @@ public class EncoderA_C extends AggregatedClass {
         sleep(1000);
         encoderDrives(0.4, 20, 20);
         sleep(100);
-        AC_CS();
+        AC_CS2();
         if(!colorFound) {
             encoderDrives(0.4, -6, -6);
             sleep(100);
@@ -63,7 +60,7 @@ public class EncoderA_C extends AggregatedClass {
             sleep(100);
             encoderDrives(0.4, 4.75, 4.75);
             sleep(100);
-            AC_CS();
+            AC_CS2();
             if(!colorFound) {
                 sleep(100);
                 encoderDrives(0.4, -11, -11);
@@ -71,7 +68,7 @@ public class EncoderA_C extends AggregatedClass {
                 encoderDrives(0.3, 11, -11);
                 sleep(100);
                 encoderDrives(0.4, 12, 12);
-                AC_CS();
+                rightAC2();
             }
         }
     }
