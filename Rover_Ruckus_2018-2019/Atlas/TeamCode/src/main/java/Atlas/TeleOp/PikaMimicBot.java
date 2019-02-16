@@ -33,31 +33,44 @@ public class PikaMimicBot extends OpMode {
         BackLeft = hardwareMap.dcMotor.get("BackLeft");
         FrontRight = hardwareMap.dcMotor.get("FrontRight");
         BackRight = hardwareMap.dcMotor.get("BackRight");
-        FrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        BackLeft.setDirection(DcMotor.Direction.REVERSE);
+        FrontRight.setDirection(DcMotor.Direction.REVERSE);
+        BackRight.setDirection(DcMotor.Direction.REVERSE);
         //DriveL.setDirection(DcMotor.Direction.REVERSE);
     }
 
     @Override
     public void loop() {
+
+
        double speed = gamepad1.left_stick_y;
        double turn = gamepad1.left_stick_x;
+       double control = 0.75;
 
-       if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-           FrontLeft.setPower(speed);
-           FrontRight.setPower(speed);
-           BackLeft.setPower(speed);
-           BackRight.setPower(speed);
-       }else if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1){
-           FrontLeft.setPower(turn);
-           FrontRight.setPower(-turn);
-           BackLeft.setPower(turn);
-           BackRight.setPower(-turn);
+       if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1 && gamepad1.left_stick_y != 0) {
+           FrontLeft.setPower(-speed * control);
+           FrontRight.setPower(-speed * control);
+           BackLeft.setPower(speed * control);
+           BackRight.setPower(speed * control);
+       }else if(gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1){
+
        }else{
            FrontLeft.setPower(0);
            FrontRight.setPower(0);
            BackLeft.setPower(0);
            BackRight.setPower(0);
        }
+       if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1 && gamepad1.right_stick_x != 0){
+           FrontLeft.setPower(turn * control);
+           FrontRight.setPower(-turn * control);
+           BackLeft.setPower(turn * control);
+           BackRight.setPower(-turn * control);
+       }else if(gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1){
+
+       }else{
+            FrontLeft.setPower(0);
+            FrontRight.setPower(0);
+            BackLeft.setPower(0);
+            BackRight.setPower(0);
+        }
     }
 }
