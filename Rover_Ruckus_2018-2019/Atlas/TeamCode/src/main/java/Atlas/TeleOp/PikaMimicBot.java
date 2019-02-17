@@ -15,7 +15,6 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @TeleOp(name= "PikaMimic", group= "Pushbot")
 public class PikaMimicBot extends OpMode {
-    private double LElbowSpeed = 0;
 
     DcMotor FrontLeft;
     DcMotor FrontRight;
@@ -24,8 +23,6 @@ public class PikaMimicBot extends OpMode {
 
 
     //Set the speed of the motors when the Left or Right sticks are not idle
-
-    HardwareAtlas robot = new HardwareAtlas();
 
     public void init() {
 
@@ -40,34 +37,31 @@ public class PikaMimicBot extends OpMode {
 
     @Override
     public void loop() {
+        double control = 0.75;
+        double speed = gamepad1.left_stick_y * control;
+        double turn = gamepad1.right_stick_x;
+        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
+            FrontLeft.setPower(-speed);
+            FrontRight.setPower(-speed);
+            BackLeft.setPower(speed);
+            BackRight.setPower(speed);
+        } else {
+            FrontLeft.setPower(0);
+            FrontRight.setPower(0);
+            BackLeft.setPower(0);
+            BackRight.setPower(0);
+        }
 
-
-       double speed = gamepad1.left_stick_y;
-       double turn = gamepad1.left_stick_x;
-       double control = 0.75;
-       while (true){
-            if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1 && gamepad1.left_stick_y != 0) {
-                FrontLeft.setPower(-speed * control);
-                FrontRight.setPower(-speed * control);
-                BackLeft.setPower(speed * control);
-                BackRight.setPower(speed * control);
-            }else{
-                FrontLeft.setPower(0);
-                FrontRight.setPower(0);
-                BackLeft.setPower(0);
-                BackRight.setPower(0);
-            }
-            if(gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1){
-                FrontLeft.setPower(turn * control);
-                FrontRight.setPower(-turn * control);
-                BackLeft.setPower(turn * control);
-                BackRight.setPower(-turn * control);
-            }else{
-                FrontLeft.setPower(0);
-                FrontRight.setPower(0);
-                BackLeft.setPower(0);
-                BackRight.setPower(0);
-            }
+        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
+            FrontLeft.setPower(turn);
+            FrontRight.setPower(-turn);
+            BackLeft.setPower(turn);
+            BackRight.setPower(-turn);
+        } else {
+            FrontLeft.setPower(0);
+            FrontRight.setPower(0);
+            BackLeft.setPower(0);
+            BackRight.setPower(0);
         }
     }
 }

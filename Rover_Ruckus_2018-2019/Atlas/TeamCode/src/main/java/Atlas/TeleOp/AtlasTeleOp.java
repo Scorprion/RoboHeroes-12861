@@ -15,17 +15,22 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
 public class AtlasTeleOp extends OpMode {
+    //Making the slower arm and elbow toggle (driver 2)
     private ElapsedTime openClaw = new ElapsedTime();
-    private ElapsedTime rmove = new ElapsedTime();
     private boolean switchedS = false;
     private boolean usedRecently = false;
+    private double controlSpeedE = 0.7, controlSpeedS = 0.7;
+
+    //Making the slower robot toggle (driver 1)
+    private ElapsedTime rmove = new ElapsedTime();
     private boolean robotCSpeed = false; // the boolean for the robot's speed to be able to slow it down
     private boolean robotUsedRecent = false;
-    private double controlSpeed = 1, robotControlSpeed = 0.7;
+    private double robotControlSpeed = 0.7;
+
     private double upShoulderSpeed = 0, downShoulderSpeed = 0;
-    private double ElbowSpeed = 0;
     private double turnspeed = 0;
     private double speed = 0;
+    private double ElbowSpeed = 0;
 
     private double LElbowSpeed = 0;
 
@@ -46,11 +51,14 @@ public class AtlasTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        upShoulderSpeed = (gamepad2.right_trigger * 0.7) * controlSpeed;
-        downShoulderSpeed = (gamepad2.left_trigger * 0.7) * controlSpeed;
-        LElbowSpeed = gamepad2.left_stick_y;
+        upShoulderSpeed = (gamepad2.right_trigger * 0.7) * controlSpeedS;
+        downShoulderSpeed = (gamepad2.left_trigger * 0.7) * controlSpeedS;
+        LElbowSpeed = (gamepad2.left_stick_y * 1) * controlSpeedE;
         turnspeed = gamepad1.right_stick_x * robotControlSpeed;
         speed = gamepad1.left_stick_y * robotControlSpeed;
+
+
+
         telemetry.addData("Elbow Speed:", LElbowSpeed);
         telemetry.addData("Up Shoulder Speed:", upShoulderSpeed);
         telemetry.addData("Down Shoulder Speed:", downShoulderSpeed);
@@ -89,13 +97,15 @@ public class AtlasTeleOp extends OpMode {
             ElbowSpeed = 0;
         }
 
-        //Controlling arm speed
+        //Controlling Shoulder arm speed
         if (gamepad2.a && !usedRecently) {
             if (switchedS) {
-                controlSpeed = 1;
+                controlSpeedS = 1;
+                controlSpeedE = 1;
                 switchedS = false;
             } else if (!switchedS) {
-                controlSpeed = 0.5;
+                controlSpeedS = 0.7;
+                controlSpeedE = 0.7;
                 switchedS = true;
             }
             usedRecently = true;
@@ -158,7 +168,7 @@ public class AtlasTeleOp extends OpMode {
             Winch.setPower(-gamepad1.right_trigger);
         }
 
-        if (gamepad1.y) {
+        if (gamepad1.y || gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0) {
             Winch.setPower(0);
         }
 
@@ -167,7 +177,7 @@ public class AtlasTeleOp extends OpMode {
                 robotControlSpeed = 0.7;
                 robotCSpeed = false;
             } else if (!robotCSpeed) {
-                robotControlSpeed = 0.3;
+                robotControlSpeed = 0.4;
                 robotCSpeed = true;
             }
             robotUsedRecent = true;

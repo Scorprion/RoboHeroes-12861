@@ -994,8 +994,6 @@ public class Aggregated extends LinearOpMode {
 
 
 
-
-
     //Methods for testing
     /**
      * Constrain a given value between 2 values, useful for things like power which can only be between 1 and -1
@@ -1076,7 +1074,7 @@ public class Aggregated extends LinearOpMode {
 
         Ioutput += I * error;
 
-        slope = lasterror - error;
+        slope = error - lasterror;
         Doutput = -D * slope;
 
         lasterror = error;

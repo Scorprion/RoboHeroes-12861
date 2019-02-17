@@ -612,8 +612,6 @@ public class Backup_Agg extends LinearOpMode {
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
-                encoderDrives(0.5, 8, 8);
-                sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
                 encoderDrives(1, -72, -72);
@@ -657,8 +655,6 @@ public class Backup_Agg extends LinearOpMode {
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
-                encoderDrives(0.5, 8, 8);
-                sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
                 encoderDrives(1, -72, -72);
@@ -697,8 +693,6 @@ public class Backup_Agg extends LinearOpMode {
             colors.blue /= max;
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(100);
-                encoderDrives(0.5, 8, 8);
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);

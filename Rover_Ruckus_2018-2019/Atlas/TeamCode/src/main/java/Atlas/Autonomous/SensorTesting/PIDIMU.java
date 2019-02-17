@@ -14,6 +14,7 @@ package Atlas.Autonomous.SensorTesting;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -26,7 +27,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name="Drive Avoid PID", group="Exercises")
-//@Disabled
+@Disabled
 public class PIDIMU extends LinearOpMode
 {
     DcMotor                 Left;

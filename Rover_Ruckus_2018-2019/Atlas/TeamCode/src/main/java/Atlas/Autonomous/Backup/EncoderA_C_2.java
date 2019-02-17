@@ -8,7 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.Backup_Agg;
 
 @Autonomous(name = "EnocderA_C_2", group = "Auto")
 public class EncoderA_C_2 extends Backup_Agg {
