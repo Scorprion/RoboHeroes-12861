@@ -42,7 +42,7 @@ public class Aggregated extends LinearOpMode {
     private NormalizedRGBA colors = new NormalizedRGBA();
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
-    public boolean markerFound = false;
+    private boolean markerFound = false;
 
     private double PIDout = 0, lasterror = 0;
 
@@ -104,10 +104,15 @@ public class Aggregated extends LinearOpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while(opModeIsActive() &&
+            while (opModeIsActive() &&
                     (robot.Left.isBusy() && robot.Right.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d",
+                        robot.Left.getCurrentPosition(),
+                        robot.Right.getCurrentPosition());
                 telemetry.update();
-                //Doing nothing
             }
 
             // Stop all motion;

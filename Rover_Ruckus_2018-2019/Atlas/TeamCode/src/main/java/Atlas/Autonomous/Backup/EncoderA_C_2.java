@@ -29,14 +29,14 @@ public class EncoderA_C_2 extends Backup_Agg {
 
     public void movement() throws InterruptedException{
         //Landing
-        robot.Latching.setPower(0.8);
+        /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         robot.Sliding.setPosition(1);
         sleep(2000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(1000);
+        sleep(1000);*/
 
         //Encoders
         robot.Left.setPower(-0.15);
@@ -45,7 +45,7 @@ public class EncoderA_C_2 extends Backup_Agg {
         robot.Left.setPower(0.15);
         robot.Right.setPower(0.15);
         sleep(1000);
-        encoderDrives(0.4, 20, 20);
+        encoderDrives(0.4, 17, 17);
         sleep(100);
         AC_CS2();
         if(!colorFound) {
@@ -55,9 +55,9 @@ public class EncoderA_C_2 extends Backup_Agg {
             sleep(100);
             encoderDrives(0.4, 8, 8);
             sleep(100);
-            encoderDrives(0.2, 3.25, -3.25);
+            encoderDrives(0.2, 3, -3);
             sleep(100);
-            encoderDrives(0.4, 4.75, 4.75);
+            encoderDrives(0.4, 4.5, 4.5);
             sleep(100);
             AC_CS2();
             if(!colorFound) {

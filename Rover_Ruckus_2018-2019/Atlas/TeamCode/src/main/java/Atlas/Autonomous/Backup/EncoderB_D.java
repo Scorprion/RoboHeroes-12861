@@ -6,12 +6,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
+import Atlas.Autonomous.Init.Aggregated;
 import Atlas.Autonomous.Init.Backup_Agg;
 import Atlas.Autonomous.Init.Backup_Agg;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "EnocderB_D", group = "Auto")
-public class EncoderB_D extends Backup_Agg {
+public class EncoderB_D extends Aggregated {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -51,7 +52,7 @@ public class EncoderB_D extends Backup_Agg {
             sleep(100);
             encoderDrives(0.4, 8, 8);
             sleep(100);
-            encoderDrives(0.2, 3.25, -3.25);
+            encoderDrives(0.2, 3, -3);
             sleep(100);
             encoderDrives(0.4, 4, 4);
             sleep(100);
