@@ -25,11 +25,12 @@ public class Aggregated extends LinearOpMode {
     public HardwareAtlas robot = new HardwareAtlas();
 
     //Defining final variables for the encoders
-    final double countsPerRot = 2240; // The counts per rotation
-    final double gearBoxRatio = 0.5; // The gear box ratio for the motors
-    final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
-    public final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
+    private final double countsPerRot = 2240; // The counts per rotation
+    private final double gearBoxRatio = 0.5; // The gear box ratio for the motors
+    private final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
+    private final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
 
+    private float[] hsvValues = new float[3];
     private NormalizedRGBA colors = new NormalizedRGBA();
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
@@ -37,12 +38,12 @@ public class Aggregated extends LinearOpMode {
 
     private double PIDout = 0, lasterror = 0;
 
-    protected double diffred = 0, diffblue = 0;
+    private double diffred = 0, diffblue = 0;
     private double max = 0;
     private int color = 0;
     private int posCounter = 1;
-    protected int defaultRed = Color.red(67); //The default, constant red color value for our practice value
-    protected int defaultBlue = Color.blue(86); //The default, constant red color value for our practice value
+    private int defaultRed = Color.red(67); //The default, constant red color value for our practice value
+    private int defaultBlue = Color.blue(86); //The default, constant red color value for our practice value
 
     public enum direction {
         CW, CCW
@@ -246,7 +247,7 @@ public class Aggregated extends LinearOpMode {
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
@@ -257,11 +258,6 @@ public class Aggregated extends LinearOpMode {
                     telemetry.update();
                     colorFound = true;
                     leftBD();
-                } else {
-                    telemetry.addLine("Gold found at 3");
-                    telemetry.update();
-                    colorFound = true;
-                    rightBD();
                 }
             }
         }
@@ -373,7 +369,6 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -403,15 +398,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.3);
         sleep(700);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 8);
@@ -443,15 +430,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(800);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 6, 6);
@@ -482,15 +461,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(800);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 8);
@@ -514,15 +485,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(700);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 6);
@@ -549,15 +512,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(700);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 6);
@@ -589,15 +544,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(800);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 8);
@@ -634,15 +581,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(800);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 8);
@@ -675,16 +614,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(700);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            //int color = colors.toColor();
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 encoderDrives(0.5, 8, 8);
@@ -771,15 +701,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(700);
         while (opModeIsActive() && !colorFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 encoderDrives(0.5, 8, 8);
@@ -804,15 +726,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(800);
         while (opModeIsActive() && !markerFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 encoderDrives(0.5, 8, 8);
@@ -832,15 +746,7 @@ public class Aggregated extends LinearOpMode {
         robot.Right.setPower(-0.2);
         sleep(200);
         while (opModeIsActive() && !colorFound) {
-            float[] hsvValues = new float[3];
-            NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            colors.toColor();
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
+            initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
@@ -851,7 +757,16 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-
+    private void initColor() {
+        NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
+        Color.colorToHSV(colors.toColor(), hsvValues);
+        colors.toColor();
+        max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+        colors.red /= max;
+        colors.green /= max;
+        colors.blue /= max;
+        color = colors.toColor();
+    }
 
     //Methods for testing
     /**

@@ -9,9 +9,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import Atlas.Autonomous.Init.Aggregated;
 
-import static Atlas.Autonomous.Init.Backup_Agg.direction.CCW;
-import static Atlas.Autonomous.Init.Backup_Agg.direction.CW;
-
 
 @Autonomous(name = "AtlasAutoA_C_2", group = "Auto")
 @Disabled
@@ -44,7 +41,7 @@ public class AtlasAutoA_C_2 extends Aggregated {
         if(!colorFound) {
             encoderDrives(0.4, -6, -6);
             sleep(500);
-            PIDCCW(0.4, 0.4, 0, 46);
+            PID(0.4, 0.4, 0, 46);
             sleep(500);
             encoderDrives(0.4, 8, 8);
             sleep(500);
