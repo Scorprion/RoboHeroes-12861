@@ -8,7 +8,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import Atlas.Autonomous.Init.Aggregated;
-import Atlas.Autonomous.Init.Backup_Agg;
 
 import static Atlas.Autonomous.Init.Backup_Agg.direction.CCW;
 import static Atlas.Autonomous.Init.Backup_Agg.direction.CW;

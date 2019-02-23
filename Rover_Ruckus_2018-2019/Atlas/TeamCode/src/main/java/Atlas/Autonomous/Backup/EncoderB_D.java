@@ -2,14 +2,7 @@ package Atlas.Autonomous.Backup;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
 import Atlas.Autonomous.Init.Aggregated;
-import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.HardwareAtlas;
 
 @Autonomous(name = "EnocderB_D", group = "Auto")
 public class EncoderB_D extends Aggregated {

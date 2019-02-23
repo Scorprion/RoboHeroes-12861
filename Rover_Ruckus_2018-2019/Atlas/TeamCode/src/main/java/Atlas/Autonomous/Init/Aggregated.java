@@ -1,29 +1,20 @@
 package Atlas.Autonomous.Init;
 
 import android.graphics.Color;
-import android.provider.CalendarContract;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.concurrent.TimeUnit;
 
-import static Atlas.Autonomous.Init.Aggregated.direction.CCW;
-import static Atlas.Autonomous.Init.Aggregated.direction.CW;
-
+@SuppressWarnings("unused")
 public class Aggregated extends LinearOpMode {
     /**
      * A program that houses all of our methods needed to run our robot's
      * autonomous programs
-     * <p>
+     *
      * Since we couldn't use interfaces or anything like that to be able to implement different set
      * methods like
      *
@@ -180,144 +171,6 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    private double error = 0;
-    private double Poutput;
-    private double Ioutput;
-    private double Doutput;
-    private double slope;
-    private double pasterror = 0;
-    private double angle = 0;
-    protected Orientation sensor;
-    private double output;
-    private boolean atAngle = false;
-    private boolean firstTime = true;
-    protected void PIDCCW (double P, double I, double D, double target) {
-        target /= 100;
-        atAngle = false;
-        Ioutput = 0;
-        while (opModeIsActive() && !atAngle) {
-            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(sensor.firstAngle);
-            error = target - (angle / 100); // The target is our setpoint and our sensor is our IMU output
-
-            Poutput = P * error;
-
-            // The accumulator
-            Ioutput = Ioutput + (I * error) / 100;
-
-            // The slope is the "derivative" of the error
-            if (firstTime) {
-                slope = 0;
-                Doutput = -D * slope;
-                firstTime = false;
-            } else {
-                slope = pasterror - error;
-                Doutput = -D * slope;
-            }
-
-            pasterror = error;
-
-            // The output of the PID controller
-            output = Poutput + Ioutput + Doutput;
-
-            if (Math.round(error * 100) == 0) {
-                atAngle = true;
-            }
-
-            if (output > 1) {
-                output = 1;
-            }
-
-            robot.Left.setPower(output);
-            robot.Right.setPower(-output);
-
-            telemetry.addData("Output:", output);
-            telemetry.addData("Target Angle:", target * 100);
-            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
-            telemetry.addData("Proportional:", Poutput);
-            telemetry.addData("Integral:", Ioutput);
-            telemetry.addData("Derivative:", Doutput);
-            telemetry.addData("Error:", error);
-            telemetry.update();
-
-        }
-        stopMotors();
-        /*while(opModeIsActive()) {
-            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
-            telemetry.update();
-
-        } */
-    }
-    protected void PIDCW (double P, double I, double D, double target) {
-        target /= 100;
-        atAngle = false;
-        Ioutput = 0;
-        while(opModeIsActive() && !atAngle) {
-            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            angle = normalizeAngle(sensor.firstAngle);
-            error = target - (angle / 100); // The target is our setpoint and our sensor is our IMU output
-
-            Poutput = P * error;
-
-            // The accumulator
-            Ioutput = Ioutput + ((I * error) / 100);
-
-            // The slope is the "derivative" of the error
-            if(firstTime) {
-                slope = 0;
-                Doutput = -D * slope;
-                firstTime = false;
-            } else {
-                slope = pasterror - error;
-                Doutput = -D * slope;
-            }
-
-            pasterror = error;
-
-            // The output of the PID controller
-            output = Poutput + Ioutput + Doutput;
-
-            if(Math.round(error * 100) == 0) {
-                atAngle = true;
-            }
-
-            if(output > 1) {
-                output = 1;
-            }
-
-            robot.Left.setPower(-output);
-            robot.Right.setPower(output);
-
-
-            telemetry.addData("Output:", output);
-            telemetry.addData("Target Angle:", target * 100);
-            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
-            telemetry.addData("Proportional:", Poutput);
-            telemetry.addData("Integral:", Ioutput);
-            telemetry.addData("Derivative:", Doutput);
-            telemetry.addData("Error:", error);
-            telemetry.update();
-        }
-        stopMotors();
-        /*while(opModeIsActive()) {
-            sensor = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            telemetry.addData("Current Angle:", normalizeAngle(sensor.firstAngle));
-            telemetry.update();
-
-        }*/
-    }
-
-
-
-
-    public double normalizeAngle(double angle) {
-        if (angle > -180 && angle < 0) {
-            angle += 360;
-        }
-        return angle;
-    }
-
 
     public void stopMotors() {
         robot.Left.setPower(0);
@@ -330,7 +183,7 @@ public class Aggregated extends LinearOpMode {
         defaultBlue = Color.blue(cs) - defaultBlue;
     }
 
-    public void BD_CS2() {
+    protected void BD_CS2() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
@@ -374,7 +227,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void BD_CS() {
+    protected void BD_CS() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
@@ -418,7 +271,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void AC_CS() {
+    protected void AC_CS() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
@@ -462,7 +315,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void AC_CS2() {
+    protected void AC_CS2() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
@@ -509,7 +362,7 @@ public class Aggregated extends LinearOpMode {
     /**
      * Does the movements based on if the gold was found in the first position
      */
-    public void middleAC() {
+    private void middleAC() {
         encoderDrives(0.4, 6, 6);
         telemetry.addLine("Started CSing");
         telemetry.update();
@@ -520,7 +373,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -545,7 +398,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void middleAC2() {
+    private void middleAC2() {
         robot.Left.setPower(-0.3); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.3);
         sleep(700);
@@ -553,7 +406,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -575,7 +428,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void leftAC() {
+    private void leftAC() {
         encoderDrives(0.3, 27, 27);
         sleep(100);
         encoderDrives(0.4, -4, -4);
@@ -593,7 +446,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -614,7 +467,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void leftAC2() {
+    private void leftAC2() {
         encoderDrives(0.3, 27, 27);
         sleep(100);
         encoderDrives(0.4, -4, -4);
@@ -632,7 +485,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -650,7 +503,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void rightAC() {
+    private void rightAC() {
         encoderDrives(0.4, 22,22);
         sleep(100);
         encoderDrives(0.4, -12, 12);
@@ -664,7 +517,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -685,7 +538,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void rightAC2() {
+    private void rightAC2() {
         encoderDrives(0.4, 22,22);
         sleep(100);
         encoderDrives(0.4, -12, 12);
@@ -699,7 +552,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -718,7 +571,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void middleBD() {
+    private void middleBD() {
         encoderDrives(0.4, 5, 5);
         sleep(100);
         encoderDrives(0.4, -8, -8);
@@ -739,7 +592,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -756,14 +609,14 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void middleBD2() {
+    private void middleBD2() {
         encoderDrives(0.4, 5, 5);
         sleep(100);
         encoderDrives(0.5, -4, 4);
 
     }
 
-    public void leftBD() {
+    private void leftBD() {
         encoderDrives(0.4, 7, 7);
         sleep(100);
         encoderDrives(0.4, -14, -14);
@@ -784,7 +637,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -801,12 +654,12 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void leftBD2() {
+    private void leftBD2() {
         encoderDrives(0.5, 8, 8);
         sleep(100);
     }
 
-    public void rightBD() {
+    private void rightBD() {
         encoderDrives(0.4, 8,8);
         sleep(100);
         encoderDrives(0.4, -14, -14);
@@ -825,7 +678,8 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            //int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -842,12 +696,12 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void rightBD2() {
+    private void rightBD2() {
         encoderDrives(0.4, 8, 8);
         sleep(100);
     }
 
-    public void position1BD(int program) {
+    protected void position1BD(int program) {
         sleep(400);
         encoderDrives(0.5, 6, 6);
         sleep(500);
@@ -866,7 +720,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void position2BD(int program) {
+    protected void position2BD(int program) {
         sleep(400);
         encoderDrives(0.5, 7, 7);
         sleep(500);
@@ -885,7 +739,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void position3BD(int program) {
+    protected void position3BD(int program) {
         sleep(400);
         encoderDrives(0.5, 7, 7);
         sleep(500);
@@ -920,7 +774,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -953,7 +807,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -973,7 +827,7 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    public void markerBD() {
+    private void markerBD() {
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
         sleep(200);
@@ -981,7 +835,7 @@ public class Aggregated extends LinearOpMode {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
-            int color = colors.toColor();
+            colors.toColor();
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
@@ -1007,7 +861,7 @@ public class Aggregated extends LinearOpMode {
      * @param max the maximum for the value to be constrained around
      * @return the constrained value
      */
-    protected double constrain(double value, double min, double max) {
+    private double constrain(double value, double min, double max) {
         if(value > max) {
             return max;
         }
@@ -1023,7 +877,7 @@ public class Aggregated extends LinearOpMode {
      * @param value the value to be normalized
      * @return the normalized version of the double "value"
      */
-    protected double eulerNormalize(double value) {
+    private double eulerNormalize(double value) {
         while(value > 180) {
             value -= 360;
         }
@@ -1034,13 +888,13 @@ public class Aggregated extends LinearOpMode {
         return value;
     }
 
-
-
+    private double error = 0, slope, Poutput, Ioutput, Doutput, output;
     protected void PID(double P, double I, double D, double target) {
         int iteration = 0;
         lasterror = 0;
         PIDout = 0;
-        angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
+        slope = 1;
+        double angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
         error = getError(target, angle);
         while(opModeIsActive() && !errorCheckStop(error, 2, 1)) {
             angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
@@ -1098,7 +952,7 @@ public class Aggregated extends LinearOpMode {
      *                    (or under) that threshold (when rounding to a decimal point beyond whole numbers)
      * @return true or false based upon if the movement value rounded to the placeth is less than the range passed
      */
-    protected boolean notMoving(double movement, int place, double underThresh) {
+    private boolean notMoving(double movement, int place, double underThresh) {
         return inrange(round(movement, place), underThresh);
     }
 
@@ -1108,7 +962,7 @@ public class Aggregated extends LinearOpMode {
      * @param threshold the threshold value that the movement number cannot be less than
      * @return true or false based on if the movement value is less than the threshold value
      */
-    protected boolean notMoving(double movement, double threshold) {
+    private boolean notMoving(double movement, double threshold) {
         return movement < threshold;
     }
 
@@ -1117,7 +971,7 @@ public class Aggregated extends LinearOpMode {
      * @param movement the movement value that can't be less than 0.05 or else the simulated robot isn't moving anymore
      * @return true of false based on if movement is less than 0.05 (5%)
      */
-    protected boolean notMoving(double movement) {
+    private boolean notMoving(double movement) {
         return movement < 0.05;
     }
 
@@ -1127,8 +981,9 @@ public class Aggregated extends LinearOpMode {
      * @param place the place to round to
      * @return a boolean of True of False
      */
-    protected boolean errorCheckStop(double error, int place, double underThresh) {
-        /*error = round(error, place);
+    private boolean errorCheckStop(double error, int place, double underThresh) {
+        /*Example of refactoring
+        error = round(error, place);
         return((error == 0)? true: false);*/
         return inrange(round(error, place), underThresh);
     }
@@ -1140,7 +995,7 @@ public class Aggregated extends LinearOpMode {
      * @param places the nth place to round to
      * @return the rounded value
      */
-    protected double round(double value, int places) {
+    private double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);
@@ -1148,7 +1003,13 @@ public class Aggregated extends LinearOpMode {
         return bd.doubleValue();
     }
 
-    protected boolean inrange(double value, double under) {
+    /**
+     * Returns True of False, depending on if the value is under or equal to the range
+     * @param value the value to be checked
+     * @param under the value the value has to be under (less than)
+     * @return True of False, depending on if the value is in range of the under value
+     */
+    private boolean inrange(double value, double under) {
         return Math.abs(value) < under || value == under;
     }
 

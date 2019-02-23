@@ -1,20 +1,12 @@
 package Atlas.Autonomous.Backup;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
-import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.HardwareAtlas;
+import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "EncoderA_C", group = "Auto")
-public class EncoderA_C extends Backup_Agg {
+public class EncoderA_C extends Aggregated {
 
     //Use the AtlasEncoderDrive class to control the encoders
 

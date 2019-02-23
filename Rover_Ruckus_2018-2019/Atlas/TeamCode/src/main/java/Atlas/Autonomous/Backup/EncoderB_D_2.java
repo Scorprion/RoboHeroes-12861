@@ -2,15 +2,10 @@ package Atlas.Autonomous.Backup;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
-import Atlas.Autonomous.Init.Backup_Agg;
-import Atlas.Autonomous.Init.Backup_Agg;
+import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "EncoderB_D_2", group = "Auto")
-public class EncoderB_D_2 extends Backup_Agg {
+public class EncoderB_D_2 extends Aggregated {
 
     //Use the AtlasEncoderDrive class to control the encoders
 
@@ -65,7 +60,7 @@ public class EncoderB_D_2 extends Backup_Agg {
                 encoderDrives(0.3, 11, -11);
                 sleep(500);
                 encoderDrives(0.4, 12, 12);
-                rightBD2();
+                BD_CS2();
             }
         }
     }

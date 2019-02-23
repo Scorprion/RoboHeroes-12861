@@ -3,14 +3,10 @@ package Atlas.Autonomous.Backup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-
-import Atlas.Autonomous.Init.Backup_Agg;
+import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "EnocderA_C_2", group = "Auto")
-public class EncoderA_C_2 extends Backup_Agg {
+public class EncoderA_C_2 extends Aggregated {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,14 +25,14 @@ public class EncoderA_C_2 extends Backup_Agg {
 
     public void movement() throws InterruptedException{
         //Landing
-        /*robot.Latching.setPower(0.8);
+        robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         robot.Sliding.setPosition(1);
         sleep(2000);
         robot.Latching.setPower(0);
         robot.Winch.setPower(0);
         stopMotors();
-        sleep(1000);*/
+        sleep(1000);
 
         //Encoders
         robot.Left.setPower(-0.15);
@@ -44,8 +40,9 @@ public class EncoderA_C_2 extends Backup_Agg {
         sleep(100);
         robot.Left.setPower(0.15);
         robot.Right.setPower(0.15);
+        robot.LElbow.setPower(0.2);
         sleep(1000);
-        encoderDrives(0.4, 17, 17);
+        encoderDrives(0.4, 18, 18);
         sleep(100);
         AC_CS2();
         if(!colorFound) {
