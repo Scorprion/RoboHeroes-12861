@@ -5,20 +5,19 @@ import android.graphics.Color;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
 public class Aggregated extends LinearOpMode {
     /**
      * A program that houses all of our methods needed to run our robot's
      * autonomous programs
      *
      * Since we couldn't use interfaces or anything like that to be able to implement different set
-     * methods like
-     *
-     * @param encoderDrive
+     * methods like "encoderDrive"
      */
 
     //Using our robot's hardware
@@ -28,7 +27,7 @@ public class Aggregated extends LinearOpMode {
     private final double countsPerRot = 2240; // The counts per rotation
     private final double gearBoxRatio = 0.5; // The gear box ratio for the motors
     private final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
-    private final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
+    protected final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
 
     private float[] hsvValues = new float[3];
     private NormalizedRGBA colors = new NormalizedRGBA();
@@ -376,8 +375,6 @@ public class Aggregated extends LinearOpMode {
             color = colors.toColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
-                encoderDrives(0.5, 8, 8);
-                sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
                 encoderDrives(0.3, -8, -8);
@@ -400,8 +397,6 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !markerFound) {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(100);
-                encoderDrives(0.5, 8, 8);
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -433,8 +428,6 @@ public class Aggregated extends LinearOpMode {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
-                encoderDrives(0.5, 6, 6);
-                sleep(100);
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -8, -8);
                 sleep(100);
@@ -464,8 +457,6 @@ public class Aggregated extends LinearOpMode {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
-                encoderDrives(0.5, 8, 8);
-                sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
                 encoderDrives(0.5, -13, -11);
@@ -487,8 +478,6 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !markerFound) {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(100);
-                encoderDrives(0.5, 8, 6);
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -514,8 +503,6 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !markerFound) {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(100);
-                encoderDrives(0.5, 8, 6);
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -546,8 +533,6 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !markerFound) {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(100);
-                encoderDrives(0.5, 8, 8);
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -584,8 +569,6 @@ public class Aggregated extends LinearOpMode {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
-                encoderDrives(0.5, 8, 8);
-                sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
                 encoderDrives(1, -72, -72);
@@ -616,8 +599,6 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !markerFound) {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
-                sleep(100);
-                encoderDrives(0.5, 8, 8);
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -704,14 +685,13 @@ public class Aggregated extends LinearOpMode {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
-                encoderDrives(0.5, 8, 8);
-                sleep(500);
                 robot.Marker.setPosition(0);
                 sleep(500);
-                /*encoderDrives(0.3, -8, -8);
-                //proportional(CW, 0.3, 75, 2);
+                encoderDrives(0.3, -6, 6);
                 sleep(500);
-                encoderDrives(1, -78, -77);*/
+                encoderDrives(1, 50, 50);
+                sleep(100);
+                encoderDrives(0.3, 28, 22);
             }
         }
     }
@@ -729,14 +709,16 @@ public class Aggregated extends LinearOpMode {
             initColor();
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
-                encoderDrives(0.5, 8, 8);
-                sleep(500);
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -8, -8);
-                //proportional(CW, 0.3, 75, 2);
+                sleep(100);
                 encoderDrives(0.4, -8,8);
+                sleep(100);
                 encoderDrives(0.5,-0.4, 0.4);
-                encoderDrives(1, -78, -84);
+                sleep(100);
+                encoderDrives(1, -50, -50);
+                sleep(100);
+                encoderDrives(0.3, -28, -34);
             }
         }
     }
@@ -751,8 +733,9 @@ public class Aggregated extends LinearOpMode {
                 sleep(500);
                 robot.Marker.setPosition(0);
                 sleep(500);
-                //proportional(CW,0.5, 135, 2);
-                encoderDrives(1, -75, -70);
+                encoderDrives(1, -50, -50);
+                sleep(100);
+                encoderDrives(0.3, -25, -20);
             }
         }
     }
@@ -792,7 +775,7 @@ public class Aggregated extends LinearOpMode {
      * @param value the value to be normalized
      * @return the normalized version of the double "value"
      */
-    private double eulerNormalize(double value) {
+    protected double eulerNormalize(double value) {
         while(value > 180) {
             value -= 360;
         }
@@ -804,6 +787,7 @@ public class Aggregated extends LinearOpMode {
     }
 
     private double error = 0, slope, Poutput, Ioutput, Doutput, output;
+    ElapsedTime time = new ElapsedTime();
     protected void PID(double P, double I, double D, double target) {
         int iteration = 0;
         lasterror = 0;
@@ -811,9 +795,10 @@ public class Aggregated extends LinearOpMode {
         slope = 1;
         double angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
         error = getError(target, angle);
+        time.reset();
         while(opModeIsActive() && !errorCheckStop(error, 2, 1)) {
             angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
-            output = calcPID(P, I, D, target, angle);
+            output = calcPID(P, I, D, target, angle, time);
             output /= 100;
             error = getError(target, angle);
 
@@ -840,13 +825,13 @@ public class Aggregated extends LinearOpMode {
         telemetry.update();
     }
 
-    private double calcPID(double P, double I, double D, double target, double sensor) {
+    private double calcPID(double P, double I, double D, double target, double sensor, ElapsedTime time) {
         error = target - sensor;
         error = eulerNormalize(error);
 
         Poutput = P * error;
 
-        Ioutput += I * error;
+        Ioutput += I/time.seconds() * error;
 
         slope = error - lasterror;
         Doutput = -D * slope;

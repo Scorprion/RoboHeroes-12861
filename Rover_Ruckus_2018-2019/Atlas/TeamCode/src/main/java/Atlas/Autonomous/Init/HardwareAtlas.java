@@ -5,7 +5,6 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -13,14 +12,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.HardwareMapInit;
 
-import Atlas.Autonomous.SensorTesting.PIDIMU;
-
+@SuppressWarnings("unused")
 public class HardwareAtlas {
     //Sensors
     public NormalizedColorSensor ColorSensor;
-    public NormalizedColorSensor BottomCS;
+    NormalizedColorSensor BottomCS;
     //public DistanceSensor DistanceSensor;
 
     //Servos
@@ -50,14 +47,11 @@ public class HardwareAtlas {
 
     // The elapsed time
     public ElapsedTime runtime = new ElapsedTime();
-
-    HardwareMap hwMap = null;
-
+    
     public void init(HardwareMap ahwMap) {
-        hwMap = ahwMap;
-        ColorSensor = hwMap.get(NormalizedColorSensor.class, "ColorSensor");
-        BottomCS = hwMap.get(NormalizedColorSensor.class, "BottomCS");
-        //DistanceSensor = hwMap.get(DistanceSensor.class, "DistanceSensor");
+        ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
+        BottomCS = ahwMap.get(NormalizedColorSensor.class, "BottomCS");
+        //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -66,24 +60,24 @@ public class HardwareAtlas {
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = hwMap.get(BNO055IMU.class, "imu");
+        imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        LClamp = hwMap.get(Servo.class, "LClamp");
-        Latching = hwMap.get(CRServo.class, "Latching");
-        Marker = hwMap.get(Servo.class, "Marker");
-        Sliding = hwMap.get(Servo.class, "Sliding");
+        LClamp = ahwMap.get(Servo.class, "LClamp");
+        Latching = ahwMap.get(CRServo.class, "Latching");
+        Marker = ahwMap.get(Servo.class, "Marker");
+        Sliding = ahwMap.get(Servo.class, "Sliding");
 
-        Right = hwMap.get(DcMotor.class, "Right");
+        Right = ahwMap.get(DcMotor.class, "Right");
         Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        LShoulder = hwMap.get(DcMotor.class, "LShoulder");
-        LElbow = hwMap.get(DcMotor.class, "LElbow");
-        Left = hwMap.get(DcMotor.class, "Left");
+        LShoulder = ahwMap.get(DcMotor.class, "LShoulder");
+        LElbow = ahwMap.get(DcMotor.class, "LElbow");
+        Left = ahwMap.get(DcMotor.class, "Left");
         Left.setDirection(DcMotorSimple.Direction.REVERSE);
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Winch = hwMap.get(DcMotor.class,"Winch");
+        Winch = ahwMap.get(DcMotor.class,"Winch");
 
 
         Right.setPower(0);
