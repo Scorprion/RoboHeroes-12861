@@ -72,6 +72,7 @@ public class HardwareAtlas {
         Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         LShoulder = ahwMap.get(DcMotor.class, "LShoulder");
+        LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         LElbow = ahwMap.get(DcMotor.class, "LElbow");
         Left = ahwMap.get(DcMotor.class, "Left");
         Left.setDirection(DcMotorSimple.Direction.REVERSE);

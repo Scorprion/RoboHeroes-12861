@@ -357,7 +357,8 @@ public class Aggregated extends LinearOpMode {
     /**
      * Does the movements based on if the gold was found in the first position
      */
-    private void middleAC() {
+    public void middleAC() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 6, 6);
         telemetry.addLine("Started CSing");
         telemetry.update();
@@ -377,20 +378,19 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(0.3, -8, -8);
+                encoderDrives(0.3,  8, 8);
                 sleep(100);
-                encoderDrives(0.4, -13,13);
+                encoderDrives(0.4, -10,10);
                 sleep(100);
-                encoderDrives(0.4, -15.5, -15.5);
-                sleep(100);
-                encoderDrives(0.5,3.5, -3.5);
-                sleep(100);
-                encoderDrives(1, -59, -59);
+                encoderDrives(1, -45, -45);
+                encoderDrives(0.2, -20, -20);
+
             }
         }
     }
 
-    private void middleAC2() {
+    public void middleAC2() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         robot.Left.setPower(-0.3); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.3);
         sleep(700);
@@ -400,22 +400,28 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(0.3, -8, -8);
+                encoderDrives(0.3, -5, -5);
                 sleep(100);
-                encoderDrives(0.4, 15, -15);
+                encoderDrives(0.4, -12, 12);
                 sleep(100);
-                encoderDrives(0.4, -19, -19);
+                encoderDrives(0.4, 19, 19);
                 sleep(100);
+                encoderDrives(0.4, -3, 3);
+                sleep(100);
+                encoderDrives(1, 55,55);
+                sleep(100);
+                encoderDrives(0.1, 25, 25);
             }
         }
     }
 
-    private void leftAC() {
+    public void leftAC() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.3, 27, 27);
         sleep(100);
         encoderDrives(0.4, -4, -4);
         sleep(100);
-        encoderDrives(0.4, 19, -9);
+        encoderDrives(0.4, 10, -10);
         sleep(100);
         encoderDrives(0.4, 6, 6);
         sleep(100);
@@ -429,17 +435,22 @@ public class Aggregated extends LinearOpMode {
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
-                encoderDrives(0.3, -8, -8);
+                encoderDrives(0.3, 8, 8);
                 sleep(100);
-                encoderDrives(0.4, -20,20);
+                encoderDrives(0.4, -16,16);
                 sleep(100);
                 encoderDrives(0.4, -16, -16);
+                sleep(100);
+                encoderDrives(1, -50,-50);
+                sleep(100);
+                encoderDrives(0.1, -18,-18);
 
             }
         }
     }
 
-    private void leftAC2() {
+    public void leftAC2() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.3, 27, 27);
         sleep(100);
         encoderDrives(0.4, -4, -4);
@@ -465,13 +476,13 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    private void rightAC() {
+    public void rightAC() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 22,22);
         sleep(100);
         encoderDrives(0.4, -12, 12);
         sleep(100);
         encoderDrives(0.4, 6, 5);
-
         robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
         robot.Right.setPower(-0.2);
         sleep(700);
@@ -485,12 +496,15 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.3, -6, 6);
                 sleep(100);
-                encoderDrives(1, -20, -20);
+                encoderDrives(1, -50, -50);
+                sleep(100);
+                encoderDrives(0.1, -15,-15);
             }
         }
     }
 
-    private void rightAC2() {
+    public void rightAC2() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 22,22);
         sleep(100);
         encoderDrives(0.4, -12, 12);
@@ -513,7 +527,8 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
-    private void middleBD() {
+    public void middleBD() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 5, 5);
         sleep(100);
         encoderDrives(0.4, -8, -8);
@@ -536,19 +551,23 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(1, -72, -72);
+                encoderDrives(1, -50, -50);
+                sleep(100);
+                encoderDrives(0.1, -15, -51);
             }
         }
     }
 
-    private void middleBD2() {
+    public void middleBD2() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 5, 5);
         sleep(100);
         encoderDrives(0.5, -4, 4);
 
     }
 
-    private void leftBD() {
+    public void leftBD() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 7, 7);
         sleep(100);
         encoderDrives(0.4, -14, -14);
@@ -571,24 +590,28 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
-                encoderDrives(1, -72, -72);
+                encoderDrives(1, -50, -50);
+                sleep(100);
+                encoderDrives(0.1, -15,-15);
             }
         }
     }
 
-    private void leftBD2() {
+    public void leftBD2() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.5, 8, 8);
         sleep(100);
     }
 
-    private void rightBD() {
+    public void rightBD() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 8,8);
         sleep(100);
         encoderDrives(0.4, -14, -14);
         sleep(100);
         encoderDrives(0.4, -18, 18);
         sleep(100);
-        encoderDrives(1, 44, 44);
+        encoderDrives(1, 40, 40);
         sleep(100);
         encoderDrives(0.5, -4, 4);
         sleep(100);
@@ -602,12 +625,14 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(1, -72, -72);
+                encoderDrives(1, -50, -50);
+                encoderDrives(0.1, -15,-15);
             }
         }
     }
 
-    private void rightBD2() {
+    public void rightBD2() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         encoderDrives(0.4, 8, 8);
         sleep(100);
     }
