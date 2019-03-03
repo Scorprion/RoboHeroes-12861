@@ -46,18 +46,20 @@ public class EncoderA_C_2 extends Aggregated {
         encoderDrives(0.4, 20.5, 19.5);
         sleep(100);
         AC_CS2();
+
         if(!colorFound) {
             encoderDrives(0.4, -6, -6);
             sleep(100);
-            encoderDrives(0.3, -7, 7);
+            encoderDrives(0.3, -8, 8);
             sleep(100);
-            encoderDrives(0.4, 8, 8);
+            encoderDrives(0.4, 7, 7);
             sleep(100);
             encoderDrives(0.2, 3, -3);
             sleep(100);
             encoderDrives(0.4, 4.3, 4.3);
             sleep(100);
             AC_CS2();
+
             if(!colorFound) {
                 sleep(100);
                 encoderDrives(0.4, -11, -11);

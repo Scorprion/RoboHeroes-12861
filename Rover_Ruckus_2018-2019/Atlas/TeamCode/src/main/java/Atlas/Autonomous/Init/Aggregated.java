@@ -383,7 +383,7 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(0.4, -10,10);
                 sleep(100);
                 encoderDrives(1, -45, -45);
-                encoderDrives(0.2, -20, -20);
+                encoderDrives(0.2, -30, -30);
 
             }
         }
@@ -408,9 +408,9 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.4, -3, 3);
                 sleep(100);
-                encoderDrives(1, 55,55);
+                encoderDrives(1, 50,50);
                 sleep(100);
-                encoderDrives(0.1, 25, 25);
+                encoderDrives(0.05, 5, 5, 3);
             }
         }
     }
@@ -443,7 +443,7 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 encoderDrives(1, -50,-50);
                 sleep(100);
-                encoderDrives(0.1, -18,-18);
+                encoderDrives(0.08, -13 ,-13);
 
             }
         }
@@ -455,7 +455,7 @@ public class Aggregated extends LinearOpMode {
         sleep(100);
         encoderDrives(0.4, -4, -4);
         sleep(100);
-        encoderDrives(0.4, 15, -9);
+        encoderDrives(0.4, 11, -11);
         sleep(100);
         encoderDrives(0.4, 4, 4);
         sleep(100);
@@ -470,7 +470,13 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(0.5, -13, -11);
+                encoderDrives(0.4, -20, -20);
+                sleep(100);
+                encoderDrives(0.4, 27, -27);
+                sleep(100);
+                encoderDrives(0.5, 32, 32);
+                sleep(100);
+                encoderDrives(0.1, 15, 15, 5);
 
             }
         }
@@ -494,11 +500,11 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 encoderDrives(0.4, -6, -6);
                 sleep(100);
-                encoderDrives(0.3, -6, 6);
+                encoderDrives(0.3, -4, 4);
                 sleep(100);
                 encoderDrives(1, -50, -50);
                 sleep(100);
-                encoderDrives(0.1, -15,-15);
+                encoderDrives(0.08, -12,-12);
             }
         }
     }
@@ -520,9 +526,15 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
-                encoderDrives(0.5, -12, 12);
+                encoderDrives(0.5, -9, 9);
                 sleep(100);
                 encoderDrives(0.5, 15, 15);
+                sleep(100);
+                encoderDrives(0.4, -3, 3);
+                sleep(100);
+                encoderDrives(1, 57, 57);
+                sleep(100);
+                encoderDrives(0.1, 12, 12, 7);
             }
         }
     }

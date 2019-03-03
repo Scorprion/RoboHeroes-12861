@@ -19,7 +19,7 @@ public class AtlasTeleOp extends OpMode {
     private ElapsedTime openClaw = new ElapsedTime();
     private boolean switchedS = false;
     private boolean usedRecently = false;
-    private double controlSpeedE = 0.7, controlSpeedS = 0.7;
+    private double controlSpeedE = 1, controlSpeedS = 1;
 
     //Making the slower robot toggle (driver 1)
     private ElapsedTime rmove = new ElapsedTime();

@@ -39,18 +39,20 @@ public class EncoderB_D extends Aggregated {
         encoderDrives(0.4, 21, 20);
         sleep(100);
         BD_CS();
+
         if (!colorFound) {
             encoderDrives(0.4, -6, -6);
             sleep(100);
-            encoderDrives(0.3, -7, 7);
+            encoderDrives(0.3, -8, 8);
             sleep(100);
             encoderDrives(0.4, 8, 8);
             sleep(100);
             encoderDrives(0.2, 3, -3);
             sleep(100);
-            encoderDrives(0.4, 4, 4);
+            encoderDrives(0.4, 3.5, 3.5);
             sleep(100);
             BD_CS();
+
             if (!colorFound) {
                 sleep(100);
                 encoderDrives(0.4, -11, -11);

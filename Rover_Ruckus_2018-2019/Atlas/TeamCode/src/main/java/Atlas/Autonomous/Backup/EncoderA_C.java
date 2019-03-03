@@ -44,9 +44,10 @@ public class EncoderA_C extends Aggregated {
         robot.Left.setPower(0.15);
         robot.Right.setPower(0.15);
         sleep(1000);
-        encoderDrives(0.4, 20.5, 19.5);
+        encoderDrives(0.4, 19.5, 19.5);
         sleep(100);
         AC_CS();
+
         if(!colorFound) {
             encoderDrives(0.4, -6, -6);
             sleep(100);
@@ -59,6 +60,7 @@ public class EncoderA_C extends Aggregated {
             encoderDrives(0.4, 4.3, 4.3);
             sleep(100);
             AC_CS();
+
             if(!colorFound) {
                 sleep(100);
                 encoderDrives(0.4, -11, -11);
