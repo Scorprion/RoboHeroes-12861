@@ -17,26 +17,26 @@ public class EncoderB_D extends Aggregated {
     }
 
 
-    public void movement() throws InterruptedException{
-        //Landing
-        robot.LClamp.setPosition(0);
-        robot.Latching.setPower(0.8);
-        robot.Winch.setPower(-1);
-        robot.Sliding.setPosition(1);
-        sleep(3000);
-        robot.Latching.setPower(0);
-        robot.Winch.setPower(0);
-        stopMotors();
-        sleep(1000);
+        public void movement() throws InterruptedException{
+            //Landing
+            robot.LClamp.setPosition(0);
+            robot.Latching.setPower(0.8);
+            robot.Winch.setPower(-1);
+            robot.Sliding.setPosition(1);
+            sleep(3000);
+            robot.Latching.setPower(0);
+            robot.Winch.setPower(0);
+            stopMotors();
+            sleep(1000);
 
-        //Encoders
-        robot.Left.setPower(-0.15);
-        robot.Right.setPower(-0.15);
-        sleep(100);
-        robot.Left.setPower(0.15);
-        robot.Right.setPower(0.15);
+            //Encoders
+            robot.Left.setPower(-0.15);
+            robot.Right.setPower(-0.15);
+            sleep(100);
+            robot.Left.setPower(0.15);
+            robot.Right.setPower(0.15);
         sleep(1000);
-        encoderDrives(0.4, 21, 20);
+        encoderDrives(0.4, 20.5, 19.5);
         sleep(100);
         BD_CS();
 

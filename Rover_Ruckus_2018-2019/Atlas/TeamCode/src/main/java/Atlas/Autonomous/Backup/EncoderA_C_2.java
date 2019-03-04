@@ -52,7 +52,7 @@ public class EncoderA_C_2 extends Aggregated {
             sleep(100);
             encoderDrives(0.3, -8, 8);
             sleep(100);
-            encoderDrives(0.4, 7, 7);
+            encoderDrives(0.4, 7 , 7);
             sleep(100);
             encoderDrives(0.2, 3, -3);
             sleep(100);

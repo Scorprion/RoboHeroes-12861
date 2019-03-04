@@ -1,5 +1,6 @@
 package Atlas.TeleOp;
 
+import android.database.sqlite.SQLiteDiskIOException;
 import android.transition.Slide;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -23,6 +24,9 @@ public class AtlasTeleOp extends OpMode {
 
     //Making the slower robot toggle (driver 1)
     private ElapsedTime rmove = new ElapsedTime();
+    private ElapsedTime latching = new ElapsedTime();
+
+    private boolean latchReset = false;
     private boolean robotCSpeed = false; // the boolean for the robot's speed to be able to slow it down
     private boolean robotUsedRecent = false;
     private double robotControlSpeed = 0.7;
@@ -134,6 +138,13 @@ public class AtlasTeleOp extends OpMode {
         |                           |
         -----------------------------
          */
+        //Resetting Latch
+        if (gamepad1.y) {
+            robot.Sliding.setPosition(0);
+            robot.Latching.setPower(-1);
+            latchReset = true;
+            latching.reset();
+        }
         //Turning
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
             robot.Left.setPower(-turnspeed);
@@ -168,7 +179,7 @@ public class AtlasTeleOp extends OpMode {
             Winch.setPower(-gamepad1.right_trigger);
         }
 
-        if (gamepad1.y || gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0) {
+        if (gamepad1.left_trigger == 0 && gamepad1.right_trigger == 0) {
             Winch.setPower(0);
         }
 
@@ -196,7 +207,7 @@ public class AtlasTeleOp extends OpMode {
         if (gamepad1.dpad_up) {
             Latching.setPower(1);
 
-        } else if (gamepad1.dpad_down) {
+        } else if (gamepad1.dpad_down || latchReset) {
             Latching.setPower(-1);
 
         } else
@@ -215,6 +226,11 @@ public class AtlasTeleOp extends OpMode {
         // Setting the LClamp power to 0.5 after the open claw is greater than 250 milliseconds
         if(openClaw.milliseconds() > 200 && openClaw.milliseconds() < 400) {
             robot.LClamp.setPosition(0.5);
+        }
+
+        if(latching.milliseconds() > 1200 && latching.milliseconds() < 1400 && latchReset) {
+            robot.Latching.setPower(0);
+            latchReset = false;
         }
     }
 }

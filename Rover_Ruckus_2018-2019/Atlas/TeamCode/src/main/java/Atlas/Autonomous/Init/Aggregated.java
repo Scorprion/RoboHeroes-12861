@@ -266,6 +266,45 @@ public class Aggregated extends LinearOpMode {
         }
     }
 
+    protected void DelayedBD_CS() {
+        robot.runtime.reset();
+        while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+            colors = robot.ColorSensor.getNormalizedColors();
+            color = colors.toColor();
+            max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            diffred = 0; //defaultRed - colors.red;
+            diffblue = 0; //defaultBlue - colors.blue;
+
+            telemetry.addData("Red:", colors.red);
+            telemetry.addData("Calibrated Red:", diffred);
+            telemetry.addData("Blue:", colors.blue + diffblue);
+            telemetry.addData("Calibrated Blue:", diffblue);
+            telemetry.update();
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
+                if (posCounter == 1) {
+                    telemetry.addLine("Gold found at 1");
+                    telemetry.update();
+                    colorFound = true;
+                    DelayedmiddleBD();
+                } else if (posCounter == 2) {
+                    telemetry.addLine("Gold found at 2");
+                    telemetry.update();
+                    colorFound = true;
+                    leftBD();
+                }
+            }
+        }
+
+        if(!colorFound && (robot.runtime.milliseconds() >= 500)) {
+            posCounter++;
+        }
+    }
+
     protected void AC_CS() {
         robot.runtime.reset();
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
@@ -378,12 +417,15 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(0.3,  8, 8);
                 sleep(100);
                 encoderDrives(0.4, -10,10);
                 sleep(100);
                 encoderDrives(1, -45, -45);
+                sleep(100);
                 encoderDrives(0.2, -30, -30);
+                LatchReset();
 
             }
         }
@@ -400,6 +442,7 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(0.3, -5, -5);
                 sleep(100);
                 encoderDrives(0.4, -12, 12);
@@ -411,6 +454,7 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(1, 50,50);
                 sleep(100);
                 encoderDrives(0.05, 5, 5, 3);
+                LatchReset();
             }
         }
     }
@@ -435,6 +479,7 @@ public class Aggregated extends LinearOpMode {
             if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
+                sleep(100);
                 encoderDrives(0.3, 8, 8);
                 sleep(100);
                 encoderDrives(0.4, -16,16);
@@ -444,6 +489,7 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(1, -50,-50);
                 sleep(100);
                 encoderDrives(0.08, -13 ,-13);
+                LatchReset();
 
             }
         }
@@ -470,6 +516,7 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(0.4, -20, -20);
                 sleep(100);
                 encoderDrives(0.4, 27, -27);
@@ -477,6 +524,7 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(0.5, 32, 32);
                 sleep(100);
                 encoderDrives(0.1, 15, 15, 5);
+                LatchReset();
 
             }
         }
@@ -498,6 +546,7 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(0.4, -6, -6);
                 sleep(100);
                 encoderDrives(0.3, -4, 4);
@@ -505,6 +554,7 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(1, -50, -50);
                 sleep(100);
                 encoderDrives(0.08, -12,-12);
+                LatchReset();
             }
         }
     }
@@ -526,6 +576,7 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(0.5, -9, 9);
                 sleep(100);
                 encoderDrives(0.5, 15, 15);
@@ -535,6 +586,7 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(1, 57, 57);
                 sleep(100);
                 encoderDrives(0.1, 12, 12, 7);
+                LatchReset();
             }
         }
     }
@@ -563,9 +615,44 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(1, -50, -50);
                 sleep(100);
                 encoderDrives(0.1, -15, -51);
+                LatchReset();
+            }
+        }
+    }
+
+    public void DelayedmiddleBD() {
+        robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        encoderDrives(0.4, 5, 5);
+        sleep(100);
+        encoderDrives(0.4, -8, -8);
+        sleep(4000);
+        encoderDrives(0.4, -11.25, 11.25);
+        sleep(100);
+        encoderDrives(0.4, 40, 40);
+        sleep(100);
+        encoderDrives(0.4, -4, 4);
+        sleep(100);
+        encoderDrives(0.4, 28, 28);
+        telemetry.addLine("Started CSing");
+        telemetry.update();
+        robot.Left.setPower(-0.2); //Move toward the blue line at 0.2 speed
+        robot.Right.setPower(-0.2);
+        sleep(800);
+        while (opModeIsActive() && !markerFound) {
+            initColor();
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
+                sleep(100);
+                robot.Marker.setPosition(0);
+                sleep(100);
+                sleep(100);
+                encoderDrives(1, -50, -50);
+                sleep(100);
+                encoderDrives(0.1, -15, -51);
+                LatchReset();
             }
         }
     }
@@ -575,6 +662,7 @@ public class Aggregated extends LinearOpMode {
         encoderDrives(0.4, 5, 5);
         sleep(100);
         encoderDrives(0.5, -4, 4);
+        LatchReset();
 
     }
 
@@ -602,9 +690,11 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
+                sleep(100);
                 encoderDrives(1, -50, -50);
                 sleep(100);
                 encoderDrives(0.1, -15,-15);
+                LatchReset();
             }
         }
     }
@@ -637,16 +727,22 @@ public class Aggregated extends LinearOpMode {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
+                sleep(100);
                 encoderDrives(1, -50, -50);
                 encoderDrives(0.1, -15,-15);
+                LatchReset();
             }
         }
     }
 
     public void rightBD2() {
         robot.LShoulder.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        sleep(100);
+        encoderDrives(0.4, -4, 4);
+        sleep(100);
         encoderDrives(0.4, 8, 8);
         sleep(100);
+        LatchReset();
     }
 
     protected void position1BD(int program) {
@@ -775,6 +871,13 @@ public class Aggregated extends LinearOpMode {
                 encoderDrives(0.3, -25, -20);
             }
         }
+    }
+
+    public void LatchReset() {
+        robot.Sliding.setPosition(0);
+        robot.Latching.setPower(-1);
+        sleep(1200);
+        robot.Latching.setPower(0);
     }
 
     private void initColor() {
