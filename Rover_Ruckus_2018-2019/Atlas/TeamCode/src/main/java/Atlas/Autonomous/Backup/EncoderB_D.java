@@ -47,7 +47,7 @@ public class EncoderB_D extends Aggregated {
             sleep(100);
             encoderDrives(0.4, 8, 8);
             sleep(100);
-            encoderDrives(0.2, 3, -3);
+            encoderDrives(0.2, 3.75, -3.75 );
             sleep(100);
             encoderDrives(0.4, 3.5, 3.5);
             sleep(100);
