@@ -932,10 +932,11 @@ public class Aggregated extends LinearOpMode {
     private double error = 0, slope, Poutput, Ioutput, Doutput, output;
     ElapsedTime time = new ElapsedTime();
 
+    // Have to throw IOException in order to not get an error
     protected void PID(double P, double I, double D, double target) throws IOException {
 
         DataLogger d = new DataLogger("Test.csv");
-        d.addHeaderLine("Iteration", "Proportional", "Integral", "Error", "Current");
+        d.addHeaderLine("Iteration, Proportional, Integral, Total, Output, Error, Current, Setpoint");
 
         int iteration = 0;
         double dt = 0;
@@ -969,11 +970,8 @@ public class Aggregated extends LinearOpMode {
             telemetry.addData("Current Angle: ", angle);
             telemetry.update();
 
-            d.addDataLine(iteration);
-            d.addDataLine(getP());
-            d.addDataLine(getI());
-            d.addDataLine(error);
-            d.addDataLine(angle);
+            d.addDataLine(iteration + "," + getP() + "," + getI() +
+                    "," + output + "," + error + "," + angle + "," + target);
         }
 
         d.close();

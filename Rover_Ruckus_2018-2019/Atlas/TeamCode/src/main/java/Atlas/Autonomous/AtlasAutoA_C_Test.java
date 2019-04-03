@@ -49,7 +49,7 @@ public class AtlasAutoA_C_Test extends Aggregated {
         if(!colorFound) {
             encoderDrives(0.4, -6, -6);
             sleep(500);
-            PID(0.4, 0.4, 0, 46);
+            //                      PID(0.4, 0.4, 0, 46);
             sleep(500);
             encoderDrives(0.4, 8, 8);
             sleep(500);
@@ -62,7 +62,7 @@ public class AtlasAutoA_C_Test extends Aggregated {
                 sleep(500);
                 encoderDrives(0.4, -11, -11);
                 sleep(500);
-                PID(0.3, 0.4, 0, 320);
+                //                       PID(0.3, 0.4, 0, 320);
                 sleep(500);
                 encoderDrives(0.4, 12, 12);
                 AC_CS();

@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.internal.files.DataLogger;
 
+import java.io.IOException;
+
 import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "AtlasAuto", group = "Atlas")
@@ -23,7 +25,11 @@ public class AtlasAuto extends Aggregated {
 
         waitForStart();
 
-        PID(1, 1, 0, 5);
+        try {
+            PID(1.3, 1, 0, 50);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while(opModeIsActive()) {
             angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
             telemetry.addData("Current Angle: ", angle);

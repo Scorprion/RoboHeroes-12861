@@ -47,12 +47,12 @@ public class AtlasAutoA_C extends Aggregated {
         //calibrateCS();
         encoderDrives(0.3, 6, 6);
         sleep(1000);
-        PID(0.5, 0.5, 0, 60);
+        //                                 PID(0.5, 0.5, 0, 60);
         //proportional(CW, 0.5, 52, 3);
         sleep(500);
         encoderDrives(0.4, 26, 26);
         sleep(250);
-        PID(0.42, 0.5, 0, 88);
+        //                                 PID(0.42, 0.5, 0, 88);
         sleep(500);
     }
 }
