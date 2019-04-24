@@ -1038,10 +1038,11 @@ public class Aggregated extends LinearOpMode {
     protected void PID(double P, double I, double D, double target) throws IOException {
 
         DataLogger d = new DataLogger("Test.csv");
-        d.addHeaderLine("Iteration, Proportional, Integral, Total, Output, Error, Current, Setpoint");
+        d.addHeaderLine("Iteration, Time, Proportional, Integral, Total Output, Error, " +
+                "Current, Angular Velocity, Angular Acceleration, Setpoint");
 
         int iteration = 0;
-        double dt = 0;
+        double dt = 0, ang_velocity = 0, ang_accel = 0, total_time = 0;
         lasterror = 0;
         PIDout = 0;
         slope = 1;
@@ -1060,6 +1061,9 @@ public class Aggregated extends LinearOpMode {
 
             iteration++;
             dt = time.seconds();
+            ang_velocity = (eulerNormalize(robot.imu.getAngularOrientation().firstAngle) - angle) / dt;
+            ang_accel = ang_velocity / dt;
+            total_time += dt;
 
             robot.Right.setPower(-output);
             robot.Left.setPower(output);
@@ -1069,11 +1073,12 @@ public class Aggregated extends LinearOpMode {
             telemetry.addData("Integral: ", getI());
             telemetry.addData("Derivative: ", getD());
             telemetry.addData("Error: ", getError(target, angle));
+            telemetry.addData("Velocity", ang_velocity);
             telemetry.addData("Current Angle: ", angle);
             telemetry.update();
 
-            d.addDataLine(iteration + "," + getP() + "," + getI() +
-                    "," + output + "," + error + "," + angle + "," + target);
+            d.addDataLine(iteration + "," + total_time + "," + getP() + "," + getI() + "," + output + "," + error +
+                    "," + angle + "," + ang_velocity + "," + ang_accel + "," + target);
         }
 
         d.close();
@@ -1089,6 +1094,7 @@ public class Aggregated extends LinearOpMode {
         error = eulerNormalize(error);
 
         Poutput = P * error;
+        Poutput = constrain(Poutput, -30, 30);
 
         Ioutput += I * error * dt;
 
@@ -1154,7 +1160,7 @@ public class Aggregated extends LinearOpMode {
      * @param places the nth place to round to
      * @return the rounded value
      */
-    private double round(double value, int places) {
+    protected double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);
