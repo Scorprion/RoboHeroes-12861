@@ -146,19 +146,19 @@ public class AtlasTeleOp extends OpMode {
             latching.reset();
         }
         //Turning
-        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
+        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1 || gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
             robot.Left.setPower(-turnspeed);
             robot.Right.setPower(turnspeed);
         }
 
         //Moving
-        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
+        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1 || gamepad1.right_stick_y >= 0.1 || gamepad1.right_stick_y <= -0.1) {
             robot.Left.setPower(speed);
             robot.Right.setPower(speed);
         }
 
         //Making the robot stop when it's set to 0
-        if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0) {
+        if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0 && gamepad1.right_stick_y == 0 && gamepad1.left_stick_x == 0 ) {
             robot.Left.setPower(0);
             robot.Right.setPower(0);
         }
