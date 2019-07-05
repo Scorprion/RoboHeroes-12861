@@ -9,9 +9,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import java.util.concurrent.TimeUnit;
-
 import Atlas.Autonomous.Init.HardwareAtlas;
 
 @TeleOp(name= "AtlasTeleOp", group= "Pushbot")
