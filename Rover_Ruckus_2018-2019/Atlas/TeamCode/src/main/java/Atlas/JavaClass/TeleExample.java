@@ -23,14 +23,23 @@ public class TeleExample extends OpMode {
     public void loop() {
 
         // The 0.1 is the 'deadzone'
-        if(gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -1) {
+        if(gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
             left.setPower(gamepad1.left_stick_y);
             right.setPower(-gamepad1.left_stick_y);
+        } else {
+            stop_motors();
         }
 
-        if(gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -1) {
-            left.setPower(gamepad1.left_stick_x);
-            right.setPower(gamepad1.left_stick_x);
+        if(gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
+            left.setPower(-gamepad1.right_stick_x);
+            right.setPower(-gamepad1.right_stick_x);
+        } else {
+            stop_motors();
         }
+    }
+
+    private void stop_motors() {
+        left.setPower(0);
+        right.setPower(0);
     }
 }

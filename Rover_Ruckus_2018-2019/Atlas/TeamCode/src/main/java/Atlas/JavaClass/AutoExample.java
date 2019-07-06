@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name = "AtlasAuto", group = "Atlas")
+@Autonomous(name = "AutoExample", group = "Atlas")
 public class AutoExample extends LinearOpMode {
 
     private DcMotor left;
@@ -17,13 +17,6 @@ public class AutoExample extends LinearOpMode {
         waitForStart();
 
         left.setPower(0.5);
-        right.setPower(-0.5);
-
-        sleep(500);
-
-        left.setPower(0.5);
-        right.setPower(-0.5);
-
     }
 }
 
