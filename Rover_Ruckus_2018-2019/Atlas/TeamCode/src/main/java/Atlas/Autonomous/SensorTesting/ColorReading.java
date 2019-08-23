@@ -1,12 +1,12 @@
 package Atlas.Autonomous.SensorTesting;
 
+
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
-import Atlas.Autonomous.Init.Aggregated;
 import Atlas.Autonomous.Init.Aggregated;
 
 @Autonomous(name = "ColorReading", group = "Auto")
