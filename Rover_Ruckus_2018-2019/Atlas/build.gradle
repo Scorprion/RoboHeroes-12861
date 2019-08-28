@@ -3,15 +3,14 @@
  *
  * It is extraordinarily rare that you will ever need to edit this file.
  */
+
 buildscript {
     repositories {
         google()
         jcenter()
-        maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1' // Added this line
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
@@ -21,6 +20,5 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://jitpack.io" }
     }
 }

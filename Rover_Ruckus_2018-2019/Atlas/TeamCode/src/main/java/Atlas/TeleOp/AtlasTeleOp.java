@@ -52,8 +52,8 @@ public class AtlasTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        upShoulderSpeed = (gamepad2.right_trigger ) * controlSpeedS;
-        downShoulderSpeed = (gamepad2.left_trigger ) * controlSpeedS;
+        upShoulderSpeed = (gamepad2.right_trigger * 0.7) * controlSpeedS;
+        downShoulderSpeed = (gamepad2.left_trigger * 0.7) * controlSpeedS;
         LElbowSpeed = (gamepad2.left_stick_y * 1) * controlSpeedE;
         turnspeed = gamepad1.right_stick_x * robotControlSpeed;
         speed = gamepad1.left_stick_y * robotControlSpeed;
@@ -143,19 +143,19 @@ public class AtlasTeleOp extends OpMode {
             latching.reset();
         }
         //Turning
-        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1 || gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
+        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
             robot.Left.setPower(-turnspeed);
             robot.Right.setPower(turnspeed);
         }
 
         //Moving
-        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1 || gamepad1.right_stick_y >= 0.1 || gamepad1.right_stick_y <= -0.1) {
+        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
             robot.Left.setPower(speed);
             robot.Right.setPower(speed);
         }
 
         //Making the robot stop when it's set to 0
-        if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0 && gamepad1.right_stick_y == 0 && gamepad1.left_stick_x == 0 ) {
+        if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0) {
             robot.Left.setPower(0);
             robot.Right.setPower(0);
         }

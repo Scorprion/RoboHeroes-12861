@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.internal.files.DataLogger;
-
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -30,11 +27,10 @@ public class Aggregated extends LinearOpMode {
     private final double countsPerRot = 2240; // The counts per rotation
     private final double gearBoxRatio = 0.5; // The gear box ratio for the motors
     private final double wheelDiamInch = 4; // The diameter of the Atlas wheels for finding the circumference
-    protected final double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
+    public double countsPerInch = (countsPerRot * gearBoxRatio) / (wheelDiamInch * 3.1415);
 
     private float[] hsvValues = new float[3];
     private NormalizedRGBA colors = new NormalizedRGBA();
-    private NormalizedRGBA colors2 = new NormalizedRGBA();
     //public static final double turnSpeed = 0.5;
     public boolean colorFound = false;
     private boolean markerFound = false;
@@ -42,17 +38,11 @@ public class Aggregated extends LinearOpMode {
     private double PIDout = 0, lasterror = 0;
 
     private double diffred = 0, diffblue = 0;
-    private double diffred2 = 0, diffblue2 = 0;
-
     private double max = 0;
-    private double max2 = 0;
     private int color = 0;
-    private int color2 = 0;
     private int posCounter = 1;
     private int defaultRed = Color.red(67); //The default, constant red color value for our practice value
     private int defaultBlue = Color.blue(86); //The default, constant red color value for our practice value
-    private int defaultRed2 = Color.red(67);
-    private int defaultBlue2 = Color.blue(86);
 
     public enum direction {
         CW, CCW
@@ -198,37 +188,21 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
             color = colors.toColor();
-            colors2 = robot.ColorSensorFront2.getNormalizedColors();
-            color2 = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            max2 = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors2.red /= max2;
-            colors2.green /= max2;
-            colors2.blue /= max2;
-            color2 = colors2.toColor();
 
             diffred = 0; //defaultRed - colors.red;
             diffblue = 0; //defaultBlue - colors.blue;
-            diffred2 = 0;
-            diffblue2 = 0;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if ((Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) || (Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2)))   {
-                if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)){
-                    telemetry.addData("Left Sensor detected!", "Left");
-                }
-                if (Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2)){
-                    telemetry.addData("Right Sensor detected!", "Right");
-                }
-                telemetry.update();
+            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
@@ -258,37 +232,21 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
             color = colors.toColor();
-            colors2 = robot.ColorSensorFront2.getNormalizedColors();
-            color2 = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            max2 = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors2.red /= max2;
-            colors2.green /= max2;
-            colors2.blue /= max2;
-            color2 = colors2.toColor();
 
             diffred = 0; //defaultRed - colors.red;
             diffblue = 0; //defaultBlue - colors.blue;
-            diffred2 = 0;
-            diffblue2 = 0;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if ((Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) || ((Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2))))   {
-                if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)){
-                    telemetry.addData("Left Sensor detected!", "Left");
-                }
-                if (Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2)){
-                    telemetry.addData("Right Sensor detected!", "Right");
-                }
-                telemetry.update();
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
@@ -313,37 +271,21 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
             color = colors.toColor();
-            colors2 = robot.ColorSensorFront2.getNormalizedColors();
-            color2 = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            max2 = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors2.red /= max2;
-            colors2.green /= max2;
-            colors2.blue /= max2;
-            color2 = colors2.toColor();
 
             diffred = 0; //defaultRed - colors.red;
             diffblue = 0; //defaultBlue - colors.blue;
-            diffred2 = 0;
-            diffblue2 = 0;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if ((Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) || ((Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2))))   {
-                if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)){
-                    telemetry.addData("Left Sensor detected!", "Left");
-                }
-                if (Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2)){
-                    telemetry.addData("Right Sensor detected!", "Right");
-                }
-                telemetry.update();
+            if(Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
@@ -368,37 +310,21 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
             color = colors.toColor();
-            colors2 = robot.ColorSensorFront2.getNormalizedColors();
-            color2 = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            max2 = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors2.red /= max2;
-            colors2.green /= max2;
-            colors2.blue /= max2;
-            color2 = colors2.toColor();
 
             diffred = 0; //defaultRed - colors.red;
             diffblue = 0; //defaultBlue - colors.blue;
-            diffred2 = 0;
-            diffblue2 = 0;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if ((Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) || ((Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2))))   {
-                if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)){
-                    telemetry.addData("Left Sensor detected!", "Left");
-                }
-                if (Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2)){
-                    telemetry.addData("Right Sensor detected!", "Right");
-                }
-                telemetry.update();
+            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
@@ -428,37 +354,21 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
             colors = robot.ColorSensor.getNormalizedColors();
             color = colors.toColor();
-            colors2 = robot.ColorSensorFront2.getNormalizedColors();
-            color2 = colors.toColor();
             max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            max2 = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors2.red /= max2;
-            colors2.green /= max2;
-            colors2.blue /= max2;
-            color2 = colors2.toColor();
 
             diffred = 0; //defaultRed - colors.red;
             diffblue = 0; //defaultBlue - colors.blue;
-            diffred2 = 0;
-            diffblue2 = 0;
 
             telemetry.addData("Red:", colors.red);
             telemetry.addData("Calibrated Red:", diffred);
             telemetry.addData("Blue:", colors.blue + diffblue);
             telemetry.addData("Calibrated Blue:", diffblue);
             telemetry.update();
-            if ((Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) || ((Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2))))   {
-                if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)){
-                    telemetry.addData("Left Sensor detected!", "Left");
-                }
-                if (Color.red(color2) >= (85 + diffred2) && Color.blue(color2) <= (74 + diffblue2)){
-                    telemetry.addData("Right Sensor detected!", "Right");
-                }
-                telemetry.update();
+            if (Color.red(color) >= (85 + diffred) && Color.blue(color) <= (74 + diffblue)) {
                 if (posCounter == 1) {
                     telemetry.addLine("Gold found at 1");
                     telemetry.update();
@@ -497,19 +407,13 @@ public class Aggregated extends LinearOpMode {
         while (opModeIsActive() && !markerFound) {
             float[] hsvValues = new float[3];
             NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-            NormalizedRGBA colors2 = robot.BottomCS2.getNormalizedColors();
             Color.colorToHSV(colors.toColor(), hsvValues);
             float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            float max2 = Math.max(Math.max(Math.max(colors2.red, colors2.green), colors2.blue), colors2.alpha);
             colors.red /= max;
             colors.green /= max;
             colors.blue /= max;
             color = colors.toColor();
-            colors2.red /= max;
-            colors2.green /= max;
-            colors2.blue /= max;
-            color2 = colors2.toColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -534,7 +438,7 @@ public class Aggregated extends LinearOpMode {
         sleep(700);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -572,7 +476,7 @@ public class Aggregated extends LinearOpMode {
         sleep(800);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -608,7 +512,7 @@ public class Aggregated extends LinearOpMode {
         sleep(800);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -638,7 +542,7 @@ public class Aggregated extends LinearOpMode {
         sleep(700);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -668,7 +572,7 @@ public class Aggregated extends LinearOpMode {
         sleep(700);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -707,7 +611,7 @@ public class Aggregated extends LinearOpMode {
         sleep(800);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -740,7 +644,7 @@ public class Aggregated extends LinearOpMode {
         sleep(800);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -782,7 +686,7 @@ public class Aggregated extends LinearOpMode {
         sleep(800);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(500);
@@ -819,7 +723,7 @@ public class Aggregated extends LinearOpMode {
         sleep(700);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(100);
                 robot.Marker.setPosition(0);
                 sleep(100);
@@ -912,7 +816,7 @@ public class Aggregated extends LinearOpMode {
         sleep(700);
         while (opModeIsActive() && !colorFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
                 sleep(500);
@@ -936,7 +840,7 @@ public class Aggregated extends LinearOpMode {
         sleep(800);
         while (opModeIsActive() && !markerFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
                 encoderDrives(0.3, -8, -8);
@@ -958,7 +862,7 @@ public class Aggregated extends LinearOpMode {
         sleep(200);
         while (opModeIsActive() && !colorFound) {
             initColor();
-            if ((Color.blue(color) >= 125 || Color.red(color) >= 140) ||(Color.blue(color2) >= 125 || Color.red(color2) >= 140)){
+            if (Color.blue(color) >= 125 || Color.red(color) >= 140) {
                 sleep(500);
                 robot.Marker.setPosition(0);
                 sleep(500);
@@ -978,23 +882,14 @@ public class Aggregated extends LinearOpMode {
 
     private void initColor() {
         NormalizedRGBA colors = robot.BottomCS.getNormalizedColors();
-        NormalizedRGBA colors2 = robot.BottomCS2.getNormalizedColors();
         Color.colorToHSV(colors.toColor(), hsvValues);
-        float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-        float max2 = Math.max(Math.max(Math.max(colors2.red, colors2.green), colors2.blue), colors2.alpha);
+        colors.toColor();
+        max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
         colors.red /= max;
         colors.green /= max;
         colors.blue /= max;
         color = colors.toColor();
-        colors2.red /= max;
-        colors2.green /= max;
-        colors2.blue /= max;
-        color2 = colors2.toColor();
     }
-
-
-
-
 
     //Methods for testing
     /**
@@ -1033,26 +928,17 @@ public class Aggregated extends LinearOpMode {
 
     private double error = 0, slope, Poutput, Ioutput, Doutput, output;
     ElapsedTime time = new ElapsedTime();
-
-    // Have to throw IOException in order to not get an error
-    protected void PID(double P, double I, double D, double target) throws IOException {
-
-        DataLogger d = new DataLogger("Test.csv");
-        d.addHeaderLine("Iteration, Time, Proportional, Integral, Total Output, Error, " +
-                "Current, Angular Velocity, Angular Acceleration, Setpoint");
-
+    protected void PID(double P, double I, double D, double target) {
         int iteration = 0;
-        double dt = 0, ang_velocity = 0, ang_accel = 0, total_time = 0;
         lasterror = 0;
         PIDout = 0;
         slope = 1;
-
         double angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
         error = getError(target, angle);
+        time.reset();
         while(opModeIsActive() && !errorCheckStop(error, 2, 1)) {
-            time.reset();
             angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
-            output = calcPID(P, I, D, target, angle, dt);
+            output = calcPID(P, I, D, target, angle, time);
             output /= 100;
             error = getError(target, angle);
 
@@ -1060,10 +946,6 @@ public class Aggregated extends LinearOpMode {
             output = constrain(output, -1, 1);
 
             iteration++;
-            dt = time.seconds();
-            ang_velocity = (eulerNormalize(robot.imu.getAngularOrientation().firstAngle) - angle) / dt;
-            ang_accel = ang_velocity / dt;
-            total_time += dt;
 
             robot.Right.setPower(-output);
             robot.Left.setPower(output);
@@ -1073,15 +955,9 @@ public class Aggregated extends LinearOpMode {
             telemetry.addData("Integral: ", getI());
             telemetry.addData("Derivative: ", getD());
             telemetry.addData("Error: ", getError(target, angle));
-            telemetry.addData("Velocity", ang_velocity);
             telemetry.addData("Current Angle: ", angle);
             telemetry.update();
-
-            d.addDataLine(iteration + "," + total_time + "," + getP() + "," + getI() + "," + output + "," + error +
-                    "," + angle + "," + ang_velocity + "," + ang_accel + "," + target);
         }
-
-        d.close();
         stopMotors();
         telemetry.addData("Error stop: ", errorCheckStop(error, 1, 0));
         telemetry.addData("Not moving: ", notMoving(output, 2, 0.14));
@@ -1089,17 +965,16 @@ public class Aggregated extends LinearOpMode {
         telemetry.update();
     }
 
-    private double calcPID(double P, double I, double D, double target, double sensor, double dt) {
+    private double calcPID(double P, double I, double D, double target, double sensor, ElapsedTime time) {
         error = target - sensor;
         error = eulerNormalize(error);
 
         Poutput = P * error;
-        Poutput = constrain(Poutput, -30, 30);
 
-        Ioutput += I * error * dt;
+        Ioutput += I/time.seconds() * error;
 
         slope = error - lasterror;
-        Doutput = -D * slope / dt;
+        Doutput = -D * slope;
 
         lasterror = error;
 
@@ -1160,7 +1035,7 @@ public class Aggregated extends LinearOpMode {
      * @param places the nth place to round to
      * @return the rounded value
      */
-    protected double round(double value, int places) {
+    private double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);

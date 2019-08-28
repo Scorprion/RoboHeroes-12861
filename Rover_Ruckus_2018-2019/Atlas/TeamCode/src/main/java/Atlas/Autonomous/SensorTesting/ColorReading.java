@@ -21,7 +21,7 @@ public class ColorReading extends Aggregated {
         waitForStart();
 
         while(opModeIsActive()) {
-            NormalizedRGBA colors = robot.ColorSensorFront2.getNormalizedColors();
+            NormalizedRGBA colors = robot.ColorSensor.getNormalizedColors();
 
             final float values[] = hsvValues;
 

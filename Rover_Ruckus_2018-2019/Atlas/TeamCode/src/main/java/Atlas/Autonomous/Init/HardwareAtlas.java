@@ -18,8 +18,6 @@ public class HardwareAtlas {
     //Sensors
     public NormalizedColorSensor ColorSensor;
     NormalizedColorSensor BottomCS;
-    public NormalizedColorSensor ColorSensorFront2;
-    public NormalizedColorSensor BottomCS2;
     //public DistanceSensor DistanceSensor;
 
     //Servos
@@ -53,8 +51,6 @@ public class HardwareAtlas {
     public void init(HardwareMap ahwMap) {
         ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         BottomCS = ahwMap.get(NormalizedColorSensor.class, "BottomCS");
-        ColorSensorFront2 = ahwMap.get(NormalizedColorSensor.class, "ColorSensorFront2");
-        BottomCS2 = ahwMap.get(NormalizedColorSensor.class, "BottomCS2");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
         //IMU sensor

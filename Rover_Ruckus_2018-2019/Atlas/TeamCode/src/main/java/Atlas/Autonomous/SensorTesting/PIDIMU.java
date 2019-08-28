@@ -61,6 +61,7 @@ public class PIDIMU extends LinearOpMode
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         imu = hardwareMap.get(BNO055IMU.class, "imu");
+
         imu.initialize(parameters);
 
         // Set PID proportional value to start reducing power at about 50 degrees of rotation.
