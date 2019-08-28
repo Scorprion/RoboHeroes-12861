@@ -8,10 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name= "STC_TeleOp", group= "Pushbot")
 public class STCTeleOp extends OpMode {
 
-    private boolean movingforward = false;
     private double speed = 0;
     private double turnspeed = 0;
-    private double glyphspeed = 0;
     private double clampspeed = 0;
     private double liftspeed = 0;
     HardwareSTC robot = new HardwareSTC();
@@ -25,26 +23,18 @@ public class STCTeleOp extends OpMode {
     @Override
     public void loop() {
         speed = gamepad1.left_stick_y;
-        turnspeed = gamepad1.right_stick_x * 1.5;
+        turnspeed = gamepad1.right_stick_x;
 
         liftspeed = gamepad2.right_stick_y;
         clampspeed = gamepad2.left_stick_y;
-
-        movingforward = false;
-        telemetry.addData("Moving?: " , movingforward);
-        telemetry.update();
 
         //Gamepad 1
         if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= 0.1) {
             robot.Left.setPower(speed);
             robot.Right.setPower(speed);
-            movingforward = true;
         }
 
         if(gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-            if (movingforward) {
-                turnspeed *= 0.5;
-            }
             robot.Left.setPower(-turnspeed);
             robot.Right.setPower(turnspeed);
         }

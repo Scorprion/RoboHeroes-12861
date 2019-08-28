@@ -1,12 +1,25 @@
 package STC_2019;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import STC_2019.Challenge2;
 
-@Autonomous(name="Challenge2", group="STC")
-public class Challenge2 extends LinearOpMode {
-
+@Autonomous(name="Challenge_2_2", group="STC")
+public class Challenge2_2 extends LinearOpMode {
+    private NormalizedRGBA colors = new NormalizedRGBA();
+    private NormalizedRGBA colors2 = new NormalizedRGBA();
+    private float[] hsvValues = new float[3];
+    private int color = 0;
+    private int color2 = 0;
+    //public static final double turnSpeed = 0.5;
+    public boolean colorFound = false;
+    private boolean markerFound = false;
+    private double diffred = 0, diffblue = 0;
     private final double countsPerRot = 2240; // The counts per rotation
     private final double drive_gear_reduction = 0.2; // The drive gear reduction of the robot
     private final double wheelDiamInch = 3.54331; // The diameter of the Atlas wheels for finding the circumference
@@ -20,33 +33,38 @@ public class Challenge2 extends LinearOpMode {
 
         waitForStart();
 
-        encoderDrives(0.4, 130, 130);
-        sleep(300);
-        encoderDrives(0.4, -11.2, 11.2);
-        sleep(300);
-        encoderDrives(0.4, 126, 126);
-        sleep(300);
-        encoderDrives(0.4, -11, 11);
-        sleep(300);
-        encoderDrives(0.4, 127, 127);
-        sleep(300);
-        encoderDrives(0.4, -11.5, 11.5);
-        sleep(300);
-        encoderDrives(0.4, 128, 128);
+        robot.runtime.reset();
+        while (opModeIsActive()) {
+            while (opModeIsActive() && !colorFound && (robot.runtime.milliseconds() < 500)) {
+                colors = robot.Color1.getNormalizedColors();
+                color = colors.toColor();
+                colors.red /= 255;
+                colors.green /= 255;
+                colors.blue /= 255;
+                color = colors.toColor();
 
-        encoderDrives(0.4, 130, 130);
-        sleep(300);
-        encoderDrives(0.4, -11.2, 11.2);
-        sleep(300);
-        encoderDrives(0.4, 126, 126);
-        sleep(300);
-        encoderDrives(0.4, -11, 11);
-        sleep(300);
-        encoderDrives(0.4, 127, 127);
-        sleep(300);
-        encoderDrives(0.4, -11.5, 11.5);
-        sleep(300);
-        encoderDrives(0.4, 128, 128);
+                colors2 = robot.Color2.getNormalizedColors();
+                color2 = colors.toColor();
+                colors2.red /= 255;
+                colors2.green /= 255;
+                colors2.blue /= 255;
+                color2 = colors.toColor();
+
+                diffred = 0; //defaultRed - colors.red;
+                diffblue = 0; //defaultBlue - colors.blue;
+
+                telemetry.addData("Red:", colors.red);
+                telemetry.addData("Calibrated Red:", diffred);
+                telemetry.addData("Blue:", colors.blue + diffblue);
+                telemetry.addData("Calibrated Blue:", diffblue);
+                telemetry.update();
+                if ((Color.red(color) <= 50 && Color.blue(color) <= 50 && Color.green(color) <= 50)||(Color.red(color2) <= 50 && Color.blue(color2) <= 50 && Color.green(color2) <= 50)) {
+                    encoderDrives(0.4, 130, 126);
+                    sleep(300);
+
+                }
+            }
+        }
     }
 
     public void encoderDrives(double speed,
