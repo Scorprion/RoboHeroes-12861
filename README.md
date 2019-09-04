@@ -1,4 +1,6 @@
-# FTC #12861 RoboHeroes  <a href="url"><img src= "https://lh3.google.com/u/0/d/0B7YFfSqj40OqTUl3N1dXNzB4dms=w1920-h902-iv1" align="right" height="100" width="100"></a>
+# FTC #12861 RoboHeroes  <a href="url"><img src=  width="100"></a>
+
+![Logo](https://lh3.google.com/u/0/d/0B7YFfSqj40OqTUl3N1dXNzB4dms=w1920-h902-iv1)
 
 This repository contains the code for FTC Team #12861 RoboHeroes. Our code is organized into folders that are for each season/year. 
 
