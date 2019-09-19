@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.lang.Math.*;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
 public class Aggregated extends LinearOpMode {
@@ -936,14 +937,14 @@ public class Aggregated extends LinearOpMode {
         double angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
         error = getError(target, angle);
         time.reset();
+
         while(opModeIsActive() && !errorCheckStop(error, 2, 1)) {
             angle = eulerNormalize(robot.imu.getAngularOrientation().firstAngle);
-            output = calcPID(P, I, D, target, angle, time);
-            output /= 100;
+            output = tanh(calcPID(P, I, D, target, angle, time));
             error = getError(target, angle);
 
             telemetry.addData("Output: ", output);
-            output = constrain(output, -1, 1);
+            // output = constrain(output, -1, 1);
 
             iteration++;
 
@@ -958,6 +959,7 @@ public class Aggregated extends LinearOpMode {
             telemetry.addData("Current Angle: ", angle);
             telemetry.update();
         }
+
         stopMotors();
         telemetry.addData("Error stop: ", errorCheckStop(error, 1, 0));
         telemetry.addData("Not moving: ", notMoving(output, 2, 0.14));
@@ -969,18 +971,41 @@ public class Aggregated extends LinearOpMode {
         error = target - sensor;
         error = eulerNormalize(error);
 
+        // Proportional
         Poutput = P * error;
 
+        // Integral
         Ioutput += I/time.seconds() * error;
 
+        // Derivative
         slope = error - lasterror;
         Doutput = -D * slope;
 
+        // Storing the saved error value for the derivative calculation later
         lasterror = error;
 
         PIDout = Poutput + Ioutput + Doutput;
 
         return PIDout;
+    }
+
+
+    /**
+     * A tanh function to normalize values from -1 to 1
+     * @param x the number to be normalized
+     * @return the value of the tanh function
+     */
+    public static double tanh(double x) {
+        return Math.tanh(x);
+    }
+
+    /**
+     * A sigmoid function to normalize values from 0 to 1
+     * @param x the number to be normalized
+     * @return the value of the sigmoid function
+     */
+    public double sigmoid(double x) {
+        return (1/( 1 + Math.pow(Math.E,(-1*x))));
     }
 
     /**

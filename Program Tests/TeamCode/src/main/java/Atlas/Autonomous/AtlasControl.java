@@ -28,7 +28,7 @@ import Atlas.Autonomous.Init.HardwareAtlas;
 @Autonomous(name = "ML", group = "bot")
 public class AtlasControl extends LinearOpMode {
     private HardwareAtlas robot = new HardwareAtlas();
-    double lower = -1, upper = 1;
+    double lower = -0.5, upper = 0.5;
     private double theta = 0, theta_dot = 0, prev_theta = 0;
     private double target = 100, norm_target = min_max(-180, 180, target, lower, upper);
     private Controller c = new Controller();
@@ -65,24 +65,34 @@ public class AtlasControl extends LinearOpMode {
                 // Output layer
                 .layer(2, new OutputLayer.Builder().nIn(4).nOut(1)
                         .activation(Activation.IDENTITY)
-                        .lossFunction(LossFunctions.LossFunction.MSE)
+                        .lossFunction(LossFunctions.LossFunction.SQUARED_LOSS)
                         .build())
                 .build());
 
         test.init();
         test.setListeners(new ScoreIterationListener(10));
 
-        INDArray Y = Nd4j.create(new double[]{norm_target, 0}); // Target
-        // DataSet data = new DataSet(); // Make the "dataset" to train on (this was for testing)
         double output;
         double norm_theta;
+        double score = 10000;
         double norm_theta_dot;
         int iteration = 0, orientation = 1;
-        Collection<TrainingListener> score;
+
+        theta = robot.imu.getAngularOrientation().firstAngle;
+        theta_dot = prev_theta - theta;
+        norm_theta = min_max(-180, 180, theta, lower, upper);
+        INDArray Y = Nd4j.create(new double[]{norm_target}); // Target
+        X = Nd4j.create(new double[]{norm_theta, theta_dot});
+
+        // DataSet data = new DataSet(); // Make the "dataset" to train on (this was for testing)
         while(opModeIsActive()) {
             // Get data and keep track of the iteration
             iteration++;
             theta = robot.imu.getAngularOrientation().firstAngle;
+            if (c.round(theta, 0) == target) {
+                requestOpModeStop();  // Stops program when the current angle rounded is equal to the target
+            }
+
             theta_dot = prev_theta - theta;  // prev_theta and theta is already normalized so there is no need to again
 
             // So the DNN doesn't output anything greater or less than 1 and -1
@@ -95,8 +105,11 @@ public class AtlasControl extends LinearOpMode {
                 orientation = 1;
             }
 
-            // Take absolute value of angle
-            norm_theta = Math.abs(norm_theta);
+            // Take absolute value of angle  (deprecated to go into a parabolic form)
+            // norm_theta = Math.abs(norm_theta);
+
+            //Take square of angle to make the graph parabolic with a definite minimum
+            norm_theta *= norm_theta;
 
             // Shift over target so there isn't 2 targets (shift 'graph' over so the target is at 0
             norm_theta += norm_target;
@@ -111,10 +124,10 @@ public class AtlasControl extends LinearOpMode {
             }
 
             // Input data
-            // second line logs theta for the theta_dot calculation
-            X = Nd4j.create(new double[]{norm_theta, theta_dot});
+            // Third line logs theta for the theta_dot calculation
+            X.putScalar(0, norm_theta);
+            X.putScalar(1, theta_dot);
             prev_theta = theta;  // Update the previous_theta param (for theta dot calculation)
-
 
             // Train on data
             test.fit(X, Y);
@@ -125,14 +138,14 @@ public class AtlasControl extends LinearOpMode {
             robot.Right.setPower(-output * orientation);
 
             // ?????
-            score = test.getListeners();
+            score = test.score();
 
             telemetry.addData("Iteration:", iteration);
-            telemetry.addData("Target:", 100);
+            telemetry.addData("Target:", target);
             telemetry.addData("Theta", theta);
             telemetry.addData("Theta dot", theta_dot);
             telemetry.addData("Output:", output);
-            telemetry.addData("In case:", score.toString());
+            telemetry.addData("Score:", score);
             telemetry.update();
         }
     }

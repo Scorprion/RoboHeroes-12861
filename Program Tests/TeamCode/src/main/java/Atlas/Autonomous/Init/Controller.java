@@ -350,7 +350,7 @@ public class Controller extends LinearOpMode {
      * @param places the nth place to round to
      * @return the rounded value
      */
-    protected double round(double value, int places) {
+    public double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);

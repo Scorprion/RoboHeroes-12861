@@ -17,6 +17,6 @@ public class AutoExample extends LinearOpMode {
         waitForStart();
 
         left.setPower(0.5);
+
     }
 }
-
