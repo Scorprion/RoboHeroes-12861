@@ -1,4 +1,4 @@
-package Atlas.JavaClass;
+package Atlas.Autonomous.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.BNO055IMUImpl;
@@ -15,142 +15,52 @@ import java.math.RoundingMode;
 import Atlas.Autonomous.Init.Aggregated;
 import Atlas.Autonomous.Init.HardwareAtlas;
 
-@Autonomous(name="PID", group="Control")
-public class PID extends LinearOpMode {
+public class PID {
+    public double total_angle = 0, previous_angle = 0, delta_angle = 0;
 
-    private BNO055IMU imu;
+    public double angle = 0;
+    public double error = 0;
+    public double slope = 0;
+    public double parabola = 0;
+    public double PIDout, Poutput, Ioutput, Doutput;
 
-    private DcMotor RightMotor;
-    private DcMotor LeftMotor;
+    public double P, I, D, setpoint, lasterror, total_error;
+    private ElapsedTime time = new ElapsedTime();
 
-    double angle = 0;
-
-    @Override
-    public void runOpMode() throws InterruptedException {
-        //IMU sensor
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-
-        LeftMotor = hardwareMap.get(DcMotor.class, "LeftMotor");
-        LeftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        RightMotor = hardwareMap.get(DcMotor.class, "RightMotor");
-
-
-        PID(0.7, 0, 0, 90);
-        while(opModeIsActive()) {
-            angle = eulerNormalize(imu.getAngularOrientation().firstAngle);
-            telemetry.addData("Current Angle: ", angle);
-            telemetry.update();
-        }
+    public PID(double P, double I, double D, double setpoint) {
+        this.P = P;
+        this.I = I;
+        this.D = D;
+        this.setpoint = setpoint;  // The target angle
+        this.lasterror = 0;  // For the derivative part of the calculation
+        time.reset();  // Reset the elapsed time for each PID run
     }
 
-
-
-    private double PIDout = 0, lasterror = 0;
-    //Methods for testing
-    /**
-     * Constrain a given value between 2 values, useful for things like power which can only be between 1 and -1
-     * @param value the value to be costrained
-     * @param min the minimum for the value to be constrained around
-     * @param max the maximum for the value to be constrained around
-     * @return the constrained value
-     */
-    private double constrain(double value, double min, double max) {
-        if(value > max) {
-            return max;
-        }
-        else if(value < min) {
-            return min;
-        }
-
-        return value;
+    public double getPID(double current_angle) {
+        PIDout = calcPID(current_angle);
+        return PIDout;
     }
 
-    /**
-     * Normalize a value around the euler angles' values (-179 to 179 in 2 degrees for the IMU sensor)
-     * @param value the value to be normalized
-     * @return the normalized version of the double "value"
-     */
-    protected double eulerNormalize(double value) {
-        while(value > 180) {
-            value -= 360;
-        }
-
-        while(value < -180) {
-            value += 360;
-        }
-        return value;
-    }
-
-    private double error = 0, slope, Poutput, Ioutput, Doutput, output;
-    ElapsedTime time = new ElapsedTime();
-    protected void PID(double P, double I, double D, double target) {
-        int iteration = 0;
-        lasterror = 0;
-        PIDout = 0;
-        slope = 1;
-        double angle = eulerNormalize(imu.getAngularOrientation().firstAngle);
-        error = getError(target, angle);
-        time.reset();
-
-        while(opModeIsActive() && !errorCheckStop(error, 2, 1)) {
-            angle = eulerNormalize(imu.getAngularOrientation().firstAngle);
-            output = tanh(calcPID(P, I, D, target, angle, time));
-            error = getError(target, angle);
-
-            telemetry.addData("Output: ", output);
-            // output = constrain(output, -1, 1);
-
-            iteration++;
-
-            RightMotor.setPower(-output);
-            LeftMotor.setPower(output);
-            telemetry.addData("Iteration", iteration);
-            telemetry.addData("Normalized Output: ", output);
-            telemetry.addData("Proportional: ", getP());
-            telemetry.addData("Integral: ", getI());
-            telemetry.addData("Derivative: ", getD());
-            telemetry.addData("Error: ", getError(target, angle));
-            telemetry.addData("Current Angle: ", angle);
-            telemetry.update();
-        }
-
-        LeftMotor.setPower(0);
-        RightMotor.setPower(0);
-        telemetry.addData("Error stop: ", errorCheckStop(error, 1, 0));
-        telemetry.addData("Not moving: ", notMoving(output, 2, 0.14));
-        telemetry.addData("Current Angle: ", angle);
-        telemetry.update();
-    }
-
-    private double calcPID(double P, double I, double D, double target, double sensor, ElapsedTime time) {
-        error = target - sensor;
-        error = eulerNormalize(error);
+    private double calcPID(double angle) {
+        this.error = (likeallelse(angle) - this.setpoint) / 360;
 
         // Proportional
-        Poutput = P * error;
+        Poutput = P * this.error;
 
         // Integral
-        Ioutput += I/time.seconds() * error;
+        Ioutput = (I * this.total_error) / 100; // / time.seconds();
 
         // Derivative
-        slope = error - lasterror;
-        Doutput = -D * slope;
+        this.slope = this.error - this.lasterror;
+        Doutput = -D * this.slope;
 
         // Storing the saved error value for the derivative calculation later
-        lasterror = error;
-
+        this.lasterror = this.error;
+        this.total_error += error;
         PIDout = Poutput + Ioutput + Doutput;
 
         return PIDout;
     }
-
 
     /**
      * A tanh function to normalize values from -1 to 1
@@ -241,18 +151,59 @@ public class PID extends LinearOpMode {
     }
 
     /**
+     * Constrain a given value between 2 values, useful for things like power which can only be between 1 and -1
+     * @param value the value to be costrained
+     * @param min the minimum for the value to be constrained around
+     * @param max the maximum for the value to be constrained around
+     * @return the constrained value
+     */
+    private double constrain(double value, double min, double max) {
+        if (value > max) {
+            return max;
+        } else if (value < min) {
+            return min;
+        }
+        return value;
+    }
+
+    private double likeallelse(double angle) {
+        this.delta_angle = angle - previous_angle;
+
+        if (delta_angle < -180)
+            delta_angle += 360;
+        else if (delta_angle > 180)
+            delta_angle -= 360;
+
+        this.total_angle += delta_angle;
+        previous_angle = angle;
+        return total_angle;
+    }
+
+    /*
+    Shift all the values to a parabola with the minimum at your desired target
+
+    private double parabolaShift(double angle, double target) {
+        if(angle >= 0) {
+            error = angle - target;
+        } else if(angle < 0) {
+            error = (angle + 180) - target;
+        }
+        return this.parabola / 180;
+    }*/
+
+    /**
      * Retrieving the error
      * @return the error
      */
-    protected double getError(double target, double sensor) {
-        return target - sensor;
+    public double getError() {
+        return error;
     }
 
     /**
      * Retrieve the proportional output
      * @return the Poutput
      */
-    protected double getP() {
+    public double getP() {
         return Poutput;
     }
 
@@ -260,7 +211,7 @@ public class PID extends LinearOpMode {
      * Retrieve the integral output
      * @return the Ioutput
      */
-    protected double getI() {
+    public double getI() {
         return Ioutput;
     }
 
@@ -268,7 +219,11 @@ public class PID extends LinearOpMode {
      * Retrieve the derivative output
      * @return the Doutput
      */
-    protected double getD() {
+    public double getD() {
         return Doutput;
+    }
+
+    protected void setSetpoint(double value) {
+        setpoint = value;
     }
 }
