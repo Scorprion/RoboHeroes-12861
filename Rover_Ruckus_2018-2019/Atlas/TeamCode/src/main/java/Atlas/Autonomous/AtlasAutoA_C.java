@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 import Atlas.Autonomous.Init.Aggregated;
+import Atlas.Autonomous.Init.HardwareAtlas;
 
 import static Atlas.Autonomous.Init.Aggregated.direction.CW;
 import static Atlas.Autonomous.Init.Aggregated.direction.CCW;
@@ -18,6 +19,7 @@ import static Atlas.Autonomous.Init.Aggregated.direction.CCW;
 @Disabled
 public class AtlasAutoA_C extends Aggregated {
     boolean loop = true;
+    HardwareAtlas robot = new HardwareAtlas();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -34,7 +36,11 @@ public class AtlasAutoA_C extends Aggregated {
     }
 
     public void movement() {
-        robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        try{
+            robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        }catch(Exception e){
+            vuforia.init
+        }
         /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
         sleep(2000);
@@ -47,12 +53,12 @@ public class AtlasAutoA_C extends Aggregated {
         //calibrateCS();
         encoderDrives(0.3, 6, 6);
         sleep(1000);
-        PID(0.5, 0.5, 0, 60);
+        // PID(0.5, 0.5, 0, 60);
         //proportional(CW, 0.5, 52, 3);
         sleep(500);
         encoderDrives(0.4, 26, 26);
         sleep(250);
-        PID(0.42, 0.5, 0, 88);
+        // PID(0.42, 0.5, 0, 88);
         sleep(500);
     }
 }

@@ -43,7 +43,7 @@ public class ControlTesting extends Aggregated {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);  // REMEMBER THIS TOO
 
-        PID pid = new PID(3, 0.2, 0.4, 90);
+        PID pid = new PID(3.4, 0.2, 0.2, 90);
         waitForStart();
 
         while(opModeIsActive()) {
@@ -52,6 +52,7 @@ public class ControlTesting extends Aggregated {
             LeftMotor.setPower(speed + pidOutput);
             RightMotor.setPower(-speed - pidOutput);
             telemetry.addData("Total Angle: ", pid.total_angle);
+            telemetry.addData("Target: ", pid.setpoint);
             telemetry.addData("Current Angle: ", angle);
             telemetry.addData("Output: ", pidOutput);
             telemetry.addData("P: ", pid.Poutput);

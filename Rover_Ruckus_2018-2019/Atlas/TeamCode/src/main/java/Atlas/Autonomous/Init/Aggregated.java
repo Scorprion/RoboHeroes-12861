@@ -22,7 +22,7 @@ public class Aggregated extends LinearOpMode {
      */
 
     //Using our robot's hardware
-    HardwareAtlas robot = new HardwareAtlas();
+    public HardwareAtlas robot = new HardwareAtlas();
 
     //Defining final variables for the encoders
     private final double countsPerRot = 2240; // The counts per rotation
