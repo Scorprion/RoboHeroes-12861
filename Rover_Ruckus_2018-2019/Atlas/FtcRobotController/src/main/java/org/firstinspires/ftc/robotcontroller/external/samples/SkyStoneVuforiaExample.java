@@ -52,6 +52,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
+
 /**
  * This 2019-2020 OpMode illustrates the basics of using the Vuforia localizer to determine
  * positioning and orientation of robot on the SKYSTONE FTC field.
@@ -84,7 +85,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 
 @TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
-public class VuforiaTest extends LinearOpMode {
+@Disabled
+public class SkyStoneVuforiaExample extends LinearOpMode {
 
     // IMPORTANT:  For Phone Camera, set 1) the camera source and 2) the orientation, based on how your phone is mounted:
     // 1) Camera Source.  Valid choices are:  BACK (behind screen) or FRONT (selfie side)
@@ -108,7 +110,7 @@ public class VuforiaTest extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+            "AYc9EJX/////AAAAGTW8Yvbx50Piov359fyt2VAN3E49fsw59id8r56R5cHLGaCKa2dq45xJzb4qYBIJzeiNCHhOMIcAU8Ea8pzrinYgmKg/uBLa8m2i8t4xuYaRjVAgULijV3irq9Q82XBW+y0NtoYiInt4XVY+gxaRJfRFzoeewUw143tmuFaoBQr/8rMS3c/5sJcorWu1xFP9S+Nz7tU/1aiA0FgDYzg/utGhBqlQ85kiaEu3BALBVUKaW1Y8iv8AU6v2WvoFHpcr2K9RUDiguOU6YG5H5i/1U7mf+KhrkE+Fpz/zMVaVihDmZpCTbGEIg26BmIAXc2d2bNhSxZtK4ibOD1I2BtrM4uRW+1yX7+kPJxqjOgcPFSGk";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here
@@ -143,6 +145,8 @@ public class VuforiaTest extends LinearOpMode {
          * We can pass Vuforia the handle to a camera preview resource (on the RC phone);
          * If no camera monitor is desired, use the parameter-less constructor instead (commented out below).
          */
+
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -297,8 +301,8 @@ public class VuforiaTest extends LinearOpMode {
         final float CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
 
         OpenGLMatrix robotFromCamera = OpenGLMatrix
-                    .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
+                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES, phoneYRotate, phoneZRotate, phoneXRotate));
 
         /**  Let all the trackable listeners know where the phone is.  */
         for (VuforiaTrackable trackable : allTrackables) {
@@ -320,6 +324,7 @@ public class VuforiaTest extends LinearOpMode {
         targetsSkyStone.activate();
         while (!isStopRequested()) {
 
+            telemetry.update();
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {

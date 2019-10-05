@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package Atlas.Calibration;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -27,6 +27,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.HardwareMapInit;
+
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -38,7 +40,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Disabled
-@Autonomous(name = "ColorTesting", group = "RoboBot")
+@Autonomous(name = "ColorTesting", group = "Calibration")
 public class ColorTesting extends LinearOpMode {
 
     HardwareMapInit robot  = new HardwareMapInit();   // Use a Pushbot's hardware
