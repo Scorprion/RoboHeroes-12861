@@ -9,7 +9,9 @@ This repository contains the code for FTC Team #12861 RoboHeroes. Our code is or
 - Make teleop more and more intuitive and smooth
 ## Goals/Missions
 > Display Vuforia to the phone screen
+
 > Get more accurate autonomous movement
+
 > Make a TeleOp
 ## Design Process
 We are currently waiting for the build team to finalize the intake mechanism so we can begin testing and refining programs for it.
