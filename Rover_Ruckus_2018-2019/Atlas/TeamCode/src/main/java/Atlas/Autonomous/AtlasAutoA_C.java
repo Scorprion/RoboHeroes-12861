@@ -39,7 +39,7 @@ public class AtlasAutoA_C extends Aggregated {
         try{
             robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         }catch(Exception e){
-            vuforia.init
+
         }
         /*robot.Latching.setPower(0.8);
         robot.Winch.setPower(-1);
