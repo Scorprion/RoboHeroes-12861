@@ -8,6 +8,10 @@ This repository contains the code for FTC Team #12861 RoboHeroes. Our code is or
 - Focus on implementing some basic control theory for better auto programs and control
 - Make teleop more and more intuitive and smooth
 ## Goals/Missions
-> Yet to see next season's missions
+> Display Vuforia to the phone screen
+
+> Get more accurate autonomous movement
+
+> Make a TeleOp
 ## Design Process
-> Yet for next season to begin
+We are currently waiting for the build team to finalize the intake mechanism so we can begin testing and refining programs for it.
