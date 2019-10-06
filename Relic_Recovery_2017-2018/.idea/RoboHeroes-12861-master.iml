@@ -3,8 +3,8 @@
   <component name="FacetManager">
     <facet type="android" name="Android">
       <configuration>
-        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../../RoboHeroes-12861-master/gen" />
-        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../../RoboHeroes-12861-master/gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_APT" value="/../gen" />
+        <option name="GEN_FOLDER_RELATIVE_PATH_AIDL" value="/../gen" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/../../RoboHeroes-12861-master/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/../../RoboHeroes-12861-master/res" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../../RoboHeroes-12861-master/assets" />
