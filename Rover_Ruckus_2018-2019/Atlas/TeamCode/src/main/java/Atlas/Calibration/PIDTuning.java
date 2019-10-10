@@ -31,6 +31,7 @@ public class PIDTuning extends Aggregated {
     BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
     ElapsedTime timer = new ElapsedTime();
+    ElapsedTime total_time = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -72,7 +73,7 @@ public class PIDTuning extends Aggregated {
             RightMotor.setPower(-speed);
 
             try {
-                d.addDataLine( timer.milliseconds() / 1000 + "," + speed +
+                d.addDataLine(total_time.milliseconds() / 1000 + "," + speed +
                         "," + imu.getAngularOrientation().firstAngle);
             } catch (IOException e) {
                 e.printStackTrace();
