@@ -2,9 +2,14 @@ package Atlas.Calibration;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.internal.files.DataLogger;
+
+import java.io.IOException;
 
 import Atlas.Autonomous.Init.Aggregated;
 import Atlas.Autonomous.Init.PID;
@@ -45,10 +50,20 @@ public class PIDTuning extends Aggregated {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);  // REMEMBER THIS TOO
 
+        int iteration = 0;
+        DataLogger d = null;
+        try {
+            d = new DataLogger("test.csv");
+            d.addHeaderLine("Time,", "Input,", "Output");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         waitForStart();
+
         //encoderDrives(0.2, 60, 60, pid);
         while(opModeIsActive()) {
-            if(timer.seconds() < 3) {
+            if(timer.seconds() > 3) {
                 timer.reset();
                 speed += 0.05;
             }
@@ -56,9 +71,18 @@ public class PIDTuning extends Aggregated {
             LeftMotor.setPower(speed);
             RightMotor.setPower(-speed);
 
-            telemetry.log().add("Time", timer.seconds(), "Input", speed, "Output", imu.getAngularOrientation().firstAngle);
-            telemetry.addData("Current Angle: ", imu.getAngularOrientation().firstAngle);
-            telemetry.update();
+            try {
+                d.addDataLine( timer.milliseconds() / 1000 + "," + speed +
+                        "," + imu.getAngularOrientation().firstAngle);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if(!opModeIsActive()) {
+                telemetry.addLine("Stopped");
+                telemetry.update();
+                d.close();
+            }
         }
     }
 }

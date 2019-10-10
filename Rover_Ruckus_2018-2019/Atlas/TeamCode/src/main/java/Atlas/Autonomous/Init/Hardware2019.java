@@ -17,8 +17,8 @@ public class Hardware2019 {
     public DcMotor Right;
     public DcMotor Left;
 
-    public CRServo ClawR;
-    public CRServo ClawL;
+    public Servo ClawR;
+    public Servo ClawL;
 
     public BNO055IMU imu;
 
@@ -50,5 +50,7 @@ public class Hardware2019 {
         Right.setPower(0);
         Left.setPower(0);
 
+        ClawR = ahwMap.get(Servo.class, "ClawR");
+        ClawL = ahwMap.get(Servo.class, "ClawL");
     }
 }
