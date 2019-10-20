@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.Aggregated;
+import org.firstinspires.ftc.teamcode.Autonomous.Init.Hardware;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.PID;
 
 import java.util.ArrayList;
@@ -32,6 +33,11 @@ public class Auto_A extends Aggregated {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        robot.init(hardwareMap);
+        waitForStart();
+        encoderDrives(0.3, 37,37);
+
+
         while (opModeIsActive()) {
             locationV = vuforia();
             if (locationV != null) {
@@ -42,6 +48,7 @@ public class Auto_A extends Aggregated {
                 robot.Left.setPower(0);
                 robot.Right.setPower(0);
             }
+
         }
     }
 }

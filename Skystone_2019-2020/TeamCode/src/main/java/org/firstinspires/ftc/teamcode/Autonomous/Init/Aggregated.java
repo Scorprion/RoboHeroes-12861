@@ -69,7 +69,7 @@ public class Aggregated extends LinearOpMode {
     
     @Override
     public void runOpMode() throws InterruptedException {
-        robot.init(hardwareMap);
+        // Does nothing here
     }
 
     public void encoderDrives(double speed,
@@ -80,8 +80,8 @@ public class Aggregated extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.Left.getCurrentPosition() + (int) (-linches * countsPerInch);
-            newRightTarget = robot.Right.getCurrentPosition() + (int) (-rinches * countsPerInch);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int) (linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int) (rinches * countsPerInch);
 
             //Both negative cw
             //Both positive backward
@@ -97,6 +97,16 @@ public class Aggregated extends LinearOpMode {
             // reset the timeout time and start motion.
             robot.Left.setPower(speed);
             robot.Right.setPower(speed);
+
+            while (opModeIsActive() &&
+                    (robot.Left.isBusy() && robot.Right.isBusy())) {
+                // Display it for the driver.
+                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d",
+                        robot.Left.getCurrentPosition(),
+                        robot.Right.getCurrentPosition());
+                telemetry.update();
+            }
 
             robot.Left.setPower(0);
             robot.Right.setPower(0);
@@ -114,8 +124,8 @@ public class Aggregated extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.Left.getCurrentPosition() + (int) (-linches * countsPerInch);
-            newRightTarget = robot.Right.getCurrentPosition() + (int) (-rinches * countsPerInch);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int) (linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int) (rinches * countsPerInch);
 
             //Both negative cw
             //Both positive backward
@@ -135,8 +145,8 @@ public class Aggregated extends LinearOpMode {
             while (opModeIsActive() &&
                     (robot.Left.isBusy() && robot.Right.isBusy())) {
                 pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed - pidOutput);
-                robot.Right.setPower(speed + pidOutput);
+                robot.Left.setPower(speed + pidOutput);
+                robot.Right.setPower(speed - pidOutput);
                 // Display it for the driver.
                 telemetry.addData("Angle: ", pid.angle);
                 telemetry.addData("Error: ", pid.error);

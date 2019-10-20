@@ -13,37 +13,21 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"WeakerAccess"})
 public class Hardware {
     //Sensors
     public NormalizedColorSensor ColorSensor;
-    NormalizedColorSensor BottomCS;
     //public DistanceSensor DistanceSensor;
-
-    //Servos
-    public Servo LClamp;
-    public Servo Marker;
-    public Servo Sliding;
-    public CRServo Latching;
 
     //Right motors
     public DcMotor Right;
 
     //Left motors
-    public DcMotor LShoulder;
-    public DcMotor LElbow;
     public DcMotor Left;
-    public DcMotor Middle;
 
-    //Winch
-    public DcMotor Winch;
 
     //IMU sensor
     public BNO055IMU imu;
-
-    // State used for updating telemetry
-    public Orientation angles;
-    public Acceleration gravity;
 
     // The elapsed time
     public ElapsedTime runtime = new ElapsedTime();
@@ -64,15 +48,11 @@ public class Hardware {
         Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Left = ahwMap.get(DcMotor.class, "Left");
-        Left.setDirection(DcMotorSimple.Direction.REVERSE);
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        Right.setPower(0);
-        Left.setPower(0);
 
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
-        //Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
