@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@SuppressWarnings({"WeakerAccess"})
 public class PID {
     public double total_angle = 0, previous_angle = 0, delta_angle = 0;
 
@@ -22,7 +23,6 @@ public class PID {
     public double PIDout, Poutput, Ioutput, Doutput;
 
     public double P, I, D, setpoint, lasterror, total_error;
-    private ElapsedTime time = new ElapsedTime();
 
     public PID(double P, double I, double D, double setpoint) {
         this.P = P;
@@ -30,7 +30,6 @@ public class PID {
         this.D = D;
         this.setpoint = setpoint;  // The target angle
         this.lasterror = 0;  // For the derivative part of the calculation
-        time.reset();  // Reset the elapsed time for each PID run
     }
 
     public double getPID(double current_angle) {
@@ -57,6 +56,14 @@ public class PID {
         PIDout = Poutput + Ioutput + Doutput;
 
         return PIDout;
+    }
+
+    public void setParams(double P, double I, double D, double setpoint) {
+        this.P = P;
+        this.I = I;
+        this.D = D;
+        this.setpoint = setpoint;  // The target angle
+        this.lasterror = 0;  // For the derivative part of the calculation
     }
 
     /**

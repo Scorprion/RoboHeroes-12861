@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings({"WeakerAccess"})
-public class Hardware {
+public class HardwareClass {
     //Sensors
     public NormalizedColorSensor ColorSensor;
     //public DistanceSensor DistanceSensor;
@@ -46,6 +46,7 @@ public class Hardware {
 
         Right = ahwMap.get(DcMotor.class, "Right");
         Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Left = ahwMap.get(DcMotor.class, "Left");
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

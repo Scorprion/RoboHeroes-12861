@@ -18,7 +18,8 @@ public class EncoderTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         Right = hardwareMap.get(DcMotor.class, "Right");
         Left = hardwareMap.get(DcMotor.class, "Left");
-        Left.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Right.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
 
         double initial_right = Right.getCurrentPosition();
@@ -34,7 +35,7 @@ public class EncoderTest extends LinearOpMode {
             telemetry.addData("Right Difference: ", Math.abs(initial_right - Right.getCurrentPosition()));
             telemetry.addData("Left Difference: ", Math.abs(initial_left - Left.getCurrentPosition()));
 
-            telemetry.addData("Average: ", ((initial_left - Left.getCurrentPosition()) + (initial_right - Right.getCurrentPosition())) / 2);
+            telemetry.addData("Average: ", (Math.abs((initial_left - Left.getCurrentPosition()) + (initial_right - Right.getCurrentPosition()))) / 2);
             telemetry.update();
         }
     }

@@ -26,7 +26,7 @@ public class Aggregated extends LinearOpMode {
 
     public final double countsPerInch = 47.5;
     private double pidOutput = 0;
-    public Hardware robot = new Hardware();
+    public HardwareClass robot = new HardwareClass();
 
 
     // Vuforia variables
@@ -145,8 +145,8 @@ public class Aggregated extends LinearOpMode {
             while (opModeIsActive() &&
                     (robot.Left.isBusy() && robot.Right.isBusy())) {
                 pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed + pidOutput);
-                robot.Right.setPower(speed - pidOutput);
+                robot.Left.setPower(speed - pidOutput);
+                robot.Right.setPower(speed + pidOutput);
                 // Display it for the driver.
                 telemetry.addData("Angle: ", pid.angle);
                 telemetry.addData("Error: ", pid.error);

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.Aggregated;
-import org.firstinspires.ftc.teamcode.Autonomous.Init.Hardware;
+import org.firstinspires.ftc.teamcode.Autonomous.Init.HardwareClass;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.PID;
 
 import java.util.ArrayList;
@@ -27,17 +28,29 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 @Autonomous(name = "Auto_A", group = "Autonomous")
 public class Auto_A extends Aggregated {
 
-    private double speed = 0.1;
+    private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
     private VectorF locationV;
+    private ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         waitForStart();
-        encoderDrives(0.3, 37,37);
+        /*
+        encoderDrives(0.3, 28,28, pid);*/
 
+        pid.setParams(1.3, 0.5, 0,90);
+        timer.reset();
 
+        while(timer.milliseconds() < 2500 && opModeIsActive()) {
+            telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
+            telemetry.update();
+            pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+            robot.Left.setPower(-pidOutput);
+            robot.Right.setPower(pidOutput);
+        }
+        /*
         while (opModeIsActive()) {
             locationV = vuforia();
             if (locationV != null) {
@@ -49,7 +62,7 @@ public class Auto_A extends Aggregated {
                 robot.Right.setPower(0);
             }
 
-        }
+        }*/
     }
 }
 
