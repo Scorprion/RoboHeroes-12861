@@ -66,6 +66,10 @@ public class PID {
         this.lasterror = 0;  // For the derivative part of the calculation
     }
 
+    public boolean Incomp(double ParPos, double ParNeg){
+        return (delta_angle >= ParPos || delta_angle <= ParNeg);
+    }
+
     /**
      * A tanh function to normalize values from -1 to 1
      * @param x the number to be normalized
