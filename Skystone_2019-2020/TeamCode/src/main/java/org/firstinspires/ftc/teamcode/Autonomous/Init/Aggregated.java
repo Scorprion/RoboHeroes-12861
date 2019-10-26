@@ -166,7 +166,17 @@ public class Aggregated extends LinearOpMode {
             robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
             //  sleep(250);   // optional pause after each move
+
         }
+    }
+
+    public void StopMotors () {
+
+        robot.Left.setPower(0);
+        robot.Right.setPower(0);
+    }
+    public void StopArm(){
+        robot.Arm.setPower(0);
     }
 
 

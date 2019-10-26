@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
 import com.vuforia.ImageTarget;
@@ -27,13 +29,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.internal.AppUtil;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.R;
 
-import org.firstinspires.ftc.teamcode.RC;
-import org.firstinspires.ftc.teamcode.opmodesupport.TeleOpMode;
-import org.firstinspires.ftc.teamcode.roboticslibrary.OCVUtils;
-import org.firstinspires.ftc.teamcode.roboticslibrary.VuforiaLocalizerImplSubclass;
+import org.firstinspires.ftc.teamcode.Autonomous.Init.VuforiaLocalizerImplSubclass;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
@@ -49,7 +48,7 @@ import java.util.Arrays;
  */
 @Disabled
 @Autonomous
-public class NewVuforiaOp extends TeleOpMode {
+public class NewVuforiaOp extends OpMode {
 
     VuforiaLocalizerImplSubclass locale;
 
@@ -58,7 +57,7 @@ public class NewVuforiaOp extends TeleOpMode {
     ObjectTracker objTracker;
 
     @Override
-    public void initialize() {
+    public void init() {
 
 
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
@@ -80,7 +79,7 @@ public class NewVuforiaOp extends TeleOpMode {
     }
 
     @Override
-    public void loopOpMode() {
+    public void loop() {
 
         for (VuforiaTrackable track : tracks) {
 

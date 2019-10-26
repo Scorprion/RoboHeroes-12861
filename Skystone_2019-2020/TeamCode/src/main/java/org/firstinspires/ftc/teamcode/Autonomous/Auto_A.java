@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -32,23 +33,50 @@ public class Auto_A extends Aggregated {
     private PID pid = new PID(0.5, 0.5, 0, 0);
     private VectorF locationV;
     private ElapsedTime timer = new ElapsedTime();
+    private ElapsedTime Progressor = new ElapsedTime();
+    private boolean NoMovingMotor = true;
+    private boolean SecondPhase = false;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        //Initialization
         robot.init(hardwareMap);
         waitForStart();
-        /*
-        encoderDrives(0.3, 28,28, pid);*/
 
-        pid.setParams(1.3, 0.5, 0,90);
+
+        //Forward to prepare for Vuforia sensing
+        encoderDrives(0.3, 28, 28, pid);
+
+
+        //90 Degree turn
+        pid.setParams(1.34, 0.5, 0,90);
+        StopMotors();
         timer.reset();
 
+        //Forward to sense Stones
+        while(vuforia() == null) {
+            robot.Left.setPower(0.3);
+            robot.Right.setPower(0.3);
+        }NoMovingMotor = false;
+
+        timer.reset();
+
+
+        //Angle Display
         while(timer.milliseconds() < 2500 && opModeIsActive()) {
             telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
             telemetry.update();
             pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
             robot.Left.setPower(-pidOutput);
             robot.Right.setPower(pidOutput);
+        }
+
+        while(opModeIsActive() && NoMovingMotor){
+            StopArm();
+        }
+
+        while(opModeIsActive()) {
+            telemetry.addData("Seconds:",  Progressor.seconds());
         }
         /*
         while (opModeIsActive()) {
@@ -63,6 +91,9 @@ public class Auto_A extends Aggregated {
             }
 
         }*/
+
+
+
     }
 }
 

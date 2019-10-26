@@ -25,7 +25,10 @@ public class HardwareClass {
     //Left motors
     public DcMotor Left;
 
+    //Arm
+    public DcMotor Arm;
 
+    public CRServo Clamp;
     //IMU sensor
     public BNO055IMU imu;
 
@@ -35,6 +38,8 @@ public class HardwareClass {
     public void init(HardwareMap ahwMap) {
         ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
+
+        Clamp = ahwMap.crservo.get("Clamp");
 
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -51,9 +56,12 @@ public class HardwareClass {
         Left = ahwMap.get(DcMotor.class, "Left");
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        Arm = ahwMap.get(DcMotor.class, "Arm");
+
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
         Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }
