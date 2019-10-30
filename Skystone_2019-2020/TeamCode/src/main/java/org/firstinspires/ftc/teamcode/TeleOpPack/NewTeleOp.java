@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.HardwareClass;
 
-@TeleOp(name= "AtlasTeleOp", group= "Pushbot")
+@TeleOp(name= "NewTeleOp", group= "Pushbot")
 public class NewTeleOp extends OpMode {
         //Making the slower arm and elbow toggle (driver 2)
         private ElapsedTime openClaw = new ElapsedTime();
@@ -53,7 +53,7 @@ public class NewTeleOp extends OpMode {
         public void loop() {
             upArmSpeed = (gamepad2.right_trigger * 0.7) * controlSpeedS;
             downArmSpeed = (gamepad2.left_trigger * 0.7) * controlSpeedS;
-            turnspeed = gamepad1.right_stick_x * robotControlSpeed;
+            turnspeed = gamepad1.left_stick_x * robotControlSpeed;
             speed = gamepad1.left_stick_y * robotControlSpeed;
 
 
@@ -85,12 +85,12 @@ public class NewTeleOp extends OpMode {
             }
 
             //The LClamp
-            if (gamepad2.right_bumper) {
+            if (gamepad1.right_bumper) {
                 robot.Clamp.setPower(1);
                 openClaw.reset();
                 //Wait 250 milliseconds before stopping the movement of the clamp
 
-            }else if (gamepad2.left_bumper) {
+            }else if (gamepad1.left_bumper) {
                 robot.Clamp.setPower(0);
             }else{
                 robot.Clamp.setPower(0.5);
@@ -109,17 +109,25 @@ public class NewTeleOp extends OpMode {
          */
             //Resetting Latch
             //Turning
-            if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
+            if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
                 robot.Left.setPower(-turnspeed);
                 robot.Right.setPower(turnspeed);
             }
 
             //Moving
             if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-                robot.Left.setPower(speed);
-                robot.Right.setPower(speed);
+                robot.Left.setPower(-speed);
+                robot.Right.setPower(-speed);
             }
-
+            if (gamepad1.right_stick_y >= 0.1) {
+                robot.Arm.setPower(-1);
+            }
+            if (gamepad1.right_stick_y <= -0.1) {
+                robot.Arm.setPower(1);
+            }
+            if (gamepad1.right_stick_y >= -0.1 && gamepad1.right_stick_y <= 0.1) {
+                robot.Arm.setPower(0);
+            }
             //Making the robot stop when it's set to 0
             if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0) {
                 robot.Left.setPower(0);
@@ -152,7 +160,6 @@ public class NewTeleOp extends OpMode {
             if (rmove.milliseconds() > 200) {
                 robotUsedRecent = false;
             }
-
             // Setting the LClamp power to 0.5 after the open claw is greater than 250 milliseconds
 
         }

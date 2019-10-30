@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
@@ -28,16 +29,22 @@ public class HardwareClass {
     //Arm
     public DcMotor Arm;
 
+    WebcamName webcamName = null;
+
     public CRServo Clamp;
     //IMU sensor
     public BNO055IMU imu;
 
     // The elapsed time
     public ElapsedTime runtime = new ElapsedTime();
+
+
     
     public void init(HardwareMap ahwMap) {
         ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
+
+        webcamName = ahwMap.get(WebcamName .class, "Webcam 1");
 
         Clamp = ahwMap.crservo.get("Clamp");
 
