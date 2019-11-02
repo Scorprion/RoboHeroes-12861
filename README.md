@@ -9,9 +9,9 @@ This repository contains the code for FTC Team #12861 RoboHeroes. Our code is or
 - Make teleop more and more intuitive and smooth
 ## Goals/Missions
 #### Autonomous
-~~1. Move forward and turn parallel to stones ~~
+1. ~~Move forward and turn parallel to stones~~
 2. Move back/foward (slowly) to read the skystones w/ Vuforia
-~~3. Once detected, grab the skystone ~~ (Technically)
+3. ~~Once detected, grab the skystone~~ (Technically)
 4. Move forward to detect the color (or Vurforia/distance sensor possibly) and drop the skystone in the building zone
 5. Move back and detect the second skystone in the same manner
 6. Drop it too

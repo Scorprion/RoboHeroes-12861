@@ -57,7 +57,8 @@ public class NewTeleOp extends OpMode {
         public void loop() {
             upArmSpeed = (gamepad2.right_trigger * 0.7) * controlSpeedS;
             downArmSpeed = (gamepad2.left_trigger * 0.7) * controlSpeedS;
-            turnspeed = gamepad1.left_stick_x * robotControlSpeed;
+            if( gamepad1.left_stick_x == 0){turnspeed = gamepad1.right_stick_x * robotControlSpeed;}
+            if (gamepad1.right_stick_x == 0){turnspeed = gamepad1.left_stick_x * robotControlSpeed;}
             speed = gamepad1.left_stick_y * robotControlSpeed;
 
 
