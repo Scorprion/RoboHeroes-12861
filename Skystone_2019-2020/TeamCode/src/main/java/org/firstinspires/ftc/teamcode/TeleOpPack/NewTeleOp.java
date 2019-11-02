@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.HardwareClass;
@@ -35,17 +36,20 @@ public class NewTeleOp extends OpMode {
 
         private double LElbowSpeed = 0;
 
+        DcMotor Right, Left, Arm;
         CRServo Clamp;
 
-
-        //Set the speed of the motors when the Left or Right sticks are not idle
-
-        HardwareClass robot = new HardwareClass();
-
         public void init() {
-            robot.init(hardwareMap);
+            Right = hardwareMap.get(DcMotor.class, "Right");
+            Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+            Left = hardwareMap.get(DcMotor.class, "Left");
+            Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            Left.setDirection(DcMotorSimple.Direction.REVERSE);
 
+            Arm = hardwareMap.get(DcMotor.class, "Arm");
+
+            Clamp = hardwareMap.get(CRServo.class, "Clamp");
             //DriveL.setDirection(DcMotor.Direction.REVERSE);
         }
 
@@ -81,19 +85,18 @@ public class NewTeleOp extends OpMode {
                     switchedS = true;
                 }
                 usedRecently = true;
-                robot.runtime.reset();
             }
 
             //The LClamp
             if (gamepad2.right_bumper) {
-                robot.Clamp.setPower(1);
+                Clamp.setPower(1);
                 openClaw.reset();
                 //Wait 250 milliseconds before stopping the movement of the clamp
 
             }else if (gamepad1.left_bumper) {
-                robot.Clamp.setPower(0);
+                Clamp.setPower(0);
             }else{
-                robot.Clamp.setPower(0.5);
+                Clamp.setPower(0.5);
             }
 
 
@@ -110,28 +113,28 @@ public class NewTeleOp extends OpMode {
             //Resetting Latch
             //Turning
             if ((gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) || (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1)) {
-                robot.Left.setPower(-turnspeed);
-                robot.Right.setPower(turnspeed);
+                Left.setPower(turnspeed);
+                Right.setPower(-turnspeed);
             }
 
             //Moving
             if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-                robot.Left.setPower(-speed);
-                robot.Right.setPower(-speed);
+                Left.setPower(-speed);
+                Right.setPower(-speed);
             }
             if (gamepad2.right_stick_y >= 0.1) {
-                robot.Arm.setPower(-1);
+                Arm.setPower(-1);
             }
             if (gamepad2.right_stick_y <= -0.1) {
-                robot.Arm.setPower(1);
+                Arm.setPower(1);
             }
             if (gamepad2.right_stick_y >= -0.1 && gamepad1.right_stick_y <= 0.1) {
-                robot.Arm.setPower(0);
+                Arm.setPower(0);
             }
             //Making the robot stop when it's set to 0
             if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0) {
-                robot.Left.setPower(0);
-                robot.Right.setPower(0);
+                Left.setPower(0);
+                Right.setPower(0);
             }
 
             //Tilting and resetting back our marker servo platform
@@ -153,17 +156,9 @@ public class NewTeleOp extends OpMode {
 
             // Setting the used recently boolean to true after 200
             // milliseconds after the a button was pressed
-            if (robot.runtime.milliseconds() > 200) {
-                usedRecently = false;
-            }
 
-            if (rmove.milliseconds() > 200) {
-                robotUsedRecent = false;
-            }
             // Setting the LClamp power to 0.5 after the open claw is greater than 250 milliseconds
 
         }
 
     }
-
-

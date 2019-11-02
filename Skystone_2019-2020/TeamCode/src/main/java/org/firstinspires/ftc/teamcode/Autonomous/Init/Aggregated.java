@@ -129,30 +129,26 @@ public class Aggregated extends LinearOpMode {
         int newRightTarget;
 
         if (opModeIsActive()) {
-            robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
             // Determine new target position, and pass to motor controller
-            newRightTarget = (int)(rinches * countsPerInch);
-            newLeftTarget = (int)(linches * countsPerInch);
-
-            robot.Right.setTargetPosition(newRightTarget);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int)(linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int)(rinches * countsPerInch);
             robot.Left.setTargetPosition(newLeftTarget);
+            robot.Right.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
-            robot.Left.setPower(speed);
-            robot.Right.setPower(speed);
+            robot.Left.setPower(Math.abs(speed));
+            robot.Right.setPower(Math.abs(speed));
 
             milliseconds.reset();
 
             while (opModeIsActive() && (milliseconds.milliseconds() < timeout * 1000) &&
                     (robot.Left.isBusy() && robot.Right.isBusy())) {
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d", (int)(newRightTarget), (int)(newLeftTarget));
+                telemetry.addData("Path1", "Running to %7d :%7d", (newRightTarget), (newLeftTarget));
                 telemetry.addData("Path2", "Running at %7d :%7d",
                         robot.Right.getCurrentPosition(),
                         robot.Left.getCurrentPosition());
@@ -165,6 +161,8 @@ public class Aggregated extends LinearOpMode {
             // Turn off RUN_TO_POSITION and reset
             robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
     /*

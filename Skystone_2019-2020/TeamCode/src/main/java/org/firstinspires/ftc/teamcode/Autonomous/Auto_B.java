@@ -41,7 +41,7 @@ public class Auto_B extends Aggregated {
         robot.Arm.setPower(0.5);
 
         encoderDrives(0.25, 27, 27, 3000);
-        encoderDrives(0.25, -10, 10, 3000);
+        encoderDrives(0.25, 10, -10, 3000);
         encoderDrives(0.25, 27, 27, 3000);
     }
 }

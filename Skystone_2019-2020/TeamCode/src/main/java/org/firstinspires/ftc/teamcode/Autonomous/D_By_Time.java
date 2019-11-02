@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.Aggregated;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.PID;
 
-@Autonomous(name = "A_By_Time", group = "Autonomous")
+@Autonomous(name = "D_By_Time", group = "Autonomous")
 public class D_By_Time extends Aggregated {
 
     private double speed = 0.1, pidOutput = 0;

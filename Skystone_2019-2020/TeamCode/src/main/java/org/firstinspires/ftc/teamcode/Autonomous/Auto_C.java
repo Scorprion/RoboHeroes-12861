@@ -39,7 +39,7 @@ public class Auto_C extends Aggregated {
         waitForStart();
 
         encoderDrives(0.25, 27, 27,2);
-        encoderDrives(0.25, 10, -10,2);
+        encoderDrives(0.25, -10, 10,2);
         encoderDrives(0.25, 27, 27,2);
     }
 }
