@@ -223,6 +223,13 @@ public class Aggregated extends LinearOpMode {
         }
     }*/
 
+    public void TimeRun(double left, double right, double seconds) {
+        robot.Left.setPower(left);
+        robot.Right.setPower(right);
+        sleep((long)(seconds * 1000));
+        StopMotors();
+    }
+
     public void StopMotors() {
 
         robot.Left.setPower(0);
