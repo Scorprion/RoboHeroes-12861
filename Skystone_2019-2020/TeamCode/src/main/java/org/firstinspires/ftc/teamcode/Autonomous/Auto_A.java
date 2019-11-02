@@ -40,25 +40,26 @@ public class Auto_A extends Aggregated {
 
         robot.Arm.setPower(0.5);
 
-        encoderDrives(0.3, 22, 22, pid);
+        encoderDrives(0.3, 22, 22, 2);
 
-        pid.setParams(1.45, 0.5, 0, 270);
+        /*pid.setParams(1.45, 0.5, 0, 270);
         run_pid(0, 5500, pid, true);
 
         encoderDrives(0.3, 18,18);
 
         pid.setParams(1.52, 0.5, 0, 0);
-        run_pid(0, 5500, pid, true);
+        run_pid(0, 5500, pid, true);*/
 
-        encoderDrives(0.3, 10, 10);
+        encoderDrives(0.3, 10, 10,2);
+        robot.Arm.setPower(-1);
+        sleep(250);
         robot.Arm.setPower(0);
-        sleep(1000);
-        encoderDrives(0.3, -10, -10);
-        encoderDrives(0.2, -13, 13);
-        encoderDrives(0.7, 103,103);
-        robot.Arm.setPower(1);
-        sleep(1000);
+        encoderDrives(0.3, -10, -10,1);
+        encoderDrives(0.2, 10, -10,1);
+        encoderDrives(0.5, 103,103,4);
+        robot.Arm.setPower(0.7);
+        sleep(750);
         robot.Arm.setPower(0);
-        encoderDrives(0.5, -60, -60);
+        encoderDrives(0.5, -60, -60,3.5);
     }
 }

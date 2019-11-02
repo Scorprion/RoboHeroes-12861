@@ -30,6 +30,7 @@ public class PID {
         this.D = D;
         this.setpoint = setpoint;  // The target angle
         this.lasterror = 0;  // For the derivative part of the calculation
+        this.error = 0;
     }
 
     public double getPID(double current_angle) {
@@ -64,6 +65,7 @@ public class PID {
         this.D = D;
         this.setpoint = setpoint;  // The target angle
         this.lasterror = 0;  // For the derivative part of the calculation
+        this.error = 0;  // Resetting the PID
     }
 
     public boolean Incomp(double ParPos, double ParNeg){

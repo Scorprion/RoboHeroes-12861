@@ -58,17 +58,14 @@ public class HardwareClass {
 
         Right = ahwMap.get(DcMotor.class, "Right");
         Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Left = ahwMap.get(DcMotor.class, "Left");
+        Left.setDirection(DcMotorSimple.Direction.REVERSE);
         Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         Arm = ahwMap.get(DcMotor.class, "Arm");
 
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
-        Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Arm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

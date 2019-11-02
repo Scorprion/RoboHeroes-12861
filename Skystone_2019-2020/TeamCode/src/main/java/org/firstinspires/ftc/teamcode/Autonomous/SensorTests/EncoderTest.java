@@ -13,13 +13,19 @@ public class EncoderTest extends LinearOpMode {
 
     DcMotor Right;
     DcMotor Left;
+    DcMotor Arm;
 
     @Override
     public void runOpMode() throws InterruptedException {
         Right = hardwareMap.get(DcMotor.class, "Right");
         Left = hardwareMap.get(DcMotor.class, "Left");
+        Arm = hardwareMap.get(DcMotor.class, "Arm");
 
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         waitForStart();
 
         double initial_right = Right.getCurrentPosition();

@@ -27,7 +27,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 @Autonomous(name = "Auto_D", group = "Autonomous")
 public class Auto_D extends Aggregated {
-
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
     private double locationV = -1000;
@@ -40,8 +39,8 @@ public class Auto_D extends Aggregated {
 
         robot.Arm.setPower(0.5);
 
-        encoderDrives(0.3, 22, 22, pid);
-        pid.setParams(1.45, 0.5, 0, 90);
+        encoderDrives(0.3, 22, 22, 2);
+        /*pid.setParams(1.45, 0.5, 0, 90);
         run_pid(0, 5500, pid, true);
 
         vuforia();
@@ -51,16 +50,17 @@ public class Auto_D extends Aggregated {
         }
 
         pid.setParams(1.52, 0.5, 0, 0);
-        run_pid(0, 5500, pid, true);
-        encoderDrives(0.3, 10, 10);
+        run_pid(0, 5500, pid, true);*/
+        encoderDrives(0.3, 10, 10,2);
+        robot.Arm.setPower(-1);
+        sleep(250);
         robot.Arm.setPower(0);
-        sleep(1000);
-        encoderDrives(0.3, -10, -10);
-        encoderDrives(0.2, -12, 12);
-        encoderDrives(0.7, 103,103);
-        robot.Arm.setPower(1);
-        sleep(1000);
+        encoderDrives(0.3, -10, -10,1);
+        encoderDrives(0.2, -10, 10,1);
+        encoderDrives(0.5, 103,103,4);
+        robot.Arm.setPower(0.7);
+        sleep(750);
         robot.Arm.setPower(0);
-        encoderDrives(0.5, -60, -60);
+        encoderDrives(0.5, -60, -60,3.5);
     }
 }
