@@ -6,8 +6,8 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.Aggregated;
 import org.firstinspires.ftc.teamcode.Autonomous.Init.PID;
 
-@Autonomous(name = "A_By_Time", group = "Autonomous")
-public class A_By_Time extends Aggregated {
+@Autonomous(name = "B_By_Time", group = "Autonomous")
+public class C_By_Time extends Aggregated {
 
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
@@ -21,15 +21,23 @@ public class A_By_Time extends Aggregated {
 
         robot.Arm.setPower(0.5);
         //Initial Movement
-        TimeRun(1,1,3);
+        TimeRun(1,1,2);
         sleep(500);
+        TimeRun(-1,1,2.5);
+        sleep(500);
+        TimeRun(1,1,5);
+        sleep(500);
+        TimeRun(1,-1,2.5);
+        sleep(500);
+        TimeRun(1,1,2);
+
 
         //Capture
         robot.Arm.setPower(-1);
         sleep(500);
         TimeRun(-1,-1,2.5);
         sleep(500);
-        TimeRun(-0.5,0.5,4);
+        TimeRun(0.5,-0.5,4);
         sleep(500);
         TimeRun(1,1,5);
         robot.Arm.setPower(0.5);
