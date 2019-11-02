@@ -85,7 +85,7 @@ public class NewTeleOp extends OpMode {
             }
 
             //The LClamp
-            if (gamepad1.right_bumper) {
+            if (gamepad2.right_bumper) {
                 robot.Clamp.setPower(1);
                 openClaw.reset();
                 //Wait 250 milliseconds before stopping the movement of the clamp
@@ -109,7 +109,7 @@ public class NewTeleOp extends OpMode {
          */
             //Resetting Latch
             //Turning
-            if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
+            if ((gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) || (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1)) {
                 robot.Left.setPower(-turnspeed);
                 robot.Right.setPower(turnspeed);
             }
@@ -119,13 +119,13 @@ public class NewTeleOp extends OpMode {
                 robot.Left.setPower(-speed);
                 robot.Right.setPower(-speed);
             }
-            if (gamepad1.right_stick_y >= 0.1) {
+            if (gamepad2.right_stick_y >= 0.1) {
                 robot.Arm.setPower(-1);
             }
-            if (gamepad1.right_stick_y <= -0.1) {
+            if (gamepad2.right_stick_y <= -0.1) {
                 robot.Arm.setPower(1);
             }
-            if (gamepad1.right_stick_y >= -0.1 && gamepad1.right_stick_y <= 0.1) {
+            if (gamepad2.right_stick_y >= -0.1 && gamepad1.right_stick_y <= 0.1) {
                 robot.Arm.setPower(0);
             }
             //Making the robot stop when it's set to 0
