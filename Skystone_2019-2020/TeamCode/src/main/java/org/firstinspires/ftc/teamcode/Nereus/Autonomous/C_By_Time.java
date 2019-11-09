@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.teamcode.Autonomous.Init.Aggregated;
-import org.firstinspires.ftc.teamcode.Autonomous.Init.PID;
+import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.Aggregated;
+import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "C_By_Time", group = "Autonomous")
 public class C_By_Time extends Aggregated {

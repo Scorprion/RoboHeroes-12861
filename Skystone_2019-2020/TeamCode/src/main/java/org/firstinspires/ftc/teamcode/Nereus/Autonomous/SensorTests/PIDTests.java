@@ -1,11 +1,9 @@
-package org.firstinspires.ftc.teamcode.Autonomous.SensorTests;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous.SensorTests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.Autonomous.Init.Aggregated;
-import org.firstinspires.ftc.teamcode.Autonomous.Init.HardwareClass;
-import org.firstinspires.ftc.teamcode.Autonomous.Init.PID;
+import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.Aggregated;
+import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "PID Test", group = "Control")
 public class PIDTests extends Aggregated {

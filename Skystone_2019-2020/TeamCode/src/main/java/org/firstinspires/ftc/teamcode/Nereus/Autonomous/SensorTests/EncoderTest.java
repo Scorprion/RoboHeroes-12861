@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous.SensorTests;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous.SensorTests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

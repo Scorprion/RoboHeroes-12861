@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init;
 
 import android.content.res.Configuration;
 import android.graphics.Bitmap;

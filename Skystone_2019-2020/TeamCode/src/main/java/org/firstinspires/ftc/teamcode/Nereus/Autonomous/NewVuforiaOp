@@ -32,7 +32,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.R;
 
-import org.firstinspires.ftc.teamcode.Autonomous.Init.VuforiaLocalizerImplSubclass;
+import VuforiaLocalizerImplSubclass;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
