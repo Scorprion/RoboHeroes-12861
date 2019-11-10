@@ -1,21 +1,17 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Nereus_Auto.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @SuppressWarnings({"WeakerAccess"})
-public class HardwareClass {
+public class HardwareNereus {
     //Sensors
     public NormalizedColorSensor ColorSensor;
     //public DistanceSensor DistanceSensor;

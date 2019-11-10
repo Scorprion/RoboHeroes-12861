@@ -1,12 +1,6 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Init;
-
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.view.View;
+package org.firstinspires.ftc.teamcode.Nereus_Auto.Init;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.vuforia.CameraDevice;
 import com.vuforia.Frame;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
@@ -14,10 +8,7 @@ import com.vuforia.State;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.internal.opengl.AutoConfigGLSurfaceView;
 import org.firstinspires.ftc.robotcore.internal.vuforia.VuforiaLocalizerImpl;
-
-import java.nio.ByteBuffer;
 
 /**
  * Created by FIXIT on 16-09-15.

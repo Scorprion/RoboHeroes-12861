@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Nereus_Auto.Init;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -24,11 +23,11 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class Aggregated extends LinearOpMode {
+public class Nereus_Aggregated extends LinearOpMode {
 
     public final double countsPerInch = 47.16;
     private ElapsedTime milliseconds = new ElapsedTime();
-    public HardwareClass robot = new HardwareClass();
+    public HardwareNereus robot = new HardwareNereus();
     private double pidOutput = 0;
 
     private PID pid = new PID(0, 0, 0, 0);

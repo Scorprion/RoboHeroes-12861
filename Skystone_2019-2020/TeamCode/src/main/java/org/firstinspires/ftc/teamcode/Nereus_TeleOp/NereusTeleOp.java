@@ -1,19 +1,14 @@
-package org.firstinspires.ftc.teamcode.TeleOpPack;
-
-import android.database.sqlite.SQLiteDiskIOException;
-import android.transition.Slide;
+package org.firstinspires.ftc.teamcode.Nereus_TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.teamcode.Autonomous.Init.HardwareClass;
 
-@TeleOp(name= "NewTeleOp", group= "Pushbot")
-public class NewTeleOp extends OpMode {
+@TeleOp(name= "NereusTeleOp", group= "Pushbot")
+public class NereusTeleOp extends OpMode {
         //Making the slower arm and elbow toggle (driver 2)
         private ElapsedTime openClaw = new ElapsedTime();
         private boolean switchedS = false;
