@@ -24,7 +24,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class NereusAggregated extends LinearOpMode {
+public class AggregatedNereus extends LinearOpMode {
 
     public final double countsPerInch = 47.16;
     private ElapsedTime milliseconds = new ElapsedTime();

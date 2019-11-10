@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode.Nereus.Autonomous;
+package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.AggregatedNereus;
+import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.AggregatedHermes;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "NereusB", group = "Autonomous")
-public class NereusB extends AggregatedNereus {
+@Autonomous(name = "HermesC", group = "Autonomous")
+public class HermesC extends AggregatedHermes {
 
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
@@ -19,10 +19,8 @@ public class NereusB extends AggregatedNereus {
         robot.init(hardwareMap);
         waitForStart();
 
-        robot.Arm.setPower(0.5);
-
-        encoderDrives(0.25, 27, 27, 3000);
-        encoderDrives(0.25, 12, -12, 3000);
-        encoderDrives(0.25, 27, 27, 3000);
+        encoderDrives(0.25, 27, 27,2);
+        encoderDrives(0.25, -12, 12,2);
+        encoderDrives(0.25, 27, 27,2);
     }
 }

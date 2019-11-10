@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareHermes {
     //Sensors
-    //public NormalizedColorSensor ColorSensor;
 
     //Right motors
     public DcMotor FrontRight;

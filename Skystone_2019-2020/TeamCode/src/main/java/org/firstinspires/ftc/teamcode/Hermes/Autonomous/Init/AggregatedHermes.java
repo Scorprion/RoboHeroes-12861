@@ -146,7 +146,7 @@ public class AggregatedHermes extends LinearOpMode {
             robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
 

@@ -19,7 +19,7 @@ public class TeleOpHermes extends OpMode {
 
     private boolean robotCSpeed = false; // the boolean for the robot's speed to be able to slow it down
     private boolean robotUsedRecent = false;
-    private double robotControlSpeed = 0.7;
+    private double robotControlSpeed = 1;
 
     private double turnspeed = 0;
     private double strafespeed = 0;
@@ -48,32 +48,8 @@ public class TeleOpHermes extends OpMode {
     public void loop() {
         turnspeed = gamepad1.right_stick_x * robotControlSpeed;
         strafespeed = gamepad1.left_stick_x * robotControlSpeed;
-        speed = gamepad1.left_stick_y * robotControlSpeed;
+        speed = gamepad1.left_stick_y * -robotControlSpeed;
 
-
-
-        /*
-        -----------------------------
-        |                           |
-        |                           |
-        |         Gamepad 2         |
-        |                           |
-        |                           |
-        -----------------------------
-         */
-        //Controlling Shoulder arm speed
-        if (gamepad2.a && !usedRecently) {
-            if (switchedS) {
-                controlSpeedS = 1;
-                controlSpeedE = 1;
-                switchedS = false;
-            } else if (!switchedS) {
-                controlSpeedS = 0.7;
-                controlSpeedE = 0.7;
-                switchedS = true;
-            }
-            usedRecently = true;
-        }
         /*
         -----------------------------
         |                           |
@@ -85,58 +61,20 @@ public class TeleOpHermes extends OpMode {
          */
         //Turning
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-                FrontLeft.setPower(turnspeed);
-                BackLeft.setPower(turnspeed);
                 FrontRight.setPower(-turnspeed);
                 BackRight.setPower(-turnspeed);
+                FrontLeft.setPower(turnspeed);
+                BackLeft.setPower(turnspeed);
         }
 
         //Strafing
-        if (gamepad1.left_stick_x >= 0.1 || gamepad1.left_stick_x <= -0.1) {
-            FrontRight.setPower(-strafespeed);
-            BackRight.setPower(strafespeed);
-            FrontLeft.setPower(strafespeed);
-            BackLeft.setPower(-strafespeed);
-        }
+        FrontRight.setPower(speed -strafespeed);
+        BackRight.setPower(speed + strafespeed);
+        FrontLeft.setPower(speed + strafespeed);
+        BackLeft.setPower(speed -strafespeed);
 
-        //Moving
-        if (gamepad1.left_stick_y >= 0.1 || gamepad1.left_stick_y <= -0.1) {
-            FrontLeft.setPower(-speed);
-            BackLeft.setPower(-speed);
-            FrontRight.setPower(-speed);
-            BackRight.setPower(-speed);
-        }
-
-        //Making the robot stop when it's set to 0
-        if (gamepad1.left_stick_y == 0 && gamepad1.right_stick_x == 0 && gamepad1.left_stick_x == 0) {
-            FrontLeft.setPower(0);
-            FrontRight.setPower(0);
-            BackRight.setPower(0);
-            BackLeft.setPower(0);
-        }
-
-        //Tilting and resetting back our marker servo platform
-        //The winch
-
-        if (gamepad1.x && !robotUsedRecent) {
-            if (robotCSpeed) {
-                robotControlSpeed = 0.7;
-                robotCSpeed = false;
-            } else if (!robotCSpeed) {
-                robotControlSpeed = 0.4;
-                robotCSpeed = true;
-            }
-            robotUsedRecent = true;
-            rmove.reset();
-        }
-
-
-
-        // Setting the used recently boolean to true after 200
-        // milliseconds after the a button was pressed
-
-        // Setting the LClamp power to 0.5 after the open claw is greater than 250 milliseconds
-
+        telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
+        telemetry.update();
     }
 
 }
