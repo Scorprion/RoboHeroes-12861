@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name= "TeleOp Nereus", group= "Pushbot")
@@ -33,6 +34,7 @@ public class TeleOpNereus extends OpMode {
 
         DcMotor Right, Left, Arm;
         CRServo Clamp;
+        CRServo Dump;
 
         public void init() {
             Right = hardwareMap.get(DcMotor.class, "Right");
@@ -46,6 +48,7 @@ public class TeleOpNereus extends OpMode {
 
             Clamp = hardwareMap.get(CRServo.class, "Clamp");
             //DriveL.setDirection(DcMotor.Direction.REVERSE);
+            Dump = hardwareMap.get(CRServo.class, "Dump");
         }
 
         @Override
@@ -150,6 +153,15 @@ public class TeleOpNereus extends OpMode {
 
 
 
+            if (gamepad1.a) {
+                Dump.setPower(1);
+
+            }else if (gamepad1.b){
+                Dump.setPower(-1);
+
+            }else{
+                Dump.setPower(0);
+            }
             // Setting the used recently boolean to true after 200
             // milliseconds after the a button was pressed
 
