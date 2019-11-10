@@ -17,7 +17,7 @@ public class TeleOpHermes extends OpMode {
     //Making the slower robot toggle (driver 1)
     private ElapsedTime rmove = new ElapsedTime();
 
-    private boolean robotCSpeed = false; // the boolean for the robot's speed to be able to slow it down
+    private boolean robotCSpeed = false; // the booleaor the robot's speed to be able to slow it down
     private boolean robotUsedRecent = false;
     private double robotControlSpeed = 1;
 

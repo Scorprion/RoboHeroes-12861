@@ -24,7 +24,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class AggregatedHermes extends LinearOpMode {
+public class HermesAggregated extends LinearOpMode {
 
     public final double countsPerInch = 47.16;
     private ElapsedTime milliseconds = new ElapsedTime();
@@ -393,6 +393,63 @@ public class AggregatedHermes extends LinearOpMode {
 
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
+    }
+
+    public void mecanumMove(double speed, double angle, double inches) {
+        double fr, br, fl, bl;
+        int distance;
+
+        fr = Math.cos(angle) * speed;
+        br = Math.sin(angle) * speed;
+        fl = Math.sin(angle) * speed;
+        bl = Math.cos(angle) * speed;
+
+        distance = (int) (Math.cos(angle) * (countsPerInch * inches));
+        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
+        robot.BackRight.setTargetPosition(robot.BackRight.getCurrentPosition() + distance);
+        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
+        robot.BackLeft.setTargetPosition(robot.BackLeft.getCurrentPosition() + distance);
+
+        robot.FrontRight.setPower(fr);
+        robot.BackRight.setPower(br);
+        robot.FrontLeft.setPower(fl);
+        robot.BackLeft.setPower(bl);
+
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        milliseconds.reset();
+
+        while (opModeIsActive() && (robot.FrontLeft.isBusy() && robot.FrontRight.isBusy() &&
+                robot.BackRight.isBusy() && robot.BackLeft.isBusy())) {
+            // Display it for the driver.
+            telemetry.addData("Path1", "Running to %7d", (robot.FrontRight.getCurrentPosition() + distance));
+            telemetry.addData("Path2", "Running at %7d : %7d : %7d : ",
+                    robot.FrontRight.getCurrentPosition(),
+                    robot.BackRight.getCurrentPosition(),
+                    robot.FrontLeft.getCurrentPosition(),
+                    robot.BackLeft.getCurrentPosition());
+            telemetry.update();
+        }
+
+        robot.FrontLeft.setPower(0);
+        robot.BackLeft.setPower(0);
+        robot.FrontRight.setPower(0);
+        robot.BackRight.setPower(0);
+
+        // Turn off RUN_TO_POSITION and reset
+        robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
 
