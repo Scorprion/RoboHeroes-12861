@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode.Nereus.Autonomous.SensorTests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.AggregatedNereus;
+import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "PID Test", group = "Control")
-public class PIDTests extends AggregatedNereus {
+public class PIDTests extends NereusAggregated {
     double speed = 0.2, leftout, rightout;
     PID leftpid = new PID(0.5, 0.5, 0, 90);
     PID rightpid = new PID(0.5, 0.3, 0, 90);

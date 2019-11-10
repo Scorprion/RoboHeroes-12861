@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.Nereus.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.AggregatedNereus;
+import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "NereusB", group = "Autonomous")
-public class NereusB extends AggregatedNereus {
+@Autonomous(name = "NereusAggregatedB", group = "Autonomous")
+public class NereusAggregatedB extends NereusAggregated {
 
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);

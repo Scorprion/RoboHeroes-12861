@@ -1,3 +1,9 @@
+package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesA", group = "Autonomous")
 public class HermesA extends HermesAggregated {
@@ -5,9 +11,8 @@ public class HermesA extends HermesAggregated {
     private VectorF locationV;
     public boolean VuforiaFound = false;
     @Override
-        robot.init(hardwareMap);
     public void runOpMode() throws InterruptedException {
-
+        robot.init(hardwareMap);
         waitForStart();
         mecanumMove(0.5, 30, 10);
     }
