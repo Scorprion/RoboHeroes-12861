@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Hermes;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -24,11 +24,11 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class AggregatedHermes extends LinearOpMode {
+public class NereusAggregated extends LinearOpMode {
 
     public final double countsPerInch = 47.16;
     private ElapsedTime milliseconds = new ElapsedTime();
-    public HardwareHermes robot = new HardwareHermes();
+    public HardwareNereus robot = new HardwareNereus();
     private double pidOutput = 0;
 
     private PID pid = new PID(0, 0, 0, 0);
@@ -77,93 +77,165 @@ public class AggregatedHermes extends LinearOpMode {
         // Does nothing here
     }
 
+    public void run_pid(double speed, double miliseconds, boolean turn, double P, double I, double D, double setpoint) {
+        timer.reset();
+        pid.setParams(P, I, D, setpoint);
+        if(turn) {
+            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
+                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+                robot.Left.setPower(speed - pidOutput);
+                robot.Right.setPower(speed + pidOutput);
+                telemetry.addData("Angle: ", pid.total_angle);
+                telemetry.update();
+            }
+        } else {
+            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
+                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+                robot.Left.setPower(speed + pidOutput);
+                robot.Right.setPower(speed + pidOutput);
+                telemetry.addData("Angle: ", pid.total_angle);
+                telemetry.update();
+            }
+        }
+    }
+
+    public void run_pid(double speed, double miliseconds, PID pid, boolean turn) {
+        timer.reset();
+        if(turn) {
+            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
+                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+                robot.Left.setPower(speed - pidOutput);
+                robot.Right.setPower(speed + pidOutput);
+                telemetry.addData("Angle: ", pid.total_angle);
+                telemetry.update();
+            }
+        } else {
+            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
+                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+                robot.Left.setPower(speed + pidOutput);
+                robot.Right.setPower(speed + pidOutput);
+                telemetry.addData("Angle: ", pid.total_angle);
+                telemetry.update();
+            }
+        }
+    }
+
     public void encoderDrives(double speed,
                               double linches,
                               double rinches,
                               double timeout // Timeout in seconds to avoid the encoders running forever
     ) {
-        int newFrontRightTarget;
-        int newBackRightTarget;
-        int newFrontLeftTarget;
-        int newBackLeftTarget;
+        int newLeftTarget;
+        int newRightTarget;
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newFrontRightTarget = robot.FrontRight.getCurrentPosition() + (int) (rinches * countsPerInch);
-            newBackRightTarget = robot.BackRight.getCurrentPosition() + (int) (rinches * countsPerInch);
-
-            newFrontLeftTarget = robot.FrontLeft.getCurrentPosition() + (int) (linches * countsPerInch);
-            newBackLeftTarget = robot.BackLeft.getCurrentPosition() + (int) (linches * countsPerInch);
-
-
-            robot.FrontRight.setTargetPosition(newFrontRightTarget);
-            robot.BackRight.setTargetPosition(newBackRightTarget);
-
-            robot.FrontLeft.setTargetPosition(newFrontLeftTarget);
-            robot.BackLeft.setTargetPosition(newBackLeftTarget);
+            newLeftTarget = robot.Left.getCurrentPosition() + (int)(linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int)(rinches * countsPerInch);
+            robot.Left.setTargetPosition(newLeftTarget);
+            robot.Right.setTargetPosition(newRightTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+            robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
-            robot.BackRight.setPower(Math.abs(speed));
-            robot.FrontRight.setPower(Math.abs(speed));
-
-            robot.BackLeft.setPower(Math.abs(speed));
-            robot.FrontLeft.setPower(Math.abs(speed));
+            robot.Left.setPower(Math.abs(speed));
+            robot.Right.setPower(Math.abs(speed));
 
             milliseconds.reset();
 
             while (opModeIsActive() && (milliseconds.milliseconds() < timeout * 1000) &&
-                    (robot.FrontLeft.isBusy() && robot.FrontRight.isBusy() && robot.BackRight.isBusy() && robot.BackLeft.isBusy())) {
+                    (robot.Left.isBusy() && robot.Right.isBusy())) {
                 // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d : %7d", (newFrontLeftTarget), (newFrontRightTarget));
-                telemetry.addData("Path2", "Running at %7d : %7d : %7d : ",
-                        robot.FrontRight.getCurrentPosition(),
-                        robot.BackRight.getCurrentPosition(),
-                        robot.FrontLeft.getCurrentPosition(),
-                        robot.BackLeft.getCurrentPosition());
+                telemetry.addData("Path1", "Running to %7d :%7d", (newRightTarget), (newLeftTarget));
+                telemetry.addData("Path2", "Running at %7d :%7d",
+                        robot.Right.getCurrentPosition(),
+                        robot.Left.getCurrentPosition());
                 telemetry.update();
             }
 
-            robot.FrontLeft.setPower(0);
-            robot.BackLeft.setPower(0);
-            robot.FrontRight.setPower(0);
-            robot.BackRight.setPower(0);
+            robot.Left.setPower(0);
+            robot.Right.setPower(0);
 
             // Turn off RUN_TO_POSITION and reset
-            robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-            robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+    /*
+    public void encoderDrives(double speed,
+                              double linches,
+                              double rinches,
+                              double timeout, // Timeout in seconds to avoid the encoders running forever
+                              PID pid
+    ) {
+        int newLeftTarget;
+        int newRightTarget;
 
-    /*public void TimeRun(double left, double right, double seconds) {
+        if (opModeIsActive()) {
+            // Determine new target position, and pass to motor controller
+            newLeftTarget = robot.Left.getCurrentPosition() + (int) (linches * countsPerInch);
+            newRightTarget = robot.Right.getCurrentPosition() + (int) (rinches * countsPerInch);
+
+            robot.Left.setTargetPosition(newLeftTarget);
+            robot.Right.setTargetPosition(newRightTarget);
+
+            // Turn On RUN_TO_POSITION
+            robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            robot.Left.setPower(speed);
+            robot.Right.setPower(speed);
+
+            milliseconds.reset();
+
+            while (opModeIsActive() && (milliseconds.milliseconds() < timeout * 1000) &&
+                    (robot.Left.isBusy() && robot.Right.isBusy())) {
+                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+                robot.Left.setPower(speed - pidOutput);
+                robot.Right.setPower(speed + pidOutput);
+                // Display it for the driver.
+                telemetry.addData("Angle: ", pid.angle);
+                telemetry.addData("Error: ", pid.error);
+                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d",
+                        robot.Left.getCurrentPosition(),
+                        robot.Right.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            robot.Left.setPower(0);
+            robot.Right.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            //  sleep(250);   // optional pause after each move
+
+        }
+    }*/
+
+    public void TimeRun(double left, double right, double seconds) {
         robot.Left.setPower(left);
         robot.Right.setPower(right);
-        sleep((long) (seconds * 1000));
+        sleep((long)(seconds * 1000));
         StopMotors();
-    }*/
+    }
 
     public void StopMotors() {
 
-        robot.FrontLeft.setPower(0);
-        robot.BackLeft.setPower(0);
-        robot.FrontRight.setPower(0);
-        robot.BackRight.setPower(0);
+        robot.Left.setPower(0);
+        robot.Right.setPower(0);
+    }
 
+    public void StopArm() {
+        robot.Arm.setPower(0);
     }
 
     public void vuforia() {
@@ -348,10 +420,8 @@ public class AggregatedHermes extends LinearOpMode {
         while (!isStopRequested()) {
             pid.setParams(0.5, 0.5, 0, 90);
             pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-            robot.FrontLeft.setPower(0.1 + pidOutput);
-            robot.FrontRight.setPower(0.1 + pidOutput);
-            robot.BackLeft.setPower(0.1 + pidOutput);
-            robot.BackRight.setPower(0.1 - pidOutput);
+            robot.Left.setPower(0.1 + pidOutput);
+            robot.Right.setPower(0.1 - pidOutput);
             telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
 
             // check all the trackable targets to see which one (if any) is visible.
@@ -373,10 +443,8 @@ public class AggregatedHermes extends LinearOpMode {
 
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
-                robot.FrontLeft.setPower(0);
-                robot.FrontRight.setPower(0);
-                robot.BackLeft.setPower(0);
-                robot.BackRight.setPower(0);
+                robot.Left.setPower(0);
+                robot.Right.setPower(0);
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",

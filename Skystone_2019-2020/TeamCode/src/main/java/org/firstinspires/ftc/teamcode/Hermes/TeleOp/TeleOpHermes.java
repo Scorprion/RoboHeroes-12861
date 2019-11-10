@@ -1,14 +1,13 @@
-package org.firstinspires.ftc.teamcode.Hermes_TeleOp;
+package org.firstinspires.ftc.teamcode.Hermes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name= "HermesTeleOp", group= "Pushbot")
-public class HermesTeleOp extends OpMode {
+@TeleOp(name= "TeleOp Hermes", group= "Pushbot")
+public class TeleOpHermes extends OpMode {
     //Making the slower arm and elbow toggle (driver 2)
     private ElapsedTime openClaw = new ElapsedTime();
     private boolean switchedS = false;
@@ -97,7 +96,7 @@ public class HermesTeleOp extends OpMode {
             FrontRight.setPower(-strafespeed);
             BackRight.setPower(strafespeed);
             FrontLeft.setPower(strafespeed);
-            BackRight.setPower(-strafespeed);
+            BackLeft.setPower(-strafespeed);
         }
 
         //Moving

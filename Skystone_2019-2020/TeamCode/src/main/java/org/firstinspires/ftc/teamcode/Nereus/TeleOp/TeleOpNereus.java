@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Nereus_TeleOp;
+package org.firstinspires.ftc.teamcode.Nereus.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name= "NereusTeleOp", group= "Pushbot")
-public class NereusTeleOp extends OpMode {
+@TeleOp(name= "TeleOp Nereus", group= "Pushbot")
+public class TeleOpNereus extends OpMode {
         //Making the slower arm and elbow toggle (driver 2)
         private ElapsedTime openClaw = new ElapsedTime();
         private boolean switchedS = false;
