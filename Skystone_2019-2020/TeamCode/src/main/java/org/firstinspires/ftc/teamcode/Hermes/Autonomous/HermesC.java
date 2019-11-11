@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.AggregatedHermes;
+import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "HermesC", group = "Autonomous")
-public class HermesC extends AggregatedHermes {
+public class HermesC extends HermesAggregated {
 
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);

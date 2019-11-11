@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Nereus.Autonomous.SensorTests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 @TeleOp(name = "EncoderTest", group = "Calibration")
+@Disabled
 public class EncoderTest extends LinearOpMode {
 
     DcMotor Right;

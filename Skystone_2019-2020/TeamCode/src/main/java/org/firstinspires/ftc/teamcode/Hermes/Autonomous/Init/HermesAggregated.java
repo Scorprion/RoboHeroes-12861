@@ -26,7 +26,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
 public class HermesAggregated extends LinearOpMode {
 
-    public final double countsPerInch = 47.16;
+    public final double countsPerInch = 54.722;
     private ElapsedTime milliseconds = new ElapsedTime();
     public HardwareHermes robot = new HardwareHermes();
     private double pidOutput = 0;
@@ -98,7 +98,6 @@ public class HermesAggregated extends LinearOpMode {
 
             robot.FrontRight.setTargetPosition(newFrontRightTarget);
             robot.BackRight.setTargetPosition(newBackRightTarget);
-
             robot.FrontLeft.setTargetPosition(newFrontLeftTarget);
             robot.BackLeft.setTargetPosition(newBackLeftTarget);
 
@@ -395,38 +394,34 @@ public class HermesAggregated extends LinearOpMode {
         targetsSkyStone.deactivate();
     }
 
-    public void mecanumMove(double speed, double angle, double inches) {
+    public void mecanumMove(double speed, double angle, double inches, double timer) {
         double fr, br, fl, bl;
         int distance;
 
-        fr = Math.cos(angle) * speed;
-        br = Math.sin(angle) * speed;
-        fl = Math.sin(angle) * speed;
-        bl = Math.cos(angle) * speed;
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        distance = (int) (Math.cos(angle) * (countsPerInch * inches));
-        robot.FrontRight.setTargetPosition(robot.FrontRight.getCurrentPosition() + distance);
-        robot.BackRight.setTargetPosition(robot.BackRight.getCurrentPosition() + distance);
-        robot.FrontLeft.setTargetPosition(robot.FrontLeft.getCurrentPosition() + distance);
-        robot.BackLeft.setTargetPosition(robot.BackLeft.getCurrentPosition() + distance);
+        fr = -Math.cos(angle) * speed;
+        br = Math.cos(angle) * speed;
+        fl = Math.cos(angle) * speed;
+        bl = -Math.cos(angle) * speed;
+
+        distance = (int)(Math.cos(angle) * (countsPerInch * inches));
 
         robot.FrontRight.setPower(fr);
         robot.BackRight.setPower(br);
         robot.FrontLeft.setPower(fl);
         robot.BackLeft.setPower(bl);
 
-        robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         milliseconds.reset();
-
-        while (opModeIsActive() && (robot.FrontLeft.isBusy() && robot.FrontRight.isBusy() &&
-                robot.BackRight.isBusy() && robot.BackLeft.isBusy())) {
+        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)) {
             // Display it for the driver.
+            telemetry.addData("FR: ", fr);
+            telemetry.addData("BR: ", br);
             telemetry.addData("Path1", "Running to %7d", (robot.FrontRight.getCurrentPosition() + distance));
-            telemetry.addData("Path2", "Running at %7d : %7d : %7d : ",
+            telemetry.addData("Path2", "Running at %7d : %7d : %7d : %7d",
                     robot.FrontRight.getCurrentPosition(),
                     robot.BackRight.getCurrentPosition(),
                     robot.FrontLeft.getCurrentPosition(),

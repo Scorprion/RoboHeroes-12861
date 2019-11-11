@@ -2,11 +2,11 @@ package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.AggregatedHermes;
+import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "HermesD", group = "Autonomous")
-public class HermesD extends AggregatedHermes {
+public class HermesD extends HermesAggregated {
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
     private double locationV = -1000;

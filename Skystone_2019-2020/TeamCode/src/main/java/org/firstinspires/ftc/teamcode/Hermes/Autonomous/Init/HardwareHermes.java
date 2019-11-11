@@ -48,7 +48,7 @@ public class HardwareHermes {
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        BackRight = ahwMap.get(DcMotor.class, "BackLeft");
+        BackRight = ahwMap.get(DcMotor.class, "BackRight");
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 

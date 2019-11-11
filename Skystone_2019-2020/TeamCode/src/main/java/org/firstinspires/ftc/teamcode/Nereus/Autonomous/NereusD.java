@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.teamcode.Nereus.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "NereusAggregatedD", group = "Autonomous")
-public class NereusAggregatedD extends NereusAggregated {
+@Disabled
+public class NereusD extends NereusAggregated {
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
     private double locationV = -1000;

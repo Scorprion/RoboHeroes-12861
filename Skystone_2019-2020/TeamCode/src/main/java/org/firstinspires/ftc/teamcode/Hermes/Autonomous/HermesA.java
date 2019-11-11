@@ -10,10 +10,12 @@ public class HermesA extends HermesAggregated {
     private double speed = 0.1, pidOutput = 0;
     private VectorF locationV;
     public boolean VuforiaFound = false;
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         waitForStart();
-        mecanumMove(0.5, 30, 10);
+        mecanumMove(0.5, 75, 10, 2.5);
     }
 }
