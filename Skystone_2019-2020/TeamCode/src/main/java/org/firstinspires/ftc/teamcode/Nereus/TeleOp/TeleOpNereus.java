@@ -153,14 +153,14 @@ public class TeleOpNereus extends OpMode {
 
 
 
-            if (gamepad1.a) {
+            if (gamepad2.a || gamepad1.a) {
                 Dump.setPower(1);
 
-            }else if (gamepad1.b){
-                Dump.setPower(-1);
+            }else if (gamepad2.b || gamepad1.b){
+                Dump.setPower(0.5);
 
             }else{
-                Dump.setPower(0);
+                Dump.setPower(0.55);
             }
             // Setting the used recently boolean to true after 200
             // milliseconds after the a button was pressed
