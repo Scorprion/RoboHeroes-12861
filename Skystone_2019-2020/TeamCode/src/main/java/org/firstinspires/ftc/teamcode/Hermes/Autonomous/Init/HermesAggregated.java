@@ -14,6 +14,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.PID;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -395,6 +397,8 @@ public class HermesAggregated extends LinearOpMode {
     }
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
+
+        double radians = round((angle * Math.PI) / 180, 2);
         double fr, br, fl, bl;
         int distance;
 
@@ -403,10 +407,11 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        fr = -Math.cos(angle) * speed;
-        br = Math.cos(angle) * speed;
-        fl = Math.cos(angle) * speed;
-        bl = -Math.cos(angle) * speed;
+        // Either speed or Math.cos(angle) * speed
+        fr = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
+        br = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
+        fl = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
+        bl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
 
         distance = (int)(Math.cos(angle) * (countsPerInch * inches));
 
@@ -446,5 +451,14 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_DOWN);
+        return bd.doubleValue();
+    }
+
 }
 
