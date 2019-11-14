@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous.SensorTests;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -12,6 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 import java.util.ArrayList;
@@ -23,17 +23,10 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
-@SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class NereusAggregated extends LinearOpMode {
-
-    public final double countsPerInch = 47.16;
-    private ElapsedTime milliseconds = new ElapsedTime();
-    public HardwareNereus robot = new HardwareNereus();
-    private double pidOutput = 0;
-
-    private PID pid = new PID(0, 0, 0, 0);
-    private ElapsedTime timer = new ElapsedTime();
-
+@Autonomous(name = "Vuforia with PID", group = "Control")
+public class VuforiaPID extends NereusAggregated {
+    double speed = 0.2, leftout, rightout;
+    PID pid = new PID(0.5, 0.5, 0, 90);
 
     // Vuforia variables
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
@@ -72,173 +65,22 @@ public class NereusAggregated extends LinearOpMode {
 
     public VectorF translation;
     public Orientation rotation;
+
     @Override
     public void runOpMode() throws InterruptedException {
-        // Does nothing here
-    }
+        robot.init(hardwareMap);
 
-    public void run_pid(double speed, double miliseconds, boolean turn, double P, double I, double D, double setpoint) {
-        timer.reset();
-        pid.setParams(P, I, D, setpoint);
-        if(turn) {
-            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
-                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed - pidOutput);
-                robot.Right.setPower(speed + pidOutput);
-                telemetry.addData("Angle: ", pid.total_angle);
-                telemetry.update();
-            }
-        } else {
-            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
-                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed + pidOutput);
-                robot.Right.setPower(speed + pidOutput);
-                telemetry.addData("Angle: ", pid.total_angle);
-                telemetry.update();
-            }
+        while(opModeIsActive()) {
+            leftout = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+            robot.Left.setPower(speed + leftout);
+            robot.Right.setPower(-speed + rightout);
+            telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
+            telemetry.addData("Left power: ", leftout + speed);
+            telemetry.addData("Right power: ", -rightout + speed);
+            telemetry.update();
         }
     }
-
-    public void run_pid(double speed, double miliseconds, PID pid, boolean turn) {
-        timer.reset();
-        if(turn) {
-            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
-                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed - pidOutput);
-                robot.Right.setPower(speed + pidOutput);
-                telemetry.addData("Angle: ", pid.total_angle);
-                telemetry.update();
-            }
-        } else {
-            while (timer.milliseconds() < miliseconds && opModeIsActive()) {
-                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed + pidOutput);
-                robot.Right.setPower(speed + pidOutput);
-                telemetry.addData("Angle: ", pid.total_angle);
-                telemetry.update();
-            }
-        }
-    }
-
-    public void encoderDrives(double speed,
-                              double linches,
-                              double rinches,
-                              double timeout // Timeout in seconds to avoid the encoders running forever
-    ) {
-        int newLeftTarget;
-        int newRightTarget;
-
-        if (opModeIsActive()) {
-            // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.Left.getCurrentPosition() + (int)(linches * countsPerInch);
-            newRightTarget = robot.Right.getCurrentPosition() + (int)(rinches * countsPerInch);
-            robot.Left.setTargetPosition(newLeftTarget);
-            robot.Right.setTargetPosition(newRightTarget);
-
-            // Turn On RUN_TO_POSITION
-            robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            robot.Left.setPower(Math.abs(speed));
-            robot.Right.setPower(Math.abs(speed));
-
-            milliseconds.reset();
-
-            while (opModeIsActive() && (milliseconds.milliseconds() < timeout * 1000) &&
-                    (robot.Left.isBusy() && robot.Right.isBusy())) {
-                // Display it for the driver.
-                telemetry.addData("Path1", "Running to %7d :%7d", (newRightTarget), (newLeftTarget));
-                telemetry.addData("Path2", "Running at %7d :%7d",
-                        robot.Right.getCurrentPosition(),
-                        robot.Left.getCurrentPosition());
-                telemetry.update();
-            }
-
-            robot.Left.setPower(0);
-            robot.Right.setPower(0);
-
-            // Turn off RUN_TO_POSITION and reset
-            robot.Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-    }
-    /*
-    public void encoderDrives(double speed,
-                              double linches,
-                              double rinches,
-                              double timeout, // Timeout in seconds to avoid the encoders running forever
-                              PID pid
-    ) {
-        int newLeftTarget;
-        int newRightTarget;
-
-        if (opModeIsActive()) {
-            // Determine new target position, and pass to motor controller
-            newLeftTarget = robot.Left.getCurrentPosition() + (int) (linches * countsPerInch);
-            newRightTarget = robot.Right.getCurrentPosition() + (int) (rinches * countsPerInch);
-
-            robot.Left.setTargetPosition(newLeftTarget);
-            robot.Right.setTargetPosition(newRightTarget);
-
-            // Turn On RUN_TO_POSITION
-            robot.Left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.Right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // reset the timeout time and start motion.
-            robot.Left.setPower(speed);
-            robot.Right.setPower(speed);
-
-            milliseconds.reset();
-
-            while (opModeIsActive() && (milliseconds.milliseconds() < timeout * 1000) &&
-                    (robot.Left.isBusy() && robot.Right.isBusy())) {
-                pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-                robot.Left.setPower(speed - pidOutput);
-                robot.Right.setPower(speed + pidOutput);
-                // Display it for the driver.
-                telemetry.addData("Angle: ", pid.angle);
-                telemetry.addData("Error: ", pid.error);
-                telemetry.addData("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d",
-                        robot.Left.getCurrentPosition(),
-                        robot.Right.getCurrentPosition());
-                telemetry.update();
-            }
-
-            // Stop all motion;
-            robot.Left.setPower(0);
-            robot.Right.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            robot.Left.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.Right.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            //  sleep(250);   // optional pause after each move
-
-        }
-    }*/
-
-    public void TimeRun(double left, double right, double seconds) {
-        robot.Left.setPower(left);
-        robot.Right.setPower(right);
-        sleep((long)(seconds * 1000));
-        StopMotors();
-    }
-
-    public void StopMotors() {
-
-        robot.Left.setPower(0);
-        robot.Right.setPower(0);
-    }
-
-    public void StopArm() {
-        robot.Arm.setPower(0);
-    }
-
-    public void vuforia(double speed, int target) {
+    public void vuforia(double speed) {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -425,8 +267,8 @@ public class NereusAggregated extends LinearOpMode {
             robot.Right.setPower(0.1 - pidOutput);
             telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
             */
-            int lefttarget = robot.Left.getCurrentPosition() + (int)(target * countsPerInch);
-            int righttarget = robot.Right.getCurrentPosition() + (int)(target * countsPerInch);
+            int lefttarget = robot.Left.getCurrentPosition() + (int)(200 * countsPerInch);
+            int righttarget = robot.Right.getCurrentPosition() + (int)(200 * countsPerInch);
             robot.Left.setTargetPosition(lefttarget);
             robot.Right.setTargetPosition(righttarget);
 
@@ -482,4 +324,3 @@ public class NereusAggregated extends LinearOpMode {
         targetsSkyStone.deactivate();
     }
 }
-

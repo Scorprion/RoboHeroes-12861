@@ -400,7 +400,7 @@ public class HermesAggregated extends LinearOpMode {
 
         double radians = round((angle * Math.PI) / 180, 2);
         double fr, br, fl, bl;
-        int distance;
+        int distance, distance2;
 
         robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -413,7 +413,8 @@ public class HermesAggregated extends LinearOpMode {
         fl = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
         bl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
 
-        distance = (int)(Math.cos(angle) * (countsPerInch * inches));
+        distance = (int)(Math.cos(radians) * (countsPerInch * inches));
+        distance2 = (int)(Math.cos(radians) * (countsPerInch * inches));
 
         robot.FrontRight.setPower(fr);
         robot.BackRight.setPower(br);

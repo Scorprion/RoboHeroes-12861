@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "NereusA", group = "Autonomous")
-@Disabled
 public class NereusA extends NereusAggregated {
 
     private double speed = 0.1, pidOutput = 0;
@@ -23,7 +22,9 @@ public class NereusA extends NereusAggregated {
 
         robot.Arm.setPower(0.5);
 
-        encoderDrives(0.3, 22, 22, 2);
+        encoderDrives(0.25, 14, 14, 2);
+        encoderDrives(0.3, 9.425, -9.425, 2.5);
+        vuforia(0.05, -200);
 
         /*pid.setParams(1.45, 0.5, 0, 270);
         run_pid(0, 5500, pid, true);
@@ -33,16 +34,18 @@ public class NereusA extends NereusAggregated {
         pid.setParams(1.52, 0.5, 0, 0);
         run_pid(0, 5500, pid, true);*/
 
-        encoderDrives(0.3, 10, 10,2);
+        encoderDrives(0.3, -9.425, 9.425, 2.5);
+        encoderDrives(0.3, 23, 23,2);
         robot.Arm.setPower(-1);
         sleep(250);
         robot.Arm.setPower(0);
-        encoderDrives(0.3, -10, -10,1);
-        encoderDrives(0.2, -14, 14,1);
-        encoderDrives(0.5, 103,103,4);
+        encoderDrives(0.4, -12, -12,1.5);
+        encoderDrives(0.2, -11, 11,2.5);
+        encoderDrives(0.7, 160, 160,5);
+        encoderDrives(0.4, -5, -5, 1);
         robot.Arm.setPower(0.7);
         sleep(750);
         robot.Arm.setPower(0);
-        encoderDrives(0.5, -60, -60,3.5);
+        encoderDrives(0.5, -55, -55,3.5);
     }
 }

@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareNereus {
     //Sensors
-    public NormalizedColorSensor ColorSensor;
+    public NormalizedColorSensor Color;
     //public DistanceSensor DistanceSensor;
 
     //Right motors
@@ -41,7 +41,7 @@ public class HardwareNereus {
 
     
     public void init(HardwareMap ahwMap) {
-        ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
+        Color = ahwMap.get(NormalizedColorSensor.class, "Color");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
         webcamName = ahwMap.get(WebcamName .class, "Webcam 1");
