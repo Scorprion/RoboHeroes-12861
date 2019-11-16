@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "HermesB", group = "Autonomous")
+@Autonomous(name = "HermesB", group = "Hermes")
 @Disabled
 public class HermesB extends HermesAggregated {
 

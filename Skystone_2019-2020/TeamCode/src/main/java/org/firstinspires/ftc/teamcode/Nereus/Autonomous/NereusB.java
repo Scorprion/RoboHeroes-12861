@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "NereusAggregatedB", group = "Autonomous")
+@Autonomous(name = "NereusB", group = "Nereus")
 public class NereusB extends NereusAggregated {
 
     private double speed = 0.1, pidOutput = 0;
@@ -22,8 +22,8 @@ public class NereusB extends NereusAggregated {
 
         robot.Arm.setPower(0.5);
 
-        encoderDrives(0.25, 27, 27, 3000);
-        encoderDrives(0.25, 12, -12, 3000);
-        encoderDrives(0.25, 27, 27, 3000);
+        encoderDrives(0.25, 27, 27, 3);
+        encoderDrives(0.25, 9.425, -9.425, 2.5);
+        encoderDrives(0.25, 14, 14, 3);
     }
 }

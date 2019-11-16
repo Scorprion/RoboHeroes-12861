@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "NereusAggregatedD", group = "Autonomous")
+@Autonomous(name = "NereusD", group = "Nereus")
 public class NereusD extends NereusAggregated {
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
@@ -26,6 +26,7 @@ public class NereusD extends NereusAggregated {
 
         encoderDrives(0.3, -9.425, 9.425, 2.5);
         vuforia(0.05, 200);
+        encoderDrives(0.2, 4, 4, 1);
 
         /*
         locationV = translation.get(2);
@@ -38,7 +39,7 @@ public class NereusD extends NereusAggregated {
         encoderDrives(0.2, 9.425, -9.425,2.5);
         encoderDrives(0.3, 23, 23,2);
         robot.Arm.setPower(-1);
-        sleep(250);
+        sleep(500);
         robot.Arm.setPower(0);
         encoderDrives(0.4, -12, -12,1.5);
         encoderDrives(0.2, 11, -11,2.5);

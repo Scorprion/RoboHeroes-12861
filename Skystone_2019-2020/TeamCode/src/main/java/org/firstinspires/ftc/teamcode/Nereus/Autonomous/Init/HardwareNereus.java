@@ -31,7 +31,6 @@ public class HardwareNereus {
 
     WebcamName webcamName = null;
 
-    public CRServo Clamp;
     //IMU sensor
     public BNO055IMU imu;
 
@@ -45,8 +44,6 @@ public class HardwareNereus {
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
         webcamName = ahwMap.get(WebcamName .class, "Webcam 1");
-
-        Clamp = ahwMap.crservo.get("Clamp");
 
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
