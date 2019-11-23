@@ -91,10 +91,10 @@ public class FinalBot_TeleOp extends OpMode {
                 Arm.setPower(0);
             }
 
-            if(gamepad1.a){
-
-            }else if(gamepad1.b){
-
+            if(gamepad2.a){
+                FoundationClaw.setPower(-1);
+            }else if(gamepad2.b){
+                FoundationClaw.setPower(1);
             }else{
                 FoundationClaw.setPower(0.5);
             }
