@@ -185,6 +185,20 @@ public class HermesAggregated extends LinearOpMode {
 
     }
 
+    double out = 0;
+    public void pidMove(double P, double I, double D, double setpoint, double speed, double seconds) {
+        timer.reset();
+        pid.setParams(P, I, D, setpoint);
+        pid.update_error(robot.imu.getAngularOrientation().firstAngle);
+        while(timer.milliseconds() < seconds * 1000 && pid.error != 0) {
+            out = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+            robot.FrontRight.setPower(speed + out);
+            robot.BackRight.setPower(speed + out);
+            robot.FrontLeft.setPower(speed - out);
+            robot.BackLeft.setPower(speed - out);
+        }
+    }
+
     public void vuforia() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -396,6 +410,11 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackRight.setPower(flbr);
         robot.FrontLeft.setPower(flbr);
         robot.BackLeft.setPower(frbl);
+
+        robot.FrontRight.setTargetPosition(distance);
+        robot.BackRight.setTargetPosition(distance2);
+        robot.FrontLeft.setTargetPosition(distance2);
+        robot.BackLeft.setTargetPosition(distance);
 
         milliseconds.reset();
         while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000) &&

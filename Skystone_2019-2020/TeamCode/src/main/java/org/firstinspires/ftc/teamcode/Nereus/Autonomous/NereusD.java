@@ -26,7 +26,6 @@ public class NereusD extends NereusAggregated {
 
         encoderDrives(0.3, -9.425, 9.425, 2.5);
         vuforia(0.05, 200);
-        encoderDrives(0.2, 4, 4, 1);
 
         /*
         locationV = translation.get(2);

@@ -126,7 +126,7 @@ public class TeleOpNereus extends OpMode {
             }
 
             if (gamepad2.right_trigger > 0) {
-                Dump.setPower(gamepad2.left_trigger);
+                Dump.setPower(gamepad2.right_trigger);
             } else if (gamepad2.left_trigger > 0) {
                 Dump.setPower(-gamepad2.left_trigger);
             }
@@ -134,7 +134,5 @@ public class TeleOpNereus extends OpMode {
             if(usedRecently && slowdown.seconds() > 1) {
                 usedRecently = false;
             }
-
         }
-
     }

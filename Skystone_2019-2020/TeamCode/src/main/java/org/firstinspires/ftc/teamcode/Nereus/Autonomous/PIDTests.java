@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
+package org.firstinspires.ftc.teamcode.Nereus.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
@@ -11,10 +10,11 @@ import org.firstinspires.ftc.teamcode.PID;
 import java.util.ArrayList;
 
 @Autonomous(name = "PID Test", group = "Control")
-public class PIDTests extends HermesAggregated {
+@Disabled
+public class PIDTests extends NereusAggregated {
     int window = 2;
-    private double speed = 0, out = 0, new_update = 0,
-            P = 1.5, I = 0.3, D = 0, epsilon = 1e-4,
+    private double speed = 0, out = 0,
+            P = 1.5, I = 0, D = 0, epsilon = 1e-4,
             setpoint = 90, error_sum = 0;
     private ArrayList<Double> error_window = new ArrayList<>();
     private PID pid = new PID(P, I, 0, setpoint);
@@ -24,28 +24,25 @@ public class PIDTests extends HermesAggregated {
         robot.init(hardwareMap);
 
         while(opModeIsActive()) {
-            out = nesterov(pid, 0.1, out);
+            out = adadelta(pid,0.1, out);
+            pid.setParams(pid.P - out, I, D, setpoint);
+            robot.Left.setPower(speed + out);
+            robot.Right.setPower(speed - out);
 
-            robot.FrontRight.setPower(speed + out);
-            robot.BackRight.setPower(speed + out);
-            robot.FrontLeft.setPower(speed - out);
-            robot.BackLeft.setPower(speed - out);
-
-            telemetry.addData("Angle: ", pid.total_angle);
+            telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
 
             telemetry.addLine()
                     .addData("P", "%f", pid.P)
                     .addData("I", "%f", pid.I)
-                    .addData("D", "%f", pid.D)
-                    .addData("Error", "%f", pid.error);
+                    .addData("D", "%f", pid.D);
             telemetry.addData("Power: ", out + speed);
             telemetry.update();
         }
     }
 
     private double gradient = 0, update = 0, gradient_avg = 0;
-    private double adadelta(double pid_out, double friction, double update_avg) {
-        gradient = pid_out;
+    private double adadelta(PID pid, double friction, double update_avg) {
+        gradient = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
         gradient_avg = (friction * gradient_avg) + ((1 - friction) * Math.pow(gradient, 2));
 
         if(update_avg <= 0) {

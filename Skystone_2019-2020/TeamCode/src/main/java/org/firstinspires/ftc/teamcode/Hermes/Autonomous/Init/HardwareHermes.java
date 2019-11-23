@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -22,6 +25,8 @@ public class HardwareHermes {
 
     WebcamName webcamName = null;
 
+    ColorSensor colorSensor;
+
     //IMU sensor
     public BNO055IMU imu;
 
@@ -34,7 +39,7 @@ public class HardwareHermes {
         //ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
-        webcamName = ahwMap.get(WebcamName .class, "Webcam 1");
+        webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
 
 
         //IMU sensor
@@ -44,6 +49,8 @@ public class HardwareHermes {
         parameters.loggingEnabled      = false;
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        colorSensor = ahwMap.get(ColorSensor.class, "ColorSensor");
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
