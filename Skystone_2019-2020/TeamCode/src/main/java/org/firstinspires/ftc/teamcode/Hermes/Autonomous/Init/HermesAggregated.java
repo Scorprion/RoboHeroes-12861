@@ -86,7 +86,8 @@ public class HermesAggregated extends LinearOpMode {
     private float phoneYRotate = 0;
     private float phoneZRotate = 0;
 
-    int captureCounter = 0;
+    VuforiaTrackables targetsSkyStone;
+    List<VuforiaTrackable> allTrackables;
 
     public VectorF translation;
     public Orientation rotation;
@@ -184,29 +185,18 @@ public class HermesAggregated extends LinearOpMode {
 
     }
 
-    void captureFrameToFile() {
-        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
-        {
-            @Override
-            public void accept(Frame frame)
-            {
-                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
-                if (bitmap != null) {
-                    File file = new File(captureDirectory, String.format(Locale.getDefault(), "VuforiaFrame-%d.png", captureCounter++));
-                    try {
-                        FileOutputStream outputStream = new FileOutputStream(file);
-                        try {
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                        } finally {
-                            outputStream.close();
-                            telemetry.log().add("captured %s", file.getName());
-                        }
-                    } catch (IOException e) {
-                        RobotLog.ee(TAG, e, "exception in captureFrameToFile()");
-                    }
-                }
-            }
-        }));
+    double out = 0;
+    public void pidMove(double P, double I, double D, double setpoint, double speed, double seconds) {
+        timer.reset();
+        pid.setParams(P, I, D, setpoint);
+        pid.update_error(robot.imu.getAngularOrientation().firstAngle);
+        while(timer.milliseconds() < seconds * 1000 && pid.error != 0) {
+            out = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
+            robot.FrontRight.setPower(speed + out);
+            robot.BackRight.setPower(speed + out);
+            robot.FrontLeft.setPower(speed - out);
+            robot.BackLeft.setPower(speed - out);
+        }
     }
 
     public void vuforia() {
@@ -226,7 +216,7 @@ public class HermesAggregated extends LinearOpMode {
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+        targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
@@ -256,7 +246,7 @@ public class HermesAggregated extends LinearOpMode {
         rear2.setName("Rear Perimeter 2");
 
         // For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+        allTrackables = new ArrayList<VuforiaTrackable>();
         allTrackables.addAll(targetsSkyStone);
 
         /**
@@ -267,19 +257,7 @@ public class HermesAggregated extends LinearOpMode {
          * for detailed information. Commonly, you'll encounter transformation matrices as instances
          * of the {@link OpenGLMatrix} class.
          *
-         * If you are standing in the Red Alliance Station looking towards the center of the field,
-         *     - The X axis runs from your left to the right. (positive from the center to the right)
-         *     - The Y axis runs from the Red Alliance Station towards the other side of the field
-         *       where the Blue Alliance Station is. (Positive is from the center, towards the BlueAlliance station)
-         *     - The Z axis runs from the floor, upwards towards the ceiling.  (Positive is above the floor)
-         *
-         * Before being transformed, each target image is conceptually located at the origin of the field's
-         *  coordinate system (the center of the field), facing up.
          */
-
-        // Set the position of the Stone Target.  Since it's not fixed in position, assume it's at the field origin.
-        // Rotated it to to face forward, and raised it to sit on the ground correctly.
-        // This can be used for generic target-centric approach algorithms
         stoneTarget.setLocation(OpenGLMatrix
                 .translation(0, 0, stoneZ)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
@@ -334,21 +312,6 @@ public class HermesAggregated extends LinearOpMode {
                 .translation(halfField, -quadField, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
 
-        //
-        // Create a transformation matrix describing where the phone is on the robot.
-        //
-        // NOTE !!!!  It's very important that you turn OFF your phone's Auto-Screen-Rotation option.
-        // Lock it into Portrait for these numbers to work.
-        //
-        // Info:  The coordinate frame for the robot looks the same as the field.
-        // The robot's "forward" direction is facing out along X axis, with the LEFT side facing out along the Y axis.
-        // Z is UP on the robot.  This equates to a bearing angle of Zero degrees.
-        //
-        // The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
-        // pointing to the LEFT side of the Robot.
-        // The two examples below assume that the camera is facing forward out the front of the robot.
-
-        // We need to rotate the camera around it's long axis to bring the correct camera forward.
         if (CAMERA_CHOICE == BACK) {
             phoneYRotate = -90;
         } else {
@@ -360,8 +323,6 @@ public class HermesAggregated extends LinearOpMode {
             phoneXRotate = 90;
         }
 
-        // Next, translate the camera lens to where it is on the robot.
-        // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
         final float CAMERA_FORWARD_DISPLACEMENT = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot-center
         final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
         final float CAMERA_LEFT_DISPLACEMENT = 0;     // eg: Camera is ON the robot's center line
@@ -374,19 +335,11 @@ public class HermesAggregated extends LinearOpMode {
         for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
         }
+        telemetry.addLine("Press > to start (vuforia is done)");
+        telemetry.update();
+    }
 
-        // WARNING:
-        // In this sample, we do not wait for PLAY to be pressed.  Target Tracking is started immediately when INIT is pressed.
-        // This sequence is used to enable the new remote DS Camera Preview feature to be used with this sample.
-        // CONSEQUENTLY do not put any driving commands in this loop.
-        // To restore the normal opmode structure, just un-comment the following line:
-
-        // waitForStart();
-
-        // Note: To use the remote camera preview:
-        // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
-        // Tap the preview window to receive a fresh image.
-
+    public void start_vuforia() {
         targetsSkyStone.activate();
         while (!isStopRequested()) {
 
@@ -423,6 +376,7 @@ public class HermesAggregated extends LinearOpMode {
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             } else {
                 telemetry.addData("Visible Target", "none");
+                targetsSkyStone.deactivate();
             }
             captureFrameToFile();
             telemetry.update();
@@ -431,39 +385,46 @@ public class HermesAggregated extends LinearOpMode {
 
 
         // Disable Tracking when we are done;
-        targetsSkyStone.deactivate();
     }
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
-
-        double radians = round((angle * Math.PI) / 180, 2);
-        double fr, br, fl, bl;
+        double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
+                robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
+        double radians = round(((angle - current_angle) * Math.PI) / 180, 2);
+        double frbl, flbr;
         int distance, distance2;
 
-        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Either speed or Math.cos(angle) * speed
-        fr = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
-        br = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
-        fl = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
-        bl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
+        frbl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
+        flbr = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
 
-        distance = (int)(Math.cos(radians) * (countsPerInch * inches));
-        distance2 = (int)(Math.cos(radians) * (countsPerInch * inches));
+        distance = (int)((Math.cos(radians) * -(countsPerInch * inches)) + (Math.sin(radians) * (countsPerInch * inches)));
+        distance2 = (int)((Math.cos(radians) * -(countsPerInch * inches)) - (Math.sin(radians) * (countsPerInch * inches)));
 
-        robot.FrontRight.setPower(fr);
-        robot.BackRight.setPower(br);
-        robot.FrontLeft.setPower(fl);
-        robot.BackLeft.setPower(bl);
+        robot.FrontRight.setPower(frbl);
+        robot.BackRight.setPower(flbr);
+        robot.FrontLeft.setPower(flbr);
+        robot.BackLeft.setPower(frbl);
+
+        robot.FrontRight.setTargetPosition(distance);
+        robot.BackRight.setTargetPosition(distance2);
+        robot.FrontLeft.setTargetPosition(distance2);
+        robot.BackLeft.setTargetPosition(distance);
 
         milliseconds.reset();
-        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)) {
+        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000) &&
+                (robot.FrontRight.getCurrentPosition() != distance) &&
+                (robot.BackRight.getCurrentPosition() != distance2) &&
+                (robot.FrontLeft.getCurrentPosition() != distance2) &&
+                (robot.BackLeft.getCurrentPosition() != distance)) {
             // Display it for the driver.
-            telemetry.addData("FR: ", fr);
-            telemetry.addData("BR: ", br);
+            telemetry.addData("FRBL: ", frbl);
+            telemetry.addData("FLBR: ", flbr);
             telemetry.addData("Path1", "Running to %7d", (robot.FrontRight.getCurrentPosition() + distance));
             telemetry.addData("Path2", "Running at %7d : %7d : %7d : %7d",
                     robot.FrontRight.getCurrentPosition(),

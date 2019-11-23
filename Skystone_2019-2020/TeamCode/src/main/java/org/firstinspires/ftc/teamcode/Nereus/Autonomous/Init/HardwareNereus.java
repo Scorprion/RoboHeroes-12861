@@ -65,6 +65,9 @@ public class HardwareNereus {
         Right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        Right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
     }

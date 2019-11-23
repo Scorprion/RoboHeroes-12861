@@ -234,6 +234,11 @@ public class PID {
     }
 
     protected void setSetpoint(double value) {
-        setpoint = value;
+        this.setpoint = value;
+    }
+
+
+    public void update_error(double current) {
+        this.error = (likeallelse(current) - this.setpoint) / 360;
     }
 }
