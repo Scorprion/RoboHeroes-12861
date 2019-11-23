@@ -36,6 +36,7 @@ public class HardwareHermes {
 
         webcamName = ahwMap.get(WebcamName .class, "Webcam 1");
 
+
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
