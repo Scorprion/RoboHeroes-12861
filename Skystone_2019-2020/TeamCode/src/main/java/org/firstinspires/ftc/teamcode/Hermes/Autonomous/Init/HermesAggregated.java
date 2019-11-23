@@ -1,10 +1,17 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
+import android.graphics.Bitmap;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
+import com.qualcomm.robotcore.util.ThreadPool;
+import com.vuforia.Frame;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.function.Consumer;
+import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -12,12 +19,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.PID;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -27,6 +39,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
 public class HermesAggregated extends LinearOpMode {
+    public static final String TAG = "Vuforia Navigation Sample";
+
+    File captureDirectory = AppUtil.ROBOT_DATA_DIR;
 
     public final double countsPerInch = 54.722;
     private ElapsedTime milliseconds = new ElapsedTime();
@@ -70,6 +85,8 @@ public class HermesAggregated extends LinearOpMode {
     private float phoneXRotate = 0;
     private float phoneYRotate = 0;
     private float phoneZRotate = 0;
+
+    int captureCounter = 0;
 
     public VectorF translation;
     public Orientation rotation;
@@ -165,6 +182,31 @@ public class HermesAggregated extends LinearOpMode {
         robot.FrontRight.setPower(0);
         robot.BackRight.setPower(0);
 
+    }
+
+    void captureFrameToFile() {
+        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
+        {
+            @Override
+            public void accept(Frame frame)
+            {
+                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
+                if (bitmap != null) {
+                    File file = new File(captureDirectory, String.format(Locale.getDefault(), "VuforiaFrame-%d.png", captureCounter++));
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        try {
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                        } finally {
+                            outputStream.close();
+                            telemetry.log().add("captured %s", file.getName());
+                        }
+                    } catch (IOException e) {
+                        RobotLog.ee(TAG, e, "exception in captureFrameToFile()");
+                    }
+                }
+            }
+        }));
     }
 
     public void vuforia() {
@@ -347,13 +389,6 @@ public class HermesAggregated extends LinearOpMode {
 
         targetsSkyStone.activate();
         while (!isStopRequested()) {
-            pid.setParams(0.5, 0.5, 0, 90);
-            pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);
-            robot.FrontLeft.setPower(0.1 + pidOutput);
-            robot.FrontRight.setPower(0.1 + pidOutput);
-            robot.BackLeft.setPower(0.1 + pidOutput);
-            robot.BackRight.setPower(0.1 - pidOutput);
-            telemetry.addData("Angle: ", robot.imu.getAngularOrientation().firstAngle);
 
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
@@ -389,8 +424,11 @@ public class HermesAggregated extends LinearOpMode {
             } else {
                 telemetry.addData("Visible Target", "none");
             }
+            captureFrameToFile();
             telemetry.update();
         }
+
+
 
         // Disable Tracking when we are done;
         targetsSkyStone.deactivate();
@@ -460,6 +498,5 @@ public class HermesAggregated extends LinearOpMode {
         bd = bd.setScale(places, RoundingMode.HALF_DOWN);
         return bd.doubleValue();
     }
-
 }
 
