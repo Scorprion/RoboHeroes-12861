@@ -4,6 +4,7 @@ import com.qualcomm.hardware.motors.RevRoboticsCoreHexMotor;
 import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -33,6 +34,8 @@ public class FinalBot_TeleOp extends OpMode {
 
         RevTouchSensor Stopper;
 
+        CRServo FoundationClaw;
+
         public void init() {
             FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
             FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -52,6 +55,8 @@ public class FinalBot_TeleOp extends OpMode {
             Stopper = hardwareMap.get(RevTouchSensor.class, "ArmStopper");
 
             Arm = hardwareMap.get(DcMotor.class, "Arm");
+
+            FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
 
 
 
@@ -82,6 +87,16 @@ public class FinalBot_TeleOp extends OpMode {
 
             if(gamepad1.right_stick_y >= 0.1 || gamepad1.right_stick_y <= -0.1) {
                 Arm.setPower(gamepad1.right_stick_y);
+            }else{
+                Arm.setPower(0);
+            }
+
+            if(gamepad2.a){
+                FoundationClaw.setPower(-1);
+            }else if(gamepad2.b){
+                FoundationClaw.setPower(1);
+            }else{
+                FoundationClaw.setPower(0.5);
             }
 
             //Strafing
