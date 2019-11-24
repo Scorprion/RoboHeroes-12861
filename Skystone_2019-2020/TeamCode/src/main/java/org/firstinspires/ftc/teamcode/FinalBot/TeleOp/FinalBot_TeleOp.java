@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name= "TeleOp Hermes", group= "Pushbot")
+@TeleOp(name= "Finalbot TeleOp", group= "Pushbot")
 public class FinalBot_TeleOp extends OpMode {
 
         //Making the slower arm and elbow toggle (driver 2)

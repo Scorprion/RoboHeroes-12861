@@ -83,7 +83,7 @@ public class PIDTests extends HermesAggregated {
             error_sum += value;
         }
 
-        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, setpoint);
+        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, setpoint, null);
         telemetry.addData("Error Sum: ", error_sum);
     }
 }

@@ -33,13 +33,13 @@ public class PID {
         this.error = 0;
     }
 
-    public double getPID(double current_angle) {
-        PIDout = calcPID(current_angle);
+    public double getPID(double error) {
+        PIDout = calcPID(error);
         return PIDout;
     }
 
-    private double calcPID(double angle) {
-        this.error = (likeallelse(angle) - this.setpoint) / 360;
+    private double calcPID(double error) {
+        this.error = error;
 
         // Proportional
         Poutput = P * this.error;
@@ -59,13 +59,16 @@ public class PID {
         return PIDout;
     }
 
-    public void setParams(double P, double I, double D, double setpoint) {
+    public void setParams(double P, double I, double D, double setpoint, Double lasterror) {
+        // These are optional parameters that will default to 0 if not set
+        Double optional_lasterror = lasterror.isNaN() ? 0 : lasterror;
+
         this.P = P;
         this.I = I;
         this.D = D;
         this.setpoint = setpoint;  // The target angle
-        this.lasterror = 0;  // For the derivative part of the calculation
-        this.error = 0;  // Resetting the PID
+        this.lasterror = optional_lasterror;  // For the derivative part of the calculation
+        this.error = 0;
     }
 
     public boolean Incomp(double ParPos, double ParNeg){
@@ -91,19 +94,6 @@ public class PID {
     }
 
     /**
-     * 3 notMoving boolean methods that return true of false based upon their given parameters. For example, the 1st
-     * notMoving method returns true if the movement rounded to the nearest place is equal to 0
-     * @param movement the movement value to be evaluated
-     * @param place the decimal place to round to
-     * @param underThresh the number that is checked against the value to see if the rounded number is less
-     *                    (or under) that threshold (when rounding to a decimal point beyond whole numbers)
-     * @return true or false based upon if the movement value rounded to the placeth is less than the range passed
-     */
-    private boolean notMoving(double movement, int place, double underThresh) {
-        return inrange(round(movement, place), underThresh);
-    }
-
-    /**
      * Another notMoving boolean method
      * @param movement the movement value to be evaluated
      * @param threshold the threshold value that the movement number cannot be less than
@@ -123,16 +113,17 @@ public class PID {
     }
 
     /**
-     * Check to see if we should stop the program based on if the rounded error is equal to 0
-     * @param error the error
+     * Check to see if the "round_value" is "close enough" to "value"
+     * @param round_value the value to check
      * @param place the place to round to
-     * @return a boolean of True of False
+     * @param value the value to compare the rounded value to
+     * @return close enough
      */
-    private boolean errorCheckStop(double error, int place, double underThresh) {
+    public boolean closeEnoughTo(double round_value, int place, double value) {
         /*Example of refactoring
         error = round(error, place);
         return((error == 0)? true: false);*/
-        return inrange(round(error, place), underThresh);
+        return round(value, place) == value;
     }
 
     /**
@@ -150,14 +141,9 @@ public class PID {
         return bd.doubleValue();
     }
 
-    /**
-     * Returns True of False, depending on if the value is under or equal to the range
-     * @param value the value to be checked
-     * @param under the value the value has to be under (less than)
-     * @return True of False, depending on if the value is in range of the under value
-     */
-    private boolean inrange(double value, double under) {
-        return Math.abs(value) < under || value == under;
+
+    private boolean inrange(double value, double max, double min) {
+        return value <= max && value >= min;
     }
 
     /**
@@ -176,7 +162,7 @@ public class PID {
         return value;
     }
 
-    private double likeallelse(double angle) {
+    public double likeallelse(double angle) {
         this.delta_angle = angle - previous_angle;
 
         if (delta_angle < -180)
@@ -201,44 +187,7 @@ public class PID {
         return this.parabola / 180;
     }*/
 
-    /**
-     * Retrieving the error
-     * @return the error
-     */
-    public double getError() {
-        return error;
-    }
-
-    /**
-     * Retrieve the proportional output
-     * @return the Poutput
-     */
-    public double getP() {
-        return Poutput;
-    }
-
-    /**
-     * Retrieve the integral output
-     * @return the Ioutput
-     */
-    public double getI() {
-        return Ioutput;
-    }
-
-    /**
-     * Retrieve the derivative output
-     * @return the Doutput
-     */
-    public double getD() {
-        return Doutput;
-    }
-
-    protected void setSetpoint(double value) {
-        this.setpoint = value;
-    }
-
-
-    public void update_error(double current) {
-        this.error = (likeallelse(current) - this.setpoint) / 360;
+    public void update_error(double error) {
+        this.error = error;
     }
 }

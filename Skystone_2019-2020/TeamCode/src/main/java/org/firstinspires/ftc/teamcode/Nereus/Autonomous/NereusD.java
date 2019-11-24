@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "NereusD", group = "Nereus")
+@Disabled
 public class NereusD extends NereusAggregated {
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);

@@ -25,7 +25,7 @@ public class PIDTests extends NereusAggregated {
 
         while(opModeIsActive()) {
             out = adadelta(pid,0.1, out);
-            pid.setParams(pid.P - out, I, D, setpoint);
+            pid.setParams(pid.P - out, I, D, setpoint, null);
             robot.Left.setPower(speed + out);
             robot.Right.setPower(speed - out);
 
@@ -80,7 +80,7 @@ public class PIDTests extends NereusAggregated {
             error_sum += value;
         }
 
-        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, setpoint);
+        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, setpoint, null);
         telemetry.addData("Error Sum: ", error_sum);
     }
 }
