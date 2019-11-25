@@ -16,12 +16,12 @@ public class HermesA extends HermesAggregated {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        //init_vuforia();
+        init_vuforia();
 
         waitForStart();
 
-        mecanumMove(0.4, 45, 11, 2);
+        mecanumMove(0.3, 90, 14.5, 3);
         sleep(500);
-        // start_vuforia();
+        start_vuforia();
     }
 }

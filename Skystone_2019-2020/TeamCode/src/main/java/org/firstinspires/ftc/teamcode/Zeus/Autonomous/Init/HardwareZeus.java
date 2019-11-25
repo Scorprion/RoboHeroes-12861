@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.FinalBot.Init;
+package org.firstinspires.ftc.teamcode.Zeus.Autonomous.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 @SuppressWarnings({"WeakerAccess"})
-public class HardwareFinalBot {
+public class HardwareZeus {
     //Sensors
 
     //Right motors

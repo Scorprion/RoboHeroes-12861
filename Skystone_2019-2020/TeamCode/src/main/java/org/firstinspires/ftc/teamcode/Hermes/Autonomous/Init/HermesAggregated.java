@@ -385,11 +385,10 @@ public class HermesAggregated extends LinearOpMode {
     }
 
     public void start_vuforia() {
-        double last_error = 0;
         targetsSkyStone.activate();
+
+        double last_error = 0;
         while (!isStopRequested()) {
-           last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360,
-                   last_error, 1, 0.2, 0, 0, -0.1, false);
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
@@ -407,6 +406,10 @@ public class HermesAggregated extends LinearOpMode {
                 }
             }
 
+            last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360,
+                    last_error, 1, 0.2, 0, 0, -0.1, false);
+            telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
+
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
                 robot.FrontRight.setPower(0);
@@ -417,31 +420,28 @@ public class HermesAggregated extends LinearOpMode {
                 last_error = 0;
                 while(!pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
                     last_error = pidDynamic(translation.get(1) / mmPerInch, last_error, 1.5, 0.3, 0, 0, 0.1, false);
-                }
-                // express position (translation) of robot in inches.
-                VectorF translation = lastLocation.getTranslation();
-                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+                    // express position (translation) of robot in inches.
+                    VectorF translation = lastLocation.getTranslation();
+                    telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                            translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
-                // express the rotation of the robot in degrees.
-                Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-                telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+                    // express the rotation of the robot in degrees.
+                    Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+                    telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+
+                }
             } else {
                 telemetry.addData("Visible Target", "none");
                 targetsSkyStone.deactivate();
             }
             telemetry.update();
         }
-
-
-
-        // Disable Tracking when we are done;
     }
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
         double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
                 robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
-        double radians = ((angle - current_angle) * Math.PI) / 180;
+        double radians = (angle - current_angle) * (Math.PI / 180);
         double frbl, flbr;
         int distance, distance2;
 
@@ -449,8 +449,8 @@ public class HermesAggregated extends LinearOpMode {
         frbl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
         flbr = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
 
-        distance = (int)((Math.cos(radians) * (countsPerInch * inches)) + (Math.sin(radians) * (countsPerInch * inches)));
-        distance2 = (int)((Math.cos(radians) * (countsPerInch * inches)) - (Math.sin(radians) * (countsPerInch * inches)));
+        distance = (int)((Math.cos(radians) * -(countsPerInch * inches)) + (Math.sin(radians) * (countsPerInch * inches)));
+        distance2 = (int)((Math.cos(radians) * -(countsPerInch * inches)) - (Math.sin(radians) * (countsPerInch * inches)));
 
         robot.FrontRight.setTargetPosition(distance);
         robot.BackRight.setTargetPosition(distance2);

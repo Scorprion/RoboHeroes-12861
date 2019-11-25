@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.FinalBot.Init;
+package org.firstinspires.ftc.teamcode.Zeus.Autonomous.Init;
 
 import android.graphics.Bitmap;
 
@@ -30,7 +30,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import org.firstinspires.ftc.teamcode.FinalBot.Init.HardwareFinalBot;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -39,14 +38,14 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class FinalBotAggregated extends LinearOpMode {
+public class ZeusAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
 
     public final double countsPerInch = 54.722;
     private ElapsedTime milliseconds = new ElapsedTime();
-    public HardwareFinalBot robot = new HardwareFinalBot();
+    public HardwareZeus robot = new HardwareZeus();
     private double pidOutput = 0;
 
     private PID pid = new PID(0, 0, 0, 0);
@@ -87,7 +86,8 @@ public class FinalBotAggregated extends LinearOpMode {
     private float phoneYRotate = 0;
     private float phoneZRotate = 0;
 
-    int captureCounter = 0;
+    VuforiaTrackables targetsSkyStone;
+    List<VuforiaTrackable> allTrackables;
 
     public VectorF translation;
     public Orientation rotation;
@@ -161,7 +161,6 @@ public class FinalBotAggregated extends LinearOpMode {
             robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-
             robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -185,32 +184,67 @@ public class FinalBotAggregated extends LinearOpMode {
 
     }
 
-    void captureFrameToFile() {
-        vuforia.getFrameOnce(Continuation.create(ThreadPool.getDefault(), new Consumer<Frame>()
-        {
-            @Override
-            public void accept(Frame frame)
-            {
-                Bitmap bitmap = vuforia.convertFrameToBitmap(frame);
-                if (bitmap != null) {
-                    File file = new File(captureDirectory, String.format(Locale.getDefault(), "VuforiaFrame-%d.png", captureCounter++));
-                    try {
-                        FileOutputStream outputStream = new FileOutputStream(file);
-                        try {
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                        } finally {
-                            outputStream.close();
-                            telemetry.log().add("captured %s", file.getName());
-                        }
-                    } catch (IOException e) {
-                        RobotLog.ee(TAG, e, "exception in captureFrameToFile()");
-                    }
-                }
-            }
-        }));
+    double out = 0;
+    public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
+        timer.reset();
+        pid.setParams(P, I, D, setpoint, null);
+
+        // Manual error updating
+        pid.update_error((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
+        while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && pid.error != 0) {
+            telemetry.addLine()
+                    .addData("P", P)
+                    .addData("I", I)
+                    .addData("D", D);
+            out = pid.getPID((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
+            telemetry.addLine()
+                    .addData("Angle", pid.total_angle)
+                    .addData("Out", out)
+                    .addData("Speed", speed + out);
+            robot.FrontRight.setPower(speed + out);
+            robot.BackRight.setPower(speed + out);
+            robot.FrontLeft.setPower(-speed - out);
+            robot.BackLeft.setPower(-speed - out);
+            telemetry.update();
+        }
     }
 
-    public void vuforia() {
+    /**
+     * Important Note: This method requires a manual-made loop in order to constantly pass the variable
+     *
+     * The dynamic version of pidTurn that should work with any variable affected by the robot's position.
+     * Since Java passes by value and not by reference, it is not possible to pass the reference to
+     * something like the angle, so this separate method will deal with other possibilities.
+     *
+     * @param variable - the manipulated/dependent variable affected by robot position changes
+     * @param P - Proportional gain
+     * @param I - Integral gain
+     * @param D - Derivative gain
+     * @param setpoint - the desired target to get the variable to
+     * @param speed - the initial speed to set the motors
+     *
+     * @return the last PID error
+     */
+    public double pidDynamic(double variable, double lasterror, double P, double I, double D,
+                             double setpoint, double speed, boolean turn) {
+        pid.setParams(P, I, D, setpoint, lasterror);
+        // pid.update_error(variable - setpoint);
+        out = pid.getPID(variable - setpoint);
+        if(turn) {
+            robot.FrontRight.setPower(speed + out);
+            robot.BackRight.setPower(speed + out);
+            robot.FrontLeft.setPower(-speed - out);
+            robot.BackLeft.setPower(-speed - out);
+        } else {
+            robot.FrontRight.setPower(speed + out);
+            robot.BackRight.setPower(speed + out);
+            robot.FrontLeft.setPower(speed + out);
+            robot.BackLeft.setPower(speed + out);
+        }
+        return pid.error;
+    }
+
+    public void init_vuforia() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -227,7 +261,7 @@ public class FinalBotAggregated extends LinearOpMode {
 
         // Load the data sets for the trackable objects. These particular data
         // sets are stored in the 'assets' part of our application.
-        VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
+        targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
 
         VuforiaTrackable stoneTarget = targetsSkyStone.get(0);
         stoneTarget.setName("Stone Target");
@@ -257,7 +291,7 @@ public class FinalBotAggregated extends LinearOpMode {
         rear2.setName("Rear Perimeter 2");
 
         // For convenience, gather together all the trackable objects in one easily-iterable collection */
-        List<VuforiaTrackable> allTrackables = new ArrayList<VuforiaTrackable>();
+        allTrackables = new ArrayList<VuforiaTrackable>();
         allTrackables.addAll(targetsSkyStone);
 
         /**
@@ -268,19 +302,7 @@ public class FinalBotAggregated extends LinearOpMode {
          * for detailed information. Commonly, you'll encounter transformation matrices as instances
          * of the {@link OpenGLMatrix} class.
          *
-         * If you are standing in the Red Alliance Station looking towards the center of the field,
-         *     - The X axis runs from your left to the right. (positive from the center to the right)
-         *     - The Y axis runs from the Red Alliance Station towards the other side of the field
-         *       where the Blue Alliance Station is. (Positive is from the center, towards the BlueAlliance station)
-         *     - The Z axis runs from the floor, upwards towards the ceiling.  (Positive is above the floor)
-         *
-         * Before being transformed, each target image is conceptually located at the origin of the field's
-         *  coordinate system (the center of the field), facing up.
          */
-
-        // Set the position of the Stone Target.  Since it's not fixed in position, assume it's at the field origin.
-        // Rotated it to to face forward, and raised it to sit on the ground correctly.
-        // This can be used for generic target-centric approach algorithms
         stoneTarget.setLocation(OpenGLMatrix
                 .translation(0, 0, stoneZ)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
@@ -335,21 +357,6 @@ public class FinalBotAggregated extends LinearOpMode {
                 .translation(halfField, -quadField, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
 
-        //
-        // Create a transformation matrix describing where the phone is on the robot.
-        //
-        // NOTE !!!!  It's very important that you turn OFF your phone's Auto-Screen-Rotation option.
-        // Lock it into Portrait for these numbers to work.
-        //
-        // Info:  The coordinate frame for the robot looks the same as the field.
-        // The robot's "forward" direction is facing out along X axis, with the LEFT side facing out along the Y axis.
-        // Z is UP on the robot.  This equates to a bearing angle of Zero degrees.
-        //
-        // The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
-        // pointing to the LEFT side of the Robot.
-        // The two examples below assume that the camera is facing forward out the front of the robot.
-
-        // We need to rotate the camera around it's long axis to bring the correct camera forward.
         if (CAMERA_CHOICE == BACK) {
             phoneYRotate = -90;
         } else {
@@ -361,8 +368,6 @@ public class FinalBotAggregated extends LinearOpMode {
             phoneXRotate = 90;
         }
 
-        // Next, translate the camera lens to where it is on the robot.
-        // In this example, it is centered (left to right), but forward of the middle of the robot, and above ground level.
         final float CAMERA_FORWARD_DISPLACEMENT = 4.0f * mmPerInch;   // eg: Camera is 4 Inches in front of robot-center
         final float CAMERA_VERTICAL_DISPLACEMENT = 8.0f * mmPerInch;   // eg: Camera is 8 Inches above ground
         final float CAMERA_LEFT_DISPLACEMENT = 0;     // eg: Camera is ON the robot's center line
@@ -375,22 +380,16 @@ public class FinalBotAggregated extends LinearOpMode {
         for (VuforiaTrackable trackable : allTrackables) {
             ((VuforiaTrackableDefaultListener) trackable.getListener()).setPhoneInformation(robotFromCamera, parameters.cameraDirection);
         }
+        telemetry.addLine("Press > to start (vuforia is done)");
+        telemetry.update();
+    }
 
-        // WARNING:
-        // In this sample, we do not wait for PLAY to be pressed.  Target Tracking is started immediately when INIT is pressed.
-        // This sequence is used to enable the new remote DS Camera Preview feature to be used with this sample.
-        // CONSEQUENTLY do not put any driving commands in this loop.
-        // To restore the normal opmode structure, just un-comment the following line:
-
-        // waitForStart();
-
-        // Note: To use the remote camera preview:
-        // AFTER you hit Init on the Driver Station, use the "options menu" to select "Camera Stream"
-        // Tap the preview window to receive a fresh image.
-
+    public void start_vuforia() {
+        double last_error = 0;
         targetsSkyStone.activate();
         while (!isStopRequested()) {
-
+            last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360,
+                    last_error, 1, 0.2, 0, 0, -0.1, false);
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
@@ -410,10 +409,15 @@ public class FinalBotAggregated extends LinearOpMode {
 
             // Provide feedback as to where the robot is located (if we know).
             if (targetVisible) {
-                robot.FrontLeft.setPower(0);
                 robot.FrontRight.setPower(0);
-                robot.BackLeft.setPower(0);
                 robot.BackRight.setPower(0);
+                robot.FrontLeft.setPower(0);
+                robot.BackLeft.setPower(0);
+
+                last_error = 0;
+                while(!pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
+                    last_error = pidDynamic(translation.get(1) / mmPerInch, last_error, 1.5, 0.3, 0, 0, 0.1, false);
+                }
                 // express position (translation) of robot in inches.
                 VectorF translation = lastLocation.getTranslation();
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
@@ -424,48 +428,51 @@ public class FinalBotAggregated extends LinearOpMode {
                 telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
             } else {
                 telemetry.addData("Visible Target", "none");
+                targetsSkyStone.deactivate();
             }
-            captureFrameToFile();
             telemetry.update();
         }
 
 
 
         // Disable Tracking when we are done;
-        targetsSkyStone.deactivate();
     }
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
-
-        double radians = round((angle * Math.PI) / 180, 2);
-        double fr, br, fl, bl;
+        double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
+                robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
+        double radians = (angle - current_angle) * (Math.PI / 180);
+        double frbl, flbr;
         int distance, distance2;
 
-        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         // Either speed or Math.cos(angle) * speed
-        fr = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
-        br = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
-        fl = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
-        bl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
+        frbl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
+        flbr = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
 
-        distance = (int)(Math.cos(radians) * (countsPerInch * inches));
-        distance2 = (int)(Math.cos(radians) * (countsPerInch * inches));
+        distance = (int)((Math.cos(radians) * -(countsPerInch * inches)) + (Math.sin(radians) * (countsPerInch * inches)));
+        distance2 = (int)((Math.cos(radians) * -(countsPerInch * inches)) - (Math.sin(radians) * (countsPerInch * inches)));
 
-        robot.FrontRight.setPower(fr);
-        robot.BackRight.setPower(br);
-        robot.FrontLeft.setPower(fl);
-        robot.BackLeft.setPower(bl);
+        robot.FrontRight.setTargetPosition(distance);
+        robot.BackRight.setTargetPosition(distance2);
+        robot.FrontLeft.setTargetPosition(distance2);
+        robot.BackLeft.setTargetPosition(distance);
+
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.FrontRight.setPower(frbl);
+        robot.BackRight.setPower(flbr);
+        robot.FrontLeft.setPower(flbr);
+        robot.BackLeft.setPower(frbl);
 
         milliseconds.reset();
-        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)) {
+        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000) && (robot.FrontRight.isBusy() || robot.FrontLeft.isBusy())) {
             // Display it for the driver.
-            telemetry.addData("FR: ", fr);
-            telemetry.addData("BR: ", br);
-            telemetry.addData("Path1", "Running to %7d", (robot.FrontRight.getCurrentPosition() + distance));
+            telemetry.addData("FRBL: ", frbl);
+            telemetry.addData("FLBR: ", flbr);
+            telemetry.addData("Path1", "Running to %7d", (distance));
             telemetry.addData("Path2", "Running at %7d : %7d : %7d : %7d",
                     robot.FrontRight.getCurrentPosition(),
                     robot.BackRight.getCurrentPosition(),
@@ -473,6 +480,12 @@ public class FinalBotAggregated extends LinearOpMode {
                     robot.BackLeft.getCurrentPosition());
             telemetry.update();
         }
+
+        telemetry.addData("Distance: ", distance);
+        telemetry.addData("Distance2: ", distance2);
+        telemetry.addData("Left Busy: ", robot.FrontLeft.isBusy());
+        telemetry.addData("Right Busy: ", robot.FrontRight.isBusy());
+        telemetry.update();
 
         robot.FrontLeft.setPower(0);
         robot.BackLeft.setPower(0);
