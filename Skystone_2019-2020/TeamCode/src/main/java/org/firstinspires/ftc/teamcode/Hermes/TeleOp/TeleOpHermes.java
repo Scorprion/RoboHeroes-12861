@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Hermes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -25,7 +26,8 @@ public class TeleOpHermes extends OpMode {
     private double strafespeed = 0;
     private double speed = 0;
 
-    DcMotor BackLeft, BackRight, FrontLeft, FrontRight;
+    DcMotor BackLeft, BackRight, FrontLeft, FrontRight, Gate;
+    CRServo FoundationClaw, HeadDrop;
 
     public void init() {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
@@ -42,6 +44,12 @@ public class TeleOpHermes extends OpMode {
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Gate = hardwareMap.get(DcMotor.class, "Gate");
+
+        FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
+
+        HeadDrop = hardwareMap.get(CRServo.class, "HeadDrop");
     }
 
     @Override
@@ -59,12 +67,31 @@ public class TeleOpHermes extends OpMode {
         |                           |
         -----------------------------
          */
-        //Turning
+        //Turninge
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
                 FrontRight.setPower(-turnspeed);
                 BackRight.setPower(-turnspeed);
                 FrontLeft.setPower(turnspeed);
                 BackLeft.setPower(turnspeed);
+        }
+        if ((gamepad2.right_stick_y >= 0.1 || gamepad2.right_stick_y <= -0.1)) {
+            Gate.setPower(gamepad2.right_stick_y*0.5);
+        }else{
+            Gate.setPower(0);
+        }
+
+        if(gamepad2.left_stick_y >= 0.1){
+            FoundationClaw.setPower(-1);
+        }else if(gamepad2.left_stick_y <= -0.1){
+            FoundationClaw.setPower(1);
+        }else{
+            FoundationClaw.setPower(0.5);
+        }
+
+        if (gamepad1.x){
+            HeadDrop.setPower(-0.6);
+        }else{
+            HeadDrop.setPower(0);
         }
 
         //Strafing
