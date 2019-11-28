@@ -95,10 +95,10 @@ public class TeleOpHermes extends OpMode {
         }
 
         //Strafing
-        FrontRight.setPower(speed -strafespeed);
+        FrontRight.setPower(speed - strafespeed);
         BackRight.setPower(speed + strafespeed);
         FrontLeft.setPower(speed + strafespeed);
-        BackLeft.setPower(speed -strafespeed);
+        BackLeft.setPower(speed - strafespeed);
 
         telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
         telemetry.update();

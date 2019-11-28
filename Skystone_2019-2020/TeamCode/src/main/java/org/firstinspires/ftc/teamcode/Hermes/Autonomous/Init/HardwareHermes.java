@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -22,6 +24,12 @@ public class HardwareHermes {
     //Left motors
     public DcMotor FrontLeft;
     public DcMotor BackLeft;
+
+    //The latching down boi
+    public DcMotor Gate;
+
+    //Foundation Grabber
+    public CRServo FoundationClaw;
 
     WebcamName webcamName = null;
 
@@ -54,17 +62,21 @@ public class HardwareHermes {
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BackRight = ahwMap.get(DcMotor.class, "BackRight");
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FrontLeft = ahwMap.get(DcMotor.class, "FrontLeft");
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BackLeft = ahwMap.get(DcMotor.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Gate = ahwMap.get(DcMotor.class, "Gate");
+
+        FoundationClaw = ahwMap.get(CRServo.class, "FoundationClaw");
 
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

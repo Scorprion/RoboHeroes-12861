@@ -150,10 +150,7 @@ public class HermesAggregated extends LinearOpMode {
                 telemetry.update();
             }
 
-            robot.FrontLeft.setPower(0);
-            robot.BackLeft.setPower(0);
-            robot.FrontRight.setPower(0);
-            robot.BackRight.setPower(0);
+            stopMotors();
 
             // Turn off RUN_TO_POSITION and reset
             robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -168,20 +165,11 @@ public class HermesAggregated extends LinearOpMode {
         }
     }
 
-    /*public void TimeRun(double left, double right, double seconds) {
-        robot.Left.setPower(left);
-        robot.Right.setPower(right);
-        sleep((long) (seconds * 1000));
-        StopMotors();
-    }*/
-
-    public void StopMotors() {
-
-        robot.FrontLeft.setPower(0);
-        robot.BackLeft.setPower(0);
+    public void stopMotors() {
         robot.FrontRight.setPower(0);
         robot.BackRight.setPower(0);
-
+        robot.FrontLeft.setPower(0);
+        robot.BackLeft.setPower(0);
     }
 
     double out = 0;
@@ -217,24 +205,26 @@ public class HermesAggregated extends LinearOpMode {
      * something like the angle, so this separate method will deal with other possibilities.
      *
      * @param variable - the manipulated/dependent variable affected by robot position changes
+     * @param error_factor - scales the error by this factor (because motor powers are -1 to 1)
      * @param P - Proportional gain
      * @param I - Integral gain
      * @param D - Derivative gain
      * @param setpoint - the desired target to get the variable to
      * @param speed - the initial speed to set the motors
+     * @param turn - whether or not to turn (motor powers are adjusted)
      *
      * @return the last PID error
      */
-    public double pidDynamic(double variable, double lasterror, double P, double I, double D,
+    public double pidDynamic(double variable, double lasterror, double error_factor, double P, double I, double D,
                              double setpoint, double speed, boolean turn) {
         pid.setParams(P, I, D, setpoint, lasterror);
         // pid.update_error(variable - setpoint);
-        out = pid.getPID(variable - setpoint);
+        out = pid.getPID((setpoint - variable) * error_factor);
         if(turn) {
             robot.FrontRight.setPower(speed + out);
-            robot.BackRight.setPower(speed + out);
-            robot.FrontLeft.setPower(-speed - out);
-            robot.BackLeft.setPower(-speed - out);
+            robot.BackRight.setPower(speed - out);
+            robot.FrontLeft.setPower(speed - out);
+            robot.BackLeft.setPower(speed + out);
         } else {
             robot.FrontRight.setPower(speed + out);
             robot.BackRight.setPower(speed + out);
@@ -251,6 +241,8 @@ public class HermesAggregated extends LinearOpMode {
         // VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
+
+        parameters.cameraName = robot.webcamName;
 
         /**
          * We also indicate which camera on the RC we wish to use.
@@ -387,8 +379,9 @@ public class HermesAggregated extends LinearOpMode {
     public void start_vuforia() {
         targetsSkyStone.activate();
 
+        boolean atTarget = false;
         double last_error = 0;
-        while (!isStopRequested()) {
+        while (opModeIsActive() && !atTarget) {
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {
@@ -406,61 +399,87 @@ public class HermesAggregated extends LinearOpMode {
                 }
             }
 
-            last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360,
-                    last_error, 1, 0.2, 0, 0, -0.1, false);
+            last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), last_error,1/10,
+                    1.5, 0.5, 0, 0, 0.05, true);
             telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
 
             // Provide feedback as to where the robot is located (if we know).
-            if (targetVisible) {
-                robot.FrontRight.setPower(0);
-                robot.BackRight.setPower(0);
-                robot.FrontLeft.setPower(0);
-                robot.BackLeft.setPower(0);
-
+            if(targetVisible) {
+                translation = lastLocation.getTranslation();
+                pid.setParams(0, 0, 0, 0, 0.0);
+                stopMotors();
                 last_error = 0;
-                while(!pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
-                    last_error = pidDynamic(translation.get(1) / mmPerInch, last_error, 1.5, 0.3, 0, 0, 0.1, false);
+                while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
+                    // Updating the position of the trackable skystone
+                    for (VuforiaTrackable trackable : allTrackables) {
+                        if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                            OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
+                            if (robotLocationTransform != null) {
+                                lastLocation = robotLocationTransform;
+                            }
+                            break;
+                        }
+                    }
+                    translation = lastLocation.getTranslation();
+                    last_error = pidDynamic(translation.get(1) / mmPerInch, last_error, 0.01,
+                            1.5, 0.2, 0, 0, 0, false);
                     // express position (translation) of robot in inches.
-                    VectorF translation = lastLocation.getTranslation();
+                    translation = lastLocation.getTranslation();
+                    telemetry.addData("Error: ", last_error);
                     telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
                             translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
 
                     // express the rotation of the robot in degrees.
-                    Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
+                    rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                     telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-
+                    telemetry.update();
                 }
+
+                telemetry.addLine("We good");
+                telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+                        translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+                telemetry.update();
+                // We are now at the target once the loop finishes
+                atTarget = true;
             } else {
                 telemetry.addData("Visible Target", "none");
-                targetsSkyStone.deactivate();
             }
             telemetry.update();
         }
+        stopMotors();
+        targetsSkyStone.deactivate();
     }
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
+        // Turn off RUN_TO_POSITION and reset
+        robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
                 robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
-        double radians = (angle - current_angle) * (Math.PI / 180);
-        double frbl, flbr;
-        int distance, distance2;
+        double radians = Math.toRadians(current_angle - angle);
 
-        // Either speed or Math.cos(angle) * speed
-        frbl = (Math.cos(radians) * -speed) + (Math.sin(radians) * speed);
-        flbr = (Math.cos(radians) * -speed) - (Math.sin(radians) * speed);
+        // The equation isn't including negative values, so consider:
+        // 2 * cos(angle)^2 - 1
+        // which normalizes the numbers between 1 and -1
 
-        distance = (int)((Math.cos(radians) * -(countsPerInch * inches)) + (Math.sin(radians) * (countsPerInch * inches)));
-        distance2 = (int)((Math.cos(radians) * -(countsPerInch * inches)) - (Math.sin(radians) * (countsPerInch * inches)));
+        double forward_percent = Math.pow(Math.cos(radians), 2),
+                sideways_percent = Math.pow(Math.sin(radians), 2);
+        double flbr, frbl;
+        int distanceflbr, distancefrbl;
 
-        robot.FrontRight.setTargetPosition(distance);
-        robot.BackRight.setTargetPosition(distance2);
-        robot.FrontLeft.setTargetPosition(distance2);
-        robot.BackLeft.setTargetPosition(distance);
+        flbr = speed * (forward_percent + sideways_percent);
+        frbl = speed * (forward_percent - sideways_percent);
 
-        robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        distanceflbr = (int)((countsPerInch * inches) * (forward_percent + sideways_percent));
+        distancefrbl = (int)((countsPerInch * inches) * (forward_percent - sideways_percent));
 
         robot.FrontRight.setPower(frbl);
         robot.BackRight.setPower(flbr);
@@ -468,11 +487,18 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackLeft.setPower(frbl);
 
         milliseconds.reset();
-        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000) && (robot.FrontRight.isBusy() || robot.FrontLeft.isBusy())) {
+
+        // Warning - Will be inconsistent, but it works
+        while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)
+                && (inrange(robot.FrontRight.getCurrentPosition(), -distancefrbl, distancefrbl)
+                    || inrange(robot.FrontLeft.getCurrentPosition(), -distanceflbr, distanceflbr))) {
             // Display it for the driver.
-            telemetry.addData("FRBL: ", frbl);
-            telemetry.addData("FLBR: ", flbr);
-            telemetry.addData("Path1", "Running to %7d", (distance));
+            telemetry.addLine()
+                    .addData("Forward: ", forward_percent)
+                    .addData("Sideways: ", sideways_percent);
+            telemetry.addData("FLBR Speed: ", flbr);
+            telemetry.addData("FRBL Speed: ", frbl);
+            telemetry.addData("Path1", "Running to %7d and %7d", distanceflbr, distancefrbl);
             telemetry.addData("Path2", "Running at %7d : %7d : %7d : %7d",
                     robot.FrontRight.getCurrentPosition(),
                     robot.BackRight.getCurrentPosition(),
@@ -481,28 +507,7 @@ public class HermesAggregated extends LinearOpMode {
             telemetry.update();
         }
 
-        telemetry.addData("Distance: ", distance);
-        telemetry.addData("Distance2: ", distance2);
-        telemetry.addData("Left Busy: ", robot.FrontLeft.isBusy());
-        telemetry.addData("Right Busy: ", robot.FrontRight.isBusy());
-        telemetry.update();
-
-        robot.FrontLeft.setPower(0);
-        robot.BackLeft.setPower(0);
-        robot.FrontRight.setPower(0);
-        robot.BackRight.setPower(0);
-
-        // Turn off RUN_TO_POSITION and reset
-        robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-
-        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        stopMotors();
     }
 
     public double round(double value, int places) {
@@ -511,6 +516,10 @@ public class HermesAggregated extends LinearOpMode {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_DOWN);
         return bd.doubleValue();
+    }
+
+    public boolean inrange(double value, double min, double max) {
+        return value >= min && value <= max;
     }
 }
 

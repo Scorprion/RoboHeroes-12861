@@ -123,7 +123,7 @@ public class PID {
         /*Example of refactoring
         error = round(error, place);
         return((error == 0)? true: false);*/
-        return round(value, place) == value;
+        return round(round_value, place) == value;
     }
 
     /**

@@ -21,9 +21,16 @@ public class HermesB extends HermesAggregated {
         robot.init(hardwareMap);
         waitForStart();
 
+        encoderDrives(0.5, 53, 53, 5);
+        pidTurn(1.5, 0.2, 0, 90, 0.4, 2);
+        encoderDrives(0.4, 10, 10, 2);
+        robot.FoundationClaw.setPower(1);
+        sleep(1000);
+        robot.FoundationClaw.setPower(-1);
+        pidTurn(1.5, 0.2, 0, 180, 0.4, 5);
+        mecanumMove(0.5, 90, 9, 3);
 
-        encoderDrives(0.25, 27, 27, 3000);
-        encoderDrives(0.25, 12, -12, 3000);
-        encoderDrives(0.25, 27, 27, 3000);
+
+
     }
 }

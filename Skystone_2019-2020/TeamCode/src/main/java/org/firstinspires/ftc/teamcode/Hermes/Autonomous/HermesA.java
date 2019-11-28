@@ -20,8 +20,14 @@ public class HermesA extends HermesAggregated {
 
         waitForStart();
 
-        mecanumMove(0.3, 90, 14.5, 3);
+        mecanumMove(0.3, 90, 10.5, 2.5);
         sleep(500);
         start_vuforia();
+        sleep(500);
+        mecanumMove(0.4, 90, 24.5, 3.5);
+        sleep(500);
+        robot.Gate.setPower(-0.5);
+        sleep(500);
+        mecanumMove(0.3, -90, 13, 3);
     }
 }
