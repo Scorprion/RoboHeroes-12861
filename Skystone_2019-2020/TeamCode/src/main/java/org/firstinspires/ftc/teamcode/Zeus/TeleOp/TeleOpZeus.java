@@ -37,7 +37,8 @@ public class TeleOpZeus extends OpMode {
         RevTouchSensor Stopper;
 
         CRServo FoundationClaw;
-        CRServo StoneClamp;
+        Servo StoneClampL;
+        Servo StoneClampR;
 
         Servo StoneLift;
         Servo StoneTurner;
@@ -63,7 +64,8 @@ public class TeleOpZeus extends OpMode {
             Stopper = hardwareMap.get(RevTouchSensor.class, "ArmStopper");
 
             FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
-            StoneClamp = hardwareMap.get(CRServo.class, "StoneClamp");
+            StoneClampL = hardwareMap.get(Servo.class, "StoneClampL");
+            StoneClampR = hardwareMap.get(Servo.class, "StoneClampR");
 
             StoneLift = hardwareMap.get(Servo.class, "StoneLift");
             StoneTurner = hardwareMap.get(Servo.class, "StoneTurner");
@@ -124,11 +126,13 @@ public class TeleOpZeus extends OpMode {
             }
 
             if(gamepad2.right_trigger > 0.1){
-                StoneClamp.setPower(1);
+                StoneClampR.setPosition(1);
+                StoneClampL.setPosition(0);
             }else if(gamepad2.left_trigger > 0.1){
-                StoneClamp.setPower(-10);
+                StoneClampR.setPosition(-1);
+                StoneClampL.setPosition(1);
             }else{
-                StoneClamp.setPower(0.5);
+                StoneClampR.setPosition(0.5);
             }
 
             //Strafing
