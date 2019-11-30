@@ -521,5 +521,14 @@ public class HermesAggregated extends LinearOpMode {
     public boolean inrange(double value, double min, double max) {
         return value >= min && value <= max;
     }
+
+    public void MecTime(double FrLe, double FrRi, double BaLe, double BaRi, long Sec){
+
+        robot.FrontRight.setPower(FrRi);
+        robot.FrontLeft.setPower(FrLe);
+        robot.BackRight.setPower(BaRi);
+        robot.BackLeft.setPower(BaRi);
+        sleep(Sec);
+    }
 }
 
