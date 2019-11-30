@@ -522,13 +522,13 @@ public class HermesAggregated extends LinearOpMode {
         return value >= min && value <= max;
     }
 
-    public void MecTime(double FrLe, double FrRi, double BaLe, double BaRi, long Sec){
+    public void MecTime(double FrLe, double FrRi, double BaLe, double BaRi, long Millisec){
 
         robot.FrontRight.setPower(FrRi);
         robot.FrontLeft.setPower(FrLe);
         robot.BackRight.setPower(BaRi);
         robot.BackLeft.setPower(BaRi);
-        sleep(Sec);
+        sleep(Millisec);
     }
 }
 
