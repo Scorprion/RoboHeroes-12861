@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareHermes {
     //Sensors
+    ColorSensor colorSensor;
 
     //Right motors
     public DcMotor FrontRight;
@@ -33,7 +34,7 @@ public class HardwareHermes {
 
     WebcamName webcamName = null;
 
-    ColorSensor colorSensor;
+
 
     //IMU sensor
     public BNO055IMU imu;
@@ -62,17 +63,17 @@ public class HardwareHermes {
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BackRight = ahwMap.get(DcMotor.class, "BackRight");
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FrontLeft = ahwMap.get(DcMotor.class, "FrontLeft");
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BackLeft = ahwMap.get(DcMotor.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Gate = ahwMap.get(DcMotor.class, "Gate");
 

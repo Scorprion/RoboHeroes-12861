@@ -1,15 +1,24 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.view.View;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.ThreadPool;
 import com.vuforia.Frame;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
@@ -42,6 +51,8 @@ public class HermesAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
+
+    public boolean LineFound = false;
 
     public final double countsPerInch = 54.722;
     private ElapsedTime milliseconds = new ElapsedTime();
@@ -379,6 +390,7 @@ public class HermesAggregated extends LinearOpMode {
     public void start_vuforia() {
         targetsSkyStone.activate();
 
+        boolean isD = false;
         boolean atTarget = false;
         double last_error = 0;
         while (opModeIsActive() && !atTarget) {
@@ -399,9 +411,18 @@ public class HermesAggregated extends LinearOpMode {
                 }
             }
 
-            last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), last_error,1/10,
-                    1.5, 0.5, 0, 0, 0.05, true);
-            telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
+            if (isD) {
+                last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), last_error,1/10,
+                        1.5, 0.5, 0, 0, -0.05, true);
+                telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
+            } else {
+                robot.FrontRight.setPower(-0.057);
+                robot.FrontLeft.setPower(-0.05);
+                robot.BackRight.setPower(-0.057);
+                robot.BackLeft.setPower(-0.05);
+            }
+
+
 
             // Provide feedback as to where the robot is located (if we know).
             if(targetVisible) {
@@ -409,7 +430,7 @@ public class HermesAggregated extends LinearOpMode {
                 pid.setParams(0, 0, 0, 0, 0.0);
                 stopMotors();
                 last_error = 0;
-                while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
+                /*while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
                     // Updating the position of the trackable skystone
                     for (VuforiaTrackable trackable : allTrackables) {
                         if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -433,7 +454,7 @@ public class HermesAggregated extends LinearOpMode {
                     rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                     telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
                     telemetry.update();
-                }
+                } */
 
                 telemetry.addLine("We good");
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
@@ -449,6 +470,126 @@ public class HermesAggregated extends LinearOpMode {
         stopMotors();
         targetsSkyStone.deactivate();
     }
+
+
+    public void LineReading() {
+
+        /** The colorSensor field will contain a reference to our color sensor hardware object */
+        NormalizedColorSensor colorSensor;
+        /** The relativeLayout field is used to aid in providing interesting visual feedback
+         * in this sample application; you probably *don't* need something analogous when you
+         * use a color sensor on your robot */
+        View relativeLayout;
+
+        /**
+         * The runOpMode() method is the root of this LinearOpMode, as it is in all linear opModes.
+         * Our implementation here, though is a bit unusual: we've decided to put all the actual work
+         * in the main() method rather than directly in runOpMode() itself. The reason we do that is that
+         * in this sample we're changing the background color of the robot controller screen as the
+         * opmode runs, and we want to be able to *guarantee* that we restore it to something reasonable
+         * and palatable when the opMode ends. The simplest way to do that is to use a try...finally
+         * block around the main, core logic, and an easy way to make that all clear was to separate
+         * the former from the latter in separate methods.
+         */
+
+        // Get a reference to the RelativeLayout so we can later change the background
+        // color of the Robot Controller app to match the hue detected by the RGB sensor.
+        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
+        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
+
+
+        // values is a reference to the hsvValues array.
+        float[] hsvValues = new float[3];
+        final float values[] = hsvValues;
+
+        // bPrevState and bCurrState keep track of the previous and current state of the button
+        boolean bPrevState = false;
+        boolean bCurrState = false;
+
+        // Get a reference to our sensor object.
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
+
+        // If possible, turn the light on in the beginning (it might already be on anyway,
+        // we just make sure it is if we can).
+        if (colorSensor instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensor).enableLight(true);
+        }
+
+
+        // Loop until we are asked to stop
+        while (opModeIsActive() && !LineFound) {
+            // Read the sensor
+            NormalizedRGBA colors = colorSensor.getNormalizedColors();
+
+            //Reads the Red Line and drops the SkyStone
+            if ((colors.alpha >= 2 && colors.alpha <= 4)
+                    && (colors.red >= 80 && colors.red <= 85)
+                    && (colors.green >= 43 && colors.green <= 45)
+                    && (colors.blue >= 39 && colors.blue <= 41)) {
+                stopMotors();
+                encoderDrives(0.5, 17, 17, 5);
+                robot.Gate.setPower(0.5);
+                encoderDrives(0.5, -6, -6, 3);
+                LineFound = true;
+            }
+
+            /** Use telemetry to display feedback on the driver station. We show the conversion
+             * of the colors to hue, saturation and value, and display the the normalized values
+             * as returned from the sensor.
+             * @see <a href="http://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html">HSV</a>*/
+
+            Color.colorToHSV(colors.toColor(), hsvValues);
+            telemetry.addLine()
+                    .addData("H", "%.3f", hsvValues[0])
+                    .addData("S", "%.3f", hsvValues[1])
+                    .addData("V", "%.3f", hsvValues[2]);
+            telemetry.addLine()
+                    .addData("a", "%.3f", colors.alpha)
+                    .addData("r", "%.3f", colors.red)
+                    .addData("g", "%.3f", colors.green)
+                    .addData("b", "%.3f", colors.blue);
+
+            /** We also display a conversion of the colors to an equivalent Android color integer.
+             * @see Color */
+            int color = colors.toColor();
+            telemetry.addLine("raw Android color: ")
+                    .addData("a", "%02x", Color.alpha(color))
+                    .addData("r", "%02x", Color.red(color))
+                    .addData("g", "%02x", Color.green(color))
+                    .addData("b", "%02x", Color.blue(color));
+
+            // Balance the colors. The values returned by getColors() are normalized relative to the
+            // maximum possible values that the sensor can measure. For example, a sensor might in a
+            // particular configuration be able to internally measure color intensity in a range of
+            // [0, 10240]. In such a case, the values returned by getColors() will be divided by 10240
+            // so as to return a value it the range [0,1]. However, and this is the point, even so, the
+            // values we see here may not get close to 1.0 in, e.g., low light conditions where the
+            // sensor measurements don't approach their maximum limit. In such situations, the *relative*
+            // intensities of the colors are likely what is most interesting. Here, for example, we boost
+            // the signal on the colors while maintaining their relative balance so as to give more
+            // vibrant visual feedback on the robot controller visual display.
+            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red /= max;
+            colors.green /= max;
+            colors.blue /= max;
+            color = colors.toColor();
+
+            telemetry.addLine("normalized color:  ")
+                    .addData("a", "%02x", Color.alpha(color))
+                    .addData("r", "%02x", Color.red(color))
+                    .addData("g", "%02x", Color.green(color))
+                    .addData("b", "%02x", Color.blue(color));
+            telemetry.update();
+
+            // convert the RGB values to HSV values.
+            Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
+
+            // change the background color to match the color detected by the RGB sensor.
+            // pass a reference to the hue, saturation, and value array as an argument
+            // to the HSVToColor method.
+        }
+    }
+
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
         // Turn off RUN_TO_POSITION and reset
