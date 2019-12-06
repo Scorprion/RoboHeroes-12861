@@ -33,11 +33,18 @@ public class HermesA extends HermesAggregated {
         sleep(500);
         mecanumMove(0.5, 90, 20, 5);
         sleep(500);
-        robot.BackLeft.setPower(0.2);
+        encoderDrives(0.6, 60, 60, 10);
+        sleep(500);
+        robot.Gate.setPower(0.7);
+        sleep(500);
+        encoderDrives(0.6, -23, -23, 5);
+        sleep(500);
+        mecanumMove(-0.4, 90, 12, 3);
+        /*robot.BackLeft.setPower(0.2);
         robot.FrontLeft.setPower(0.2);
         robot.BackRight.setPower(0.2);
         robot.FrontRight.setPower(0.2);
-        LineReading();
+        LineReading();*/
 
     }
 }

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "HermesBParkNSlide", group = "Hermes")
+@Autonomous(name = "HermesBHidePark", group = "Hermes")
 
 public class HermesBParkNSlide extends HermesAggregated {
 
@@ -21,15 +21,8 @@ public class HermesBParkNSlide extends HermesAggregated {
         robot.init(hardwareMap);
         waitForStart();
 
-        MecTime(-0.5,-0.5,-0.5,-0.5,900);
-        stopMotors();
+        encoderDrives(0.5, 27, 27, 5);
         sleep(20000);
-        MecTime(0.5,0.5,0.5,0.5,2000);
-        stopMotors();
-        sleep(1000);
-        mecanumMove(0.5,270, 36, 5);
-
-
-
+        encoderDrives(0.7, -64, -64, 3);
     }
 }

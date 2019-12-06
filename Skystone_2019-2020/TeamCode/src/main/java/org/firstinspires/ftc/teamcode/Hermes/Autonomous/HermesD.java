@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "HermesD", group = "Hermes")
-@Disabled
 public class HermesD extends HermesAggregated {
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
@@ -17,27 +16,30 @@ public class HermesD extends HermesAggregated {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+        init_vuforia();
+
         waitForStart();
 
+        isD = true;
 
-        encoderDrives(0.3, 22, 22, 2);
-        /*pid.setParams(1.45, 0.5, 0, 90);
-        run_pid(0, 5500, pid, true);
-
-        vuforia();
-        locationV = translation.get(2);
-        if (locationV != 0 && locationV != -1000) {
-            run_pid(0, 1500, false, 0.5, 0.3, 0, 0);
-        }
-
-        pid.setParams(1.52, 0.5, 0, 0);
-        run_pid(0, 5500, pid, true);*/
-        encoderDrives(0.3, 10, 10,2);
-        sleep(250);
-        encoderDrives(0.3, -10, -10,1);
-        encoderDrives(0.2, 14, -14,1);
-        encoderDrives(0.5, 103,103,4);
+        mecanumMove(-0.3, 90, 19, 3);
+        sleep(500);
+        start_vuforia();
+        sleep(100);
+        encoderDrives(0.2, 4, 4, 1);
+        sleep(500);
+        mecanumMove(-0.3, 90, 16, 4);
+        sleep(500);
+        robot.Gate.setPower(-0.5);
+        sleep(500);
+        mecanumMove(0.5, 90, 20, 5);
+        sleep(500);
+        encoderDrives(0.6, -60, -60, 10);
+        sleep(500);
+        robot.Gate.setPower(1);
         sleep(750);
-        encoderDrives(0.5, -60, -60,3.5);
+        encoderDrives(0.6, 24, 24, 5);
+        sleep(500);
+        mecanumMove(-0.4, 90, 12, 3);
     }
 }

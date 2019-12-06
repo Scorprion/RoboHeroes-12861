@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "HermesBGrabNMove", group = "Hermes")
+@Autonomous(name = "HermesBFoundation", group = "Hermes")
 
 public class HermesBGrabNMove extends HermesAggregated {
 
@@ -21,20 +21,20 @@ public class HermesBGrabNMove extends HermesAggregated {
         robot.init(hardwareMap);
         waitForStart();
 
-        mecanumMove(-0.5,90,24,5);
-        stopMotors();
-        sleep(1000);
-        encoderDrives(-0.5,36,36,5);
-        stopMotors();
-        sleep(1000);
-        robot.FoundationClaw.setPower(1);
-        stopMotors();
-        sleep(1000);
-        encoderDrives(0.5,12,36,10);
-        stopMotors();
-        sleep(1000);
-        encoderDrives(0.5,36,36,10);
-
-
+        mecanumMove(0.5,90,12,5);
+        sleep(500);
+        encoderDrives(0.5,24,24,6);
+        sleep(500);
+        encoderDrives(0.1, 10, 10,5);
+        sleep(500);
+        robot.FoundationClaw.setPower(-1);
+        sleep(500);
+        mecanumMove(-0.5, 90, 16, 5);
+        sleep(500);
+        encoderDrives(0.4, -15, -15, 5);
+        sleep(500);
+        encoderDrives(0.4, -26, 26, 5);
+        sleep(500);
+        encoderDrives(0.5,18,18,10);
     }
 }

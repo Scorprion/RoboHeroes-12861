@@ -21,8 +21,7 @@ public class HermesBJustPark extends HermesAggregated {
         robot.init(hardwareMap);
         waitForStart();
 
-        MecTime(0.5,0.5,0.5,0.5,1000);
-
+        encoderDrives(0.5, 27, 27, 10);
 
 
     }

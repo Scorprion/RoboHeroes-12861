@@ -50,6 +50,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 public class HermesAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
+    public boolean isD = false;
+
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
 
     public boolean LineFound = false;
@@ -390,7 +392,6 @@ public class HermesAggregated extends LinearOpMode {
     public void start_vuforia() {
         targetsSkyStone.activate();
 
-        boolean isD = false;
         boolean atTarget = false;
         double last_error = 0;
         while (opModeIsActive() && !atTarget) {
@@ -413,7 +414,7 @@ public class HermesAggregated extends LinearOpMode {
 
             if (isD) {
                 last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), last_error,1/10,
-                        1.5, 0.5, 0, 0, -0.05, true);
+                        1.5, 0.5, 0, 0, 0.05, true);
                 telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             } else {
                 robot.FrontRight.setPower(-0.057);
@@ -522,10 +523,7 @@ public class HermesAggregated extends LinearOpMode {
             NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
             //Reads the Red Line and drops the SkyStone
-            if ((colors.alpha >= 2 && colors.alpha <= 4)
-                    && (colors.red >= 80 && colors.red <= 85)
-                    && (colors.green >= 43 && colors.green <= 45)
-                    && (colors.blue >= 39 && colors.blue <= 41)) {
+            if ((colors.red) < 60 && (colors.red > 100) || (colors.blue < 70) && (colors.blue > 100)) {
                 stopMotors();
                 encoderDrives(0.5, 17, 17, 5);
                 robot.Gate.setPower(0.5);
