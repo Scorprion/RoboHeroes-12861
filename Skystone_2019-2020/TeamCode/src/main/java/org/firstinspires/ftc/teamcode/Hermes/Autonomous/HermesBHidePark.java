@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "HermesBHidePark", group = "Hermes")
 
-public class HermesBParkNSlide extends HermesAggregated {
+public class HermesBHidePark extends HermesAggregated {
 
     private double speed = 0.1, pidOutput = 0;
     private PID pid = new PID(0.5, 0.5, 0, 0);
