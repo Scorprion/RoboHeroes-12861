@@ -601,14 +601,10 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
+        /*double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
                 robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
-        double radians = Math.toRadians(current_angle - angle);
-
-        // The equation isn't including negative values, so consider:
-        // 2 * cos(angle)^2 - 1
-        // which normalizes the numbers between 1 and -1
-
+        double radians = Math.toRadians(current_angle - angle);*/
+        double radians = Math.toRadians(angle);
         double forward_percent = Math.pow(Math.cos(radians), 2),
                 sideways_percent = Math.pow(Math.sin(radians), 2);
         double flbr, frbl;

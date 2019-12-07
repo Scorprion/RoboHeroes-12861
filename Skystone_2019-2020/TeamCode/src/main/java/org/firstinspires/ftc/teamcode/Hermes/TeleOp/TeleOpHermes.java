@@ -9,18 +9,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name= "TeleOp Hermes", group= "Pushbot")
 public class TeleOpHermes extends OpMode {
-    //Making the slower arm and elbow toggle (driver 2)
-    private ElapsedTime openClaw = new ElapsedTime();
-    private boolean switchedS = false;
-    private boolean usedRecently = false;
-    private double controlSpeedE = 1, controlSpeedS = 1;
-
-    //Making the slower robot toggle (driver 1)
-    private ElapsedTime rmove = new ElapsedTime();
-
-    private boolean robotCSpeed = false; // the booleaor the robot's speed to be able to slow it down
-    private boolean robotUsedRecent = false;
-    private double robotControlSpeed = 1;
+    private double robotControlSpeed = 0.7;
+    private boolean used_recently = false, xbutton = false;
+    private ElapsedTime timer = new ElapsedTime();
 
     private double turnspeed = 0;
     private double strafespeed = 0;
@@ -32,18 +23,18 @@ public class TeleOpHermes extends OpMode {
     public void init() {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        //DriveL.setDirection(DcMotor.Direction.REVERSE);
 
         BackRight = hardwareMap.get(DcMotor.class, "BackRight");
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         Gate = hardwareMap.get(DcMotor.class, "Gate");
 
@@ -69,13 +60,13 @@ public class TeleOpHermes extends OpMode {
          */
         //Turninge
         if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-                FrontRight.setPower(-turnspeed);
-                BackRight.setPower(-turnspeed);
-                FrontLeft.setPower(turnspeed);
-                BackLeft.setPower(turnspeed);
+                FrontRight.setPower(turnspeed);
+                BackRight.setPower(turnspeed);
+                FrontLeft.setPower(-turnspeed);
+                BackLeft.setPower(-turnspeed);
         }
         if ((gamepad2.right_stick_y >= 0.1 || gamepad2.right_stick_y <= -0.1)) {
-            Gate.setPower(gamepad2.right_stick_y*0.5);
+            Gate.setPower(gamepad2.right_stick_y * 0.5);
         }else{
             Gate.setPower(0);
         }
@@ -85,12 +76,24 @@ public class TeleOpHermes extends OpMode {
         }else if(gamepad2.left_stick_y <= -0.1){
             FoundationClaw.setPower(1);
         }else{
-            FoundationClaw.setPower(0.5);
+            FoundationClaw.setPower(0);
         }
 
-        if (gamepad1.x){
-            HeadDrop.setPower(-0.6);
+        if(gamepad2.x){
+            HeadDrop.setPower(-0.4);
+            timer.reset();
+            xbutton = true;
+        }else if(xbutton) {
+            // The x button is released
+            used_recently = true;
+            xbutton = false;
+        }else if(used_recently) {
+            HeadDrop.setPower(0.2);
+            if(timer.milliseconds() > 1500) {
+                used_recently = false;
+            }
         }else{
+            // Default, don't move
             HeadDrop.setPower(0);
         }
 

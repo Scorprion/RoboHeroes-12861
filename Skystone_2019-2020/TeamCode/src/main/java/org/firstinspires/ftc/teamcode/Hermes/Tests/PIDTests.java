@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
+package org.firstinspires.ftc.teamcode.Hermes.Tests;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
