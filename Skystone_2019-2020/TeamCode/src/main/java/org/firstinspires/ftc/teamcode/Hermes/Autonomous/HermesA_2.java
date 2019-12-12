@@ -33,11 +33,11 @@ public class HermesA_2 extends HermesAggregated {
         sleep(500);
         mecanumMove(0.5, 90, 20, 5);
         sleep(500);
-        encoderDrives(0.8, 45, 45, 8);
+        encoderDrives(0.6, 60, 60, 10);
         sleep(500);
         robot.Gate.setPower(1);
         sleep(500);
-        encoderDrives(0.4, -9, -9, 5);
+        encoderDrives(0.4, -23, -23, 5);
         sleep(500);
         mecanumMove(-0.4, 90, 12, 12);
 

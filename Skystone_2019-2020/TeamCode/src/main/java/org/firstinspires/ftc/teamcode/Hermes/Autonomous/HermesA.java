@@ -37,7 +37,7 @@ public class HermesA extends HermesAggregated {
         sleep(500);
         encoderDrives(0.6, -23, -23, 5);
         sleep(500);
-        mecanumMove(-0.4, 90, 12, 3);
+        mecanumMove(0.4, 90, 12, 3);
 
     }
 }

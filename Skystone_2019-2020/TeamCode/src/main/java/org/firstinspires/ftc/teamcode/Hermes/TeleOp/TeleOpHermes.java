@@ -58,13 +58,7 @@ public class TeleOpHermes extends OpMode {
         |                           |
         -----------------------------
          */
-        //Turninge
-        if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-                FrontRight.setPower(turnspeed);
-                BackRight.setPower(turnspeed);
-                FrontLeft.setPower(-turnspeed);
-                BackLeft.setPower(-turnspeed);
-        }
+
         if ((gamepad2.right_stick_y >= 0.1 || gamepad2.right_stick_y <= -0.1)) {
             Gate.setPower(gamepad2.right_stick_y * 0.5);
         }else{
@@ -98,10 +92,10 @@ public class TeleOpHermes extends OpMode {
         }
 
         //Strafing
-        FrontRight.setPower(speed - strafespeed);
-        BackRight.setPower(speed + strafespeed);
-        FrontLeft.setPower(speed + strafespeed);
-        BackLeft.setPower(speed - strafespeed);
+        FrontRight.setPower(speed - strafespeed + turnspeed);
+        BackRight.setPower(speed + strafespeed + turnspeed);
+        FrontLeft.setPower(speed + strafespeed - turnspeed);
+        BackLeft.setPower(speed - strafespeed - turnspeed);
 
         telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
         telemetry.update();

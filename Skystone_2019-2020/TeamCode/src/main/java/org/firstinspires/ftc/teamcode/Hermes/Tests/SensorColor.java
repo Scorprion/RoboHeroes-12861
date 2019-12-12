@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Hermes.Tests;
 
 import android.app.Activity;
 import android.graphics.Color;

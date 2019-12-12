@@ -39,7 +39,6 @@ public class HermesD extends HermesAggregated {
         robot.Gate.setPower(1);
         sleep(500);
         encoderDrives(0.4, 19, 19, 5);
-
-        mecanumMove(-0.4, 90, 12, 3);
+        mecanumMove(0.4, 90, 12, 3);
     }
 }
