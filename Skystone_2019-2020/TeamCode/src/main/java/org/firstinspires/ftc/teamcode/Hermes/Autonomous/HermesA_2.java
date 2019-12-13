@@ -21,30 +21,25 @@ public class HermesA_2 extends HermesAggregated {
         waitForStart();
 
         //MecTime(-1, 1, 1, -1,500);
-        mecanumMove(-0.3, 90, 19, 3);
+        mecanumMove(-0.3, 90, 17, 3);
         sleep(500);
         start_vuforia();
         sleep(100);
-        encoderDrives(0.2, -3, -3, 1);
+        encoderDrives(0.2, -5, -5, 1);
         sleep(500);
         mecanumMove(-0.3, 90, 14, 4);
         sleep(500);
-        robot.Gate.setPower(-0.5);
+        robot.Gate.setPower(-1);
         sleep(500);
         mecanumMove(0.5, 90, 20, 5);
         sleep(500);
         encoderDrives(0.6, 60, 60, 10);
         sleep(500);
-        robot.Gate.setPower(0.7);
+        robot.Gate.setPower(1);
         sleep(500);
-        encoderDrives(0.6, -23, -23, 5);
+        encoderDrives(0.4, -23, -23, 5);
         sleep(500);
-        mecanumMove(0.4, 90, 12, 3);
-        /*robot.BackLeft.setPower(0.2);
-        robot.FrontLeft.setPower(0.2);
-        robot.BackRight.setPower(0.2);
-        robot.FrontRight.setPower(0.2);
-        LineReading();*/
+        mecanumMove(-0.4, 90, 12, 12);
 
     }
 }

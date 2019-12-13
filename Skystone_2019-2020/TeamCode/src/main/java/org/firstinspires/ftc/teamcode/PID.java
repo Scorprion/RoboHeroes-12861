@@ -18,19 +18,31 @@ public class PID {
 
     public double angle = 0;
     public double error = 0;
-    public double slope = 0;
+    public double delta_error = 0;
+    public double delta_time;
     public double parabola = 0;
+
     public double PIDout, Poutput, Ioutput, Doutput;
+    public double P, I, D, setpoint, lasterror, time, lasttime, iminmax;
 
-    public double P, I, D, setpoint, lasterror, total_error;
+    public ElapsedTime timer;
 
-    public PID(double P, double I, double D, double setpoint) {
+    public PID(double P, double I, double D, double setpoint, Double iMinMax) {
         this.P = P;
         this.I = I;
         this.D = D;
         this.setpoint = setpoint;  // The target angle
         this.lasterror = 0;  // For the derivative part of the calculation
         this.error = 0;
+        this.time = 0;
+        this.lasttime = 0;
+        this.timer = new ElapsedTime();
+
+        this.iminmax = iMinMax == null ? Double.POSITIVE_INFINITY : iMinMax.floatValue();  // An optional param
+
+        this.Poutput = 0;
+        this.Ioutput = 0;
+        this.Doutput = 0;
     }
 
     public double getPID(double error) {
@@ -39,36 +51,49 @@ public class PID {
     }
 
     private double calcPID(double error) {
+        //          Convert back to seconds, just more accurate
+        this.time = this.timer.milliseconds() * 1000;
         this.error = error;
 
         // Proportional
-        Poutput = P * this.error;
+        this.Poutput = P * this.error;
+
+
+        delta_time = this.time - this.lasttime;
+        delta_error = this.error - this.lasterror;
 
         // Integral
-        Ioutput = (I * this.total_error) / 100; // / time.seconds();
+        this.Ioutput += error * this.delta_time;
+
+        if(this.Ioutput > this.iminmax) {
+            this.Ioutput = this.iminmax;
+        } else if(this.Ioutput < -this.iminmax) {
+            this.Ioutput = -this.iminmax;
+        }
 
         // Derivative
-        this.slope = this.error - this.lasterror;
-        Doutput = -D * this.slope;
+        this.Doutput = -D * (delta_error / delta_time);
 
         // Storing the saved error value for the derivative calculation later
         this.lasterror = this.error;
-        this.total_error += error;
-        PIDout = Poutput + Ioutput + Doutput;
+        this.lasttime = this.time;
+        PIDout = Poutput + I * Ioutput + Doutput;
 
         return PIDout;
     }
 
     public void setParams(double P, double I, double D, double setpoint, Double lasterror) {
-        // These are optional parameters that will default to 0 if not set
-        Double optional_lasterror = lasterror.isNaN() ? 0 : lasterror;
+        this.timer.reset();
+        this.time = timer.milliseconds() * 1000;
+        this.error = 0;
+
+        this.lasterror = lasterror == null ? 0 : lasterror;  // For the derivative part of the calculation
+        this.lasttime = 0;
 
         this.P = P;
         this.I = I;
         this.D = D;
         this.setpoint = setpoint;  // The target angle
-        this.lasterror = optional_lasterror;  // For the derivative part of the calculation
-        this.error = 0;
     }
 
     public boolean Incomp(double ParPos, double ParNeg){

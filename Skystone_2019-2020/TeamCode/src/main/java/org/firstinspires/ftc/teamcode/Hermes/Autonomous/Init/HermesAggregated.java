@@ -61,7 +61,7 @@ public class HermesAggregated extends LinearOpMode {
     public HardwareHermes robot = new HardwareHermes();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0);
+    private PID pid = new PID(0, 0, 0, 0, null);
     private ElapsedTime timer = new ElapsedTime();
 
     // Vuforia variables
@@ -122,11 +122,11 @@ public class HermesAggregated extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newFrontRightTarget = robot.FrontRight.getCurrentPosition() + (int) (rinches * countsPerInch);
-            newBackRightTarget = robot.BackRight.getCurrentPosition() + (int) (rinches * countsPerInch);
+            newFrontRightTarget = robot.FrontRight.getCurrentPosition() + (int)(rinches * countsPerInch);
+            newBackRightTarget = robot.BackRight.getCurrentPosition() + (int)(rinches * countsPerInch);
 
-            newFrontLeftTarget = robot.FrontLeft.getCurrentPosition() + (int) (linches * countsPerInch);
-            newBackLeftTarget = robot.BackLeft.getCurrentPosition() + (int) (linches * countsPerInch);
+            newFrontLeftTarget = robot.FrontLeft.getCurrentPosition() + (int)(linches * countsPerInch);
+            newBackLeftTarget = robot.BackLeft.getCurrentPosition() + (int)(linches * countsPerInch);
 
 
             robot.FrontRight.setTargetPosition(newFrontRightTarget);
@@ -208,6 +208,7 @@ public class HermesAggregated extends LinearOpMode {
             robot.BackLeft.setPower(-speed - out);
             telemetry.update();
         }
+        stopMotors();
     }
 
     /**
@@ -601,16 +602,12 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
+        /*double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
                 robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
-        double radians = Math.toRadians(current_angle - angle);
-
-        // The equation isn't including negative values, so consider:
-        // 2 * cos(angle)^2 - 1
-        // which normalizes the numbers between 1 and -1
-
-        double forward_percent = Math.pow(Math.cos(radians), 2),
-                sideways_percent = Math.pow(Math.sin(radians), 2);
+        double radians = Math.toRadians(current_angle - angle);*/
+        double radians = Math.toRadians(angle);
+        double forward_percent = Math.cos(radians),
+                sideways_percent = Math.sin(radians);
         double flbr, frbl;
         int distanceflbr, distancefrbl;
 
@@ -661,13 +658,27 @@ public class HermesAggregated extends LinearOpMode {
         return value >= min && value <= max;
     }
 
-    public void MecTime(double FrLe, double FrRi, double BaLe, double BaRi, long Millisec){
+    /**
+     * Check to see if the "round_value" is "close enough" to "value"
+     * @param round_value the value to check
+     * @param place the place to round to
+     * @param value the value to compare the rounded value to
+     * @return close enough
+     */
+    public boolean closeEnoughTo(double round_value, int place, double value) {
+        /*Example of refactoring
+        error = round(error, place);
+        return((error == value)? true: false);*/
+        return round(round_value, place) == value;
+    }
 
-        robot.FrontRight.setPower(FrRi);
-        robot.FrontLeft.setPower(FrLe);
-        robot.BackRight.setPower(BaRi);
-        robot.BackLeft.setPower(BaRi);
-        sleep(Millisec);
+    public double likeallelse(double angle) {
+        if (angle < -180)
+            angle += 360;
+        else if (angle > 180)
+            angle -= 360;
+
+        return angle;
     }
 }
 

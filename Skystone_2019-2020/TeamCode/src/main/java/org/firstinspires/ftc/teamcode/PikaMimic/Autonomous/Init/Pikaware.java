@@ -14,6 +14,6 @@ public class Pikaware {
         Right.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Left =  ahwMap.get(DcMotor.class, "Left");
-        Right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 }
