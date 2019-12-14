@@ -61,7 +61,7 @@ public class HermesAggregated extends LinearOpMode {
     public HardwareHermes robot = new HardwareHermes();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0, null);
+    private PID pid = new PID(0, 0, 0, 0);
     private ElapsedTime timer = new ElapsedTime();
 
     // Vuforia variables
