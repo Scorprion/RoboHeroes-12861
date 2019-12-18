@@ -79,7 +79,7 @@ public class NereusAggregated extends LinearOpMode {
 
     public void run_pid(double speed, double miliseconds, boolean turn, double P, double I, double D, double setpoint) {
         timer.reset();
-        pid.setParams(P, I, D, setpoint, null);
+        pid.setParams(P, I, D, null);
         if(turn) {
             while (timer.milliseconds() < miliseconds && opModeIsActive()) {
                 pidOutput = pid.getPID(robot.imu.getAngularOrientation().firstAngle);

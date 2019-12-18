@@ -188,24 +188,23 @@ public class HermesAggregated extends LinearOpMode {
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
-        pid.setParams(P, I, D, setpoint, null);
+        pid.setParams(P, I, D, null);
+        pid.update_error((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 10);
 
-        // Manual error updating
-        pid.update_error((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
         while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && pid.error != 0) {
             telemetry.addLine()
                     .addData("P", P)
                     .addData("I", I)
                     .addData("D", D);
-            out = pid.getPID((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
+            out = pid.getPID((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 10);
             telemetry.addLine()
                     .addData("Angle", pid.total_angle)
                     .addData("Out", out)
                     .addData("Speed", speed + out);
-            robot.FrontRight.setPower(speed + out);
-            robot.BackRight.setPower(speed + out);
-            robot.FrontLeft.setPower(-speed - out);
-            robot.BackLeft.setPower(-speed - out);
+            robot.FrontRight.setPower(-speed - out);
+            robot.BackRight.setPower(-speed - out);
+            robot.FrontLeft.setPower(speed + out);
+            robot.BackLeft.setPower(speed + out);
             telemetry.update();
         }
         stopMotors();
@@ -231,7 +230,7 @@ public class HermesAggregated extends LinearOpMode {
      */
     public double pidDynamic(double variable, double lasterror, double error_factor, double P, double I, double D,
                              double setpoint, double speed, boolean turn) {
-        pid.setParams(P, I, D, setpoint, lasterror);
+        pid.setParams(P, I, D, lasterror);
         // pid.update_error(variable - setpoint);
         out = pid.getPID((setpoint - variable) * error_factor);
         if(turn) {
@@ -429,7 +428,7 @@ public class HermesAggregated extends LinearOpMode {
             // Provide feedback as to where the robot is located (if we know).
             if(targetVisible) {
                 translation = lastLocation.getTranslation();
-                pid.setParams(0, 0, 0, 0, 0.0);
+                pid.setParams(0, 0, 0, 0.0);
                 stopMotors();
                 last_error = 0;
                 /*while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
@@ -591,6 +590,11 @@ public class HermesAggregated extends LinearOpMode {
 
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
+        robot.FrontRight.setPower(-0.2);
+        robot.BackRight.setPower(-0.2);
+        robot.FrontLeft.setPower(-0.2);
+        robot.BackLeft.setPower(-0.2);
+        sleep(500);
         // Turn off RUN_TO_POSITION and reset
         robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -611,8 +615,8 @@ public class HermesAggregated extends LinearOpMode {
         double flbr, frbl;
         int distanceflbr, distancefrbl;
 
-        flbr = speed * (forward_percent + sideways_percent);
-        frbl = speed * (forward_percent - sideways_percent);
+        flbr = round(speed * (forward_percent + sideways_percent), 2); // speed * forward_percent + speed * sideways_percent
+        frbl = round(speed * (forward_percent - sideways_percent), 2);
 
         distanceflbr = (int)((countsPerInch * inches) * (forward_percent + sideways_percent));
         distancefrbl = (int)((countsPerInch * inches) * (forward_percent - sideways_percent));
