@@ -193,7 +193,7 @@ public class HermesAggregated extends LinearOpMode {
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
-        pid.setParams(P, I, D, setpoint, null);
+        pid.setParams(P, I, D, null);
         telemetry.addLine()
                 .addData("P", P)
                 .addData("I", I)
@@ -443,7 +443,7 @@ public class HermesAggregated extends LinearOpMode {
             // Provide feedback as to where the robot is located (if we know).
             if(targetVisible) {
                 translation = lastLocation.getTranslation();
-                pid.setParams(0, 0, 0, 0, 0.0);
+                pid.setParams(0, 0, 0, 0.0);
                 stopMotors();
                 last_error = 0;
                 /*while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
@@ -605,6 +605,11 @@ public class HermesAggregated extends LinearOpMode {
 
 
     public void mecanumMove(double speed, double angle, double inches, double timer) {
+        robot.FrontRight.setPower(-0.2);
+        robot.BackRight.setPower(-0.2);
+        robot.FrontLeft.setPower(-0.2);
+        robot.BackLeft.setPower(-0.2);
+        sleep(500);
         // Turn off RUN_TO_POSITION and reset
         robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -625,8 +630,8 @@ public class HermesAggregated extends LinearOpMode {
         double flbr, frbl;
         int distanceflbr, distancefrbl;
 
-        flbr = speed * (forward_percent + sideways_percent);
-        frbl = speed * (forward_percent - sideways_percent);
+        flbr = round(speed * (forward_percent + sideways_percent), 2); // speed * forward_percent + speed * sideways_percent
+        frbl = round(speed * (forward_percent - sideways_percent), 2);
 
         distanceflbr = (int)((countsPerInch * inches) * (forward_percent + sideways_percent));
         distancefrbl = (int)((countsPerInch * inches) * (forward_percent - sideways_percent));

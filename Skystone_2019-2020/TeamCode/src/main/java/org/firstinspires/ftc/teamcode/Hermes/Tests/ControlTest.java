@@ -10,10 +10,10 @@ import org.firstinspires.ftc.teamcode.PID;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "PID Test", group = "Control")
-public class PIDTests extends HermesAggregated {
+@Autonomous(name = "Control Test", group = "Control")
+public class ControlTest extends HermesAggregated {
     int window = 2;
-    private double speed = 0, out = 0, new_update = 0,
+    private double speed = 0, out = 90, new_update = 0,
             P = 1.5, I = 0.3, D = 0, epsilon = 1e-4,
             setpoint = 90, error_sum = 0;
     private ArrayList<Double> error_window = new ArrayList<>();
@@ -23,13 +23,15 @@ public class PIDTests extends HermesAggregated {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
 
+        waitForStart();
+
         while(opModeIsActive()) {
             out = nesterov(pid, 0.1, out);
 
             robot.FrontRight.setPower(speed + out);
             robot.BackRight.setPower(speed + out);
-            robot.FrontLeft.setPower(speed - out);
-            robot.BackLeft.setPower(speed - out);
+            robot.FrontLeft.setPower(-speed - out);
+            robot.BackLeft.setPower(-speed - out);
 
             telemetry.addData("Angle: ", pid.total_angle);
 
@@ -83,7 +85,7 @@ public class PIDTests extends HermesAggregated {
             error_sum += value;
         }
 
-        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, setpoint, null);
+        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, null);
         telemetry.addData("Error Sum: ", error_sum);
     }
 }

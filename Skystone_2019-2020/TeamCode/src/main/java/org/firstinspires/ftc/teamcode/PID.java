@@ -79,7 +79,7 @@ public class PID {
         return PIDout;
     }
 
-    public void setParams(double P, double I, double D, double setpoint, Double lasterror) {
+    public void setParams(double P, double I, double D, Double lasterror) {
         this.timer.reset();
         this.time = timer.milliseconds() * 1000;
         this.error = 0;
@@ -90,7 +90,6 @@ public class PID {
         this.P = P;
         this.I = I;
         this.D = D;
-        this.setpoint = setpoint;  // The target angle
     }
 
     public boolean Incomp(double ParPos, double ParNeg){

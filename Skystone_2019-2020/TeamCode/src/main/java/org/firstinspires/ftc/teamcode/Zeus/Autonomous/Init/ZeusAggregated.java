@@ -187,7 +187,7 @@ public class ZeusAggregated extends LinearOpMode {
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
-        pid.setParams(P, I, D, setpoint, null);
+        pid.setParams(P, I, D, null);
 
         // Manual error updating
         pid.update_error((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
@@ -227,7 +227,7 @@ public class ZeusAggregated extends LinearOpMode {
      */
     public double pidDynamic(double variable, double lasterror, double P, double I, double D,
                              double setpoint, double speed, boolean turn) {
-        pid.setParams(P, I, D, setpoint, lasterror);
+        pid.setParams(P, I, D, lasterror);
         // pid.update_error(variable - setpoint);
         out = pid.getPID(variable - setpoint);
         if(turn) {
