@@ -26,7 +26,7 @@ public class PID {
 
     public ElapsedTime timer;
 
-    public PID(double P, double I, double D, double setpoint) {
+    public PID(double P, double I, double D, double setpoint, Double minmax) {
         this.P = P;
         this.I = I;
         this.D = D;
@@ -37,6 +37,7 @@ public class PID {
         this.lasttime = 0;
         this.timer = new ElapsedTime();
 
+        this.iminmax = minmax == null ? 0 : minmax;
 
         this.Poutput = 0;
         this.Ioutput = 0;
