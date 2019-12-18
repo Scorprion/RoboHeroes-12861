@@ -17,7 +17,7 @@ public class PIDTests extends HermesAggregated {
             P = 1.5, I = 0.3, D = 0, epsilon = 1e-4,
             setpoint = 90, error_sum = 0;
     private ArrayList<Double> error_window = new ArrayList<>();
-    private PID pid = new PID(P, I, 0, setpoint);
+    private PID pid = new PID(P, I, 0, setpoint, null);
 
     @Override
     public void runOpMode() throws InterruptedException {

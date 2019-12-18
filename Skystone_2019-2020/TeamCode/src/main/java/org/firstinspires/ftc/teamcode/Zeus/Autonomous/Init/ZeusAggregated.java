@@ -48,7 +48,7 @@ public class ZeusAggregated extends LinearOpMode {
     public HardwareZeus robot = new HardwareZeus();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0);
+    private PID pid = new PID(0, 0, 0, 0, null);
     private ElapsedTime timer = new ElapsedTime();
 
     // Vuforia variables

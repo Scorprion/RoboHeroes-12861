@@ -8,10 +8,7 @@ import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesD", group = "Hermes")
 public class HermesD extends HermesAggregated {
-    private double speed = 0.1, pidOutput = 0;
-    private VectorF locationV;
     public boolean VuforiaFound = false;
-
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -22,9 +19,11 @@ public class HermesD extends HermesAggregated {
         waitForStart();
 
         //MecTime(-1, 1, 1, -1,500);
-        mecanumMove(-0.3, 90, 17, 3);
+        encoderDrives(0.3, 17, 17, 5);
         sleep(500);
+
         start_vuforia();
+
         sleep(100);
         encoderDrives(0.2, 5, 5, 1);
         sleep(500);

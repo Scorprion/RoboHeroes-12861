@@ -16,7 +16,6 @@ import java.math.RoundingMode;
 public class PID {
     public double total_angle = 0, previous_angle = 0, delta_angle = 0;
 
-    public double angle = 0;
     public double error = 0;
     public double delta_error = 0;
     public double delta_time;
@@ -46,8 +45,7 @@ public class PID {
     }
 
     public double getPID(double error) {
-        PIDout = calcPID(error);
-        return PIDout;
+        return calcPID(error);
     }
 
     private double calcPID(double error) {
@@ -60,10 +58,10 @@ public class PID {
 
 
         delta_time = this.time - this.lasttime;
-        delta_error = this.error - this.lasterror;
+        delta_error = this.lasterror - this.error;
 
         // Integral
-        this.Ioutput += error * this.delta_time;
+        this.Ioutput += I * error * this.delta_time;
 
         if(this.Ioutput > this.iminmax) {
             this.Ioutput = this.iminmax;
@@ -72,12 +70,12 @@ public class PID {
         }
 
         // Derivative
-        this.Doutput = -D * (delta_error / delta_time);
+        this.Doutput = D * (delta_error / delta_time);
 
         // Storing the saved error value for the derivative calculation later
         this.lasterror = this.error;
         this.lasttime = this.time;
-        PIDout = Poutput + I * Ioutput + Doutput;
+        PIDout = Poutput + Ioutput + Doutput;
 
         return PIDout;
     }
@@ -178,7 +176,7 @@ public class PID {
      * @param max the maximum for the value to be constrained around
      * @return the constrained value
      */
-    private double constrain(double value, double min, double max) {
+    public double constrain(double value, double min, double max) {
         if (value > max) {
             return max;
         } else if (value < min) {

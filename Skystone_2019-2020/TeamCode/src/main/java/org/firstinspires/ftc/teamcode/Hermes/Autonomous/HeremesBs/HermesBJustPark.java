@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.PID;
 public class HermesBJustPark extends HermesAggregated {
 
     private double speed = 0.1, pidOutput = 0;
-    private PID pid = new PID(0.5, 0.5, 0, 0);
+    private PID pid = new PID(0.5, 0.5, 0, 0,  null);
     private VectorF locationV;
     public boolean VuforiaFound = false;
 

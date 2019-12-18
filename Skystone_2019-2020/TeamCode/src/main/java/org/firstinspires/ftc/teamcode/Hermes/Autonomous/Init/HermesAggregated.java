@@ -55,13 +55,18 @@ public class HermesAggregated extends LinearOpMode {
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
 
     public boolean LineFound = false;
+    public enum direction {
+        STRAFE,
+        TURN,
+        STRAIGHT
+    }
 
     public final double countsPerInch = 54.722;
     private ElapsedTime milliseconds = new ElapsedTime();
     public HardwareHermes robot = new HardwareHermes();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0, null);
+    private PID pid = new PID(0, 0, 0, 0, 1.0);
     private ElapsedTime timer = new ElapsedTime();
 
     // Vuforia variables
@@ -189,25 +194,29 @@ public class HermesAggregated extends LinearOpMode {
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
         pid.setParams(P, I, D, setpoint, null);
+        telemetry.addLine()
+                .addData("P", P)
+                .addData("I", I)
+                .addData("D", D);
+        // Manual error updating so h
+        do {
+            // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
+            // out = pid.getPID(0.2 + ((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) * 0.8) / 360);
+            out = pid.constrain(pid.getPID(setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), -Math.abs(speed - 1), Math.abs(1 - speed));
+            telemetry.addData("Angle", pid.total_angle);
+            telemetry.addData("Error", pid.error);
+            telemetry.addData("Out", out);
+            telemetry.addData("Speed", speed + out);
+            telemetry.addData("P", pid.Poutput);
+            telemetry.addData("I", pid.Ioutput);
+            telemetry.addData("D", pid.Doutput);
 
-        // Manual error updating
-        pid.update_error((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
-        while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && pid.error != 0) {
-            telemetry.addLine()
-                    .addData("P", P)
-                    .addData("I", I)
-                    .addData("D", D);
-            out = pid.getPID((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
-            telemetry.addLine()
-                    .addData("Angle", pid.total_angle)
-                    .addData("Out", out)
-                    .addData("Speed", speed + out);
-            robot.FrontRight.setPower(speed + out);
-            robot.BackRight.setPower(speed + out);
-            robot.FrontLeft.setPower(-speed - out);
-            robot.BackLeft.setPower(-speed - out);
+            robot.FrontRight.setPower(-speed - out);
+            robot.BackRight.setPower(-speed - out);
+            robot.FrontLeft.setPower(speed + out);
+            robot.BackLeft.setPower(speed + out);
             telemetry.update();
-        }
+        } while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && pid.error != 0);
         stopMotors();
     }
 
@@ -225,25 +234,30 @@ public class HermesAggregated extends LinearOpMode {
      * @param D - Derivative gain
      * @param setpoint - the desired target to get the variable to
      * @param speed - the initial speed to set the motors
-     * @param turn - whether or not to turn (motor powers are adjusted)
+     * @param direc - determines how to move the robot (TURN, STRAIGHT, or STRAFE)
      *
      * @return the last PID error
      */
     public double pidDynamic(double variable, double lasterror, double error_factor, double P, double I, double D,
-                             double setpoint, double speed, boolean turn) {
+                             double setpoint, double speed, direction direc) {
         pid.setParams(P, I, D, setpoint, lasterror);
         // pid.update_error(variable - setpoint);
         out = pid.getPID((setpoint - variable) * error_factor);
-        if(turn) {
+        if(direc == direction.TURN) {
             robot.FrontRight.setPower(speed + out);
             robot.BackRight.setPower(speed - out);
             robot.FrontLeft.setPower(speed - out);
             robot.BackLeft.setPower(speed + out);
-        } else {
+        } else if(direc == direction.STRAIGHT){
             robot.FrontRight.setPower(speed + out);
             robot.BackRight.setPower(speed + out);
             robot.FrontLeft.setPower(speed + out);
             robot.BackLeft.setPower(speed + out);
+        } else if(direc == direction.STRAFE){
+            robot.FrontRight.setPower(-speed - out);
+            robot.BackRight.setPower(speed + out);
+            robot.FrontLeft.setPower(speed + out);
+            robot.BackLeft.setPower(-speed - out);
         }
         return pid.error;
     }
@@ -415,7 +429,7 @@ public class HermesAggregated extends LinearOpMode {
 
             if (isD) {
                 last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), last_error,1/10,
-                        1.5, 0.5, 0, 0, 0.05, true);
+                        1.5, 0.5, 0, 0, 0.05, direction.STRAFE);
                 telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             } else {
                 robot.FrontRight.setPower(-0.057);
