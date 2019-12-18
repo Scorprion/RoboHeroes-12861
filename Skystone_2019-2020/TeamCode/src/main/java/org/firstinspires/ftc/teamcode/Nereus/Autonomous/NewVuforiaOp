@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.LiftBot.Autonomous;
 
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -6,25 +6,17 @@ import android.util.Log;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
-import com.vuforia.ImageTarget;
 import com.vuforia.Matrix34F;
 import com.vuforia.ObjectTracker;
 import com.vuforia.PIXEL_FORMAT;
-import com.vuforia.State;
 import com.vuforia.Tool;
-import com.vuforia.TrackableResult;
-import com.vuforia.Tracker;
-import com.vuforia.TrackerManager;
 import com.vuforia.Vec2F;
 import com.vuforia.Vec3F;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -38,9 +30,6 @@ import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
