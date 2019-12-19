@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -12,6 +14,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -101,6 +104,7 @@ public class HermesAggregated extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Does nothing here
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
     }
 
     public void encoderDrives(double speed,
@@ -178,32 +182,34 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackLeft.setPower(0);
     }
 
+    FtcDashboard dashboard = FtcDashboard.getInstance();
+    Telemetry dashboardTelemetry = dashboard.getTelemetry();
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
         pid.setParams(P, I, D, null);
-        telemetry.addLine()
-                .addData("P", P)
-                .addData("I", I)
-                .addData("D", D);
         // Manual error updating so h
         do {
             // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
             // out = pid.getPID(0.2 + ((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) * 0.8) / 360);
-            out = pid.constrain(pid.getPID((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360), -Math.abs(speed - 1), Math.abs(1 - speed));
-            telemetry.addData("Angle", pid.total_angle);
-            telemetry.addData("Delta time", pid.delta_time);
-            telemetry.addData("Delta error", pid.delta_error);
-            telemetry.addData("Error", setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
-            telemetry.addData("Out", out);
-            telemetry.addData("Speed", speed + out);
+            out = pid.constrain(pid.getPID((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 36), -Math.abs(speed - 1), Math.abs(1 - speed));
+            dashboardTelemetry.addData("Setpoint", setpoint);
+            dashboardTelemetry.addData("Angle", pid.total_angle);
+            dashboardTelemetry.addData("Delta time", pid.delta_time);
+            dashboardTelemetry.addData("Delta error", pid.delta_error);
+            dashboardTelemetry.addData("Error", setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
+            dashboardTelemetry.addData("Out", out);
+            dashboardTelemetry.addData("P", pid.Poutput);
+            dashboardTelemetry.addData("I", pid.Ioutput);
+            dashboardTelemetry.addData("D", pid.Doutput);
+            dashboardTelemetry.addData("Speed", speed + out);
 
             robot.FrontRight.setPower(-speed - out);
             robot.BackRight.setPower(-speed - out);
             robot.FrontLeft.setPower(speed + out);
             robot.BackLeft.setPower(speed + out);
-            telemetry.update();
-        } while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) != 0);
+            dashboardTelemetry.update();
+        } while(opModeIsActive() && timer.milliseconds() < seconds * 1000); // && setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) != 0);
         stopMotors();
     }
 

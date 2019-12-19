@@ -67,8 +67,12 @@ public class PID {
         // Storing the saved error value for the derivative calculation later
         this.lasterror = error;
         this.lasttime = this.time;
-        //                                                                  bias term
-        return this.P * error + this.I * this.Ioutput + this.D * this.Doutput;
+
+
+        this.Poutput = this.P * error;
+        this.Ioutput = this.I * this.Ioutput;
+        this.Doutput = this.D * this.Doutput;
+        return this.Poutput + this.Ioutput + this.Doutput;
     }
 
     public void setParams(double P, double I, double D, Double lasterror) {

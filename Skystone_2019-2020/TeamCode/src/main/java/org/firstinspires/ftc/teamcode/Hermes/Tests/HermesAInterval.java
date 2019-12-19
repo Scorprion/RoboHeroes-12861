@@ -14,7 +14,8 @@ public class HermesAInterval extends HermesAggregated {
         //init_vuforia();
 
         waitForStart();
-        pidTurn(2, 0.9, 0, 90, 0, 10);
+        pidTurn(1.22, 0.5, 0.1, 90, 0, 10000);
+        //pidTurn(1.97, 0.5, 0.1, 0, 0, 10000);
         /*mecanumMove(-0.3, 90, 17, 3);
 
         sleep(10000);
