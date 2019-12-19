@@ -1,17 +1,10 @@
 package org.firstinspires.ftc.teamcode.Zeus.Autonomous.Init;
 
-import android.graphics.Bitmap;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
-import com.qualcomm.robotcore.util.ThreadPool;
-import com.vuforia.Frame;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -23,13 +16,10 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.PID;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -48,7 +38,7 @@ public class ZeusAggregated extends LinearOpMode {
     public HardwareZeus robot = new HardwareZeus();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0, null);
+    private PID pid = new PID(0, 0, 0, null);
     private ElapsedTime timer = new ElapsedTime();
 
     // Vuforia variables
@@ -190,8 +180,7 @@ public class ZeusAggregated extends LinearOpMode {
         pid.setParams(P, I, D, null);
 
         // Manual error updating
-        pid.update_error((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) - setpoint) / 360);
-        while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && pid.error != 0) {
+        while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) != 0) {
             telemetry.addLine()
                     .addData("P", P)
                     .addData("I", I)

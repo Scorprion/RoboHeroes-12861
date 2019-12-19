@@ -26,13 +26,11 @@ public class PID {
 
     public ElapsedTime timer;
 
-    public PID(double P, double I, double D, double setpoint, Double minmax) {
+    public PID(double P, double I, double D, Double minmax) {
         this.P = P;
         this.I = I;
         this.D = D;
-        this.setpoint = setpoint;  // The target angle
         this.lasterror = 0;  // For the derivative part of the calculation
-        this.error = 0;
         this.time = 0;
         this.lasttime = 0;
         this.timer = new ElapsedTime();
@@ -49,19 +47,13 @@ public class PID {
     }
 
     private double calcPID(double error) {
-        //          Convert back to seconds, just more accurate
-        this.time = this.timer.milliseconds() * 1000;
-        this.error = error;
-
-        // Proportional
-        this.Poutput = P * this.error;
-
+        this.time = this.timer.milliseconds() / 1000;
 
         delta_time = this.time - this.lasttime;
-        delta_error = this.lasterror - this.error;
+        delta_error = error - this.lasterror;
 
         // Integral
-        this.Ioutput += I * error * this.delta_time;
+        this.Ioutput += error * this.delta_time;
 
         if(this.Ioutput > this.iminmax) {
             this.Ioutput = this.iminmax;
@@ -70,20 +62,18 @@ public class PID {
         }
 
         // Derivative
-        this.Doutput = D * (delta_error / delta_time);
+        this.Doutput = delta_error / delta_time;
 
         // Storing the saved error value for the derivative calculation later
-        this.lasterror = this.error;
+        this.lasterror = error;
         this.lasttime = this.time;
-        PIDout = Poutput + Ioutput + Doutput;
-
-        return PIDout;
+        //                                                                  bias term
+        return this.P * error + this.I * this.Ioutput + this.D * this.Doutput;
     }
 
     public void setParams(double P, double I, double D, Double lasterror) {
         this.timer.reset();
-        this.time = timer.milliseconds() * 1000;
-        this.error = 0;
+        this.time = timer.milliseconds() / 1000;
 
         this.lasterror = lasterror == null ? 0 : lasterror;  // For the derivative part of the calculation
         this.lasttime = 0;
@@ -208,8 +198,4 @@ public class PID {
         }
         return this.parabola / 180;
     }*/
-
-    public void update_error(double error) {
-        this.error = error;
-    }
 }

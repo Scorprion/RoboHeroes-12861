@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.PID;
 public class NereusC extends NereusAggregated {
 
     private double speed = 0.1, pidOutput = 0;
-    private PID pid = new PID(0.5, 0.5, 0, 0, null);
+    private PID pid = new PID(0.5, 0.5, 0, null);
     private VectorF locationV;
     public boolean VuforiaFound = false;
 

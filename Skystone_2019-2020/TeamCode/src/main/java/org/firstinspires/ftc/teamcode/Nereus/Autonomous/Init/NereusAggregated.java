@@ -31,7 +31,7 @@ public class NereusAggregated extends LinearOpMode {
     public HardwareNereus robot = new HardwareNereus();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0, null);
+    private PID pid = new PID(0, 0, 0, null);
     private ElapsedTime timer = new ElapsedTime();
 
 

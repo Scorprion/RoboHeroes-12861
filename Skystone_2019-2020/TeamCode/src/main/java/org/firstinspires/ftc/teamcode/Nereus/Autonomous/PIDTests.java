@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Nereus.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.Nereus.Autonomous.Init.NereusAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
@@ -17,7 +16,7 @@ public class PIDTests extends NereusAggregated {
             P = 1.5, I = 0, D = 0, epsilon = 1e-4,
             setpoint = 90, error_sum = 0;
     private ArrayList<Double> error_window = new ArrayList<>();
-    private PID pid = new PID(P, I, 0, setpoint, null);
+    private PID pid = new PID(P, I, 0, null);
 
     @Override
     public void runOpMode() throws InterruptedException {

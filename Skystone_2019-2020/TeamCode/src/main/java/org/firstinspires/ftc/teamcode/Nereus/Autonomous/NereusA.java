@@ -11,11 +11,6 @@ import org.firstinspires.ftc.teamcode.PID;
 @Disabled
 public class NereusA extends NereusAggregated {
 
-    private double speed = 0.1, pidOutput = 0;
-    private PID pid = new PID(0.5, 0.5, 0, 0, null);
-    private VectorF locationV;
-    public boolean VuforiaFound = false;
-
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);

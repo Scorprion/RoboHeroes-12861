@@ -26,7 +26,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 @Autonomous(name = "Vuforia with PID", group = "Control")
 public class VuforiaPID extends NereusAggregated {
     double speed = 0.2, leftout, rightout;
-    PID pid = new PID(0.5, 0.5, 0, 90, null);
+    PID pid = new PID(0.5, 0.5, 0, null);
 
     // Vuforia variables
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;

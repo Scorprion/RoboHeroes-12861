@@ -1,26 +1,17 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
-import com.qualcomm.robotcore.util.ThreadPool;
-import com.vuforia.Frame;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -32,13 +23,10 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.PID;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -66,7 +54,7 @@ public class HermesAggregated extends LinearOpMode {
     public HardwareHermes robot = new HardwareHermes();
     private double pidOutput = 0;
 
-    private PID pid = new PID(0, 0, 0, 0, 1.0);
+    private PID pid = new PID(0, 0, 0, 0.3);
     private ElapsedTime timer = new ElapsedTime();
 
     // Vuforia variables
@@ -202,21 +190,20 @@ public class HermesAggregated extends LinearOpMode {
         do {
             // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
             // out = pid.getPID(0.2 + ((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) * 0.8) / 360);
-            out = pid.constrain(pid.getPID(setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)), -Math.abs(speed - 1), Math.abs(1 - speed));
+            out = pid.constrain(pid.getPID((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360), -Math.abs(speed - 1), Math.abs(1 - speed));
             telemetry.addData("Angle", pid.total_angle);
-            telemetry.addData("Error", pid.error);
+            telemetry.addData("Delta time", pid.delta_time);
+            telemetry.addData("Delta error", pid.delta_error);
+            telemetry.addData("Error", setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             telemetry.addData("Out", out);
             telemetry.addData("Speed", speed + out);
-            telemetry.addData("P", pid.Poutput);
-            telemetry.addData("I", pid.Ioutput);
-            telemetry.addData("D", pid.Doutput);
 
             robot.FrontRight.setPower(-speed - out);
             robot.BackRight.setPower(-speed - out);
             robot.FrontLeft.setPower(speed + out);
             robot.BackLeft.setPower(speed + out);
             telemetry.update();
-        } while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && pid.error != 0);
+        } while(opModeIsActive() && timer.milliseconds() < seconds * 1000 && setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) != 0);
         stopMotors();
     }
 
@@ -240,7 +227,7 @@ public class HermesAggregated extends LinearOpMode {
      */
     public double pidDynamic(double variable, double lasterror, double error_factor, double P, double I, double D,
                              double setpoint, double speed, direction direc) {
-        pid.setParams(P, I, D, setpoint, lasterror);
+        pid.setParams(P, I, D, lasterror);
         // pid.update_error(variable - setpoint);
         out = pid.getPID((setpoint - variable) * error_factor);
         if(direc == direction.TURN) {
