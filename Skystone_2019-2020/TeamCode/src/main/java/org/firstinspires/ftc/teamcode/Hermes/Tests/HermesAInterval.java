@@ -14,15 +14,14 @@ public class HermesAInterval extends HermesAggregated {
         //init_vuforia();
 
         waitForStart();
-        pidTurn(1.22, 0.5, 0.1, 90, 0, 10000);
-        //pidTurn(1.97, 0.5, 0.1, 0, 0, 10000);
-        /*mecanumMove(-0.3, 90, 17, 3);
+        mecanumMove(-0.3, 90, 17, 3);
+        pidTurn(1.22, 0.5, 0.1, 90, 0, 10000);  // Correct angle
+        //pidTurn(1.97, 0.5, 0.1, 0, 0, 10000)
 
-        sleep(10000);
         encoderDrives(0.3, -12, -12, 1.5);
         sleep(1500);
         encoderDrives(0.3, -12, -12, 1.5);
         sleep(1500);
-        encoderDrives(0.3, -12, -12, 1.5);*/
+        encoderDrives(0.3, -12, -12, 1.5);
     }
 }

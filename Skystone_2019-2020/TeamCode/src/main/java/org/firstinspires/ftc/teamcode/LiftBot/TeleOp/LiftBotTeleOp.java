@@ -14,7 +14,7 @@ public class LiftBotTeleOp extends OpMode {
     CRServo Left;
     CRServo Right;
 
-    public void init(){
+    public void init() {
         Left = hardwareMap.get(CRServo.class, "Left");
         Right = hardwareMap.get(CRServo.class, "Right");
     }

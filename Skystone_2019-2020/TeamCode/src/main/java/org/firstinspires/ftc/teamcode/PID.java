@@ -35,7 +35,7 @@ public class PID {
         this.lasttime = 0;
         this.timer = new ElapsedTime();
 
-        this.iminmax = minmax == null ? 0 : minmax;
+        this.iminmax = minmax == null ? 1 : minmax;  // Integral wind-up guard
 
         this.Poutput = 0;
         this.Ioutput = 0;
@@ -53,7 +53,7 @@ public class PID {
         delta_error = error - this.lasterror;
 
         // Integral
-        this.Ioutput += error * this.delta_time;
+        this.Ioutput += this.error * this.delta_time;
 
         if(this.Ioutput > this.iminmax) {
             this.Ioutput = this.iminmax;
@@ -64,21 +64,20 @@ public class PID {
         // Derivative
         this.Doutput = delta_error / delta_time;
 
-        // Storing the saved error value for the derivative calculation later
-        this.lasterror = error;
+        // Storing the saved this.error value for the derivative calculation later
+        this.lasterror = this.error;
         this.lasttime = this.time;
 
-
-        this.Poutput = this.P * error;
+        this.Poutput = this.P * this.error;
         this.Ioutput = this.I * this.Ioutput;
         this.Doutput = this.D * this.Doutput;
         return this.Poutput + this.Ioutput + this.Doutput;
     }
 
-    public void setParams(double P, double I, double D, Double lasterror) {
+    public void setParams(double P, double I, double D, Double lasterror, Double minmax) {
         this.timer.reset();
         this.time = timer.milliseconds() / 1000;
-
+        this.iminmax = minmax == null ? 1 : minmax;
         this.lasterror = lasterror == null ? 0 : lasterror;  // For the derivative part of the calculation
         this.lasttime = 0;
 
