@@ -37,6 +37,8 @@ public class TeleOpZeus extends OpMode {
         RevTouchSensor Stopper;
 
         CRServo FoundationClaw;
+        CRServo CapDropper;
+
         Servo StoneClampL;
         Servo StoneClampR;
 
@@ -49,7 +51,7 @@ public class TeleOpZeus extends OpMode {
 
             FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
             FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
             //DriveL.setDirection(DcMotor.Direction.REVERSE);
 
             BackRight = hardwareMap.get(DcMotor.class, "BackRight");
@@ -57,7 +59,7 @@ public class TeleOpZeus extends OpMode {
 
             BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
             BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
             Arm = hardwareMap.get(DcMotor.class, "Arm");
 
@@ -69,6 +71,8 @@ public class TeleOpZeus extends OpMode {
 
             StoneLift = hardwareMap.get(Servo.class, "StoneLift");
             StoneTurner = hardwareMap.get(Servo.class, "StoneTurner");
+
+            CapDropper = hardwareMap.get(CRServo.class, "CapDropper");
         }
 
         @Override
@@ -87,12 +91,6 @@ public class TeleOpZeus extends OpMode {
         -----------------------------
          */
             //Turning
-            if (gamepad1.right_stick_x >= 0.1 || gamepad1.right_stick_x <= -0.1) {
-                FrontRight.setPower(-turnspeed);
-                BackRight.setPower(-turnspeed);
-                FrontLeft.setPower(turnspeed);
-                BackLeft.setPower(turnspeed);
-            }
 
             if(!StopperTouched) {
                 if(gamepad1.right_stick_y >= 0.1 || gamepad1.right_stick_y <= -0.1) {
@@ -135,11 +133,17 @@ public class TeleOpZeus extends OpMode {
                 StoneClampR.setPosition(0.5);
             }
 
+            if (gamepad1.b){
+                CapDropper.setPower(1);
+            }else{
+                CapDropper.setPower(0);
+            }
+
             //Strafing
-            FrontRight.setPower(speed -strafespeed);
-            BackRight.setPower(speed + strafespeed);
-            FrontLeft.setPower(speed + strafespeed);
-            BackLeft.setPower(speed -strafespeed);
+            FrontRight.setPower(speed -strafespeed + turnspeed);
+            BackRight.setPower(speed + strafespeed + turnspeed);
+            FrontLeft.setPower(speed + strafespeed - turnspeed);
+            BackLeft.setPower(speed -strafespeed - turnspeed);
 
             telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
             telemetry.update();
