@@ -18,7 +18,7 @@ public class TeleOpHermes extends OpMode {
     private double speed = 0;
 
     DcMotor BackLeft, BackRight, FrontLeft, FrontRight, Gate;
-    CRServo FoundationClaw, HeadDrop;
+    CRServo FoundationClaw, HeadDrop, Clamper;
 
     public void init() {
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
@@ -41,6 +41,8 @@ public class TeleOpHermes extends OpMode {
         FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
 
         HeadDrop = hardwareMap.get(CRServo.class, "HeadDrop");
+
+        Clamper = hardwareMap.get(CRServo.class, "Clamper");
     }
 
     @Override
@@ -74,7 +76,7 @@ public class TeleOpHermes extends OpMode {
         }
 
         if(gamepad2.x){
-            HeadDrop.setPower(-0.4);
+            HeadDrop.setPower(0);
             timer.reset();
             xbutton = true;
         }else if(xbutton) {
@@ -88,7 +90,13 @@ public class TeleOpHermes extends OpMode {
             }
         }else{
             // Default, don't move
-            HeadDrop.setPower(0);
+            HeadDrop.setPower(-0.4);
+        }
+
+        if (gamepad2.a){
+            Clamper.setPower(1);
+        }else{
+            Clamper.setPower(-1);
         }
 
         //Strafing

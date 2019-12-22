@@ -93,8 +93,8 @@ public class TeleOpZeus extends OpMode {
             //Turning
 
             if(!StopperTouched) {
-                if(gamepad1.right_stick_y >= 0.1 || gamepad1.right_stick_y <= -0.1) {
-                    Arm.setPower(gamepad1.right_stick_y);
+                if(gamepad2.right_stick_y >= 0.1 || gamepad2.right_stick_y <= -0.1) {
+                    Arm.setPower(-gamepad2.right_stick_y);
                 }else{
                     Arm.setPower(0);
                 }
