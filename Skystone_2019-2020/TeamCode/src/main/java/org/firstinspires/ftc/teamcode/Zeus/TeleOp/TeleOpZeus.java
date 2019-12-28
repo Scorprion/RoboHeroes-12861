@@ -150,15 +150,15 @@ public class TeleOpZeus extends OpMode {
 
             //Strafing
             if (SpeedToggle) {
-                FrontRight.setPower( (speed - strafespeed + turnspeed)/2 );
-                BackRight.setPower( (speed + strafespeed + turnspeed)/2 );
-                FrontLeft.setPower( (speed + strafespeed - turnspeed)/2 );
-                BackLeft.setPower( (speed - strafespeed - turnspeed)/2 );
+                FrontRight.setPower( (speed - strafespeed - turnspeed)/2 );
+                BackRight.setPower( (speed + strafespeed - turnspeed)/2 );
+                FrontLeft.setPower( (speed + strafespeed + turnspeed)/2 );
+                BackLeft.setPower( (speed - strafespeed + turnspeed)/2 );
             }else{
-                FrontRight.setPower(speed - strafespeed + turnspeed);
-                BackRight.setPower(speed + strafespeed + turnspeed);
-                FrontLeft.setPower(speed + strafespeed - turnspeed);
-                BackLeft.setPower(speed - strafespeed - turnspeed);
+                FrontRight.setPower(speed - strafespeed - turnspeed);
+                BackRight.setPower(speed + strafespeed - turnspeed);
+                FrontLeft.setPower(speed + strafespeed + turnspeed);
+                BackLeft.setPower(speed - strafespeed + turnspeed);
             }
 
             if (runtime.milliseconds() > 200) {

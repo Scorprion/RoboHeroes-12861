@@ -94,16 +94,16 @@ public class TeleOpHermes extends OpMode {
         }
 
         if (gamepad2.a){
-            Clamper.setPower(1);
+            Clamper.setPower(0.5);
         }else{
             Clamper.setPower(-1);
         }
 
         //Strafing
-        FrontRight.setPower(speed - strafespeed + turnspeed);
-        BackRight.setPower(speed + strafespeed + turnspeed);
-        FrontLeft.setPower(speed + strafespeed - turnspeed);
-        BackLeft.setPower(speed - strafespeed - turnspeed);
+        FrontRight.setPower(speed - strafespeed - turnspeed);
+        BackRight.setPower(speed + strafespeed - turnspeed);
+        FrontLeft.setPower(speed + strafespeed + turnspeed);
+        BackLeft.setPower(speed - strafespeed + turnspeed);
 
         telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
         telemetry.update();
