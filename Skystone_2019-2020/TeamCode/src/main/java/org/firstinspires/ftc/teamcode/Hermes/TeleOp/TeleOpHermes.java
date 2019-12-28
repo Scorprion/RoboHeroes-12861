@@ -47,7 +47,7 @@ public class TeleOpHermes extends OpMode {
 
     @Override
     public void loop() {
-        turnspeed = gamepad1.right_stick_x * robotControlSpeed;
+        turnspeed = -gamepad1.right_stick_x * robotControlSpeed;
         strafespeed = gamepad1.left_stick_x * robotControlSpeed;
         speed = gamepad1.left_stick_y * -robotControlSpeed;
 

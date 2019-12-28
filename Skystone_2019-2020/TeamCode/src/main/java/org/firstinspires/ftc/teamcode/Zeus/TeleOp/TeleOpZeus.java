@@ -32,6 +32,8 @@ public class TeleOpZeus extends OpMode {
         private double strafespeed = 0;
         private double speed = 0;
 
+        private boolean SpeedToggle = true;
+
         DcMotor BackLeft, BackRight, FrontLeft, FrontRight, Arm;
 
         RevTouchSensor Stopper;
@@ -45,13 +47,15 @@ public class TeleOpZeus extends OpMode {
         Servo StoneLift;
         Servo StoneTurner;
 
+        public ElapsedTime runtime = new ElapsedTime();
+
         public void init() {
             FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
             FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
             FrontLeft = hardwareMap.get(DcMotor.class, "FrontLeft");
             FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            FrontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             //DriveL.setDirection(DcMotor.Direction.REVERSE);
 
             BackRight = hardwareMap.get(DcMotor.class, "BackRight");
@@ -59,7 +63,7 @@ public class TeleOpZeus extends OpMode {
 
             BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
             BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
             Arm = hardwareMap.get(DcMotor.class, "Arm");
 
@@ -91,6 +95,16 @@ public class TeleOpZeus extends OpMode {
         -----------------------------
          */
             //Turning
+
+            if(gamepad1.x && !usedRecently){
+                if(SpeedToggle){
+                    SpeedToggle = false;
+                }else{
+                    SpeedToggle = true;
+                }
+                runtime.reset();
+                usedRecently = true;
+            }
 
             if(!StopperTouched) {
                 if(gamepad2.right_stick_y >= 0.1 || gamepad2.right_stick_y <= -0.1) {
@@ -140,10 +154,21 @@ public class TeleOpZeus extends OpMode {
             }
 
             //Strafing
-            FrontRight.setPower(speed -strafespeed + turnspeed);
-            BackRight.setPower(speed + strafespeed + turnspeed);
-            FrontLeft.setPower(speed + strafespeed - turnspeed);
-            BackLeft.setPower(speed -strafespeed - turnspeed);
+            if (SpeedToggle) {
+                FrontRight.setPower( (speed - strafespeed + turnspeed)/2 );
+                BackRight.setPower( (speed + strafespeed + turnspeed)/2 );
+                FrontLeft.setPower( (speed + strafespeed - turnspeed)/2 );
+                BackLeft.setPower( (speed - strafespeed - turnspeed)/2 );
+            }else{
+                FrontRight.setPower(speed - strafespeed + turnspeed);
+                BackRight.setPower(speed + strafespeed + turnspeed);
+                FrontLeft.setPower(speed + strafespeed - turnspeed);
+                BackLeft.setPower(speed - strafespeed - turnspeed);
+            }
+
+            if (runtime.milliseconds() > 200) {
+                usedRecently = false;
+            }
 
             telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
             telemetry.update();

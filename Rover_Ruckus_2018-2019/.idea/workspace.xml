@@ -21,16 +21,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Autonomous/Init/HardwareAtlas.java">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="48" column="4" selection-start-line="48" selection-start-column="4" selection-end-line="48" selection-end-column="51" />
+            </state>
+          </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Autonomous/Init/Aggregated.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="199" column="17" selection-start-line="199" selection-start-column="17" selection-end-line="199" selection-end-column="17" />
+            <state relative-caret-position="306">
+              <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/TeleOp/AtlasTeleOp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="292">
+              <caret line="43" column="11" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -38,7 +54,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Calibration/ColorTesting.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
+            <state relative-caret-position="765">
               <caret line="45" column="36" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -55,12 +71,15 @@
       <find>COlor1</find>
       <find>Color1</find>
       <find>diffred</find>
+      <find>runtime</find>
+      <find>robot</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Calibration/ColorTesting.java" />
+        <option value="$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/TeleOp/AtlasTeleOp.java" />
       </list>
     </option>
   </component>
@@ -74,9 +93,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -163,10 +179,24 @@
               <item name="Atlas" type="462c0819:PsiDirectoryNode" />
               <item name="Calibration" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Rover_Ruckus_2018-2019" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Rover_Ruckus_2018-2019" type="462c0819:PsiDirectoryNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+              <item name="TeamCode" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Atlas" type="462c0819:PsiDirectoryNode" />
+              <item name="TeleOp" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -230,10 +260,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25033557" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" side_tool="true" />
@@ -324,13 +354,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/TeleOp/AtlasTeleOp.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="107" column="36" selection-end-line="233" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Autonomous/SensorTesting/ColorReading.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -345,12 +368,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Autonomous/Init/HardwareAtlas.java">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Calibration/ColorTesting.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
+        <state relative-caret-position="765">
           <caret line="45" column="36" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -358,10 +378,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/TeleOp/AtlasTeleOp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="43" column="11" selection-start-line="43" selection-start-column="11" selection-end-line="43" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Autonomous/Init/Aggregated.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="199" column="17" selection-start-line="199" selection-start-column="17" selection-end-line="199" selection-end-column="17" />
+        <state relative-caret-position="306">
+          <caret line="25" column="40" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Atlas/TeamCode/src/main/java/Atlas/Autonomous/Init/HardwareAtlas.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="48" column="4" selection-start-line="48" selection-start-column="4" selection-end-line="48" selection-end-column="51" />
         </state>
       </provider>
     </entry>

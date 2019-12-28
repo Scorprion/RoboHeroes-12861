@@ -19,25 +19,35 @@ public class HermesD extends HermesAggregated {
         waitForStart();
 
         //MecTime(-1, 1, 1, -1,500);
-        encoderDrives(0.3, 17, 17, 5);
-        sleep(500);
+        //encoderDrives(0.3, 17, 17, 5);
+        //sleep(500);
 
-        start_vuforia();
+        mecanumMove(-0.3, 90, 100, 2.5);
 
-        sleep(100);
-        encoderDrives(0.2, 5, 5, 1);
-        sleep(500);
-        mecanumMove(-0.3, 90, 14, 4);
-        sleep(500);
-        robot.Gate.setPower(-1);
+        //VUFORIA CODE GOES HERE WHEN FIXED
+        CheckSkySensor();
+
         sleep(500);
         mecanumMove(0.5, 90, 20, 5);
         sleep(500);
-        encoderDrives(0.8, -55, -55, 8);
+        encoderDrives(0.8, 55, 55, 8);
         sleep(500);
         robot.Gate.setPower(1);
         sleep(500);
         encoderDrives(0.4, 19, 19, 5);
         mecanumMove(0.4, 90, 12, 3);
+
+        /**
+         * VUFORIA CODE PRESERVED
+         */
+
+        /*start_vuforia();
+
+        sleep(100);
+        encoderDrives(-0.2, 5, 5, 1);
+        sleep(500);
+        mecanumMove(-0.3, 90, 14, 4);
+        sleep(500);
+        robot.Gate.setPower(-1);*/
     }
 }

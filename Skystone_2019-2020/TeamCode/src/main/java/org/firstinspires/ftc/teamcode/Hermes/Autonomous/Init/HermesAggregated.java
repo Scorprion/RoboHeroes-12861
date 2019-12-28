@@ -7,6 +7,7 @@ import android.view.View;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -172,6 +173,37 @@ public class HermesAggregated extends LinearOpMode {
             robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
+    }
+
+    public void CheckSkySensor(){
+        /**
+         * This portion of program automatically calls the robot to move to check for the skystone.
+         */
+        boolean SkyStoneFound = false;
+
+        while(!SkyStoneFound) {
+            NormalizedColorSensor SkySensor;
+            SkySensor = hardwareMap.get(NormalizedColorSensor.class, "SkySensor");
+            float[] hsvValues = new float[3];
+            final float values[] = hsvValues;
+
+            NormalizedRGBA colors = SkySensor.getNormalizedColors();
+
+            //Reads the Red Line and drops the SkyStone
+            if ((colors.red < 10) && (colors.blue < 10) && (colors.blue < 10)) {
+                stopMotors();
+                mecanumMove(0.5, 90, 4, 3);
+                robot.Gate.setPower(-0.5);
+                SkyStoneFound = true;
+            } else {
+                robot.FrontRight.setPower(0.5);
+                robot.BackRight.setPower(0.5);
+                robot.FrontLeft.setPower(0.5);
+                robot.BackLeft.setPower(0.5);
+            }
+
+        }
+
     }
 
     public void stopMotors() {
@@ -436,12 +468,12 @@ public class HermesAggregated extends LinearOpMode {
 
             if (isD) {
                 last_error = pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle), last_error,1/36,
-                        1.22, 0.5, 0.1, 0, 0.05, null, direction.STRAFE);
+                        1.22, 0.5, 0.1, 0, -0.05, null, direction.STRAIGHT);
                 telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             } else {
-                robot.FrontRight.setPower(0.057);
+                robot.FrontRight.setPower(0.05);
                 robot.FrontLeft.setPower(0.05);
-                robot.BackRight.setPower(0.057);
+                robot.BackRight.setPower(0.05);
                 robot.BackLeft.setPower(0.05);
             }
 

@@ -34,7 +34,7 @@ public class HardwareHermes {
 
     WebcamName webcamName = null;
 
-
+    public ColorSensor SkySensor;
 
     //IMU sensor
     public BNO055IMU imu;
@@ -60,6 +60,8 @@ public class HardwareHermes {
         imu.initialize(parameters);
 
         colorSensor = ahwMap.get(ColorSensor.class, "ColorSensor");
+
+        SkySensor = ahwMap.get(ColorSensor.class, "SkySensor");
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
