@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.Zeus.Autonomous.Init;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -19,6 +21,15 @@ public class HardwareZeus {
     //Left motors
     public DcMotor FrontLeft;
     public DcMotor BackLeft;
+
+    public CRServo FoundationClaw;
+    CRServo CapDropper;
+
+    public Servo StoneClampL;
+    public Servo StoneClampR;
+
+    public Servo StoneLift;
+    public Servo StoneTurner;
 
     WebcamName webcamName = null;
 
@@ -70,5 +81,14 @@ public class HardwareZeus {
 
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
+
+        FoundationClaw = ahwMap.get(CRServo.class, "FoundationClaw");
+        StoneClampL = ahwMap.get(Servo.class, "StoneClampL");
+        StoneClampR = ahwMap.get(Servo.class, "StoneClampR");
+
+        StoneLift = ahwMap.get(Servo.class, "StoneLift");
+        StoneTurner = ahwMap.get(Servo.class, "StoneTurner");
+
+        CapDropper = ahwMap.get(CRServo.class, "CapDropper");
     }
 }

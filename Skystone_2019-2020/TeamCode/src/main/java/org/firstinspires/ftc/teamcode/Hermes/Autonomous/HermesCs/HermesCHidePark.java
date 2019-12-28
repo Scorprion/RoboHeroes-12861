@@ -19,7 +19,7 @@ public class HermesCHidePark extends HermesAggregated {
 
         mecanumMove(0.2, 90, 4, 4);
         encoderDrives(0.6, 28, 28, 5);
-        sleep(20000);
+        sleep(19000);
         encoderDrives(0.6, -66, -66 , 7);
     }
 }
