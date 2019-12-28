@@ -36,8 +36,6 @@ public class TeleOpZeus extends OpMode {
 
         DcMotor BackLeft, BackRight, FrontLeft, FrontRight, Arm;
 
-        RevTouchSensor Stopper;
-
         CRServo FoundationClaw;
         CRServo CapDropper;
 
@@ -67,8 +65,6 @@ public class TeleOpZeus extends OpMode {
 
             Arm = hardwareMap.get(DcMotor.class, "Arm");
 
-            Stopper = hardwareMap.get(RevTouchSensor.class, "ArmStopper");
-
             FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
             StoneClampL = hardwareMap.get(Servo.class, "StoneClampL");
             StoneClampR = hardwareMap.get(Servo.class, "StoneClampR");
@@ -84,7 +80,6 @@ public class TeleOpZeus extends OpMode {
             turnspeed = gamepad1.right_stick_x * robotControlSpeed;
             strafespeed = gamepad1.left_stick_x * robotControlSpeed;
             speed = gamepad1.left_stick_y * -robotControlSpeed;
-            StopperTouched = Stopper.isPressed();
         /*
         -----------------------------
         |                           |
