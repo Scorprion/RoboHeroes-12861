@@ -120,8 +120,8 @@ public class ZeusAggregated extends LinearOpMode {
 
 
             // reset the timeout time and start motion.
-            robot.BackRight.setPower(Math.abs(speed));
-            robot.FrontRight.setPower(Math.abs(speed));
+            robot.BackRight.setPower(Math.abs(speed*1));//1.5
+            robot.FrontRight.setPower(Math.abs(speed*1));//1.5
 
             robot.BackLeft.setPower(Math.abs(speed));
             robot.FrontLeft.setPower(Math.abs(speed));
@@ -377,8 +377,12 @@ public class ZeusAggregated extends LinearOpMode {
         double last_error = 0;
         targetsSkyStone.activate();
         while (!isStopRequested()) {
-            last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360,
-                    last_error, 1, 0.2, 0, 0, -0.1, false);
+            //last_error = pidDynamic((pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 360,
+                    //last_error, 1, 0.2, 0, 0, -0.1, false);
+            robot.FrontRight.setPower(0.5);
+            robot.BackRight.setPower(0.5);
+            robot.FrontLeft.setPower(0.5);
+            robot.BackLeft.setPower(0.5);
             // check all the trackable targets to see which one (if any) is visible.
             targetVisible = false;
             for (VuforiaTrackable trackable : allTrackables) {

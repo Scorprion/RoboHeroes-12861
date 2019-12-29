@@ -133,7 +133,7 @@ public class TeleOpZeus extends OpMode {
             }
 
             if(gamepad2.right_trigger > 0.1){
-                StoneClampR.setPosition(1);
+
                 StoneClampL.setPosition(0);
             }else if(gamepad2.left_trigger > 0.1){
                 StoneClampR.setPosition(-1);
