@@ -31,6 +31,7 @@ public class HardwareHermes {
 
     //Foundation Grabber
     public CRServo FoundationClaw;
+    public CRServo Clamper;
 
     WebcamName webcamName = null;
 
@@ -80,6 +81,7 @@ public class HardwareHermes {
         Gate = ahwMap.get(DcMotor.class, "Gate");
 
         FoundationClaw = ahwMap.get(CRServo.class, "FoundationClaw");
+        Clamper = ahwMap.get(CRServo.class, "Clamper");
 
         FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

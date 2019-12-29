@@ -228,7 +228,7 @@ public class HermesAggregated extends LinearOpMode {
             dashboardTelemetry.addData("Angle", pid.total_angle);
             dashboardTelemetry.addData("Delta time", pid.delta_time);
             dashboardTelemetry.addData("Delta error", pid.delta_error);
-            dashboardTelemetry.addData("Error", setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
+            dashboardTelemetry.addData("Error", pid.error);
             dashboardTelemetry.addData("Out", out);
             dashboardTelemetry.addData("P", pid.Poutput);
             dashboardTelemetry.addData("I", pid.Ioutput);
@@ -467,8 +467,8 @@ public class HermesAggregated extends LinearOpMode {
             }
 
             if (isD) {
-                last_error = pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle), last_error,1/36,
-                        1.22, 0.5, 0.1, 0, -0.05, null, direction.STRAIGHT);
+                last_error = pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle), last_error,0.2778,
+                        2.5, 0.2, 0.1, 0, -0.05, null, direction.STRAIGHT);
                 telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             } else {
                 robot.FrontRight.setPower(0.05);
@@ -681,11 +681,6 @@ public class HermesAggregated extends LinearOpMode {
         while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)
                 && (inrange(robot.FrontRight.getCurrentPosition(), -distancefrbl, distancefrbl)
                     || inrange(robot.FrontLeft.getCurrentPosition(), -distanceflbr, distanceflbr))) {
-            // We're gonna try PID yo
-            last_error = pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle), last_error,1/10,
-                    1.22, 0.5, 0.1, setpoint, frbl, flbr, direction.STRAFE);
-            telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
-
             // Display it for the driver.
             telemetry.addLine()
                     .addData("Forward: ", forward_percent)

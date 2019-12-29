@@ -48,6 +48,7 @@ public class PID {
 
     private double calcPID(double error) {
         this.time = this.timer.milliseconds() / 1000;
+        this.error = error;
 
         delta_time = this.time - this.lasttime;
         delta_error = error - this.lasterror;
