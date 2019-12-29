@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Zeus.Autonomous.Init.ZeusAggregated;
 
-@Autonomous(name = "ZeusA", group = "Zeus")
-public class ZeusA extends ZeusAggregated {
+@Autonomous(name = "ZeusD", group = "Zeus")
+public class ZeusD extends ZeusAggregated {
     private double speed = 0.1, pidOutput = 0;
 
     @Override
@@ -27,19 +27,16 @@ public class ZeusA extends ZeusAggregated {
         init_vuforia();
 
         waitForStart();
-
+        //Compensation implemented
         mecanumMove(-0.3, 90, 100, 2.5);
-        pidTurn(1.22, 0.5, 0.1, 0, 0, 1.5);
-        sleep(500);
-        start_vuforia();
-        sleep(500);
-        encoderDrives(0.3, 4, 4, 1);
-        sleep(250);
-        mecanumMove(-0.3, 90, 16, 4);
-        sleep(500);
 
         sleep(500);
-        mecanumMove(0.5, 90, 20, 5);
+        //start_vuforia();
+        sleep(500);
+        //pidTurn(2.45, 0.1,  0.1, 90, 0, 1.5);
+        sleep(500);
+
+        //mecanumMove(-0.3, 90, 100, 2.5);
         sleep(500);
         encoderDrives(0.6, -60, -60, 10);
 
