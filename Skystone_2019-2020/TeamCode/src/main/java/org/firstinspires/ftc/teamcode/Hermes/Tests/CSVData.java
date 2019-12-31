@@ -22,6 +22,8 @@ public class CSVData extends HermesAggregated {
     double average = 0;
     double last_avg = 0, enocder_veloc;
     double last_time = 0, delta_time;
+    double last_angle = 0;
+    double total_angle = 0;
     double op_time = 0;
 
     @Override
@@ -35,7 +37,7 @@ public class CSVData extends HermesAggregated {
         DataLogger d = null;
         try {
             d = new DataLogger("test.csv");
-            d.addHeaderLine("Time,", "Input,", "Angle,", "Velocity,", "Encoder,", "E_Velocity");
+            d.addHeaderLine("Time,", "Input,", "Angle,", "Ang_Velocity,", "Encoder,", "E_Velocity");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,22 +58,26 @@ public class CSVData extends HermesAggregated {
             robot.BackRight.setPower(-speed);
 
 
-            average = (robot.FrontLeft.getCurrentPosition() +
-                    robot.BackLeft.getCurrentPosition()) / 2;
-            delta_time = last_time - op_time;
+            average = Math.abs(robot.FrontRight.getCurrentPosition() +
+                    robot.BackRight.getCurrentPosition()) / 2;
 
-            enocder_veloc = (last_avg - average) / delta_time;
+
+            delta_time = last_time - op_time;
+            enocder_veloc = Math.abs(average - last_avg) / delta_time;
+            total_angle += likeallelse(robot.imu.getAngularOrientation().firstAngle - last_angle);
+
+
             telemetry.addData("Time", timer.milliseconds() / 1000);
             telemetry.addData("Input", speed);
-            telemetry.addData("Angle", robot.imu.getAngularOrientation().firstAngle);
-            telemetry.addData("Velocity", robot.imu.getAngularVelocity().xRotationRate);
+            telemetry.addData("Angle", total_angle);
+            telemetry.addData("Angular Velocity", robot.imu.getAngularVelocity().xRotationRate);
             telemetry.addData("Encoder", average);
             telemetry.addData("E_Velocity", enocder_veloc);
             telemetry.update();
 
             try {
                 d.addDataLine(time + "," + speed + "," +
-                        robot.imu.getAngularOrientation().firstAngle + "," +
+                        likeallelse(robot.imu.getAngularOrientation().firstAngle) + "," +
                         robot.imu.getAngularVelocity().xRotationRate + "," +
                         average + "," +
                         enocder_veloc);
@@ -81,10 +87,13 @@ public class CSVData extends HermesAggregated {
 
             last_avg = average;
             last_time = op_time;
+            last_angle = likeallelse(robot.imu.getAngularOrientation().firstAngle);
             // Manual error updating so h
             // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
             // out = pid.getPID(0.2 + ((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) * 0.8) / 360);
-
+            if(!opModeIsActive()) {
+                d.close();
+            }
         }
     }
 }
