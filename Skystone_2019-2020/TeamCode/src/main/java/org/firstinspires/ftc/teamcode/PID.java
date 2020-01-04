@@ -16,13 +16,12 @@ import java.math.RoundingMode;
 public class PID {
     public double total_angle = 0, previous_angle = 0, delta_angle = 0;
 
-    public double error = 0;
+    public double error;
     public double delta_error = 0;
     public double delta_time;
-    public double parabola = 0;
 
-    public double PIDout, Poutput, Ioutput, Doutput;
-    public double P, I, D, setpoint, lasterror, time, lasttime, iminmax;
+    public double Poutput, Ioutput, Doutput;
+    public double P, I, D, lasterror, time, lasttime, iminmax;
 
     public ElapsedTime timer;
 
@@ -30,6 +29,7 @@ public class PID {
         this.P = P;
         this.I = I;
         this.D = D;
+        this.error = 0;
         this.lasterror = 0;  // For the derivative part of the calculation
         this.time = 0;
         this.lasttime = 0;
@@ -47,6 +47,7 @@ public class PID {
     }
 
     private double calcPID(double error) {
+        this.error = error;
         this.time = this.timer.milliseconds() / 1000;
         this.error = error;
 
@@ -66,22 +67,20 @@ public class PID {
         this.Doutput = delta_error / delta_time;
 
         // Storing the saved this.error value for the derivative calculation later
-        this.lasterror = this.error;
+        this.lasterror = error;
         this.lasttime = this.time;
 
-        this.Poutput = this.P * this.error;
+        this.Poutput = this.P * error;
         this.Ioutput = this.I * this.Ioutput;
         this.Doutput = this.D * this.Doutput;
         return this.Poutput + this.Ioutput + this.Doutput;
     }
 
-    public void setParams(double P, double I, double D, Double lasterror, Double minmax) {
+    public void setParams(double P, double I, double D, Double minmax) {
         this.timer.reset();
         this.time = timer.milliseconds() / 1000;
         this.iminmax = minmax == null ? 1 : minmax;
-        this.lasterror = lasterror == null ? 0 : lasterror;  // For the derivative part of the calculation
         this.lasttime = 0;
-
         this.P = P;
         this.I = I;
         this.D = D;
@@ -189,6 +188,10 @@ public class PID {
         this.total_angle += delta_angle;
         previous_angle = angle;
         return total_angle;
+    }
+
+    public void setLastError(double newerror) {
+        this.lasterror = newerror;
     }
 
     /*

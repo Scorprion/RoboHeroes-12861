@@ -22,6 +22,8 @@ public class HermesA extends HermesAggregated {
         pidTurn(2.5, 0.2, 0.1, 0, 0, 1.5);
         sleep(250);
         start_vuforia();
+        sleep(500);
+        //encoderDrives(0.3, 4, 4, 1);
         sleep(250);
         robot.Gate.setPower(-0.4);
         sleep(250);

@@ -82,7 +82,7 @@ public class ControlTest extends HermesAggregated {
             error_sum += value;
         }
 
-        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, null, null);
+        pid.setParams(P / Math.sqrt(Math.abs(error_sum) + 1), I / Math.sqrt(Math.abs(error_sum) + 1), 0, null);
         telemetry.addData("Error Sum: ", error_sum);
     }
 }
