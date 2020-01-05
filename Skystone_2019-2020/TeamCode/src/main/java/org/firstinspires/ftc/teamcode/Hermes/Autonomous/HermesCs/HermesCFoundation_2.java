@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HeremesBs;
+package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesCs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -7,9 +7,9 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
-@Autonomous(name = "HermesCFoundation", group = "Hermes")
+@Autonomous(name = "HermesCFoundation_2", group = "Hermes")
 
-public class HermesCFoundation extends HermesAggregated {
+public class HermesCFoundation_2 extends HermesAggregated {
 
     public boolean VuforiaFound = false;
 
@@ -35,8 +35,9 @@ public class HermesCFoundation extends HermesAggregated {
         robot.FoundationClaw.setPower(-1);
         sleep(1000);
         robot.FoundationClaw.setPower(0);
-        mecanumMove(-0.5, 90, 12, 1.5);
-        encoderDrives(0.5, -47, -47, 5);
+        mecanumMove(-0.5, 90, 35, 3);
+        sleep(10000);
+        encoderDrives(0.5, -40, -40, 5);
 
     }
 }
