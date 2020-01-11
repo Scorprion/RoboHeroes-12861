@@ -18,6 +18,6 @@ public class HermesBHideParkSlide extends HermesAggregated {
         encoderDrives(0.6, 28, 28, 5);
         sleep(20000);
         encoderDrives(0.6, -66, -66 , 7);
-        mecanumMove(-0.3, 90, 21, 100);
+        mecanumMove(-0.3, 90, 28, 100);
     }
 }

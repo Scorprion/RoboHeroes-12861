@@ -19,26 +19,35 @@ public class HermesD_2 extends HermesAggregated {
 
         waitForStart();
 
-        //MecTime(-1, 1, 1, -1,500);
-        mecanumMove(-0.3, 90, 17, 3);
-        sleep(500);
+        mecanumMove(-0.3, 90, 17, 2.5);
+        pidTurn(2.5, 0.2, 0.1, 0, 0, 1.5);
+        sleep(250);
         start_vuforia();
-        sleep(100);
-        encoderDrives(0.2, 5, 5, 1);
-        sleep(500);
-        mecanumMove(-0.3, 90, 19, 4);
-        sleep(500);
-        robot.Gate.setPower(-1);
-        sleep(500);
-        mecanumMove(0.5, 90, 20, 5);
-        sleep(500);
-        encoderDrives(0.8, -55, -55, 8);
-        sleep(500);
-        robot.Gate.setPower(1);
-        sleep(500);
-        encoderDrives(0.4, 19, 19, 5);
-        sleep(500);
-        mecanumMove(-0.4, 90, 12, 12);
+        sleep(250);
+        robot.Gate.setPower(-0.4);
+        sleep(250);
+        mecanumMove(-0.3, 90, 12, 4);
+        sleep(250);
+        robot.Clamper.setPower(-1);
+        sleep(1500);
+        robot.Gate.setPower(0.5);
+        sleep(250);
+        mecanumMove(0.5, 90, 6, 5);
+        sleep(250);
+        mecanumMove(-0.6, 90, 40, 3);
+        sleep(250);
+        pidTurn(2.5, 0.2, 0.1, 90, 0, 1.5);
+        sleep(250);
+        encoderDrives(0.6, -40, -40, 10);
+        sleep(250);
+        robot.Gate.setPower(-0.4);
+        sleep(250);
+        robot.Clamper.setPower(1);
+        sleep(750);
+        robot.Gate.setPower(0.4);
+        pidTurn(2.5, 0.2, 0.1, 0, 0, 2);
+        sleep(250);
+        encoderDrives(0.6, 40, 40, 5);
 
 
     }

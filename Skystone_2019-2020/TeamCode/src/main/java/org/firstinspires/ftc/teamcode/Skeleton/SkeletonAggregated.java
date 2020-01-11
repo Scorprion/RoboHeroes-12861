@@ -187,7 +187,7 @@ public class SkeletonAggregated extends LinearOpMode {
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
-        pid.setParams(P, I, D,null,0.3);
+        //pid.setParams(P, I, D,null,0.3);
         // Manual error updating so h
         do {
             // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
@@ -233,7 +233,7 @@ public class SkeletonAggregated extends LinearOpMode {
      */
     public double pidDynamic(double variable, double lasterror, double error_factor, double P, double I, double D,
                              double setpoint, double speed, Double speed2, direction direc) {
-        pid.setParams(P, I, D, lasterror, 0.3);
+        //pid.setParams(P, I, D, lasterror, 0.3);
 
         // In the case speed2 is given, we'll just use "speed" as the frbl
         double flbr = speed2 == null ? speed : speed2;
