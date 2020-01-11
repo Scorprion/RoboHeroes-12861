@@ -62,20 +62,20 @@ public class TeleOpHermes extends OpMode {
          */
 
         if (gamepad2.a) {
-            Clamper.setPower(-0.5);
+            Clamper.setPower(-0.7);
         } else {
-            Clamper.setPower(0.5);
+            Clamper.setPower(0.7);
         }
 
-        if ((gamepad2.right_stick_y >= 0.1 || gamepad2.right_stick_y <= -0.1)) {
-            Gate.setPower(gamepad2.right_stick_y * 0.5);
+        if ((gamepad2.left_stick_y >= 0.1 || gamepad2.left_stick_y <= -0.1)) {
+            Gate.setPower(gamepad2.left_stick_y * 0.4);
         }else{
             Gate.setPower(0);
         }
 
-        if(gamepad2.left_stick_y >= 0.1){
+        if(gamepad2.right_stick_y >= 0.1){
             FoundationClaw.setPower(-1);
-        }else if(gamepad2.left_stick_y <= -0.1){
+        }else if(gamepad2.right_stick_y <= -0.1){
             FoundationClaw.setPower(1);
         }else{
             FoundationClaw.setPower(0);
@@ -97,12 +97,6 @@ public class TeleOpHermes extends OpMode {
         }else{
             // Default, don't move
             HeadDrop.setPower(-0.4);
-        }
-
-        if (gamepad2.a){
-            Clamper.setPower(0.5);
-        }else{
-            Clamper.setPower(-1);
         }
 
         //Strafing

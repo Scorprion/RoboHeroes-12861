@@ -470,10 +470,10 @@ public class HermesAggregated extends LinearOpMode {
                         1.22, 0.5, 0.1, 0, 0.05, null, direction.STRAFE);
                 telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             } else {
-                robot.FrontRight.setPower(0.05);
-                robot.FrontLeft.setPower(0.05);
-                robot.BackRight.setPower(0.05);
-                robot.BackLeft.setPower(0.05);
+                robot.FrontRight.setPower(-0.05);
+                robot.FrontLeft.setPower(-0.05);
+                robot.BackRight.setPower(-0.05);
+                robot.BackLeft.setPower(-0.05);
             }
 
 
@@ -484,7 +484,7 @@ public class HermesAggregated extends LinearOpMode {
                 stopMotors();
                 pid.setLastError(translation.get(1) / mmPerInch);  // Might not be needed?
                 pid.setParams(0, 0, 0, 0.3);
-                while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
+                /*while(opModeIsActive() && !pid.closeEnoughTo(translation.get(1) / mmPerInch, 1, 0)) {
                     // Updating the position of the trackable skystone
                     for (VuforiaTrackable trackable : allTrackables) {
                         if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
@@ -496,8 +496,8 @@ public class HermesAggregated extends LinearOpMode {
                         }
                     }
                     translation = lastLocation.getTranslation();
-                     pidDynamic(translation.get(1) / mmPerInch,1/36,
-                            1.22, 0.5, 0, 0, 0, null, direction.STRAIGHT);
+                    pidDynamic(translation.get(1) / mmPerInch,1/36,
+                            2.5, 0.2, 0.1, 0, 0, null, direction.STRAIGHT);
                     // express position (translation) of robot in inches.
                     telemetry.addData("Error: ", last_error);
                     telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
@@ -507,7 +507,7 @@ public class HermesAggregated extends LinearOpMode {
                     rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
                     telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
                     telemetry.update();
-                }
+                }*/
 
                 telemetry.addLine("We good");
                 telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
