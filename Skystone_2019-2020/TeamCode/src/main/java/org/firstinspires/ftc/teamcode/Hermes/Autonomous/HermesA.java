@@ -24,7 +24,7 @@ public class HermesA extends HermesAggregated {
         sleep(250);
         start_vuforia();
         sleep(500);
-        encoderDrives(0.3, -7, -7, 1);
+        encoderDrives(0.3, -8, -8, 1);
         sleep(250);
         robot.Gate.setPower(-0.4);
         sleep(250);
@@ -48,5 +48,6 @@ public class HermesA extends HermesAggregated {
         mecanumMove(0.5, 90, 9, 1);
         sleep(250);
         encoderDrives(0.6, -38, -38, 5);
+        mecanumMove(-0.5, 90, 6, 4);
     }
 }
