@@ -35,8 +35,7 @@ public class HermesCFoundation extends HermesAggregated {
         robot.FoundationClaw.setPower(-1);
         sleep(1000);
         robot.FoundationClaw.setPower(0);
-        mecanumMove(-0.5, 90, 12, 1.5);
         encoderDrives(0.5, -47, -47, 5);
-
+        mecanumMove(0.5, 90, 5, 1.5);
     }
 }

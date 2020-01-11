@@ -18,24 +18,35 @@ public class HermesD extends HermesAggregated {
 
         waitForStart();
 
-        //MecTime(-1, 1, 1, -1,500);
-        //encoderDrives(0.3, 17, 17, 5);
-        //sleep(500);
-
-        mecanumMove(-0.3, 90, 100, 2.5);
-
-        //VUFORIA CODE GOES HERE WHEN FIXED
-        CheckSkySensor();
-
+        mecanumMove(-0.3, 90, 17, 2.5);
+        pidTurn(2.5, 0.2, 0.1, 0, 0, 1.5);
+        sleep(250);
+        start_vuforia();
         sleep(500);
-        mecanumMove(0.5, 90, 20, 5);
-        sleep(500);
-        encoderDrives(0.8, 55, 55, 8);
-        sleep(500);
-        robot.Gate.setPower(1);
-        sleep(500);
-        encoderDrives(0.4, 19, 19, 5);
-        mecanumMove(0.4, 90, 12, 3);
+        encoderDrives(0.3, -2, -2, 1);
+        sleep(250);
+        robot.Gate.setPower(-0.4);
+        sleep(250);
+        mecanumMove(-0.3, 90, 12, 4);
+        sleep(250);
+        robot.Clamper.setPower(-1);
+        sleep(1250);
+        robot.Gate.setPower(0.5);
+        sleep(250);
+        mecanumMove(0.5, 90, 6, 5);
+        sleep(250);
+        encoderDrives(0.6, -80, -80, 10);
+        sleep(250);
+        mecanumMove(-0.3, 90, 13, 2);
+        sleep(250);
+        robot.Gate.setPower(-0.4);
+        sleep(250);
+        robot.Clamper.setPower(1);
+        sleep(250);
+        robot.Gate.setPower(0.4);
+        mecanumMove(0.5, 90, 9, 1);
+        sleep(250);
+        encoderDrives(0.6, 54, 54, 5);
 
         /**
          * VUFORIA CODE PRESERVED
