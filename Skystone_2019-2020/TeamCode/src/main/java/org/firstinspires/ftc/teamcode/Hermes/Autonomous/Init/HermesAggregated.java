@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.view.View;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -23,6 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.android.dx.util.Warning;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.PID;
 
@@ -32,6 +34,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
@@ -39,6 +42,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
+
+@Config
 public class HermesAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
@@ -60,6 +65,8 @@ public class HermesAggregated extends LinearOpMode {
 
     private PID pid = new PID(0, 0, 0, 0.3);
     private ElapsedTime timer = new ElapsedTime();
+
+    public static double color_cut = 10;
 
     // Vuforia variables
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
@@ -143,10 +150,10 @@ public class HermesAggregated extends LinearOpMode {
 
 
             // reset the timeout time and start motion.
-            robot.BackRight.setPower(Math.abs(speed));
-            robot.FrontRight.setPower(Math.abs(speed));
-            robot.BackLeft.setPower(Math.abs(speed));
-            robot.FrontLeft.setPower(Math.abs(speed));
+            robot.BackRight.setPower(abs(speed));
+            robot.FrontRight.setPower(abs(speed));
+            robot.BackLeft.setPower(abs(speed));
+            robot.FrontLeft.setPower(abs(speed));
 
             milliseconds.reset();
 
@@ -177,34 +184,150 @@ public class HermesAggregated extends LinearOpMode {
         }
     }
 
-    public void CheckSkySensor(){
+    public void SkyStoneCS(String side, int StonePos, boolean isFirst){
+        int pos1 = 8 ,pos2 = 16, pos3 = 24;
+
+        double Back = -16;
+
+
+
+
+        if (side == "A" || side == "a"){
+            if (isFirst == true){
+                mecanumMove(1,90, 10 , 5);
+                robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                CheckSkySensor(false);
+            }
+            //encoderDrives(0.5,finalPos,finalPos,5);
+        }
+        else if (side == "D" || side == "d"){
+            if (isFirst == true){
+                mecanumMove(1,90, -10 , 5);
+                robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                CheckSkySensor(true);
+            }
+        }
+        else{
+
+        }
+        Back = (robot.BackLeft.getCurrentPosition()/countsPerInch);
+
+        LineReading();
+        encoderDrives(1,-10,-10,5);
+        robot.Gate.setPower(0.6);
+        encoderDrives(0.5,24,-24,5);
+        LineReading();
+        encoderDrives(0.5, Back, Back, 5);
+        robot.Gate.setPower(-0.6);
+        encoderDrives(0.5,24,24,5);
+        robot.Gate.setPower(0.6);
+
+    }
+
+    /*public int Position( int value){
+        if(value == 1){
+
+        }
+        return FinalMoveLine;
+    }
+
+    public void Position1(){
+
+    }
+
+    public void Position2(){
+
+    }
+
+    public void Position3(){
+
+    }
+
+    public void ReadBridgeLine(){
+
+    }
+
+    public void PlaceStones(){
+
+    }*/
+
+    public void CheckSkySensor(boolean isD){
         /**
          * This portion of program automatically calls the robot to move to check for the skystone.
          */
         boolean SkyStoneFound = false;
+        int currentPos = 1;
 
-        while(!SkyStoneFound) {
-            NormalizedColorSensor SkySensor;
-            SkySensor = hardwareMap.get(NormalizedColorSensor.class, "SkySensor");
-            float[] hsvValues = new float[3];
-            final float values[] = hsvValues;
+        NormalizedColorSensor SkySensor1;
+        SkySensor1 = hardwareMap.get(NormalizedColorSensor.class, "SkySensor1");
+        NormalizedColorSensor SkySensor2;
+        SkySensor2 = hardwareMap.get(NormalizedColorSensor.class, "SkySensor2");
 
-            NormalizedRGBA colors = SkySensor.getNormalizedColors();
+        NormalizedRGBA colors = SkySensor1.getNormalizedColors();
+        NormalizedRGBA colors2 = SkySensor2.getNormalizedColors();
 
-            //Reads the Red Line and drops the SkyStone
+        double max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+        colors.red   /= max;
+        colors.green /= max;
+        colors.blue  /= max;
+        int color1 = colors.toColor();
+
+        double max2 = Math.max(Math.max(Math.max(colors2.red, colors2.green), colors2.blue), colors2.alpha);
+        colors2.red   /= max2;
+        colors2.green /= max2;
+        colors2.blue  /= max2;
+        int color2 = colors2.toColor();
+
+        if(abs(Color.red(color1) - Color.red(color2)) < color_cut) {
+            //Position 3
+            telemetry.addLine("Position3");
+        }else if (Color.red(color1) < Color.red(color2)){
+            //Position 1
+            telemetry.addLine("Position1");
+        }else {
+            //Position 2;
+            telemetry.addLine("Position2");
+        }
+        telemetry.addData("Color1", Color.red(color1));
+        telemetry.addData("Color2", Color.red(color2));
+        telemetry.update();
+
+        //Reads and gets the SkyStone
+
+        /*if(isD) {
             if ((colors.red < 10) && (colors.blue < 10) && (colors.blue < 10)) {
                 stopMotors();
                 mecanumMove(0.5, 90, 4, 3);
                 robot.Gate.setPower(-0.5);
                 SkyStoneFound = true;
             } else {
+
                 robot.FrontRight.setPower(0.5);
                 robot.BackRight.setPower(0.5);
                 robot.FrontLeft.setPower(0.5);
                 robot.BackLeft.setPower(0.5);
             }
+        }else{
+            if ((colors.red < 10) && (colors.blue < 10) && (colors.blue < 10)) {
+                stopMotors();
+                mecanumMove(0.5, 90, 4, 3);
+                robot.Gate.setPower(-0.5);
+                SkyStoneFound = true;
+            } else {
 
-        }
+                robot.FrontRight.setPower(-0.5);
+                robot.BackRight.setPower(-0.5);
+                robot.FrontLeft.setPower(-0.5);
+                robot.BackLeft.setPower(-0.5);
+            }
+        }*/
+
 
     }
 
@@ -223,7 +346,7 @@ public class HermesAggregated extends LinearOpMode {
         do {
             // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
             // out = pid.getPID(0.2 + ((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) * 0.8) / 360);
-            out = pid.constrain(pid.getPID((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 36), -Math.abs(speed - 1), Math.abs(1 - speed));
+            out = pid.constrain(pid.getPID((setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle)) / 36), -abs(speed - 1), abs(1 - speed));
             dashboardTelemetry.addData("Setpoint", setpoint);
             dashboardTelemetry.addData("Angle", pid.total_angle);
             dashboardTelemetry.addData("Delta time", pid.delta_time);
@@ -270,7 +393,7 @@ public class HermesAggregated extends LinearOpMode {
         double flbr = speed2 == null ? speed : speed2;
 
         // Max speed of 1
-        out = pid.constrain(pid.getPID((setpoint - variable) * error_factor), -Math.abs(speed - 1), Math.abs(1 - speed));
+        out = pid.constrain(pid.getPID((setpoint - variable) * error_factor), -abs(speed - 1), abs(1 - speed));
         if(direc == direction.STRAFE) {
             robot.FrontRight.setPower(speed + out);
             robot.BackRight.setPower(flbr - out);

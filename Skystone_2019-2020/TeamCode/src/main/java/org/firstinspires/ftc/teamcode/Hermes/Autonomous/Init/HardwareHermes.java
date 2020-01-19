@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -15,9 +16,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareHermes {
-    //Sensors
-    ColorSensor colorSensor;
-
     //Right motors
     public DcMotor FrontRight;
     public DcMotor BackRight;
@@ -35,7 +33,10 @@ public class HardwareHermes {
 
     WebcamName webcamName = null;
 
-    public ColorSensor SkySensor;
+    //Sensors
+    public NormalizedColorSensor SkySensor1;
+    public NormalizedColorSensor SkySensor2;
+    public ColorSensor BridgeSensor;
 
     //IMU sensor
     public BNO055IMU imu;
@@ -59,10 +60,11 @@ public class HardwareHermes {
         parameters.loggingEnabled      = false;
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+        
 
-        colorSensor = ahwMap.get(ColorSensor.class, "ColorSensor");
-
-        SkySensor = ahwMap.get(ColorSensor.class, "SkySensor");
+        SkySensor1 = ahwMap.get(NormalizedColorSensor.class, "SkySensor1");
+        SkySensor2 = ahwMap.get(NormalizedColorSensor.class, "SkySensor2");
+        BridgeSensor = ahwMap.get(ColorSensor.class, "BridgeSensor");
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

@@ -14,10 +14,15 @@ public class HermesD extends HermesAggregated {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         isD = true;
-        init_vuforia();
+        //init_vuforia();
 
         waitForStart();
 
+        encoderDrives(0.4, 23,23,5);
+        mecanumMove(-0.5, 90, 30,5);
+
+
+        /*
         mecanumMove(-0.3, 90, 17, 2.5);
         pidTurn(2.5, 0.2, 0.1, 0, 0, 1.5);
         sleep(250);
