@@ -8,7 +8,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
@@ -24,7 +23,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.internal.android.dx.util.Warning;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.teamcode.PID;
 
@@ -56,6 +54,10 @@ public class HermesAggregated extends LinearOpMode {
         STRAFE,
         TURN,
         STRAIGHT
+    }
+
+    public enum position {
+        WALL, MIDDLE, BRIDGE, UNKNOWN
     }
     //                                              "560 rises of channel A"
     public final double countsPerInch = 54.722; // (2240 / 4?)  / (Math.PI * 2.952756)
@@ -235,29 +237,9 @@ public class HermesAggregated extends LinearOpMode {
 
         }
         return FinalMoveLine;
-    }
-
-    public void Position1(){
-
-    }
-
-    public void Position2(){
-
-    }
-
-    public void Position3(){
-
-    }
-
-    public void ReadBridgeLine(){
-
-    }
-
-    public void PlaceStones(){
-
     }*/
 
-    public void CheckSkySensor(boolean isD){
+    public position CheckSkySensor(boolean isA){
         /**
          * This portion of program automatically calls the robot to move to check for the skystone.
          */
@@ -287,48 +269,22 @@ public class HermesAggregated extends LinearOpMode {
         if(abs(Color.red(color1) - Color.red(color2)) < color_cut) {
             //Position 3
             telemetry.addLine("Position3");
+            return position.BRIDGE;
         }else if (Color.red(color1) < Color.red(color2)){
             //Position 1
             telemetry.addLine("Position1");
-        }else {
+                if (isA){
+                    return  position.MIDDLE;
+                }
+            return position.WALL;
+        } else {
             //Position 2;
             telemetry.addLine("Position2");
+                if (isA) {
+                    return position.WALL;
+                }
+            return position.MIDDLE;
         }
-        telemetry.addData("Color1", Color.red(color1));
-        telemetry.addData("Color2", Color.red(color2));
-        telemetry.update();
-
-        //Reads and gets the SkyStone
-
-        /*if(isD) {
-            if ((colors.red < 10) && (colors.blue < 10) && (colors.blue < 10)) {
-                stopMotors();
-                mecanumMove(0.5, 90, 4, 3);
-                robot.Gate.setPower(-0.5);
-                SkyStoneFound = true;
-            } else {
-
-                robot.FrontRight.setPower(0.5);
-                robot.BackRight.setPower(0.5);
-                robot.FrontLeft.setPower(0.5);
-                robot.BackLeft.setPower(0.5);
-            }
-        }else{
-            if ((colors.red < 10) && (colors.blue < 10) && (colors.blue < 10)) {
-                stopMotors();
-                mecanumMove(0.5, 90, 4, 3);
-                robot.Gate.setPower(-0.5);
-                SkyStoneFound = true;
-            } else {
-
-                robot.FrontRight.setPower(-0.5);
-                robot.BackRight.setPower(-0.5);
-                robot.FrontLeft.setPower(-0.5);
-                robot.BackLeft.setPower(-0.5);
-            }
-        }*/
-
-
     }
 
     public void stopMotors() {
@@ -790,8 +746,8 @@ public class HermesAggregated extends LinearOpMode {
         flbr = round(speed * (forward_percent + sideways_percent), 2); // speed * forward_percent + speed * sideways_percent
         frbl = round(speed * (forward_percent - sideways_percent), 2);
 
-        distanceflbr = (int)((countsPerInch * inches) * (forward_percent + sideways_percent));
-        distancefrbl = (int)((countsPerInch * inches) * (forward_percent - sideways_percent));
+        distanceflbr = (int)(abs((countsPerInch * inches) * (forward_percent + sideways_percent)));
+        distancefrbl = (int)(abs((countsPerInch * inches) * (forward_percent - sideways_percent)));
 
         robot.FrontRight.setPower(frbl);
         robot.BackRight.setPower(flbr);
@@ -801,13 +757,13 @@ public class HermesAggregated extends LinearOpMode {
         // pid.setLastError(0); Might or might not be needed
         milliseconds.reset();
 
-        // Warning - Will be inconsistent, but it works
+        // Warning - Will be inconsistent, but will works
         while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)
-                && (inrange(robot.FrontRight.getCurrentPosition(), -distancefrbl, distancefrbl)
-                    || inrange(robot.FrontLeft.getCurrentPosition(), -distanceflbr, distanceflbr))) {
+                && (inrange(robot.FrontRight.getCurrentPosition(), distancefrbl)
+                    || inrange(robot.FrontLeft.getCurrentPosition(), distanceflbr))) {
             // We're gonna try PID yo
              pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle),1/10,
-                    1.22, 0.5, 0.1, setpoint, frbl, flbr, direction.STRAFE);
+                     2.5, 0.2, 0.1, setpoint, frbl, flbr, direction.STRAFE);
             telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
 
             // Display it for the driver.
@@ -837,7 +793,11 @@ public class HermesAggregated extends LinearOpMode {
     }
 
     public boolean inrange(double value, double min, double max) {
-        return value >= min && value <= max;
+        return value > min && value < max;
+    }
+
+    public boolean inrange(double value, double minmax) {
+        return value > -minmax && value < minmax;
     }
 
     /**

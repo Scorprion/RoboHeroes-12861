@@ -16,6 +16,8 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
+import static java.lang.Math.abs;
+
 @Autonomous(name= "ColorTester", group= "Pushbot")
 public class ColorTester extends HermesAggregated {
     @Override
@@ -49,7 +51,41 @@ public class ColorTester extends HermesAggregated {
         }
 
         while(opModeIsActive()) {
-            CheckSkySensor(false);
+            NormalizedRGBA colors = SkySensor1.getNormalizedColors();
+            NormalizedRGBA colors2 = SkySensor2.getNormalizedColors();
+
+            double max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
+            colors.red   /= max;
+            colors.green /= max;
+            colors.blue  /= max;
+            int color1 = colors.toColor();
+
+            double max2 = Math.max(Math.max(Math.max(colors2.red, colors2.green), colors2.blue), colors2.alpha);
+            colors2.red   /= max2;
+            colors2.green /= max2;
+            colors2.blue  /= max2;
+            int color2 = colors2.toColor();
+
+            telemetry.addData("Color1 R:", Color.red(color1));
+            telemetry.addData("Color2 R:", Color.red(color2));
+
+            telemetry.addData("Color1 G:", Color.green(color1));
+            telemetry.addData("Color2 G:", Color.green(color2));
+
+            telemetry.addData("Color1 B:", Color.blue(color1));
+            telemetry.addData("Color2 B:", Color.blue(color2));
+
+            if(abs(Color.red(color1) - Color.red(color2)) < color_cut) {
+                //Position 3
+                telemetry.addLine("Position3");
+            }else if (Color.red(color1) < Color.red(color2)){
+                //Position 1
+                telemetry.addLine("Position1");
+            } else {
+                //Position 2;
+                telemetry.addLine("Position2");
+            }
+            telemetry.update();
         }
     }
 }
