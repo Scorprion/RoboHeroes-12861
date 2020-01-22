@@ -106,5 +106,9 @@
     <orderEntry type="library" name="Gradle: :FtcCommon-release:@aar" level="project" />
     <orderEntry type="library" name="Gradle: :WirelessP2p-release:@aar" level="project" />
     <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcDashboard" />
   </component>
 </module>
