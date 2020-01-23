@@ -1,28 +1,23 @@
 package org.firstinspires.ftc.teamcode.Hermes.Tests;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.internal.files.DataLogger;
-import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
-import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
-import org.firstinspires.ftc.teamcode.PID;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @TeleOp(name = "CSVData", group = "Hermes")
 public class CSVData extends OpMode {
     private ElapsedTime timer = new ElapsedTime();
-    boolean velocity_thread = false;
+    boolean log_data = true, velocity_thread = false;
     double speed = 0, turnspeed = 0, strafespeed = 0;
     double average = 0;
     double last_time = 0;
@@ -31,11 +26,13 @@ public class CSVData extends OpMode {
     double op_time = 0;
     double current_angle = 0;
     double left_veloc = 0, right_veloc = 0;
+    long dt = 50;  // in milliseconds
 
+    DateFormat dtf = new SimpleDateFormat("yyyyMMddHHmmss");
     DataLogger d;
     {
         try {
-            d = new DataLogger("test.csv");
+            d = new DataLogger(dtf.format(new Date()) + ".csv");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,62 +90,76 @@ public class CSVData extends OpMode {
                 }
             }
         }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(log_data) {
+                    average = Math.abs(FrontRight.getCurrentPosition() +
+                            BackRight.getCurrentPosition()) / 2;
+                    current_angle = likeallelse(imu.getAngularOrientation().firstAngle);
+
+                    total_angle += current_angle - last_angle;
+
+                    try {
+                        d.addDataLine(op_time / 1000,
+                                (speed - strafespeed + turnspeed),
+                                (speed + strafespeed - turnspeed),
+                                (speed + strafespeed + turnspeed),
+                                (speed - strafespeed - turnspeed),
+                                current_angle,
+                                imu.getAngularVelocity().xRotationRate,
+                                BackLeft.getCurrentPosition(),
+                                BackRight.getCurrentPosition(),
+                                FrontLeft.getCurrentPosition(),
+                                FrontRight.getCurrentPosition(),
+                                left_veloc,
+                                right_veloc);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    last_time = op_time;
+                    last_angle = current_angle;
+                }
+
+                try {
+                    wait(dt);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                op_time += dt;
+            }
+        }).start();
     }
+
 
     @Override
     public void loop() {
-        op_time = timer.milliseconds() / 1000;
-
-        turnspeed = -gamepad1.right_stick_x * 0.7;
-        strafespeed = gamepad1.left_stick_x * 0.7;
-        speed = gamepad1.left_stick_y * -0.7;
+        turnspeed = -gamepad1.right_stick_x;
+        strafespeed = gamepad1.left_stick_x;
+        speed = gamepad1.left_stick_y;
 
         BackLeft.setPower(speed - strafespeed + turnspeed);
         BackRight.setPower(speed + strafespeed - turnspeed);
         FrontLeft.setPower(speed + strafespeed + turnspeed);
         FrontRight.setPower(speed - strafespeed - turnspeed);
 
-        average = Math.abs(FrontRight.getCurrentPosition() +
-                BackRight.getCurrentPosition()) / 2;
-        current_angle = likeallelse(imu.getAngularOrientation().firstAngle);
-
-        total_angle += current_angle - last_angle;
-
-        telemetry.addData("Time", op_time);
+        telemetry.addData("Time", op_time / 1000);
         telemetry.addData("Real time", time);
-        telemetry.addData("Input", speed);
+        telemetry.addData("Input", speed + strafespeed + turnspeed);
         telemetry.addData("Angle", total_angle);
         telemetry.addData("Angular Velocity", imu.getAngularVelocity().xRotationRate);
         telemetry.addData("Encoder", average);
         telemetry.addData("Left Velocity", left_veloc);
         telemetry.addData("Right Velocity", right_veloc);
         telemetry.update();
-
-        try {
-            d.addDataLine(op_time,
-                    (speed - strafespeed + turnspeed),
-                    (speed + strafespeed - turnspeed),
-                    (speed + strafespeed + turnspeed),
-                    (speed - strafespeed - turnspeed),
-                    current_angle,
-                    imu.getAngularVelocity().xRotationRate,
-                    BackLeft.getCurrentPosition(),
-                    BackRight.getCurrentPosition(),
-                    FrontLeft.getCurrentPosition(),
-                    FrontRight.getCurrentPosition(),
-                    left_veloc,
-                    right_veloc);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        last_time = op_time;
-        last_angle = current_angle;
     }
 
     public void stop() {
-        d.close();
         velocity_thread = false;
+        log_data = false;
+        d.close();
     }
 
     private double likeallelse(double angle) {
