@@ -66,14 +66,19 @@ public class ColorTester extends HermesAggregated {
             colors2.blue  /= max2;
             int color2 = colors2.toColor();
 
-            telemetry.addData("Color1 R:", Color.red(color1));
-            telemetry.addData("Color2 R:", Color.red(color2));
+            telemetry.addLine()
+                    .addData("Color1 R:", Color.red(color1))
+                    .addData("Color2 R:", Color.red(color2));
+            telemetry.addLine()
+                    .addData("Color1 G:", Color.green(color1))
+                    .addData("Color2 G:", Color.green(color2));
+            telemetry.addLine()
+                    .addData("Color1 B:", Color.blue(color1))
+                    .addData("Color2 B:", Color.blue(color2));
+            telemetry.addLine()
+                    .addData("Color1 A:", Color.alpha(color1))
+                    .addData("Color2 A:", Color.alpha(color2));
 
-            telemetry.addData("Color1 G:", Color.green(color1));
-            telemetry.addData("Color2 G:", Color.green(color2));
-
-            telemetry.addData("Color1 B:", Color.blue(color1));
-            telemetry.addData("Color2 B:", Color.blue(color2));
 
             if(abs(Color.red(color1) - Color.red(color2)) < color_cut) {
                 //Position 3

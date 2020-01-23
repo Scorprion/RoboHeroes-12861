@@ -86,6 +86,12 @@ public class PID {
         this.D = D;
     }
 
+    public void updateParams(double P, double I, double D) {
+        this.P = P;
+        this.I = I;
+        this.D = D;
+    }
+
     public boolean Incomp(double ParPos, double ParNeg){
         return (delta_angle >= ParPos || delta_angle <= ParNeg);
     }

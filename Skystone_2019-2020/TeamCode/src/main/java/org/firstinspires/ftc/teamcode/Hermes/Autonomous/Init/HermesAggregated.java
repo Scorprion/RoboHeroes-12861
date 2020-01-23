@@ -273,16 +273,10 @@ public class HermesAggregated extends LinearOpMode {
         }else if (Color.red(color1) < Color.red(color2)){
             //Position 1
             telemetry.addLine("Position1");
-                if (isA){
-                    return  position.MIDDLE;
-                }
             return position.WALL;
         } else {
             //Position 2;
             telemetry.addLine("Position2");
-                if (isA) {
-                    return position.WALL;
-                }
             return position.MIDDLE;
         }
     }
@@ -343,17 +337,26 @@ public class HermesAggregated extends LinearOpMode {
      */
     public void pidDynamic(double variable, double error_factor, double P, double I, double D,
                              double setpoint, double speed, Double speed2, direction direc) {
-        pid.setParams(P, I, D,0.3);
+        pid.updateParams(P, I, D);
 
         // In the case speed2 is given, we'll just use "speed" as the frbl
         double flbr = speed2 == null ? speed : speed2;
 
         // Max speed of 1
         out = pid.constrain(pid.getPID((setpoint - variable) * error_factor), -abs(speed - 1), abs(1 - speed));
+        dashboardTelemetry.addData("Variable:", variable);
+        dashboardTelemetry.addData("Setpint", setpoint);
+        dashboardTelemetry.addData("Output", out);
+        dashboardTelemetry.addData("FR", speed + out);
+        dashboardTelemetry.addData("FL", flbr + out);
+        dashboardTelemetry.addData("BL", speed - out);
+        dashboardTelemetry.addData("BR", flbr + out);
+        dashboardTelemetry.update();
+
         if(direc == direction.STRAFE) {
-            robot.FrontRight.setPower(speed + out);
+            robot.FrontRight.setPower(speed - out);
             robot.BackRight.setPower(flbr - out);
-            robot.FrontLeft.setPower(flbr - out);
+            robot.FrontLeft.setPower(flbr + out);
             robot.BackLeft.setPower(speed + out);
         } else if(direc == direction.STRAIGHT){
             robot.FrontRight.setPower(speed + out);
@@ -725,18 +728,18 @@ public class HermesAggregated extends LinearOpMode {
         robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         /*double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
                 robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
         double radians = Math.toRadians(current_angle - angle);*/
         double radians = Math.toRadians(angle);
-        double setpoint = robot.imu.getAngularOrientation().firstAngle;  // We want to remain at the same angle we started
+        double setpoint = likeallelse(robot.imu.getAngularOrientation().firstAngle);  // We want to remain at the same angle we started
         double last_error = 0;
         double forward_percent = Math.cos(radians),
                 sideways_percent = Math.sin(radians);
@@ -746,8 +749,8 @@ public class HermesAggregated extends LinearOpMode {
         flbr = round(speed * (forward_percent + sideways_percent), 2); // speed * forward_percent + speed * sideways_percent
         frbl = round(speed * (forward_percent - sideways_percent), 2);
 
-        distanceflbr = (int)(abs((countsPerInch * inches) * (forward_percent + sideways_percent)));
-        distancefrbl = (int)(abs((countsPerInch * inches) * (forward_percent - sideways_percent)));
+        distanceflbr = (int)abs(countsPerInch * inches);
+        distancefrbl = (int)abs(countsPerInch * inches);
 
         robot.FrontRight.setPower(frbl);
         robot.BackRight.setPower(flbr);
@@ -759,11 +762,11 @@ public class HermesAggregated extends LinearOpMode {
 
         // Warning - Will be inconsistent, but will works
         while (opModeIsActive() && (milliseconds.milliseconds() < timer * 1000)
-                && (inrange(robot.FrontRight.getCurrentPosition(), distancefrbl)
-                    || inrange(robot.FrontLeft.getCurrentPosition(), distanceflbr))) {
+                && (abs(robot.FrontRight.getCurrentPosition()) < distancefrbl
+                    || abs(robot.FrontLeft.getCurrentPosition()) < distanceflbr)) {
             // We're gonna try PID yo
-             pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle),1/10,
-                     2.5, 0.2, 0.1, setpoint, frbl, flbr, direction.STRAFE);
+            pidDynamic(likeallelse(robot.imu.getAngularOrientation().firstAngle),1.0 / 36.0,
+                     2, 0.5, 0.08, setpoint, frbl, flbr, direction.STRAFE);
             telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
 
             // Display it for the driver.
