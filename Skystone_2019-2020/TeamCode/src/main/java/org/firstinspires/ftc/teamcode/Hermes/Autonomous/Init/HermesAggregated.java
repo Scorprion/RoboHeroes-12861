@@ -68,8 +68,6 @@ public class HermesAggregated extends LinearOpMode {
     private PID pid = new PID(0, 0, 0, 0.3);
     private ElapsedTime timer = new ElapsedTime();
 
-    public static double color_cut = 10;
-
     // Vuforia variables
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false;
@@ -266,7 +264,7 @@ public class HermesAggregated extends LinearOpMode {
         colors2.blue  /= max2;
         int color2 = colors2.toColor();
 
-        if(abs(Color.red(color1) - Color.red(color2)) < color_cut) {
+        if(abs(Color.red(color1) - Color.red(color2)) < 10) {
             //Position 3
             telemetry.addLine("Position3");
             return position.BRIDGE;
