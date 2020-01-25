@@ -22,7 +22,7 @@ public class HermesD_Fast extends HermesAggregated {
         sleep(100);
         mecanumMove(-0.4, 90, 31, 5);
         while(opModeIsActive() && pos == position.UNKNOWN) {
-            pos = CheckSkySensor(false);
+            pos = CheckSkySensor();
             telemetry.addLine("Checking position");
             telemetry.update();
         }

@@ -42,7 +42,7 @@ public class TeleOpHermes extends OpMode {
         Clamper = hardwareMap.get(CRServo.class, "Clamper");
         HeadDrop = hardwareMap.get(CRServo.class, "HeadDrop");
 
-        Clamper = hardwareMap.get(CRServo.class, "Clamper");
+
     }
 
     @Override

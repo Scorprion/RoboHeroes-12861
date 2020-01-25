@@ -50,6 +50,7 @@ public class HermesAggregated extends LinearOpMode {
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
 
     public boolean LineFound = false;
+
     public enum direction {
         STRAFE,
         TURN,
@@ -59,6 +60,7 @@ public class HermesAggregated extends LinearOpMode {
     public enum position {
         WALL, MIDDLE, BRIDGE, UNKNOWN
     }
+
     //                                              "560 rises of channel A"
     public final double countsPerInch = 54.722; // (2240 / 4?)  / (Math.PI * 2.952756)
     private ElapsedTime milliseconds = new ElapsedTime();
@@ -131,11 +133,11 @@ public class HermesAggregated extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Determine new target position, and pass to motor controller
-            newFrontRightTarget = robot.FrontRight.getCurrentPosition() + (int)(rinches * countsPerInch);
-            newBackRightTarget = robot.BackRight.getCurrentPosition() + (int)(rinches * countsPerInch);
+            newFrontRightTarget = robot.FrontRight.getCurrentPosition() + (int) (rinches * countsPerInch);
+            newBackRightTarget = robot.BackRight.getCurrentPosition() + (int) (rinches * countsPerInch);
 
-            newFrontLeftTarget = robot.FrontLeft.getCurrentPosition() + (int)(linches * countsPerInch);
-            newBackLeftTarget = robot.BackLeft.getCurrentPosition() + (int)(linches * countsPerInch);
+            newFrontLeftTarget = robot.FrontLeft.getCurrentPosition() + (int) (linches * countsPerInch);
+            newBackLeftTarget = robot.BackLeft.getCurrentPosition() + (int) (linches * countsPerInch);
 
 
             robot.FrontRight.setTargetPosition(newFrontRightTarget);
@@ -186,48 +188,44 @@ public class HermesAggregated extends LinearOpMode {
         }
     }
 
-    public void SkyStoneCS(String side, int StonePos, boolean isFirst){
-        int pos1 = 8 ,pos2 = 16, pos3 = 24;
+    public void SkyStoneCS(String side, int StonePos, boolean isFirst) {
+        int pos1 = 8, pos2 = 16, pos3 = 24;
 
         double Back = -16;
 
 
-
-
-        if (side == "A" || side == "a"){
-            if (isFirst == true){
-                mecanumMove(1,90, 10 , 5);
+        if (side == "A" || side == "a") {
+            if (isFirst == true) {
+                mecanumMove(1, 90, 10, 5);
                 robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                CheckSkySensor(false);
+                CheckSkySensor();
             }
             //encoderDrives(0.5,finalPos,finalPos,5);
-        }
-        else if (side == "D" || side == "d"){
-            if (isFirst == true){
-                mecanumMove(1,90, -10 , 5);
+        } else if (side == "D" || side == "d") {
+            if (isFirst == true) {
+                mecanumMove(1, 90, -10, 5);
                 robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                CheckSkySensor(true);
+                CheckSkySensor();
             }
-        }
-        else{
+        } else {
 
         }
-        Back = (robot.BackLeft.getCurrentPosition()/countsPerInch);
+        Back = (robot.BackLeft.getCurrentPosition() / countsPerInch);
 
         LineReading();
-        encoderDrives(1,-10,-10,5);
+        encoderDrives(1, -10, -10, 5);
         robot.Gate.setPower(0.6);
-        encoderDrives(0.5,24,-24,5);
+        encoderDrives(0.5, 24, -24, 5);
         LineReading();
         encoderDrives(0.5, Back, Back, 5);
         robot.Gate.setPower(-0.6);
-        encoderDrives(0.5,24,24,5);
+        encoderDrives(0.5, 24, 24, 5);
         robot.Gate.setPower(0.6);
 
     }
@@ -239,7 +237,7 @@ public class HermesAggregated extends LinearOpMode {
         return FinalMoveLine;
     }*/
 
-    public position CheckSkySensor(boolean isA){
+    public position CheckSkySensor() {
         /**
          * This portion of program automatically calls the robot to move to check for the skystone.
          */
@@ -255,31 +253,31 @@ public class HermesAggregated extends LinearOpMode {
         NormalizedRGBA colors2 = SkySensor2.getNormalizedColors();
 
         double max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-        colors.red   /= max;
+        colors.red /= max;
         colors.green /= max;
-        colors.blue  /= max;
+        colors.blue /= max;
         int color1 = colors.toColor();
 
         double max2 = Math.max(Math.max(Math.max(colors2.red, colors2.green), colors2.blue), colors2.alpha);
-        colors2.red   /= max2;
+        colors2.red /= max2;
         colors2.green /= max2;
-        colors2.blue  /= max2;
+        colors2.blue /= max2;
         int color2 = colors2.toColor();
-
-        if(abs(Color.red(color1) - Color.red(color2)) < color_cut) {
-            //Position 3
-            telemetry.addLine("Position3");
-            return position.BRIDGE;
-        }else if (Color.red(color1) < Color.red(color2)){
-            //Position 1
-            telemetry.addLine("Position1");
-            return position.WALL;
-        } else {
-            //Position 2;
-            telemetry.addLine("Position2");
-            return position.MIDDLE;
+            if (abs(Color.red(color1) - Color.red(color2)) < color_cut) {
+                //Position 3
+                telemetry.addLine("Position3");
+                return position.BRIDGE;
+            } else if (Color.red(color1) < Color.red(color2)) {
+                //Position 1
+                telemetry.addLine("Position1");
+                return position.WALL;
+            } else {
+                //Position 2;
+                telemetry.addLine("Position2");
+                return position.MIDDLE;
+            }
         }
-    }
+
 
     public void stopMotors() {
         robot.FrontRight.setPower(0);
