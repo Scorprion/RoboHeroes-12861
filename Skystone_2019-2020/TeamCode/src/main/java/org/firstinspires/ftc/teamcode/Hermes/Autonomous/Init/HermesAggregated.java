@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
-import android.app.Activity;
 import android.graphics.Color;
-import android.view.View;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -11,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -19,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -40,8 +38,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-
-@Config
 public class HermesAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
@@ -55,6 +51,10 @@ public class HermesAggregated extends LinearOpMode {
         STRAFE,
         TURN,
         STRAIGHT
+    }
+
+    public enum motor_mode {
+        WITHOUT_ENCODER, USING_ENCODER, STOP_RESET, RUN_TO_POSITION
     }
 
     public enum position {
@@ -132,10 +132,12 @@ public class HermesAggregated extends LinearOpMode {
         int newBackLeftTarget;
 
         if (opModeIsActive()) {
+            setAllMode(motor_mode.STOP_RESET);
+            setAllMode(motor_mode.USING_ENCODER);
+
             // Determine new target position, and pass to motor controller
             newFrontRightTarget = robot.FrontRight.getCurrentPosition() + (int) (rinches * countsPerInch);
             newBackRightTarget = robot.BackRight.getCurrentPosition() + (int) (rinches * countsPerInch);
-
             newFrontLeftTarget = robot.FrontLeft.getCurrentPosition() + (int) (linches * countsPerInch);
             newBackLeftTarget = robot.BackLeft.getCurrentPosition() + (int) (linches * countsPerInch);
 
@@ -146,12 +148,7 @@ public class HermesAggregated extends LinearOpMode {
             robot.BackLeft.setTargetPosition(newBackLeftTarget);
 
             // Turn On RUN_TO_POSITION
-            robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+            setAllMode(motor_mode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             robot.BackRight.setPower(abs(speed));
@@ -176,66 +173,9 @@ public class HermesAggregated extends LinearOpMode {
             stopMotors();
 
             // Turn off RUN_TO_POSITION and reset
-            robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-            robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            setAllMode(motor_mode.STOP_RESET);
         }
     }
-
-    public void SkyStoneCS(String side, int StonePos, boolean isFirst) {
-        int pos1 = 8, pos2 = 16, pos3 = 24;
-
-        double Back = -16;
-
-
-        if (side == "A" || side == "a") {
-            if (isFirst == true) {
-                mecanumMove(1, 90, 10, 5);
-                robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                CheckSkySensor();
-            }
-            //encoderDrives(0.5,finalPos,finalPos,5);
-        } else if (side == "D" || side == "d") {
-            if (isFirst == true) {
-                mecanumMove(1, 90, -10, 5);
-                robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                CheckSkySensor();
-            }
-        } else {
-
-        }
-        Back = (robot.BackLeft.getCurrentPosition() / countsPerInch);
-
-        LineReading();
-        encoderDrives(1, -10, -10, 5);
-        robot.Gate.setPower(0.6);
-        encoderDrives(0.5, 24, -24, 5);
-        LineReading();
-        encoderDrives(0.5, Back, Back, 5);
-        robot.Gate.setPower(-0.6);
-        encoderDrives(0.5, 24, 24, 5);
-        robot.Gate.setPower(0.6);
-
-    }
-
-    /*public int Position( int value){
-        if(value == 1){
-
-        }
-        return FinalMoveLine;
-    }*/
 
     public position CheckSkySensor() {
         /**
@@ -278,18 +218,13 @@ public class HermesAggregated extends LinearOpMode {
             }
         }
 
-
-    public void stopMotors() {
-        robot.FrontRight.setPower(0);
-        robot.BackRight.setPower(0);
-        robot.FrontLeft.setPower(0);
-        robot.BackLeft.setPower(0);
-    }
-
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
         timer.reset();
         pid.setParams(P, I, D,0.3);
+
+        setAllMode(motor_mode.WITHOUT_ENCODER);
+
         // Manual error updating so h
         do {
             // Normalizes the output between 0.2 and 1 (since the robot won't even move if it's below 0.2 power)
@@ -313,6 +248,8 @@ public class HermesAggregated extends LinearOpMode {
             dashboardTelemetry.update();
         } while(opModeIsActive() && timer.milliseconds() < seconds * 1000); // && setpoint - pid.likeallelse(robot.imu.getAngularOrientation().firstAngle) != 0);
         stopMotors();
+
+        setAllMode(motor_mode.USING_ENCODER);
     }
 
     /**
@@ -521,7 +458,6 @@ public class HermesAggregated extends LinearOpMode {
         telemetry.addLine("Press > to start (vuforia is done)");
         telemetry.update();
     }
-
     public void start_vuforia() {
         targetsSkyStone.activate();
 
@@ -546,7 +482,7 @@ public class HermesAggregated extends LinearOpMode {
             }
 
             if (isD) {
-                 pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle),1/36,
+                 pidDynamic(pid.likeallelse(robot.imu.getAngularOrientation().firstAngle),1.0/36.0,
                         1.22, 0.5, 0.1, 0, 0.05, null, direction.STRAFE);
                 telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
             } else {
@@ -604,134 +540,10 @@ public class HermesAggregated extends LinearOpMode {
         targetsSkyStone.deactivate();
     }
 
-
-    public void LineReading() {
-
-        /** The colorSensor field will contain a reference to our color sensor hardware object */
-        NormalizedColorSensor colorSensor;
-        /** The relativeLayout field is used to aid in providing interesting visual feedback
-         * in this sample application; you probably *don't* need something analogous when you
-         * use a color sensor on your robot */
-        View relativeLayout;
-
-        /**
-         * The runOpMode() method is the root of this LinearOpMode, as it is in all linear opModes.
-         * Our implementation here, though is a bit unusual: we've decided to put all the actual work
-         * in the main() method rather than directly in runOpMode() itself. The reason we do that is that
-         * in this sample we're changing the background color of the robot controller screen as the
-         * opmode runs, and we want to be able to *guarantee* that we restore it to something reasonable
-         * and palatable when the opMode ends. The simplest way to do that is to use a try...finally
-         * block around the main, core logic, and an easy way to make that all clear was to separate
-         * the former from the latter in separate methods.
-         */
-
-        // Get a reference to the RelativeLayout so we can later change the background
-        // color of the Robot Controller app to match the hue detected by the RGB sensor.
-        int relativeLayoutId = hardwareMap.appContext.getResources().getIdentifier("RelativeLayout", "id", hardwareMap.appContext.getPackageName());
-        relativeLayout = ((Activity) hardwareMap.appContext).findViewById(relativeLayoutId);
-
-
-        // values is a reference to the hsvValues array.
-        float[] hsvValues = new float[3];
-        final float values[] = hsvValues;
-
-        // bPrevState and bCurrState keep track of the previous and current state of the button
-        boolean bPrevState = false;
-        boolean bCurrState = false;
-
-        // Get a reference to our sensor object.
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "ColorSensor");
-
-        // If possible, turn the light on in the beginning (it might already be on anyway,
-        // we just make sure it is if we can).
-        if (colorSensor instanceof SwitchableLight) {
-            ((SwitchableLight) colorSensor).enableLight(true);
-        }
-
-
-        // Loop until we are asked to stop
-        while (opModeIsActive() && !LineFound) {
-            // Read the sensor
-            NormalizedRGBA colors = colorSensor.getNormalizedColors();
-
-            //Reads the Red Line and drops the SkyStone
-            if ((colors.red) < 60 && (colors.red > 100) || (colors.blue < 70) && (colors.blue > 100)) {
-                stopMotors();
-                encoderDrives(0.5, 17, 17, 5);
-                robot.Gate.setPower(0.5);
-                encoderDrives(0.5, -6, -6, 3);
-                LineFound = true;
-            }
-
-            /** Use telemetry to display feedback on the driver station. We show the conversion
-             * of the colors to hue, saturation and value, and display the the normalized values
-             * as returned from the sensor.
-             * @see <a href="http://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html">HSV</a>*/
-
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            telemetry.addLine()
-                    .addData("H", "%.3f", hsvValues[0])
-                    .addData("S", "%.3f", hsvValues[1])
-                    .addData("V", "%.3f", hsvValues[2]);
-            telemetry.addLine()
-                    .addData("a", "%.3f", colors.alpha)
-                    .addData("r", "%.3f", colors.red)
-                    .addData("g", "%.3f", colors.green)
-                    .addData("b", "%.3f", colors.blue);
-
-            /** We also display a conversion of the colors to an equivalent Android color integer.
-             * @see Color */
-            int color = colors.toColor();
-            telemetry.addLine("raw Android color: ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
-
-            // Balance the colors. The values returned by getColors() are normalized relative to the
-            // maximum possible values that the sensor can measure. For example, a sensor might in a
-            // particular configuration be able to internally measure color intensity in a range of
-            // [0, 10240]. In such a case, the values returned by getColors() will be divided by 10240
-            // so as to return a value it the range [0,1]. However, and this is the point, even so, the
-            // values we see here may not get close to 1.0 in, e.g., low light conditions where the
-            // sensor measurements don't approach their maximum limit. In such situations, the *relative*
-            // intensities of the colors are likely what is most interesting. Here, for example, we boost
-            // the signal on the colors while maintaining their relative balance so as to give more
-            // vibrant visual feedback on the robot controller visual display.
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red /= max;
-            colors.green /= max;
-            colors.blue /= max;
-            color = colors.toColor();
-
-            telemetry.addLine("normalized color:  ")
-                    .addData("a", "%02x", Color.alpha(color))
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
-            telemetry.update();
-
-            // convert the RGB values to HSV values.
-            Color.RGBToHSV(Color.red(color), Color.green(color), Color.blue(color), hsvValues);
-
-            // change the background color to match the color detected by the RGB sensor.
-            // pass a reference to the hue, saturation, and value array as an argument
-            // to the HSVToColor method.
-        }
-    }
-
-
     public void mecanumMove(double speed, double angle, double inches, double timer) {
         // Turn off RUN_TO_POSITION and reset
-        robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        setAllMode(motor_mode.STOP_RESET);
+        setAllMode(motor_mode.USING_ENCODER);
 
         /*double current_angle = robot.imu.getAngularOrientation().firstAngle >= 0 ?
                 robot.imu.getAngularOrientation().firstAngle : robot.imu.getAngularOrientation().firstAngle + 360;
@@ -781,10 +593,38 @@ public class HermesAggregated extends LinearOpMode {
                     robot.BackLeft.getCurrentPosition());
             telemetry.update();
         }
-
         stopMotors();
     }
 
+    public void stopMotors() {
+        robot.FrontRight.setPower(0);
+        robot.BackRight.setPower(0);
+        robot.FrontLeft.setPower(0);
+        robot.BackLeft.setPower(0);
+    }
+    public void setAllMode(motor_mode mode) {
+        if(mode == motor_mode.RUN_TO_POSITION) {
+            robot.BackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.BackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.FrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        } else if(mode == motor_mode.STOP_RESET) {
+            robot.BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        } else if(mode == motor_mode.USING_ENCODER) {
+            robot.BackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.BackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.FrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } else if(mode == motor_mode.WITHOUT_ENCODER) {
+            robot.BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+    }
     public double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -792,15 +632,12 @@ public class HermesAggregated extends LinearOpMode {
         bd = bd.setScale(places, RoundingMode.HALF_DOWN);
         return bd.doubleValue();
     }
-
     public boolean inrange(double value, double min, double max) {
         return value > min && value < max;
     }
-
     public boolean inrange(double value, double minmax) {
         return value > -minmax && value < minmax;
     }
-
     /**
      * Check to see if the "round_value" is "close enough" to "value"
      * @param round_value the value to check
@@ -814,7 +651,6 @@ public class HermesAggregated extends LinearOpMode {
         return((error == value)? true: false);*/
         return round(round_value, place) == value;
     }
-
     public double likeallelse(double angle) {
         if (angle < -180)
             angle += 360;

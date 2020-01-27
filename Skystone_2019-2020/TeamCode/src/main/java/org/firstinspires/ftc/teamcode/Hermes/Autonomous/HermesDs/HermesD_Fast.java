@@ -10,11 +10,14 @@ import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 public class HermesD_Fast extends HermesAggregated {
     public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
+    private double P = 2.0, I = 0.5, D = 0.08;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         isD = true;
+        //init_vuforia();
 
         waitForStart();
 
@@ -38,26 +41,24 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -114, -114, 10); //Move to the Foundation
-            mecanumMove(-0.7, 90, 10, 5);
-            //mecanumMove(-1, 0, 115, 10);
+            encoderDrives(0.65, -95, -95, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(0.4, 90, -6, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.7, 90, 10, 5);
-            encoderDrives(0.65, 46, 46, 10); //Park
-            mecanumMove(-0.4, 90,4,5);
+            encoderDrives(1, 29, 29, 5); //Park
+            mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
         } else if(pos == position.MIDDLE) { //*******************************************************************************
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.4, -8, -8, 5); //Move to the 3rd Position
+            encoderDrives(0.4, -8, -8, 5); //Move to the 2nd Position
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
@@ -65,19 +66,17 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -106, -106, 10); //Move to the Foundation
-            mecanumMove(-0.7, 90, 10, 5);
+            encoderDrives(0.65, -87, -87, 10); //Move to the Build Zone to drop off the SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.7, 90, 10, 5);
-            encoderDrives(0.65, 46, 46, 10); //Park
-            mecanumMove(-0.4, 90,4,5);
+            encoderDrives(1, 29, 29, 5); //Park
+            mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
         } else if(pos == position.BRIDGE) { //*******************************************************************************
             sleep(250);
@@ -91,19 +90,17 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -98, -98, 10); //Move to the Foundation
-            mecanumMove(-0.7, 90, 10, 5);
+            encoderDrives(0.65, -79, -79, 10); //Move to the Build Zone to drop off the SkyStone into Foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.7, 90, 10, 5);
-            encoderDrives(0.65, 46, 46, 10); //Park
-            mecanumMove(-0.4, 90,4,5);
+            encoderDrives(1, 29, 29, 5); //Park
+            mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("THIRD");
         }
         telemetry.update();

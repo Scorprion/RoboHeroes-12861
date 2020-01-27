@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesCs;
+package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HeremesBs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -17,7 +17,7 @@ public class HermesBFoundation extends HermesAggregated {
         robot.init(hardwareMap);
         waitForStart();
         encoderDrives(0.5, 24, 24, 1.5);
-        mecanumMove(0.5, 90, 12, 1.5);
+        mecanumMove(0.5, 90, 13, 1.5);
         encoderDrives(0.25, 10, 10, 2.5);
 
         robot.FoundationClaw.setPower(1);
@@ -27,7 +27,7 @@ public class HermesBFoundation extends HermesAggregated {
 
         //mecanumMove(-0.5, 90, 12, 1.7);
         encoderDrives(0.5, -15, -15, 1.5);
-        pidTurn(2.5, 0.2, 0.1, -90, 0, 3.0);
+        pidTurn(2.0, 0.5, 0.08, -90, 0, 3.0);
         //encoderDrives(0.4, 45, -45, 2.5); // Turning 90 degrees
         encoderDrives(0.4, 20, 24, 1.5);
 

@@ -47,7 +47,6 @@ public class PID {
     }
 
     private double calcPID(double error) {
-        this.error = error;
         this.time = this.timer.milliseconds() / 1000;
         this.error = error;
 
