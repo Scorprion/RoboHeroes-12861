@@ -31,6 +31,7 @@ public class HermesD extends HermesAggregated {
         }
 
         if(pos == position.WALL) {
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -44,7 +45,6 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
             encoderDrives(0.65, -88, -88, 10); //Move to the Build Zone to drop off the SkyStone
-            //mecanumMove(-1, 0, 115, 10);
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
@@ -53,6 +53,8 @@ public class HermesD extends HermesAggregated {
             sleep(250);
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
+
+            //Second SkyStone
             encoderDrives(0.65, 62, 62, 10); //Drive back to the second SkyStone
             mecanumMove(0.6, 90, 3, 5);
             robot.Gate.setPower(-0.4); //Lower the Arm
@@ -72,9 +74,12 @@ public class HermesD extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.6);
             sleep(250);
+
+            //Parking
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
+
         } else if(pos == position.MIDDLE) { //*******************************************************************************
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
@@ -120,7 +125,9 @@ public class HermesD extends HermesAggregated {
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
+
         } else if(pos == position.BRIDGE) { //*******************************************************************************
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -143,6 +150,8 @@ public class HermesD extends HermesAggregated {
             sleep(250);
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
+
+            //Second SkyStone
             encoderDrives(0.65, 46, 46, 10); //Drive back to the second SkyStone
             mecanumMove(0.6, 90, 3, 5);
             robot.Gate.setPower(-0.4); //Lower the Arm
@@ -162,6 +171,8 @@ public class HermesD extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.6);
             sleep(250);
+
+            //Parking
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("THIRD");

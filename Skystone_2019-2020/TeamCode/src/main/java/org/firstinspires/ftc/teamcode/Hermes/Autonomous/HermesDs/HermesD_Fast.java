@@ -31,6 +31,7 @@ public class HermesD_Fast extends HermesAggregated {
         }
 
         if(pos == position.WALL) {
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -51,10 +52,14 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+
+            //Parking
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
+
         } else if(pos == position.MIDDLE) { //*******************************************************************************
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -75,10 +80,14 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+
+            //Parking
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
+
         } else if(pos == position.BRIDGE) { //*******************************************************************************
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -99,6 +108,8 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+
+            //Parking
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("THIRD");

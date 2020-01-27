@@ -32,7 +32,7 @@ public class HermesA extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.4, 8, 8, 5); //Move to the 3rd Position
+            encoderDrives(0.4, 8, 8, 5); //Move to the 2nd Position
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             mecanumMove(-0.4, 90, 5, 4); //Strafe closer to the SkyStone
@@ -73,7 +73,7 @@ public class HermesA extends HermesAggregated {
             encoderDrives(1, -14, -14, 5); //Park
             mecanumMove(-0.4, 90, 10, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
-        } else if (pos == position.MIDDLE) { //*******************************************************************************
+        } else if (pos == position.MIDDLE) { //WAAAAAAAAAAALLLLLLLLL*******************************************************************************
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
