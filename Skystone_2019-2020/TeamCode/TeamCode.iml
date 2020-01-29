@@ -98,5 +98,17 @@
     <orderEntry type="library" name="Gradle: :RobotServer-release:@aar" level="project" />
     <orderEntry type="module" module-name="FtcRobotController" />
     <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
   </component>
 </module>
