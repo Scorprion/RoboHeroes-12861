@@ -44,14 +44,15 @@ public class HermesA_Fast extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -95, -95, 10); //Move to the Build Zone to drop off the SkyStone
-            mecanumMove(0.4, 90, -6, 3); //Strafe closer to the foundation
+            encoderDrives(0.65, -110, 110, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 29, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+            mecanumMove(0.4, 90, 14, 5);
 
             //Parking
             encoderDrives(1, 29, 29, 5); //Park
@@ -73,13 +74,15 @@ public class HermesA_Fast extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -87, -87, 10); //Move to the Build Zone to drop off the SkyStone
+            encoderDrives(0.65, -118, -118, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 29, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+            mecanumMove(0.4, 90, 14, 5);
 
             //Parking
             encoderDrives(1, 29, 29, 5); //Park
@@ -101,13 +104,16 @@ public class HermesA_Fast extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -79, -79, 10); //Move to the Build Zone to drop off the SkyStone into Foundation
+            encoderDrives(0.65, -102, -102, 10); //Move to the Build Zone to drop off the SkyStone into Foundation
+            mecanumMove(-0.4, 90, 29, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+            mecanumMove(0.4, 90, 14, 3);
+
 
             //Parking
             encoderDrives(1, 29, 29, 5); //Park

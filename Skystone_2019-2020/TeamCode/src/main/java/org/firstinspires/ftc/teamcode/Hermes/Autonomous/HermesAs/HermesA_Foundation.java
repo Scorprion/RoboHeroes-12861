@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
-@Autonomous(name = "HermesD_Foundation", group = "Hermes")
+@Autonomous(name = "HermesA_Foundation", group = "Hermes")
 public class HermesA_Foundation extends HermesAggregated {
     public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;

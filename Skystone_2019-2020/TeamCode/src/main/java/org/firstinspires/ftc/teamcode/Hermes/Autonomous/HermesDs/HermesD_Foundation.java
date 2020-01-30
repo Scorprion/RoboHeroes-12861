@@ -42,30 +42,32 @@ public class HermesD_Foundation extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 7, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -95, -95, 10); //Move to the Build Zone to drop off the SkyStone
+            encoderDrives(0.8, -108, -108, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 12, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+            mecanumMove(0.4, 90, 5, 3);
 
             //Foundation Repositioning
-            mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
-            pidTurn(P, I, D, 90, 0, 3); //PID turn to face the Foundation
+            pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            encoderDrives(0.4, 6, 5, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(1750);
+            encoderDrives(0.4, 7, 7, 3); //Drive forward to clamp the foundation
+            encoderDrives(0.5, -26, -26, 3); //Drive back with the foundation
             robot.FoundationClaw.setPower(0);
-            sleep(1000);
-            encoderDrives(0.5, -15, -15, 1.5); //Drive back with the foundation
-            pidTurn(2.0, 0.5, 0.08, 90, 0, 3.0); //PID turn the foundation horizontally
-            encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
-            encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(0.5, 90, 5, 1.5); //Strafe closer to the bridge
+            pidTurn(2.0, 0.5, 0.08, 180, 0, 2); //PID turn the foundation horizontally
+            robot.FoundationClaw.setPower(-1); //UnClamp the foundation
+            encoderDrives(0.7, 24, 20, 1.5); //Push the foundation towards the wall
+            sleep(500);
+            robot.FoundationClaw.setPower(0);
+            encoderDrives(0.7, -47, -47, 5); //Park
+            mecanumMove(0.7, 90, 15, 1.5); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
 
         } else if(pos == position.MIDDLE) { //*******************************************************************************
@@ -81,30 +83,33 @@ public class HermesD_Foundation extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -87, -87, 10); //Move to the Build Zone to drop off the SkyStone
+            encoderDrives(0.8, -106, -106, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 12, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+            mecanumMove(0.4, 90, 5, 3);
+
 
             //Foundation Repositioning
-            mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
-            pidTurn(P, I, D, 90, 0, 3); //PID turn to face the Foundation
+            pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            encoderDrives(0.4, 6, 5, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(1750);
+            encoderDrives(0.4, 7, 7, 3); //Drive forward to clamp the foundation
+            encoderDrives(0.5, -26, -26, 3); //Drive back with the foundation
             robot.FoundationClaw.setPower(0);
-            sleep(1000);
-            encoderDrives(0.5, -15, -15, 1.5); //Drive back with the foundation
-            pidTurn(2.0, 0.5, 0.08, 90, 0, 3.0); //PID turn the foundation horizontally
-            encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
-            encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(0.5, 90, 5, 1.5); //Strafe closer to the bridge
+            pidTurn(2.0, 0.5, 0.08, 180, 0, 2); //PID turn the foundation horizontally
+            robot.FoundationClaw.setPower(-1); //UnClamp the foundation
+            encoderDrives(0.7, 24, 20, 1.5); //Push the foundation towards the wall
+            sleep(500);
+            robot.FoundationClaw.setPower(0);
+            encoderDrives(0.7, -47, -47, 5); //Park
+            mecanumMove(0.7, 90, 15, 1.5); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
 
         } else if(pos == position.BRIDGE) { //*******************************************************************************
@@ -120,30 +125,33 @@ public class HermesD_Foundation extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -79, -79, 10); //Move to the Build Zone to drop off the SkyStone into Foundation
+            encoderDrives(0.8, -98, -98, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 12, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
+            mecanumMove(0.4, 90, 5, 3);
+
 
             //Foundation Repositioning
-            mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
-            pidTurn(P, I, D, 90, 0, 3); //PID turn to face the Foundation
+            pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            encoderDrives(0.4, 6, 5, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(1750);
+            encoderDrives(0.4, 7, 7, 3); //Drive forward to clamp the foundation
+            encoderDrives(0.5, -26, -26, 3); //Drive back with the foundation
             robot.FoundationClaw.setPower(0);
-            sleep(1000);
-            encoderDrives(0.5, -15, -15, 1.5); //Drive back with the foundation
-            pidTurn(2.0, 0.5, 0.08, 90, 0, 3.0); //PID turn the foundation horizontally
-            encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
-            encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(0.5, 90, 5, 1.5); //Strafe closer to the bridge
+            pidTurn(2.0, 0.5, 0.08, 180, 0, 2); //PID turn the foundation horizontally
+            robot.FoundationClaw.setPower(-1); //UnClamp the foundation
+            encoderDrives(0.7, 24, 20, 1.5); //Push the foundation towards the wall
+            sleep(500);
+            robot.FoundationClaw.setPower(0);
+            encoderDrives(0.7, -47, -47, 5); //Park
+            mecanumMove(0.7, 90, 15, 1.5); //Strafe closer to the bridge
             telemetry.addLine("THIRD");
         }
         telemetry.update();

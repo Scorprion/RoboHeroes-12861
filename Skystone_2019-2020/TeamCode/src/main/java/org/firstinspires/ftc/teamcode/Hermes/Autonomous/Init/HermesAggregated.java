@@ -576,7 +576,7 @@ public class HermesAggregated extends LinearOpMode {
                     || abs(robot.FrontLeft.getCurrentPosition()) < distanceflbr)) {
             // We're gonna try PID yo
             pidDynamic(likeallelse(robot.imu.getAngularOrientation().firstAngle),1.0 / 36.0,
-                     2, 0.5, 0.08, setpoint, frbl, flbr, direction.STRAFE);
+                     1.0, 0.25, 0.04, setpoint, frbl, flbr, direction.STRAFE);
             telemetry.addData("Angle: ", pid.likeallelse(robot.imu.getAngularOrientation().firstAngle));
 
             // Display it for the driver.
