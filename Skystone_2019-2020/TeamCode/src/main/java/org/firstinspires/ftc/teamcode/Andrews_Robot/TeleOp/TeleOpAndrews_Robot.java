@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name= "TeleOp Andrews_Robot", group= "Pushbot")
 public class TeleOpAndrews_Robot extends OpMode {
     private double robotControlSpeed = 0.7;
-    private boolean used_recently = false, xbutton = false;
+    private boolean used_recently = false, ybutton = false;
     private ElapsedTime timer = new ElapsedTime();
 
     private double turnspeed = 0;
@@ -67,7 +67,7 @@ public class TeleOpAndrews_Robot extends OpMode {
         if (gamepad2.a) {
             Clamper.setPower(-0.7);
         } else {
-            Clamper.setPower(0.7);
+            Clamper.setPower(0.5);
         }
 
         if ((gamepad2.left_stick_y >= 0.1 || gamepad2.left_stick_y <= -0.1)) {
@@ -90,7 +90,7 @@ public class TeleOpAndrews_Robot extends OpMode {
 //            xbutton = true;
 //        }else if(xbutton) {
 //            // The x button is released
-//            used_recently = true;
+//            used_recently = true; ,.
 //            xbutton = false;
 //        }else if(used_recently) {
 //            Release.setPosition(0.2);
@@ -105,10 +105,19 @@ public class TeleOpAndrews_Robot extends OpMode {
         if (gamepad2.y){
 
                 Arm.setPower(-1);
-
+//                ybutton = true;
+//        }else if(ybutton) {
+//            // The x button is released
+//            used_recently = true;
+//            ybutton = false;
+//        }else if(used_recently) {
+//            Release.setPosition(-0.9);
+//            if(timer.milliseconds() > 2500) {
+//                used_recently = false;
+//            }
 
         }else{
-            Arm.setPower(0);
+            Arm.setPower(-0.4);
         }
 
         //Strafing
