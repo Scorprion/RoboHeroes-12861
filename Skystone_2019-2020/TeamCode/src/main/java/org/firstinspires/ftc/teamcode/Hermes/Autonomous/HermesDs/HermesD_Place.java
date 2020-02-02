@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesDs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesD_Place", group = "Hermes")
 public class HermesD_Place extends HermesAggregated {
-    public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
     private double P = 2.0, I = 0.5, D = 0.08;
 
@@ -16,7 +13,6 @@ public class HermesD_Place extends HermesAggregated {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        isD = true;
         //init_vuforia();
 
         waitForStart();
@@ -25,7 +21,7 @@ public class HermesD_Place extends HermesAggregated {
         sleep(100);
         mecanumMove(-0.4, 90, 31, 5);
         while(opModeIsActive() && pos == position.UNKNOWN) {
-            pos = CheckSkySensor();
+            pos = CheckSkySensor(true);
             telemetry.addLine("Checking position");
             telemetry.update();
         }

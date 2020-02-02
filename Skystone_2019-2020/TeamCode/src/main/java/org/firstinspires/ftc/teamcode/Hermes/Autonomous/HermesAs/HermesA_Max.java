@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesA_Max", group = "Hermes")
 public class HermesA_Max extends HermesAggregated {
-    public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
     private double P = 2.0, I = 0.5, D = 0.08;
 
@@ -16,7 +15,6 @@ public class HermesA_Max extends HermesAggregated {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        isD = true;
         //init_vuforia();
 
         waitForStart();
@@ -25,7 +23,7 @@ public class HermesA_Max extends HermesAggregated {
         sleep(100);
         mecanumMove(-0.4, 90, 31, 5);
         while(opModeIsActive() && pos == position.UNKNOWN) {
-            pos = CheckSkySensor();
+            pos = CheckSkySensor(false);
             telemetry.addLine("Checking position");
             telemetry.update();
         }

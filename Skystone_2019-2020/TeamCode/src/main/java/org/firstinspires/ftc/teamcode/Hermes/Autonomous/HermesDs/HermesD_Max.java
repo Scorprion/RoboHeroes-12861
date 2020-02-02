@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesDs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesD_Max", group = "Hermes")
 public class HermesD_Max extends HermesAggregated {
-    public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
     private double P = 2.0, I = 0.5, D = 0.08;
 
@@ -16,16 +13,14 @@ public class HermesD_Max extends HermesAggregated {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        isD = true;
         //init_vuforia();
 
         waitForStart();
 
-        encoderDrives(0.4, 27,27,5);
-        sleep(100);
-        mecanumMove(-0.4, 90, 31, 5);
+        encoderDrives(1, 23,23,5);
+        mecanumMove(-0.6, 90, 30, 5);
         while(opModeIsActive() && pos == position.UNKNOWN) {
-            pos = CheckSkySensor();
+            pos = CheckSkySensor(true);
             telemetry.addLine("Checking position");
             telemetry.update();
         }
@@ -37,121 +32,111 @@ public class HermesD_Max extends HermesAggregated {
             sleep(250);
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
-            sleep(1250);
+            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
+            sleep(600);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
             mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.8, -108, -108, 10); //Move to the Build Zone to drop off the SkyStone
-            mecanumMove(-0.4, 90, 12, 3); //Strafe closer to the foundation
+            encoderDrives(1, -108, -108, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.8, 90, 12, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
-            sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 5, 3);
+            mecanumMove(1, 90, 8, 3);
 
             //Second SkyStone
-            encoderDrives(0.65, 71, 71, 10); //Drive back to the second SkyStone
-            mecanumMove(0.6, 90, 3, 5); //Strafe away from the SkyStone to allow space for the clamp
+            encoderDrives(0.8, 86, 86, 10); //Drive back to the second SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 10, 5); //Strafe closer to the SkyStone
+            mecanumMove(-0.5, 90, 7, 4); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
-            sleep(250);
             mecanumMove(0.6, 90, -5, 5); //Strafe away from the SkyStone
-            pidTurn(P, I, D, 0, 0, 1.25);
-            sleep(250);
-            encoderDrives(0.65, -72, -72, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
-            mecanumMove(0.4, 90, -6, 3); //Strafe closer to the foundation
-            robot.Gate.setPower(-0.4); // Drop off the SkyStone
-            sleep(250);
-            robot.Clamper.setPower(1);
-            sleep(1250);
-            robot.Gate.setPower(0.6);
+            encoderDrives(1, -93, -93, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
+            mecanumMove(0.7, -90, 15, 3); //Strafe closer to the foundation
+            robot.Gate.setPower(-0.4); //Lower the Arm
+            sleep(100);
+            robot.Clamper.setPower(1); //Release the SkyStone
+            sleep(1000);
+            robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
 
             //Foundation Repositioning
-            mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
-            pidTurn(P, I, D, 90, 0, 3); //PID turn to face the Foundation
+            mecanumMove(1, 90, 5, 2); //Strafe further away from Foundation
+            pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            encoderDrives(0.4, 6, 5, 3); //Drive forward to clamp the foundation
+            mecanumMove(0.5, -90, 12, 5);
+            sleep(100);
+            mecanumMove(0.5, 90, 8, 5);
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(1750);
+            encoderDrives(0.6, 15, 20, 3); //Drive forward to clamp the foundation
+            encoderDrives(1, -80, -50, 5); //Drive back with the foundation
+            robot.FoundationClaw.setPower(-1);
+            sleep(500);
+            mecanumMove(1, 100, 50, 5);
             robot.FoundationClaw.setPower(0);
-            sleep(1000);
-            encoderDrives(0.5, -15, -15, 1.5); //Drive back with the foundation
-            pidTurn(2.0, 0.5, 0.08, 90, 0, 3.0); //PID turn the foundation horizontally
-            encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
-            encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(0.5, 90, 5, 1.5); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
 
         } else if(pos == position.MIDDLE) { //*******************************************************************************
             //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
-            sleep(250);
-            encoderDrives(0.4, -8, -8, 5); //Move to the 2nd Position
+            encoderDrives(0.6, 8, 8,5);
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
-            sleep(1250);
+            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
+            sleep(600);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
             mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.8, -106, -106, 10); //Move to the Build Zone to drop off the SkyStone
-            mecanumMove(-0.4, 90, 12, 3); //Strafe closer to the foundation
+            encoderDrives(1, -100, -100, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.8, 90, 12, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
-            sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 5, 3);
+            mecanumMove(1, 90, 8, 3);
 
-            //Second SkyStone (Needs work)
-            encoderDrives(0.65, 54, 54, 10); //Drive back to the second SkyStone
-            mecanumMove(0.6, 90, 3, 5);
+            //Second SkyStone
+            encoderDrives(0.8, 70, 70, 10); //Drive back to the second SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 10, 5); //Strafe closer to the SkyStone
+            mecanumMove(-0.5, 90, 7, 4); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
-            sleep(250);
             mecanumMove(0.6, 90, -5, 5); //Strafe away from the SkyStone
-            pidTurn(P, I, D, 0, 0, 1.25);
-            sleep(250);
-            encoderDrives(0.65, -64, -64, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
-            robot.Gate.setPower(-0.4); // Drop off the SkyStone
-            sleep(250);
-            robot.Clamper.setPower(1);
-            sleep(1250);
-            robot.Gate.setPower(0.6);
+            encoderDrives(1, -85, -85, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
+            mecanumMove(0.7, -90, 15, 3); //Strafe closer to the foundation
+            robot.Gate.setPower(-0.4); //Lower the Arm
+            sleep(100);
+            robot.Clamper.setPower(1); //Release the SkyStone
+            sleep(1000);
+            robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
 
             //Foundation Repositioning
-            mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
-            pidTurn(P, I, D, 90, 0, 3); //PID turn to face the Foundation
+            mecanumMove(1, 90, 5, 2); //Strafe further away from Foundation
+            pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            encoderDrives(0.4, 6, 5, 3); //Drive forward to clamp the foundation
+            mecanumMove(0.5, -90, 12, 5);
+            sleep(100);
+            mecanumMove(0.5, 90, 8, 5);
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(1750);
+            encoderDrives(0.6, 15, 20, 3); //Drive forward to clamp the foundation
+            encoderDrives(1, -70, -50, 5); //Drive back with the foundation
+            robot.FoundationClaw.setPower(-1);
+            sleep(500);
+            mecanumMove(1, 100, 50, 5);
             robot.FoundationClaw.setPower(0);
-            sleep(1000);
-            encoderDrives(0.5, -15, -15, 1.5); //Drive back with the foundation
-            pidTurn(2.0, 0.5, 0.08, 90, 0, 3.0); //PID turn the foundation horizontally
-            encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
-            encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(0.5, 90, 5, 1.5); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
 
         } else if(pos == position.BRIDGE) { //*******************************************************************************
@@ -159,58 +144,56 @@ public class HermesD_Max extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.4, -16, -16, 5); //Move to the 3rd Position
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
-            sleep(1250);
+            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
+            sleep(600);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
             mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(1, -98, -98, 10); //Move to the Build Zone to drop off the SkyStone
-            mecanumMove(-0.6, 90, 12, 3); //Strafe closer to the foundation
+            encoderDrives(1, -108, -108, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.8, 90, 12, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
-            sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 5, 3);
+            mecanumMove(1, 90, 8, 3);
 
-            //Second SkyStone (Needs work)
-            encoderDrives(0.7, 72, 72, 5); //Move to the 2nd SkyStone
-            mecanumMove(0.4, 90, 4, 2);
+            //Second SkyStone
+            encoderDrives(0.8, 86, 86, 10); //Drive back to the second SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
+            mecanumMove(-0.5, 90, 7, 4); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
-            sleep(250);
-            mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
-            sleep(250);
-            encoderDrives(1, -72, -72, 10); //Move to the Foundation to drop off the SkyStone
-            mecanumMove(-0.4, 90, 12, 3); //Strafe closer to the foundation
+            mecanumMove(0.6, 90, -5, 5); //Strafe away from the SkyStone
+            encoderDrives(1, -93, -93, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
+            mecanumMove(0.7, -90, 15, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
-            sleep(250);
+            sleep(100);
             robot.Clamper.setPower(1); //Release the SkyStone
-            sleep(1250);
+            sleep(1000);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 5, 3);
 
             //Foundation Repositioning
-            mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
-            pidTurn(P, I, D, 90, 0, 3); //PID turn to face the Foundation
+            mecanumMove(1, 90, 5, 2); //Strafe further away from Foundation
+            pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            encoderDrives(0.4, 6, 5, 3); //Drive forward to clamp the foundation
+            mecanumMove(0.5, -90, 12, 5);
+            sleep(100);
+            mecanumMove(0.5, 90, 8, 5);
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(1750);
+            encoderDrives(0.6, 15, 20, 3); //Drive forward to clamp the foundation
+            encoderDrives(1, -70, -50, 5); //Drive back with the foundation
+            robot.FoundationClaw.setPower(-1);
+            sleep(500);
+            mecanumMove(1, 100, 50, 5);
             robot.FoundationClaw.setPower(0);
-            sleep(1000);
-            encoderDrives(1, -50, -50, 1.5); //Drive back with the foundation
             telemetry.addLine("THIRD");
         }
         telemetry.update();

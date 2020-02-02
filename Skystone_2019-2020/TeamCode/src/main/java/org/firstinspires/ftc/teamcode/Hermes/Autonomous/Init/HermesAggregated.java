@@ -41,16 +41,12 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 public class HermesAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
-    public boolean isD = false;
-
     File captureDirectory = AppUtil.ROBOT_DATA_DIR;
 
     public boolean LineFound = false;
 
     public enum direction {
-        STRAFE,
-        TURN,
-        STRAIGHT
+        STRAFE, TURN, STRAIGHT
     }
 
     public enum motor_mode {
@@ -177,16 +173,15 @@ public class HermesAggregated extends LinearOpMode {
         }
     }
 
-    public position CheckSkySensor() {
+    public position CheckSkySensor(boolean isD) {
         /**
          * This portion of program automatically calls the robot to move to check for the skystone.
          */
-        boolean SkyStoneFound = false;
-        int currentPos = 1;
 
         NormalizedColorSensor SkySensor1;
-        SkySensor1 = hardwareMap.get(NormalizedColorSensor.class, "SkySensor1");
         NormalizedColorSensor SkySensor2;
+
+        SkySensor1 = hardwareMap.get(NormalizedColorSensor.class, "SkySensor1");
         SkySensor2 = hardwareMap.get(NormalizedColorSensor.class, "SkySensor2");
 
         NormalizedRGBA colors = SkySensor1.getNormalizedColors();
@@ -203,20 +198,31 @@ public class HermesAggregated extends LinearOpMode {
         colors2.green /= max2;
         colors2.blue /= max2;
         int color2 = colors2.toColor();
+
+        if(isD) {
             if (abs(Color.red(color1) - Color.red(color2)) < color_cut) {
-                //Position 3
-                telemetry.addLine("Position3");
-                return position.BRIDGE;
+                telemetry.addLine("Position2");
+                return position.MIDDLE;
             } else if (Color.red(color1) < Color.red(color2)) {
-                //Position 1
                 telemetry.addLine("Position1");
                 return position.WALL;
             } else {
-                //Position 2;
+                telemetry.addLine("Position3");
+                return position.BRIDGE;
+            }
+        } else {
+            if (abs(Color.red(color1) - Color.red(color2)) < color_cut) {
+                telemetry.addLine("Position3");
+                return position.BRIDGE;
+            } else if (Color.red(color1) < Color.red(color2)) {
                 telemetry.addLine("Position2");
                 return position.MIDDLE;
+            } else {
+                telemetry.addLine("Position1");
+                return position.WALL;
             }
         }
+    }
 
     double out = 0;
     public void pidTurn(double P, double I, double D, double setpoint, double speed, double seconds) {
@@ -458,7 +464,7 @@ public class HermesAggregated extends LinearOpMode {
         telemetry.addLine("Press > to start (vuforia is done)");
         telemetry.update();
     }
-    public void start_vuforia() {
+    public void start_vuforia(boolean isD) {
         targetsSkyStone.activate();
 
         boolean atTarget = false;

@@ -85,10 +85,10 @@ public class ColorTester extends HermesAggregated {
                 telemetry.addLine("Position3");
             }else if (Color.red(color1) < Color.red(color2)){
                 //Position 1
-                telemetry.addLine("Position1");
+                telemetry.addLine("Position2");
             } else {
                 //Position 2;
-                telemetry.addLine("Position2");
+                telemetry.addLine("Position1");
             }
             telemetry.update();
         }
