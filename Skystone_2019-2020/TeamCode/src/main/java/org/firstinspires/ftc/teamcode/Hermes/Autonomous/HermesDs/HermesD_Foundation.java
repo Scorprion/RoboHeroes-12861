@@ -52,8 +52,8 @@ public class HermesD_Foundation extends HermesAggregated {
             //Foundation Repositioning
             pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            robot.FoundationClaw.setPower(1); //Clamp the foundation
-            encoderDrives(0.4, 7, 7, 3); //Drive forward to clamp the foundation
+            robot.FoundationClaw.setPower(0.8); //Clamp the foundation
+            encoderDrives(0.6, 12, 12, 3); //Drive forward to clamp the foundation
             encoderDrives(0.5, -17, -17, 3); //Drive back with the foundation
             robot.FoundationClaw.setPower(0);
             pidTurn(2.0, 0.5, 0.08, 180, 0, 2); //PID turn the foundation horizontally
@@ -95,8 +95,8 @@ public class HermesD_Foundation extends HermesAggregated {
             //Foundation Repositioning
             pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            robot.FoundationClaw.setPower(1); //Clamp the foundation
-            encoderDrives(0.4, 7, 7, 3); //Drive forward to clamp the foundation
+            robot.FoundationClaw.setPower(0.8); //Clamp the foundation
+            encoderDrives(0.6, 12, 12, 3); //Drive forward to clamp the foundation
             encoderDrives(0.5, -17, -17, 3); //Drive back with the foundation
             robot.FoundationClaw.setPower(0);
             pidTurn(2.0, 0.5, 0.08, 180, 0, 2); //PID turn the foundation horizontally
@@ -138,8 +138,8 @@ public class HermesD_Foundation extends HermesAggregated {
             //Foundation Repositioning
             pidTurn(P, I, D, 90, 0, 1); //PID turn to face the Foundation
             sleep(250);
-            robot.FoundationClaw.setPower(1); //Clamp the foundation
-            encoderDrives(0.4, 7, 7, 3); //Drive forward to clamp the foundation
+            robot.FoundationClaw.setPower(0.8); //Clamp the foundation
+            encoderDrives(0.6, 12, 12, 3); //Drive forward to clamp the foundation
             encoderDrives(0.5, -17, -17, 3); //Drive back with the foundation
             robot.FoundationClaw.setPower(0);
             pidTurn(2.0, 0.5, 0.08, 180, 0, 2); //PID turn the foundation horizontally

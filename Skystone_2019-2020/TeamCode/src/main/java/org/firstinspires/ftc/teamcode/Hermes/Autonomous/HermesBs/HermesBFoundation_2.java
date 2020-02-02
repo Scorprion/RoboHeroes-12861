@@ -14,7 +14,7 @@ public class HermesBFoundation_2 extends HermesAggregated {
         robot.init(hardwareMap);
         waitForStart();
         encoderDrives(0.5, 24, 24, 1.5);
-        mecanumMove(0.5, 90, 13, 1.5);
+        mecanumMove(0.5, 90, 12, 1.5);
         encoderDrives(0.25, 10, 10, 2.5);
 
         robot.FoundationClaw.setPower(1);
