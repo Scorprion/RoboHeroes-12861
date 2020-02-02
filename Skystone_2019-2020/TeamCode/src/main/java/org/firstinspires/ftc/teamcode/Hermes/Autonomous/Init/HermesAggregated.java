@@ -201,14 +201,14 @@ public class HermesAggregated extends LinearOpMode {
 
         if(isD) {
             if (abs(Color.red(color1) - Color.red(color2)) < color_cut) {
-                telemetry.addLine("Position2");
-                return position.MIDDLE;
+                telemetry.addLine("Position3");
+                return position.BRIDGE;
             } else if (Color.red(color1) < Color.red(color2)) {
                 telemetry.addLine("Position1");
                 return position.WALL;
             } else {
-                telemetry.addLine("Position3");
-                return position.BRIDGE;
+                telemetry.addLine("Position2");
+                return position.MIDDLE;
             }
         } else {
             if (abs(Color.red(color1) - Color.red(color2)) < color_cut) {
