@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Hermes.Tests;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @TeleOp(name = "CSVData", group = "Hermes")
-@Disabled
 public class CSVData extends OpMode {
     private ElapsedTime timer = new ElapsedTime();
     boolean log_data = true, velocity_thread = false;

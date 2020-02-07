@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
+package org.firstinspires.ftc.teamcode.Andrews_Robot.Autonomous.Init;
 
 import android.graphics.Color;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,12 +15,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.Andrews_Robot.Autonomous.Init.HardwareAndrews_Robot;
 import org.firstinspires.ftc.teamcode.PID;
 
 import java.io.File;
@@ -38,7 +37,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
-public class HermesAggregated extends LinearOpMode {
+public class Andrews_RobotAggregated extends LinearOpMode {
     public static final String TAG = "Vuforia Navigation Sample";
 
     public boolean isD = false;
@@ -64,7 +63,7 @@ public class HermesAggregated extends LinearOpMode {
     //                                              "560 rises of channel A"
     public final double countsPerInch = 54.722; // (2240 / 4?)  / (Math.PI * 2.952756)
     private ElapsedTime milliseconds = new ElapsedTime();
-    public HardwareHermes robot = new HardwareHermes();
+    public HardwareAndrews_Robot robot = new HardwareAndrews_Robot();
     private double pidOutput = 0;
 
     private PID pid = new PID(0, 0, 0, 0.3);

@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesDs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesD", group = "Hermes")
 public class HermesD extends HermesAggregated {
+    public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
     private double P = 2.0, I = 0.5, D = 0.08;
 
@@ -13,6 +16,7 @@ public class HermesD extends HermesAggregated {
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
+        isD = true;
         //init_vuforia();
 
         waitForStart();
@@ -21,7 +25,7 @@ public class HermesD extends HermesAggregated {
         sleep(100);
         mecanumMove(-0.4, 90, 31, 5);
         while(opModeIsActive() && pos == position.UNKNOWN) {
-            pos = CheckSkySensor(true);
+            pos = CheckSkySensor();
             telemetry.addLine("Checking position");
             telemetry.update();
         }
@@ -63,7 +67,7 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.6, 90, -5, 5); //Strafe away from the SkyStone
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
-            encoderDrives(0.65, -72, -72, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
+            encoderDrives(0.65, -71, -71, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
             robot.Gate.setPower(-0.4); // Drop off the SkyStone
             sleep(250);
             robot.Clamper.setPower(1);
@@ -72,7 +76,7 @@ public class HermesD extends HermesAggregated {
             sleep(250);
 
             //Parking
-            encoderDrives(1, 30, 30, 5); //Park
+            encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 5, 2); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
 
@@ -113,7 +117,7 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.6, 90, -5, 5); //Strafe away from the SkyStone
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
-            encoderDrives(0.65, -64, -64, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
+            encoderDrives(0.65, -63, -63, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
             robot.Gate.setPower(-0.4); // Drop off the SkyStone
             sleep(250);
             robot.Clamper.setPower(1);
@@ -122,7 +126,7 @@ public class HermesD extends HermesAggregated {
             sleep(250);
 
             //Parking
-            encoderDrives(1, 30, 30, 5); //Park
+            encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 5, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
 
@@ -139,7 +143,7 @@ public class HermesD extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
             sleep(250);
             encoderDrives(0.65, -72, -72, 10); //Move to the Build Zone to drop off the SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
@@ -164,7 +168,7 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.6, 90, -5, 5); //Strafe away from the SkyStone
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
-            encoderDrives(0.65, -57, -57, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
+            encoderDrives(0.65, -55, -55, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
             robot.Gate.setPower(-0.4); // Drop off the SkyStone
             sleep(250);
             robot.Clamper.setPower(1);
@@ -173,7 +177,7 @@ public class HermesD extends HermesAggregated {
             sleep(250);
 
             //Parking
-            encoderDrives(1, 31, 31, 5); //Park
+            encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 5, 2); //Strafe closer to the bridge
             telemetry.addLine("THIRD");
         }
