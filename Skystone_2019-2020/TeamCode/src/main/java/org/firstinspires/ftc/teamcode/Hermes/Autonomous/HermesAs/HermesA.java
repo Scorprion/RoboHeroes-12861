@@ -28,24 +28,24 @@ public class HermesA extends HermesAggregated {
 
         if (pos == position.MIDDLE) { //MIDDDLEEEEE
             sleep(250);
-            mecanumMove(0.4, 90, 3, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 3, 4); // Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.4, 8, 8, 5); //Move to the 2nd Position
-            robot.Gate.setPower(-0.4); //Lower the Arm
+            encoderDrives(0.4, 8, 8, 5); // Move to the 2nd Position
+            robot.Gate.setPower(-0.4); // Lower the Arm
             sleep(250);
-            mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
-            robot.Clamper.setPower(-1); //Clamp the SkyStone
+            mecanumMove(-0.4, 90, 4, 4); // Strafe closer to the SkyStone
+            robot.Clamper.setPower(-1); // Clamp the SkyStone
             sleep(1250);
-            robot.Gate.setPower(0.5); //Lift up the Arm
+            robot.Gate.setPower(0.5); // Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 9, 4); // Strafe away from the SkyStone
             sleep(400);
-            encoderDrives(0.65, 79, 79, 10); //Move to the Build Zone to drop off the SkyStone
-            robot.Gate.setPower(-0.4); //Lower the Arm
+            encoderDrives(0.65, 79, 79, 10); // Move to the Build Zone to drop off the SkyStone
+            robot.Gate.setPower(-0.4); // Lower the Arm
             sleep(250);
-            robot.Clamper.setPower(1); //Release the SkyStone
+            robot.Clamper.setPower(1); // Release the SkyStone
             sleep(1250);
-            robot.Gate.setPower(0.5); //Lift up the Arm
+            robot.Gate.setPower(0.5); // Lift up the Arm
             sleep(250);
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
@@ -55,12 +55,12 @@ public class HermesA extends HermesAggregated {
             mecanumMove(0.6, 90, 3, 5);
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 13, 5); //Strafe closer to the SkyStone
-            robot.Clamper.setPower(-1); //Clamp the SkyStone
+            mecanumMove(-0.6, 90, 16, 5); // Strafe closer to the SkyStone
+            robot.Clamper.setPower(-1); // Clamp the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.6, 90, -9, 5); //Strafe away from the SkyStone
+            mecanumMove(0.6, 90, -15, 5); //Strafe away from the SkyStone
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
             encoderDrives(0.65, 64, 64, 10); //Drive back to the Build Zone to drop off 2nd SkyStone
@@ -87,7 +87,7 @@ public class HermesA extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 9, 4); //Strafe away from the SkyStone
             sleep(400);
             encoderDrives(0.65, 88, 88, 10); //Move to the Build Zone to drop off the SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
@@ -137,7 +137,7 @@ public class HermesA extends HermesAggregated {
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.4, 90, 6, 4); //Strafe away from the SkyStone
+            mecanumMove(0.4, 90, 9, 4); //Strafe away from the SkyStone
             sleep(400);
             encoderDrives(0.65, 72, 72, 10); //Move to the Build Zone to drop off the SkyStone
             robot.Gate.setPower(-0.4); //Lower the Arm
@@ -154,12 +154,12 @@ public class HermesA extends HermesAggregated {
             mecanumMove(0.6, 90, 3, 5);
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 13, 5); //Strafe closer to the SkyStone
+            mecanumMove(-0.6, 90, 16, 5); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.6, 90, -9, 5); //Strafe away from the SkyStone
+            mecanumMove(0.6, 90, -12, 5); //Strafe away from the SkyStone
             pidTurn(P, I, D, 0, 0, 1.25);
             sleep(250);
             encoderDrives(0.65, 57, 57, 10); //Drive back to the Build Zone to drop off 2nd SkyStone

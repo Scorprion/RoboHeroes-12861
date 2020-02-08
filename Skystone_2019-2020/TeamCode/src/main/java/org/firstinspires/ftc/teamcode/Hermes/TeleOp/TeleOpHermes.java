@@ -62,7 +62,7 @@ public class TeleOpHermes extends OpMode {
          */
 
         if (gamepad2.a) {
-            Clamper.setPower(-0.7);
+            Clamper.setPower(-1);
         } else {
             Clamper.setPower(0.7);
         }
