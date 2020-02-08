@@ -44,8 +44,6 @@ public class HardwareHermes {
     // The elapsed time
     public ElapsedTime runtime = new ElapsedTime();
 
-
-
     public void init(HardwareMap ahwMap) {
         //ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
@@ -60,7 +58,6 @@ public class HardwareHermes {
         parameters.loggingEnabled      = false;
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-        
 
         SkySensor1 = ahwMap.get(NormalizedColorSensor.class, "SkySensor1");
         SkySensor2 = ahwMap.get(NormalizedColorSensor.class, "SkySensor2");
@@ -84,11 +81,6 @@ public class HardwareHermes {
 
         FoundationClaw = ahwMap.get(CRServo.class, "FoundationClaw");
         Clamper = ahwMap.get(CRServo.class, "Clamper");
-
-        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

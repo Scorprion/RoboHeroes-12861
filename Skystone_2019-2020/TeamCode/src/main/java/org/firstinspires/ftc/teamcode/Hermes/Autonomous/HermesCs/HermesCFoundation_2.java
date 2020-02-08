@@ -28,7 +28,7 @@ public class HermesCFoundation_2 extends HermesAggregated {
 
         //mecanumMove(0.5, 90, 12, 1.7);
         encoderDrives(0.5, -15, -15, 1.5);
-        pidTurn(2.5, 0.2, 0.1, 90, 0, 3.0);
+        pidTurn(2.0, 0.5, 0.08, 90, 0, 3.0);
         //encoderDrives(0.4, 45, -45, 2.5); // Turning 90 degrees
         encoderDrives(0.4, 24, 20, 1.5);
 

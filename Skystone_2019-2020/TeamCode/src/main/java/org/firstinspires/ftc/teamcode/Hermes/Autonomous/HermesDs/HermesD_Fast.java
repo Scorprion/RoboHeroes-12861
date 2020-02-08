@@ -1,20 +1,19 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesDs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesD_Fast", group = "Hermes")
 public class HermesD_Fast extends HermesAggregated {
-    public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
+    private double P = 2.0, I = 0.5, D = 0.08;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
-        isD = true;
+        //init_vuforia();
 
         waitForStart();
 
@@ -22,12 +21,13 @@ public class HermesD_Fast extends HermesAggregated {
         sleep(100);
         mecanumMove(-0.4, 90, 31, 5);
         while(opModeIsActive() && pos == position.UNKNOWN) {
-            pos = CheckSkySensor(false);
+            pos = CheckSkySensor(true);
             telemetry.addLine("Checking position");
             telemetry.update();
         }
 
         if(pos == position.WALL) {
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -40,24 +40,28 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -114, -114, 10); //Move to the Foundation
-            mecanumMove(-0.7, 90, 10, 5);
-            //mecanumMove(-1, 0, 115, 10);
+            encoderDrives(0.65, -114, -114, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 14, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.7, 90, 10, 5);
-            encoderDrives(0.65, 46, 46, 10); //Park
-            mecanumMove(-0.4, 90,4,5);
+            mecanumMove(0.4, 90, 10, 3); //Strafe
+
+
+            //Parking
+            encoderDrives(1, 52, 52, 5); //Park
+            mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
+
         } else if(pos == position.MIDDLE) { //*******************************************************************************
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.4, -8, -8, 5); //Move to the 3rd Position
+            encoderDrives(0.4, -8, -8, 5); //Move to the 2nd Position
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             mecanumMove(-0.4, 90, 4, 4); //Strafe closer to the SkyStone
@@ -67,19 +71,23 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -106, -106, 10); //Move to the Foundation
-            mecanumMove(-0.7, 90, 10, 5);
+            encoderDrives(0.65, -106, -106, 10); //Move to the Build Zone to drop off the SkyStone
+            mecanumMove(-0.4, 90, 14, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.7, 90, 10, 5);
-            encoderDrives(0.65, 46, 46, 10); //Park
-            mecanumMove(-0.4, 90,4,5);
+            mecanumMove(0.4, 90, 10, 3);
+
+            //Parking
+            encoderDrives(1, 52, 52, 5); //Park
+            mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
+
         } else if(pos == position.BRIDGE) { //*******************************************************************************
+            //First SkyStone
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
@@ -93,17 +101,19 @@ public class HermesD_Fast extends HermesAggregated {
             sleep(250);
             mecanumMove(0.4, 90, 4, 4); //Strafe away from the SkyStone
             sleep(250);
-            encoderDrives(0.65, -98, -98, 10); //Move to the Foundation
-            mecanumMove(-0.7, 90, 10, 5);
+            encoderDrives(0.65, -98, -98, 10); //Move to the Build Zone to drop off the SkyStone into Foundation
+            mecanumMove(-0.4, 90, 14, 3); //Strafe closer to the foundation
             robot.Gate.setPower(-0.4); //Lower the Arm
             sleep(250);
             robot.Clamper.setPower(1); //Release the SkyStone
             sleep(1250);
             robot.Gate.setPower(0.5); //Lift up the Arm
             sleep(250);
-            mecanumMove(0.7, 90, 10, 5);
-            encoderDrives(0.65, 46, 46, 10); //Park
-            mecanumMove(-0.4, 90,4,5);
+            mecanumMove(0.4, 90, 10, 3);
+
+            //Parking
+            encoderDrives(1, 52, 52, 5); //Park
+            mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("THIRD");
         }
         telemetry.update();
