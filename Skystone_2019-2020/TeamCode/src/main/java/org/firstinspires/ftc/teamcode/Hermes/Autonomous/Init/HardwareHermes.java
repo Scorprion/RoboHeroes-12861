@@ -48,7 +48,6 @@ public class HardwareHermes {
         //ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
-        webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
 
 
         //IMU sensor
@@ -61,7 +60,6 @@ public class HardwareHermes {
 
         SkySensor1 = ahwMap.get(NormalizedColorSensor.class, "SkySensor1");
         SkySensor2 = ahwMap.get(NormalizedColorSensor.class, "SkySensor2");
-        BridgeSensor = ahwMap.get(ColorSensor.class, "BridgeSensor");
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
