@@ -12,8 +12,6 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareHermes {
     //Right motors
@@ -31,12 +29,9 @@ public class HardwareHermes {
     public CRServo FoundationClaw;
     public CRServo Clamper;
 
-    WebcamName webcamName = null;
-
     //Sensors
     public NormalizedColorSensor SkySensor1;
     public NormalizedColorSensor SkySensor2;
-    public ColorSensor BridgeSensor;
 
     //IMU sensor
     public BNO055IMU imu;
@@ -47,9 +42,6 @@ public class HardwareHermes {
     public void init(HardwareMap ahwMap) {
         //ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
-
-
-
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;

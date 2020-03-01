@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesA_Max", group = "Hermes")
+@Disabled
 public class HermesA_Max extends HermesAggregated {
     public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
