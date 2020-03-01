@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @Autonomous(name = "HermesCFoundation", group = "Hermes")
+@Disabled
 
 public class HermesCFoundation extends HermesAggregated {
 

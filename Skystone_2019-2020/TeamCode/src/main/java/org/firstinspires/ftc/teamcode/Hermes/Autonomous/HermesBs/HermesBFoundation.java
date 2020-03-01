@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.HermesBs;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
 @Autonomous(name = "HermesBFoundation", group = "Hermes")
+@Disabled
 public class HermesBFoundation extends HermesAggregated {
 
     public boolean VuforiaFound = false;
