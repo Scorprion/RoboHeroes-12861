@@ -59,7 +59,7 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.6, 90, 2, 5);
             robot.Gate.setPower(0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 10, 5); //Strafe closer to the SkyStone
+            mecanumMove(-0.6, 90, 14, 5); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
             sleep(1250);
             robot.Gate.setPower(-0.5); //Lift up the Arm
@@ -109,7 +109,7 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.6, 90, 3, 5);
             robot.Gate.setPower(0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 10, 5); //Strafe closer to the SkyStone
+            mecanumMove(-0.6, 90, 14, 5); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
             sleep(1250);
             robot.Gate.setPower(-0.5); //Lift up the Arm
@@ -160,7 +160,7 @@ public class HermesD extends HermesAggregated {
             mecanumMove(0.6, 90, 3, 5);
             robot.Gate.setPower(0.4); //Lower the Arm
             sleep(250);
-            mecanumMove(-0.6, 90, 10, 5); //Strafe closer to the SkyStone
+            mecanumMove(-0.6, 90, 14, 5); //Strafe closer to the SkyStone
             robot.Clamper.setPower(-1); //Clamp the SkyStone
             sleep(1250);
             robot.Gate.setPower(-0.5); //Lift up the Arm

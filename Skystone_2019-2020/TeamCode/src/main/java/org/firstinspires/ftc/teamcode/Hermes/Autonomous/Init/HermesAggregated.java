@@ -70,8 +70,6 @@ public class HermesAggregated extends LinearOpMode {
     private PID pid = new PID(0, 0, 0, 0.3);
     private ElapsedTime timer = new ElapsedTime();
 
-    public static double color_cut = 10;
-
     // Vuforia variables
     private static final VuforiaLocalizer.CameraDirection CAMERA_CHOICE = BACK;
     private static final boolean PHONE_IS_PORTRAIT = false;
