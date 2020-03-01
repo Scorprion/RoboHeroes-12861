@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
-import android.graphics.Color;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -31,24 +27,20 @@ public class HardwareHermes {
     public CRServo FoundationClaw;
     public CRServo Clamper;
 
-    WebcamName webcamName = null;
+    // WebcamName webcamName = null;
 
     //Sensors
     public NormalizedColorSensor SkySensor1;
     public NormalizedColorSensor SkySensor2;
-    public ColorSensor BridgeSensor;
 
     //IMU sensor
     public BNO055IMU imu;
-
-    // The elapsed time
-    public ElapsedTime runtime = new ElapsedTime();
 
     public void init(HardwareMap ahwMap) {
         //ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
-        webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
+        // webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
 
 
         //IMU sensor
@@ -61,7 +53,6 @@ public class HardwareHermes {
 
         SkySensor1 = ahwMap.get(NormalizedColorSensor.class, "SkySensor1");
         SkySensor2 = ahwMap.get(NormalizedColorSensor.class, "SkySensor2");
-        BridgeSensor = ahwMap.get(ColorSensor.class, "BridgeSensor");
 
         FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
