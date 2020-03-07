@@ -57,14 +57,14 @@ public class HermesA_Foundation extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
             pidTurn(P, I, D, 90, 0, 1.5); //PID turn to face the Foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(200);
+            //sleep(200);
             encoderDrives(0.4, 10, 10, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(0);
             encoderDrives(0.5, -25, -25, 1.5); //Drive back with the foundation
             pidTurn(2.0, 0.5, 0.08, 0, 0, 3.0); //PID turn the foundation horizontally
             encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
             robot.FoundationClaw.setPower(-1);
-            sleep(750);
+            sleep(1000);
             robot.FoundationClaw.setPower(0);
             encoderDrives(0.5, -47, -47, 5); //Park
             mecanumMove(-0.5, 90, 5, 1.5); //Strafe closer to the bridge
@@ -98,14 +98,14 @@ public class HermesA_Foundation extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
             pidTurn(P, I, D, 90, 0, 1.5); //PID turn to face the Foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(200);
+            //sleep(200);
             encoderDrives(0.4, 10, 10, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(0);
             encoderDrives(0.5, -25, -25, 1.5); //Drive back with the foundation
             pidTurn(2.0, 0.5, 0.08, 0, 0, 3.0); //PID turn the foundation horizontally
             encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
             robot.FoundationClaw.setPower(-1);
-            sleep(750);
+            sleep(1000);
             robot.FoundationClaw.setPower(0);
             encoderDrives(0.5, -47, -47, 5); //Park
             mecanumMove(-0.5, 90, 5, 1.5); //Strafe closer to the bridge
@@ -139,14 +139,14 @@ public class HermesA_Foundation extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
             pidTurn(P, I, D, 90, 0, 1.5); //PID turn to face the Foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(200);
+            //sleep(200);
             encoderDrives(0.4, 10, 10, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(0);
             encoderDrives(0.5, -25, -25, 1.5); //Drive back with the foundation
             pidTurn(2.0, 0.5, 0.08, 0, 0, 3.0); //PID turn the foundation horizontally
             encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
             robot.FoundationClaw.setPower(-1);
-            sleep(750);
+            sleep(1000);
             robot.FoundationClaw.setPower(0);
             encoderDrives(0.5, -47, -47, 5); //Park
             mecanumMove(-0.5, 90, 5, 1.5); //Strafe closer to the bridge

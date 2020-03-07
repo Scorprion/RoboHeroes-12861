@@ -122,5 +122,7 @@
     <orderEntry type="module" module-name="FtcDashboard" />
     <orderEntry type="module" module-name="FtcRobotController" />
     <orderEntry type="module" module-name="FtcDashboard" />
+    <orderEntry type="module" module-name="FtcRobotController" />
+    <orderEntry type="module" module-name="FtcDashboard" />
   </component>
 </module>
