@@ -201,7 +201,7 @@ public class HermesAggregated extends LinearOpMode {
         colors2.green /= max2;
         colors2.blue /= max2;
         int color2 = colors2.toColor();
-            if (abs(Color.red(color1) - Color.red(color2)) < color_cut) {
+            if (abs(Color.red(color1) - Color.red(color2)) < 10) {
                 //Position 3
                 telemetry.addLine("Position3");
                 return position.BRIDGE;
