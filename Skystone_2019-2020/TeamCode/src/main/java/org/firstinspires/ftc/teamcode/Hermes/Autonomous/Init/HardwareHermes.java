@@ -1,15 +1,11 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
-import android.graphics.Color;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @SuppressWarnings({"WeakerAccess"})
@@ -29,6 +25,8 @@ public class HardwareHermes {
     public CRServo FoundationClaw;
     public CRServo Clamper;
 
+    // WebcamName webcamName = null;
+
     //Sensors
     public NormalizedColorSensor SkySensor1;
     public NormalizedColorSensor SkySensor2;
@@ -36,12 +34,13 @@ public class HardwareHermes {
     //IMU sensor
     public BNO055IMU imu;
 
-    // The elapsed time
-    public ElapsedTime runtime = new ElapsedTime();
-
     public void init(HardwareMap ahwMap) {
         //ColorSensor = ahwMap.get(NormalizedColorSensor.class, "ColorSensor");
         //DistanceSensor = ahwMap.get(DistanceSensor.class, "DistanceSensor");
+
+        // webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
+
+
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
