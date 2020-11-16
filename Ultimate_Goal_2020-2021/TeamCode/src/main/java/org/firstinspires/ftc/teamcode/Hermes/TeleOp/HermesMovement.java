@@ -3,11 +3,8 @@ package org.firstinspires.ftc.teamcode.Hermes.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.matrices.DenseMatrixF;
-import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
-import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PID;
 
 @TeleOp(name = "HermesMovement", group = "Hermes")
@@ -35,6 +32,8 @@ public class HermesMovement extends OpMode {
     HardwareHermes robot = new HardwareHermes();
     PID angle_tracker = new PID(0, 0, 0, 0.0);
 
+
+
     @Override
     public void init() {
         robot.init(hardwareMap);
@@ -48,8 +47,8 @@ public class HermesMovement extends OpMode {
         w4 = robot.BackRight.getCurrentPosition() / countsPerInch;
 
         y_pos = avg_rad * (w1 + w2 + w3 + w4);
-        x_pos = -avg_rad * (w1 + -w2 + w3 + -w4);
-        theta = -avg_rad * (inverse_sum_dist * w1 - inverse_sum_dist * w2 - inverse_sum_dist * w3 + inverse_sum_dist * w4);
+        x_pos = avg_rad * (-w1 + w2 + -w3 + w4);
+        theta = avg_rad * (inverse_sum_dist * -w1 + inverse_sum_dist * w2 + inverse_sum_dist * w3 + inverse_sum_dist * -w4);
 
         turnspeed = -gamepad1.right_stick_x * robotControlSpeed;
         strafespeed = gamepad1.left_stick_x * robotControlSpeed;
