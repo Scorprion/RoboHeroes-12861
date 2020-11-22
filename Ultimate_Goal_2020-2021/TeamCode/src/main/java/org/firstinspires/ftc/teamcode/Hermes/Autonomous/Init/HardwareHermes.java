@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.hardware.bosch.NaiveAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
@@ -49,13 +51,12 @@ public class HardwareHermes {
         ringcs = ahwMap.get(ColorSensor.class, "RingColorSensor");
         ds = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
-
-
         //IMU sensor
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.loggingEnabled      = false;
+        parameters.accelerationIntegrationAlgorithm = new AccelerationIntegrator(0.3);
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
