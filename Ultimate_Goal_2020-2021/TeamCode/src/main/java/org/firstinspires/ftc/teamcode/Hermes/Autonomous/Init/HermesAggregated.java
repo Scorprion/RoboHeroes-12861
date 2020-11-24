@@ -50,8 +50,9 @@ public class HermesAggregated extends LinearOpMode {
         TURN,
         STRAIGHT
     }
-    //                                              "560 rises of channel A"
-    public final double countsPerInch = 54.722; // (2240 / 4?)  / (Math.PI * 2.952756)
+
+    final double wheel_radius = Math.PI * 75 * 5 / 127;  // wheel radius (inch)
+    public final double countsPerInch = 560 * (1 / wheel_radius); // 560 counts per inch
     private ElapsedTime milliseconds = new ElapsedTime();
     public HardwareHermes robot = new HardwareHermes();
     private double pidOutput = 0;

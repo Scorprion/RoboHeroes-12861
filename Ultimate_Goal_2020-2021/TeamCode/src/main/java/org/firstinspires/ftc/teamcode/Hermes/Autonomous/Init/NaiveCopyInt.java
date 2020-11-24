@@ -33,20 +33,20 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.meanIntegrate;
-import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.minus;
 import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.plus;
-import static org.firstinspires.ftc.robotcore.external.navigation.NavUtil.scale;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 
-public class AccelerationIntegrator implements BNO055IMU.AccelerationIntegrator
+public class NaiveCopyInt implements BNO055IMU.AccelerationIntegrator
 {
     //------------------------------------------------------------------------------------------
     // State
@@ -57,11 +57,6 @@ public class AccelerationIntegrator implements BNO055IMU.AccelerationIntegrator
     Velocity velocity;
     Acceleration acceleration;
 
-    Acceleration current_estimate;
-    Acceleration previous_estimate;
-    double kalman_gain = 0;
-    double threshold = 0;
-
     public Position getPosition() { return this.position; }
     public Velocity getVelocity() { return this.velocity; }
     public Acceleration getAcceleration() { return this.acceleration; }
@@ -70,74 +65,58 @@ public class AccelerationIntegrator implements BNO055IMU.AccelerationIntegrator
     // Construction
     //------------------------------------------------------------------------------------------
 
-    public AccelerationIntegrator(double gain, double threshold) {
+    NaiveCopyInt()
+    {
         this.parameters = null;
-
         this.position = new Position();
         this.velocity = new Velocity();
         this.acceleration = null;
-
-        this.current_estimate = new Acceleration();
-        this.previous_estimate = new Acceleration();
-
-        this.kalman_gain = gain;
-        this.threshold = threshold;
     }
 
     //------------------------------------------------------------------------------------------
     // Operations
     //------------------------------------------------------------------------------------------
 
-    @Override
-    public void initialize(BNO055IMU.Parameters parameters, Position initialPosition, Velocity initialVelocity) {
+    @Override public void initialize(@NonNull BNO055IMU.Parameters parameters, @Nullable Position initialPosition, @Nullable Velocity initialVelocity)
+    {
         this.parameters = parameters;
         this.position = initialPosition != null ? initialPosition : this.position;
         this.velocity = initialVelocity != null ? initialVelocity : this.velocity;
         this.acceleration = null;
     }
 
-    @Override
-    public void update(Acceleration linearAcceleration) {
+    @Override public void update(Acceleration linearAcceleration)
+    {
         // We should always be given a timestamp here
-        if (linearAcceleration.acquisitionTime != 0) {
+        if (linearAcceleration.acquisitionTime != 0)
+        {
             // We can only integrate if we have a previous acceleration to baseline from
-            if (acceleration != null) {
-
+            if (acceleration != null)
+            {
                 Acceleration accelPrev    = acceleration;
                 Velocity     velocityPrev = velocity;
 
-                if (isGreaterThanThresh(linearAcceleration, this.threshold)) acceleration = linearAcceleration;
-                else acceleration = new Acceleration(DistanceUnit.INCH, 0.0, 0.0, 0.0, linearAcceleration.acquisitionTime);
+                acceleration = linearAcceleration;
 
-                this.previous_estimate = plus(this.previous_estimate, scale(minus(accelPrev, this.previous_estimate), this.kalman_gain));
-                this.current_estimate = plus(this.current_estimate, scale(minus(acceleration, this.current_estimate), this.kalman_gain));
-
-
-                if (accelPrev.acquisitionTime != 0) {
-                    Velocity deltaVelocity = meanIntegrate(this.current_estimate, this.previous_estimate);
+                if (accelPrev.acquisitionTime != 0)
+                {
+                    Velocity deltaVelocity = meanIntegrate(acceleration, accelPrev);
                     velocity = plus(velocity, deltaVelocity);
                 }
 
-                if (velocityPrev.acquisitionTime != 0) {
+                if (velocityPrev.acquisitionTime != 0)
+                {
                     Position deltaPosition = meanIntegrate(velocity, velocityPrev);
                     position = plus(position, deltaPosition);
                 }
 
-                if (parameters != null && parameters.loggingEnabled) {
-
+                if (parameters != null && parameters.loggingEnabled)
+                {
                     RobotLog.vv(parameters.loggingTag, "dt=%.3fs accel=%s vel=%s pos=%s", (acceleration.acquisitionTime - accelPrev.acquisitionTime)*1e-9, acceleration, velocity, position);
                 }
             }
-            else {
-
-                 if (isGreaterThanThresh(linearAcceleration, this.threshold)) acceleration = linearAcceleration;
-                 else acceleration = new Acceleration(DistanceUnit.INCH, 0.0, 0.0, 0.0, linearAcceleration.acquisitionTime);
-
-            }
+            else
+                acceleration = linearAcceleration;
         }
-    }
-
-    public boolean isGreaterThanThresh(Acceleration accel, double constant) {
-        return Math.abs(accel.xAccel) > constant && Math.abs(accel.yAccel) > constant && Math.abs(accel.zAccel) > constant;
     }
 }

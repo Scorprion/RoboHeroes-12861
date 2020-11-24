@@ -55,8 +55,9 @@ public class HardwareHermes {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
         parameters.loggingEnabled      = false;
-        parameters.accelerationIntegrationAlgorithm = new AccelerationIntegrator(0.3);
+        parameters.accelerationIntegrationAlgorithm = new AccelerationIntegrator(0.01, 0.2);
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
