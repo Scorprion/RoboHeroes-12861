@@ -1,12 +1,8 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.basicGiven.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.teamcode.HardwareMap.HardwareMap_Example;
+import org.firstinspires.ftc.teamcode.basicGiven.HardwareMap.HardwareMap_Example;
 
 // CHAWKS: Name it something useful!
 @TeleOp(name = "I like to move", group = "A")

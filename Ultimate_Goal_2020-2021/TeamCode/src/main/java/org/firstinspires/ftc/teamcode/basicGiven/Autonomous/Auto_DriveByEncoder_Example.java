@@ -27,19 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.basicGiven.Autonomous;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 //import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 // List where other files are located that are used in this OpMode
-import org.firstinspires.ftc.teamcode.HardwareMap.HardwareMap_Example;
+import org.firstinspires.ftc.teamcode.basicGiven.HardwareMap.HardwareMap_Example;
 
 /**
  * In this example:
