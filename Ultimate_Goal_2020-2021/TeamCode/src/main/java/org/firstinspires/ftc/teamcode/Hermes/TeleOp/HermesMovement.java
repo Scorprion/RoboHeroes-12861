@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
 import org.firstinspires.ftc.teamcode.PID;
 
@@ -22,9 +20,8 @@ public class HermesMovement extends OpMode {
     private double w1, w2, w3, w4;
 
     // Localizations with powers/motor inputs
-
-    private double x_pred, y_pred, previous_time = 0, delta_time;
-    private double motor_v1, motor_v2, motor_v3, motor_v4;  // Motor velocities (more accurately the powers though) labelled the same way as quadrants on the cartesian plane
+    private volatile double x_pred, y_pred, previous_time = 0, delta_time;
+    private double motor_v1 = 0, motor_v2 = 0, motor_v3 = 0, motor_v4 = 0;  // Motor velocities (more accurately the powers though) labelled the same way as quadrants on the cartesian plane
     private ElapsedTime timer = new ElapsedTime();
 
     final double wheel_radius = Math.PI * 75 * 5 / 127;  // wheel radius (inch)
@@ -39,13 +36,42 @@ public class HermesMovement extends OpMode {
 
     HardwareHermes robot = new HardwareHermes();
     PID angle_tracker = new PID(0, 0, 0, 0.0);
+    PositionPrediction background_tracker = new PositionPrediction();
+    Thread thread = new Thread(background_tracker, "PosPred");
 
+    private class PositionPrediction implements Runnable {
+        private boolean stopRequested = false;
 
+        public synchronized void requestStop() {
+            this.stopRequested = true;
+        }
+
+        public synchronized boolean isStopRequested() {
+            return this.stopRequested;
+        }
+
+        @Override
+        public void run() {
+            while(!isStopRequested()) {
+                // Position prediction (assuming 300 is the max rpm of the motors -> 50 rps)
+                delta_time = timer.seconds() - previous_time;  // Current time - previous time
+                x_pred += 5 * wheel_radius * delta_time * (-motor_v1 + motor_v2 + -motor_v3 + motor_v4);
+                y_pred += 5 * wheel_radius * delta_time * (motor_v1 + motor_v2 + motor_v3 + motor_v4);
+                previous_time = timer.seconds();  // Update previous time
+            }
+        }
+    }
 
     @Override
     public void init() {
         robot.init(hardwareMap);
+        thread.start();
         // robot.imu.startAccelerationIntegration(new Position(), new Velocity(), 50);
+    }
+
+    @Override
+    public void stop() {
+        background_tracker.requestStop();
     }
 
     @Override
@@ -67,13 +93,6 @@ public class HermesMovement extends OpMode {
         motor_v2 = speed + strafespeed + turnspeed;
         motor_v3 = speed - strafespeed + turnspeed;
         motor_v4 = speed + strafespeed - turnspeed;
-
-        // Position prediction (assuming 300 is the max rpm of the motors -> 50 rps)
-        delta_time = timer.seconds() - previous_time;  // Current time - previous time
-        x_pred += 5 * wheel_radius * delta_time * (-motor_v1 + motor_v2 + -motor_v3 + motor_v4);
-        y_pred += 5 * wheel_radius * delta_time * (motor_v1 + motor_v2 + motor_v3 + motor_v4);
-        previous_time = timer.seconds();  // Update previous time
-
 
 
         /*
