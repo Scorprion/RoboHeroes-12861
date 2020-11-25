@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.basicGiven.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.basicGiven.HardwareMap.HardwareMap_Example;
 
 // CHAWKS: Name it something useful!
 @TeleOp(name = "I like to move", group = "A")
-//@Disabled
+@Disabled
 public class JerseyGirlHolonomic extends HardwareMap_Example {
 
 
