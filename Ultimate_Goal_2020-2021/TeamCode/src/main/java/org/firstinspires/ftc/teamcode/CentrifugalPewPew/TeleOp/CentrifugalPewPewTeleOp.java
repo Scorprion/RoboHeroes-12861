@@ -4,17 +4,24 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name= "TeleOp", group= "Controlled")
 public class CentrifugalPewPewTeleOp extends OpMode {
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
+    DcMotor ShooterL, ShooterR;
 
     private double turnspeed = 0;
     private double strafespeed = 0;
     private double speed = 0;
     private double robotControlSpeed = 1;
+    private double shootingControlSpeed = 0.8;
 
+    private boolean SpeedToggle = true;
+    private boolean usedRecently = false;
+
+    public ElapsedTime runtime = new ElapsedTime();
 
     public void init(){
         FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
@@ -30,6 +37,17 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        //Shooter Moters
+        ///*
+        ShooterL = hardwareMap.get(DcMotor.class, "ShooterL");
+        ShooterL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        ShooterR = hardwareMap.get(DcMotor.class, "ShooterR");
+        ShooterR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ShooterR.setDirection(DcMotorSimple.Direction.REVERSE);
+        //*/
     }
 
     public void loop(){
@@ -48,5 +66,42 @@ public class CentrifugalPewPewTeleOp extends OpMode {
             FrontLeft.setPower(0);
             BackLeft.setPower(0);
         }
+
+        if(gamepad2.a){
+            while(gamepad2.a) {
+                //Testing
+                /*
+                FrontRight.setPower(0.8);
+                BackRight.setPower(0.8);
+                */
+                ShooterL.setPower(0.89);
+                ShooterR.setPower(0.89);
+            }
+        }
+
+        if(gamepad2.right_stick_y != 0){
+            ShooterL.setPower(gamepad2.right_stick_y);
+            ShooterR.setPower(gamepad2.right_stick_y);
+        }else{
+            ShooterL.setPower(0);
+            ShooterR.setPower(0);
+        }
+
+        if(gamepad2.b && !usedRecently){
+            if(shootingControlSpeed >= 1.0) {
+                shootingControlSpeed = 0;
+            }else{
+                shootingControlSpeed += 0.2;
+            }
+            runtime.reset();
+            usedRecently = true;
+        }
+
+        if (runtime.milliseconds() > 200) {
+            usedRecently = false;
+        }
+        telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
+        telemetry.addData("Shooter Speed:",gamepad2.right_stick_y);
+        telemetry.update();
     }
 }
