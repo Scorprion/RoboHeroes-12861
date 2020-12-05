@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 
-@Autonomous(name = "HermesA_Foundation", group = "Hermes")
-public class HermesA_Foundation extends HermesAggregated {
+@Autonomous(name = "HermesA_Foundation_2", group = "Hermes")
+public class HermesA_Foundation_2 extends HermesAggregated {
     public boolean VuforiaFound = false;
     private position pos = position.UNKNOWN;
     private double P = 2.0, I = 0.5, D = 0.08;
@@ -57,17 +57,17 @@ public class HermesA_Foundation extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
             pidTurn(P, I, D, 90, 0, 1.5); //PID turn to face the Foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(200);
-            encoderDrives(0.4, 10, 10, 3); //Drive forward to clamp the foundation
+            sleep(150);
+            encoderDrives(0.4, 9, 9, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(0);
-            encoderDrives(0.5, -25, -25, 1.5); //Drive back with the foundation
+            encoderDrives(0.5, -23, -23, 1.5); //Drive back with the foundation
             pidTurn(2.0, 0.5, 0.08, 0, 0, 3.0); //PID turn the foundation horizontally
             encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
             robot.FoundationClaw.setPower(-1);
             sleep(750);
             robot.FoundationClaw.setPower(0);
+            mecanumMove(0.5, 90, 15, 3); //Strafe closer to the bridge
             encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(-0.5, 90, 5, 1.5); //Strafe closer to the bridge
             telemetry.addLine("FIRST");
 
         } else if(pos == position.WALL) { //*******************************************************************************
@@ -98,17 +98,17 @@ public class HermesA_Foundation extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
             pidTurn(P, I, D, 90, 0, 1.5); //PID turn to face the Foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(200);
-            encoderDrives(0.4, 10, 10, 3); //Drive forward to clamp the foundation
+            sleep(150);
+            encoderDrives(0.4, 9, 9, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(0);
-            encoderDrives(0.5, -25, -25, 1.5); //Drive back with the foundation
+            encoderDrives(0.5, -23, -23, 1.5); //Drive back with the foundation
             pidTurn(2.0, 0.5, 0.08, 0, 0, 3.0); //PID turn the foundation horizontally
             encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
             robot.FoundationClaw.setPower(-1);
             sleep(750);
             robot.FoundationClaw.setPower(0);
+            mecanumMove(0.5, 90, 15, 3); //Strafe closer to the bridge
             encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(-0.5, 90, 5, 1.5); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
 
         } else if(pos == position.BRIDGE) { //*******************************************************************************
@@ -139,17 +139,17 @@ public class HermesA_Foundation extends HermesAggregated {
             mecanumMove(0.4, 90, 6, 2); //Strafe further away from Foundation
             pidTurn(P, I, D, 90, 0, 1.5); //PID turn to face the Foundation
             robot.FoundationClaw.setPower(1); //Clamp the foundation
-            sleep(200);
-            encoderDrives(0.4, 10, 10, 3); //Drive forward to clamp the foundation
+            sleep(150);
+            encoderDrives(0.4, 9, 9, 3); //Drive forward to clamp the foundation
             robot.FoundationClaw.setPower(0);
-            encoderDrives(0.5, -25, -25, 1.5); //Drive back with the foundation
+            encoderDrives(0.5, -23, -23, 1.5); //Drive back with the foundation
             pidTurn(2.0, 0.5, 0.08, 0, 0, 3.0); //PID turn the foundation horizontally
             encoderDrives(0.4, 24, 20, 1.5); //Push the foundation towards the wall
             robot.FoundationClaw.setPower(-1);
             sleep(750);
             robot.FoundationClaw.setPower(0);
+            mecanumMove(0.5, 90, 15, 3); //Strafe closer to the bridge
             encoderDrives(0.5, -47, -47, 5); //Park
-            mecanumMove(-0.5, 90, 5, 1.5); //Strafe closer to the bridge
             telemetry.addLine("THIRD");
         }
         telemetry.update();
