@@ -14,18 +14,19 @@ public class HermesMovement extends OpMode {
     private double turnspeed, strafespeed, speed;
     private final double robotControlSpeed = 0.7;
 
-
     // Localization with encoders
     private double x_pos = 0, y_pos = 0, theta = 0;
     private double w1, w2, w3, w4;
 
     // Localizations with powers/motor inputs
     private volatile double x_pred, y_pred, previous_time = 0, delta_time;
+    private double velocity_avg = 0;
     private double motor_v1 = 0, motor_v2 = 0, motor_v3 = 0, motor_v4 = 0;  // Motor velocities (more accurately the powers though) labelled the same way as quadrants on the cartesian plane
     private ElapsedTime timer = new ElapsedTime();
 
     final double wheel_radius = Math.PI * 75 * 5 / 127;  // wheel radius (inch)
-    final double countsPerInch = 560 * (1 / wheel_radius); // 560 counts per inch
+    final double countsPerInch = 560 * (1 / wheel_radius); // 560 counts per rev
+    final double wheel_rad_per_second = 5 * wheel_radius * robotControlSpeed;   // assuming 300 is the max rpm of the motors -> 5 rps
     final double l_x = 13.5;  // wheel distance x-wise (inch)
     final double l_y = 11.45;  // wheel distance y-wise (inch)
 
@@ -41,6 +42,9 @@ public class HermesMovement extends OpMode {
 
     private class PositionPrediction implements Runnable {
         private boolean stopRequested = false;
+        private double current_dheading = 0;  // Current angle in degrees
+        private double current_heading = 0;  // Current angle in radians
+        private double delta_angle = 0, previous_angle = 0;  // Variables used to calculate the current angle from the imu
 
         public synchronized void requestStop() {
             this.stopRequested = true;
@@ -50,13 +54,29 @@ public class HermesMovement extends OpMode {
             return this.stopRequested;
         }
 
+
+        public synchronized void update_heading(double angle) {
+            this.delta_angle = angle - this.previous_angle;
+
+            if (delta_angle < -180)
+                delta_angle += 360;
+            else if (delta_angle > 180)
+                delta_angle -= 360;
+
+            this.current_dheading += delta_angle;
+            this.current_heading = Math.toRadians(this.current_dheading);
+            this.previous_angle = angle;
+        }
+
+
         @Override
         public void run() {
             while(!isStopRequested()) {
-                // Position prediction (assuming 300 is the max rpm of the motors -> 50 rps)
+                // Position prediction
                 delta_time = timer.seconds() - previous_time;  // Current time - previous time
-                x_pred += 5 * wheel_radius * delta_time * (-motor_v1 + motor_v2 + -motor_v3 + motor_v4);
-                y_pred += 5 * wheel_radius * delta_time * (motor_v1 + motor_v2 + motor_v3 + motor_v4);
+
+                x_pred += wheel_rad_per_second * (-motor_v1 + motor_v2 + -motor_v3 + motor_v4) * delta_time;
+                y_pred += wheel_rad_per_second * (motor_v1 + motor_v2 + motor_v3 + motor_v4) * delta_time;
                 previous_time = timer.seconds();  // Update previous time
             }
         }
@@ -114,7 +134,6 @@ public class HermesMovement extends OpMode {
 
 
         // ------- Telemetry -------
-
         telemetry.addData("X-pos pred", x_pred);
         telemetry.addData("Y-pos pred", y_pred);
         telemetry.addData("Delta time", delta_time);
