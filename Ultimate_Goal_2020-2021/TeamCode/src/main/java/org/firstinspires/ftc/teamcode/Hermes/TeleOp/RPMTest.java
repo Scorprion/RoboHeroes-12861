@@ -2,25 +2,22 @@ package org.firstinspires.ftc.teamcode.Hermes.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
 
 import static java.lang.Thread.sleep;
 
-@TeleOp(name= "RPM Test", group= "Pushbot")
+@TeleOp(name= "RPM Calc", group= "Pushbot")
 public class RPMTest extends OpMode {
     private double robotControlSpeed = 0.7;
 
-    private final double counts_per_rev = 560.0;
+    private final double revs_per_count = 3.0 / 28.0;
 
     private ElapsedTime timer = new ElapsedTime();
     private volatile double rps1 = 0, rps2 = 0, rps3 = 0, rps4 = 0;
-    private double prev_pos1 = 0, prev_pos2 = 0, prev_pos3 = 0, prev_pos4 = 0;
-    private volatile double delta_time = 0, previous_time = 0;
+    // private double prev_pos1 = 0, prev_pos2 = 0, prev_pos3 = 0, prev_pos4 = 0;
+    private volatile double current_time = 0;
 
 
     private double turnspeed = 0;
@@ -51,17 +48,11 @@ public class RPMTest extends OpMode {
         @Override
         public void run() {
             while(!isStopRequested()) {
-                delta_time = timer.seconds() - previous_time;
-                rps1 = (robot.FrontRight.getCurrentPosition() - prev_pos1) / (delta_time * counts_per_rev);
-                rps2 = (robot.FrontLeft.getCurrentPosition() - prev_pos2) / (delta_time * counts_per_rev);
-                rps3 = (robot.BackLeft.getCurrentPosition() - prev_pos3) / (delta_time * counts_per_rev);
-                rps4 = (robot.BackRight.getCurrentPosition() - prev_pos4) / (delta_time * counts_per_rev);
-
-                prev_pos1 = robot.FrontRight.getCurrentPosition();
-                prev_pos2 = robot.FrontLeft.getCurrentPosition();
-                prev_pos3 = robot.BackLeft.getCurrentPosition();
-                prev_pos4 = robot.BackRight.getCurrentPosition();
-                previous_time = timer.seconds();
+                current_time = timer.seconds();
+                rps1 = (robot.FrontRight.getCurrentPosition() / current_time) * revs_per_count;
+                rps2 = (robot.FrontLeft.getCurrentPosition() / current_time) * revs_per_count;
+                rps3 = (robot.BackLeft.getCurrentPosition() / current_time) * revs_per_count;
+                rps4 = (robot.BackRight.getCurrentPosition() / current_time) * revs_per_count;
             }
         }
     }
@@ -94,9 +85,9 @@ public class RPMTest extends OpMode {
         robot.FrontLeft.setPower(speed + strafespeed + turnspeed);
         robot.BackLeft.setPower(speed - strafespeed + turnspeed);
 
-        telemetry.addData("RPS Estimates: ", "%.5f, %.5f, %.5f, %.5f", (rps1), (rps2), (rps3), (rps4));
+        telemetry.addData("RPM Estimates: ", "%.5f, %.5f, %.5f, %.5f", (rps1), (rps2), (rps3), (rps4));
         telemetry.addData("Encoder1", robot.FrontRight.getCurrentPosition());
-        telemetry.addData("Delta time: ", delta_time);
+        telemetry.addData("Time: ", current_time);
         telemetry.update();
     }
 

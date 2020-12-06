@@ -15,7 +15,7 @@ public class HermesMovement extends OpMode {
     private final double robotControlSpeed = 0.7;
 
     // Localization with encoders
-    private double x_pos = 0, y_pos = 0, theta = 0;
+    private double x_enc = 0, y_enc = 0, theta = 0;
     private double w1, w2, w3, w4;
 
     // Localizations with powers/motor inputs
@@ -24,9 +24,12 @@ public class HermesMovement extends OpMode {
     private double motor_v1 = 0, motor_v2 = 0, motor_v3 = 0, motor_v4 = 0;  // Motor velocities (more accurately the powers though) labelled the same way as quadrants on the cartesian plane
     private ElapsedTime timer = new ElapsedTime();
 
+    // Weight Average Parameter - weight (percentage) given to the encoders compared to the motor speed prediction method
+    private double weight = 0.75;
+
     final double wheel_radius = Math.PI * 75 * 5 / 127;  // wheel radius (inch)
     final double countsPerInch = 560 * (1 / wheel_radius); // 560 counts per rev
-    final double wheel_rad_per_second = 5 * wheel_radius * robotControlSpeed;   // assuming 300 is the max rpm of the motors -> 5 rps
+    final double wheel_rad_per_second = 3.042 * wheel_radius * robotControlSpeed;   // (300 is theoretical max) assuming 182.5 is the max load rpm of the motors -> 3.042 rps
     final double l_x = 13.5;  // wheel distance x-wise (inch)
     final double l_y = 11.45;  // wheel distance y-wise (inch)
 
@@ -101,8 +104,8 @@ public class HermesMovement extends OpMode {
         w3 = robot.BackLeft.getCurrentPosition();
         w4 = robot.BackRight.getCurrentPosition();
 
-        x_pos = avg_rad * (-w1 + w2 + -w3 + w4);
-        y_pos = avg_rad * (w1 + w2 + w3 + w4);
+        x_enc = avg_rad * (-w1 + w2 + -w3 + w4);
+        y_enc = avg_rad * (w1 + w2 + w3 + w4);
         theta = avg_rad * (inverse_sum_dist * -w1 + inverse_sum_dist * w2 + inverse_sum_dist * w3 + inverse_sum_dist * -w4);
 
         turnspeed = -gamepad1.right_stick_x * robotControlSpeed;
@@ -138,8 +141,12 @@ public class HermesMovement extends OpMode {
         telemetry.addData("Y-pos pred", y_pred);
         telemetry.addData("Delta time", delta_time);
 
-        telemetry.addData("X-pos Enc", x_pos);
-        telemetry.addData("Y-pos Enc", y_pos);
+        telemetry.addData("X-pos Enc", x_enc);
+        telemetry.addData("Y-pos Enc", y_enc);
+
+        telemetry.addData("X-pos estimate", (x_enc * weight + x_pred * (1 - weight)));
+        telemetry.addData("Y-pos estimate", (y_enc * weight + y_pred * (1 - weight)));
+
         telemetry.addData("Angle (rad)", theta);
         telemetry.addData("Angle (deg)", theta * 180 / Math.PI);
         telemetry.addData("Real Angle", angle_tracker.likeallelse(robot.imu.getAngularOrientation().firstAngle));
