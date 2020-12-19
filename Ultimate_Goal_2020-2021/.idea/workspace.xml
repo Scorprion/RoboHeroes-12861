@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4be886a0-cfca-434d-9dda-3611497799ff" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/KalmanFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/KalmanFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/HermesMovement.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/HermesMovement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,26 +153,26 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1607212620259" />
-    <state width="1491" height="216" key="GridCell.Tab.0.bottom" timestamp="1607215815188">
+    <state width="1476" height="213" key="GridCell.Tab.0.bottom" timestamp="1608419420961">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1491" height="216" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1607215815188" />
-    <state width="1491" height="216" key="GridCell.Tab.0.center" timestamp="1607215815187">
+    <state width="1476" height="213" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
+    <state width="1476" height="213" key="GridCell.Tab.0.center" timestamp="1608419420961">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1491" height="216" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1607215815187" />
-    <state width="1491" height="216" key="GridCell.Tab.0.left" timestamp="1607215815187">
+    <state width="1476" height="213" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
+    <state width="1476" height="213" key="GridCell.Tab.0.left" timestamp="1608419420961">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1491" height="216" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1607215815187" />
-    <state width="1491" height="216" key="GridCell.Tab.0.right" timestamp="1607215815187">
+    <state width="1476" height="213" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
+    <state width="1476" height="213" key="GridCell.Tab.0.right" timestamp="1608419420961">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1491" height="216" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1607215815187" />
-    <state width="300" height="100" key="javadoc.popup.new" timestamp="1607215657734">
+    <state width="1476" height="213" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
+    <state width="300" height="100" key="javadoc.popup.new" timestamp="1608420151414">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="300" height="100" key="javadoc.popup.new/0.0.1536.864@0.0.1536.864" timestamp="1607215657734" />
+    <state width="300" height="100" key="javadoc.popup.new/0.0.1536.864@0.0.1536.864" timestamp="1608420151414" />
     <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1607214818800">
       <screen x="0" y="0" width="1536" height="864" />
     </state>

@@ -90,8 +90,8 @@ public class FullLocalization extends OpMode {
                                                                             {0., 0., 1., 0.},
                                                                             {0., 0., 0., 1.}});
                 RealMatrix B = MatrixUtils.createRealMatrix(new double[][] {{-1., 1., -1., 1.},
-                                                                            {-1., 1., -1., 1.},
                                                                             {1., 1., 1., 1.},
+                                                                            {-1., 1., -1., 1.},
                                                                             {1., 1., 1., 1.}});
                 B.transpose().operate(new double[] {
                                         wheel_rad_per_second * delta_time,
@@ -117,8 +117,6 @@ public class FullLocalization extends OpMode {
                 RealVector Z = new ArrayRealVector(new double[] {x_enc, y_enc, (x_enc - x_prev) / delta_time, (y_enc - y_prev) / delta_time});
 
                 // Only using Q here to avoid creating another identity matrix (has no other meaning)
-
-
                 filter.update(Z, Q, Q);
 
                 x_prev = x_enc;
@@ -161,15 +159,10 @@ public class FullLocalization extends OpMode {
 
 
         // ------- Telemetry -------
-        telemetry.addData("X-pos pred", x_pred);
-        telemetry.addData("Y-pos pred", y_pred);
         telemetry.addData("Delta time", delta_time);
 
         telemetry.addData("X-pos Enc", x_enc);
         telemetry.addData("Y-pos Enc", y_enc);
-
-        telemetry.addData("X-pos estimate", (x_enc * weight + x_pred * (1 - weight)));
-        telemetry.addData("Y-pos estimate", (y_enc * weight + y_pred * (1 - weight)));
 
         telemetry.addData("Kalman estimate", filter.get_state());
 
