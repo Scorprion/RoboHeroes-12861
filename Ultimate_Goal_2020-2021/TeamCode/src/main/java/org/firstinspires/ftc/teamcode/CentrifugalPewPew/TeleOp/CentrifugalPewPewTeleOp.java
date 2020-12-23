@@ -11,6 +11,7 @@ public class CentrifugalPewPewTeleOp extends OpMode {
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor ShooterL, ShooterR;
+    DcMotor Intake, Wobble;
 
     private double turnspeed = 0;
     private double strafespeed = 0;
@@ -47,6 +48,12 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         ShooterR = hardwareMap.get(DcMotor.class, "ShooterR");
         ShooterR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         ShooterR.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Intake = hardwareMap.get(DcMotor.class, "Intake");
+        Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        Wobble = hardwareMap.get(DcMotor.class, "Wobble");
+        Wobble.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //*/
     }
 
@@ -55,7 +62,7 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         strafespeed = gamepad1.left_stick_x * robotControlSpeed;
         speed = gamepad1.left_stick_y * -robotControlSpeed;
 
-        if(gamepad1.right_stick_y != 0 || gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0|| gamepad1.left_stick_x != 0){
+        if(gamepad1.right_stick_y != 0 || gamepad1.left_stick_x != 0 || gamepad1.right_stick_x != 0|| gamepad1.left_stick_y != 0){
             FrontRight.setPower(speed - strafespeed - turnspeed);
             BackRight.setPower(speed + strafespeed - turnspeed);
             FrontLeft.setPower(speed + strafespeed + turnspeed);
@@ -67,6 +74,12 @@ public class CentrifugalPewPewTeleOp extends OpMode {
             BackLeft.setPower(0);
         }
 
+        if(gamepad1.right_stick_y != 0) {
+            Intake.setPower(gamepad1.right_stick_y);
+        }else{
+            Intake.setPower(0);
+        }
+
         if(gamepad2.a){
             while(gamepad2.a) {
                 //Testing
@@ -76,6 +89,30 @@ public class CentrifugalPewPewTeleOp extends OpMode {
                 */
                 ShooterL.setPower(0.89);
                 ShooterR.setPower(0.89);
+            }
+        }
+
+        if(gamepad2.x){
+            while(gamepad2.x) {
+                //Testing
+                /*
+                FrontRight.setPower(0.8);
+                BackRight.setPower(0.8);
+                */
+                ShooterL.setPower(0.5);
+                ShooterR.setPower(0.5);
+            }
+        }
+
+        if(gamepad2.y){
+            while(gamepad2.y) {
+                //Testing
+                /*
+                FrontRight.setPower(0.8);
+                BackRight.setPower(0.8);
+                */
+                ShooterL.setPower(0.4);
+                ShooterR.setPower(0.4);
             }
         }
 
