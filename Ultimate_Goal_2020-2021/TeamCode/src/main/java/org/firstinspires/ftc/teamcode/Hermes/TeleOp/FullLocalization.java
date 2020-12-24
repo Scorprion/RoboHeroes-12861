@@ -24,7 +24,7 @@ public class FullLocalization extends OpMode {
     private double w1, w2, w3, w4;
 
     // Localizations with powers/motor inputs
-    private volatile double x_pred, y_pred, previous_time = 0, delta_time;
+    private volatile double x_veloc, y_veloc, previous_time = 0, delta_time;
     private double motor_v1 = 0, motor_v2 = 0, motor_v3 = 0, motor_v4 = 0;  // Motor velocities (more accurately the powers though) labelled the same way as quadrants on the cartesian plane
     private ElapsedTime timer = new ElapsedTime();
 
@@ -114,14 +114,22 @@ public class FullLocalization extends OpMode {
                 x_enc = avg_rad * (-w1 + w2 + -w3 + w4);
                 y_enc = avg_rad * (w1 + w2 + w3 + w4);
 
-                RealVector Z = new ArrayRealVector(new double[] {x_enc, y_enc, (x_enc - x_prev) / delta_time, (y_enc - y_prev) / delta_time});
+                x_veloc = 0.25 * (1 / countsPerInch) *
+                        (-robot.FrontRight.getVelocity() +
+                         robot.FrontLeft.getVelocity() +
+                         -robot.BackLeft.getVelocity() +
+                         robot.BackRight.getVelocity());
+
+                y_veloc = 0.25 * (1 / countsPerInch) *
+                        (robot.FrontRight.getVelocity() +
+                         robot.FrontLeft.getVelocity() +
+                         robot.BackLeft.getVelocity() +
+                         robot.BackRight.getVelocity());
+
+                RealVector Z = new ArrayRealVector(new double[] {x_enc, y_enc, x_veloc, y_veloc});
 
                 // Only using Q here to avoid creating another identity matrix (has no other meaning)
                 filter.update(Z, Q, Q);
-
-                x_prev = x_enc;
-                y_prev = y_enc;
-
                 previous_time = timer.seconds();  // Update previous time
             }
         }

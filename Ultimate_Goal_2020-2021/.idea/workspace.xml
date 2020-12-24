@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4be886a0-cfca-434d-9dda-3611497799ff" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HeremesAuto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HermesA.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/RPMTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/RPMTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,10 +148,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1607212605202" />
-    <state x="574" y="135" key="#com.intellij.ide.util.MemberChooser" timestamp="1607214444242">
+    <state x="574" y="135" key="#com.intellij.ide.util.MemberChooser" timestamp="1608851641516">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="574" y="135" key="#com.intellij.ide.util.MemberChooser/0.0.1536.864@0.0.1536.864" timestamp="1607214444242" />
+    <state x="574" y="135" key="#com.intellij.ide.util.MemberChooser/0.0.1536.864@0.0.1536.864" timestamp="1608851641516" />
     <state x="1023" y="521" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1608407552617">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -169,10 +176,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state width="1476" height="213" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="300" height="100" key="javadoc.popup.new" timestamp="1608420151414">
+    <state width="300" height="100" key="javadoc.popup.new" timestamp="1608853386633">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="300" height="100" key="javadoc.popup.new/0.0.1536.864@0.0.1536.864" timestamp="1608420151414" />
+    <state width="300" height="100" key="javadoc.popup.new/0.0.1536.864@0.0.1536.864" timestamp="1608853386633" />
     <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1607214818800">
       <screen x="0" y="0" width="1536" height="864" />
     </state>

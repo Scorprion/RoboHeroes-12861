@@ -168,7 +168,7 @@ public class PID {
      * @param max the maximum for the value to be constrained around
      * @return the constrained value
      */
-    public double constrain(double value, double min, double max) {
+    public static double constrain(double value, double min, double max) {
         if (value > max) {
             return max;
         } else if (value < min) {

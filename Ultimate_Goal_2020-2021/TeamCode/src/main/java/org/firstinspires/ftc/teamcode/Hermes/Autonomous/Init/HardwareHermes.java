@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorRangeSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,15 +20,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareHermes {
     //Right motors
-    public DcMotor FrontRight;
-    public DcMotor BackRight;
+    public DcMotorEx FrontRight;
+    public DcMotorEx BackRight;
 
     //Left motors
-    public DcMotor FrontLeft;
-    public DcMotor BackLeft;
+    public DcMotorEx FrontLeft;
+    public DcMotorEx BackLeft;
 
     //The latching down boi
-    public DcMotor Gate;
+    public DcMotorEx Gate;
 
     //Foundation Grabber
     public CRServo FoundationClaw;
@@ -61,21 +62,21 @@ public class HardwareHermes {
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        FrontRight = ahwMap.get(DcMotor.class, "FrontRight");
+        FrontRight = ahwMap.get(DcMotorEx.class, "FrontRight");
         FrontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         FrontRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        BackRight = ahwMap.get(DcMotor.class, "BackRight");
+        BackRight = ahwMap.get(DcMotorEx.class, "BackRight");
         BackRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        FrontLeft = ahwMap.get(DcMotor.class, "FrontLeft");
+        FrontLeft = ahwMap.get(DcMotorEx.class, "FrontLeft");
         FrontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        BackLeft = ahwMap.get(DcMotor.class, "BackLeft");
+        BackLeft = ahwMap.get(DcMotorEx.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Gate = ahwMap.get(DcMotor.class, "Gate");
+        Gate = ahwMap.get(DcMotorEx.class, "Gate");
 
         FoundationClaw = ahwMap.get(CRServo.class, "FoundationClaw");
         Clamper = ahwMap.get(CRServo.class, "Clamper");
