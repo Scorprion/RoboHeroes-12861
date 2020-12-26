@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.CentrifugalPewPew.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -11,7 +12,9 @@ public class CentrifugalPewPewTeleOp extends OpMode {
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor ShooterL, ShooterR;
-    DcMotor Intake, Wobble;
+    DcMotor Intake, WobbleSet;
+
+    CRServo WobbleGrab;
 
     private double turnspeed = 0;
     private double strafespeed = 0;
@@ -52,8 +55,10 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         Intake = hardwareMap.get(DcMotor.class, "Intake");
         Intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        Wobble = hardwareMap.get(DcMotor.class, "Wobble");
-        Wobble.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        WobbleSet = hardwareMap.get(DcMotor.class, "WobbleSet");
+        WobbleSet.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        WobbleGrab = hardwareMap.get(CRServo.class, "WobbleGrab");
         //*/
     }
 
@@ -81,47 +86,49 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         }
 
         if(gamepad2.a){
-            while(gamepad2.a) {
-                //Testing
-                /*
-                FrontRight.setPower(0.8);
-                BackRight.setPower(0.8);
-                */
-                ShooterL.setPower(0.89);
-                ShooterR.setPower(0.89);
-            }
-        }
 
-        if(gamepad2.x){
-            while(gamepad2.x) {
-                //Testing
-                /*
-                FrontRight.setPower(0.8);
-                BackRight.setPower(0.8);
-                */
-                ShooterL.setPower(0.5);
-                ShooterR.setPower(0.5);
-            }
-        }
+            //Testing
+            /*
+            FrontRight.setPower(0.8);
+            BackRight.setPower(0.8);
+            */
+            shootingControlSpeed = 0.7;
 
-        if(gamepad2.y){
-            while(gamepad2.y) {
-                //Testing
-                /*
-                FrontRight.setPower(0.8);
-                BackRight.setPower(0.8);
-                */
-                ShooterL.setPower(0.4);
-                ShooterR.setPower(0.4);
-            }
+        }else if(gamepad2.x){
+
+            //Testing
+            /*
+            FrontRight.setPower(0.8);
+            BackRight.setPower(0.8);
+            */
+            shootingControlSpeed = 0.6;
+
+        }else if(gamepad2.y){
+
+            //Testing
+            /*
+            FrontRight.setPower(0.8);
+            BackRight.setPower(0.8);
+            */
+            shootingControlSpeed = 0.5;
+
+        }else{
+            shootingControlSpeed = 0;
         }
 
         if(gamepad2.right_stick_y != 0){
             ShooterL.setPower(gamepad2.right_stick_y);
             ShooterR.setPower(gamepad2.right_stick_y);
+        }else if(gamepad2.a||gamepad2.b||gamepad2.x||gamepad2.y){
+            ShooterL.setPower(shootingControlSpeed);
+            ShooterR.setPower(shootingControlSpeed);
         }else{
             ShooterL.setPower(0);
             ShooterR.setPower(0);
+        }
+
+        if(gamepad2.left_bumper){
+            WobbleGrab.setPower(1);
         }
 
         if(gamepad2.b && !usedRecently){
@@ -134,11 +141,13 @@ public class CentrifugalPewPewTeleOp extends OpMode {
             usedRecently = true;
         }
 
+
         if (runtime.milliseconds() > 200) {
             usedRecently = false;
         }
         telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
         telemetry.addData("Shooter Speed:",gamepad2.right_stick_y);
+        telemetry.addData("HardSpeeds:","y: %.5f, x: %.5f, a: %.5f",(0.5),(0.6),(0.7));
         telemetry.update();
     }
 }
