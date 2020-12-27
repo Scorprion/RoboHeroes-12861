@@ -5,14 +5,17 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name= "TeleOp", group= "Controlled")
-public class CentrifugalPewPewTeleOp extends OpMode {
+@TeleOp(name= "CentripetalTeleOp", group= "MainBot")
+public class CentrifugalPewPewTeleOp extends OpMode{
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor ShooterL, ShooterR;
     DcMotor Intake, WobbleSet;
+
+    Servo WobbleClipR,WobbleClipL;
 
     CRServo WobbleGrab;
 
@@ -21,6 +24,8 @@ public class CentrifugalPewPewTeleOp extends OpMode {
     private double speed = 0;
     private double robotControlSpeed = 1;
     private double shootingControlSpeed = 0.8;
+
+    private double CRconfigZero = 0.0;
 
     private boolean SpeedToggle = true;
     private boolean usedRecently = false;
@@ -42,7 +47,7 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         BackLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //Shooter Moters
+        //Shooter Motors
         ///*
         ShooterL = hardwareMap.get(DcMotor.class, "ShooterL");
         ShooterL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -58,11 +63,17 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         WobbleSet = hardwareMap.get(DcMotor.class, "WobbleSet");
         WobbleSet.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        WobbleClipR = hardwareMap.get(Servo.class, "WobbleClipR");
+
         WobbleGrab = hardwareMap.get(CRServo.class, "WobbleGrab");
+
         //*/
+        CRconfigZero = WobbleGrab.getPower();
     }
 
     public void loop(){
+
+        //movement
         turnspeed = gamepad1.right_stick_x * robotControlSpeed;
         strafespeed = gamepad1.left_stick_x * robotControlSpeed;
         speed = gamepad1.left_stick_y * -robotControlSpeed;
@@ -84,6 +95,8 @@ public class CentrifugalPewPewTeleOp extends OpMode {
         }else{
             Intake.setPower(0);
         }
+
+        //Hardcoded Shooting Speeds
 
         if(gamepad2.a){
 
@@ -116,6 +129,8 @@ public class CentrifugalPewPewTeleOp extends OpMode {
             shootingControlSpeed = 0;
         }
 
+        //Intake and transport mechanism
+
         if(gamepad2.right_stick_y != 0){
             ShooterL.setPower(gamepad2.right_stick_y);
             ShooterR.setPower(gamepad2.right_stick_y);
@@ -127,11 +142,35 @@ public class CentrifugalPewPewTeleOp extends OpMode {
             ShooterR.setPower(0);
         }
 
+        //Wobble Goal Hand
+
         if(gamepad2.left_bumper){
-            WobbleGrab.setPower(1);
+            WobbleGrab.setPower(0.5);
+        }else if(gamepad2.right_bumper){
+            WobbleGrab.setPower(-0.5);
+        }else if(gamepad2.right_trigger>0){
+            WobbleGrab.setPower(0.05);
         }
 
-        if(gamepad2.b && !usedRecently){
+        //Wobble Goal Clip
+
+        if(gamepad2.left_trigger > 0.5){
+            WobbleClipR.setPosition(0.25);
+        }else{
+            WobbleClipR.setPosition(0.85);
+        }
+
+        //Wobble goal main Arm
+
+        if(gamepad1.x){
+            WobbleSet.setPower(0.5);
+        }else if (gamepad1.y){
+            WobbleSet.setPower(-0.5);
+        }else{
+            WobbleSet.setPower(0);
+        }
+
+        /*if(gamepad2.b && !usedRecently){
             if(shootingControlSpeed >= 1.0) {
                 shootingControlSpeed = 0;
             }else{
@@ -144,10 +183,13 @@ public class CentrifugalPewPewTeleOp extends OpMode {
 
         if (runtime.milliseconds() > 200) {
             usedRecently = false;
-        }
+        }*/
+
         telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
         telemetry.addData("Shooter Speed:",gamepad2.right_stick_y);
         telemetry.addData("HardSpeeds:","y: %.5f, x: %.5f, a: %.5f",(0.5),(0.6),(0.7));
+        telemetry.addData("Value: ",gamepad2.left_trigger);
+        telemetry.addData("Value: ",WobbleGrab);
         telemetry.update();
     }
 }
