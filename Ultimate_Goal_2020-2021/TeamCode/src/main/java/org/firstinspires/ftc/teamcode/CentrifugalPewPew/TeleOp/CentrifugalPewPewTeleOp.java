@@ -15,7 +15,7 @@ public class CentrifugalPewPewTeleOp extends OpMode{
     DcMotor ShooterL, ShooterR;
     DcMotor Intake, WobbleSet;
 
-    Servo WobbleClipR,WobbleClipL;
+    Servo WobbleClipR,Twitching;
 
     CRServo WobbleGrab;
 
@@ -65,6 +65,8 @@ public class CentrifugalPewPewTeleOp extends OpMode{
 
         WobbleClipR = hardwareMap.get(Servo.class, "WobbleClipR");
 
+        //Twitching = hardwareMap.get(Servo.class, "Twitching");
+
         WobbleGrab = hardwareMap.get(CRServo.class, "WobbleGrab");
 
         //*/
@@ -90,11 +92,23 @@ public class CentrifugalPewPewTeleOp extends OpMode{
             BackLeft.setPower(0);
         }
 
-        if(gamepad1.right_stick_y != 0) {
-            Intake.setPower(gamepad1.right_stick_y);
+        //if(gamepad1.right_stick_y != 0) {
+        if(gamepad1.b){
+            Intake.setPower(-1);
+        }else if(gamepad1.a) {
+            Intake.setPower(1);
         }else{
             Intake.setPower(0);
         }
+
+        /*if(gamepad1.left_bumper){
+            Twitching.setPosition(-1);
+            if(Twitching.getPosition()<=0){
+                Twitching.setPosition(1);
+            }else{
+                Twitching.setPosition(0);
+            }
+        }*/
 
         //Hardcoded Shooting Speeds
 
@@ -105,25 +119,25 @@ public class CentrifugalPewPewTeleOp extends OpMode{
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            shootingControlSpeed = 0.7;
-
-        }else if(gamepad2.x){
-
-            //Testing
-            /*
-            FrontRight.setPower(0.8);
-            BackRight.setPower(0.8);
-            */
-            shootingControlSpeed = 0.6;
-
-        }else if(gamepad2.y){
-
-            //Testing
-            /*
-            FrontRight.setPower(0.8);
-            BackRight.setPower(0.8);
-            */
             shootingControlSpeed = 0.5;
+
+        //}else if(gamepad2.x){
+
+            //Testing
+            /*
+            FrontRight.setPower(0.8);
+            BackRight.setPower(0.8);
+            */
+            //shootingControlSpeed = 0.6;
+
+        //}else if(gamepad2.y){
+
+            //Testing
+            /*
+            FrontRight.setPower(0.8);
+            BackRight.setPower(0.8);
+            */
+            //shootingControlSpeed = 0.5;
 
         }else{
             shootingControlSpeed = 0;
@@ -162,9 +176,9 @@ public class CentrifugalPewPewTeleOp extends OpMode{
 
         //Wobble goal main Arm
 
-        if(gamepad1.x){
+        if(gamepad2.x){
             WobbleSet.setPower(0.5);
-        }else if (gamepad1.y){
+        }else if (gamepad2.y){
             WobbleSet.setPower(-0.5);
         }else{
             WobbleSet.setPower(0);
