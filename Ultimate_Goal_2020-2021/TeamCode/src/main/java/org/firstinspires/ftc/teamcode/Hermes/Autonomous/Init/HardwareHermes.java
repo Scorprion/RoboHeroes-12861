@@ -58,7 +58,7 @@ public class HardwareHermes {
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json";
         parameters.loggingEnabled      = false;
-        parameters.accelerationIntegrationAlgorithm = new AccelerationIntegrator(0.01, 0.2);
+        // parameters.accelerationIntegrationAlgorithm = new AccelerationIntegrator(0.01, 0.2);
         imu = ahwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 

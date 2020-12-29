@@ -74,7 +74,7 @@ public class HermesAggregated extends LinearOpMode {
 
         @Override
         public void run() {
-            while(!isStopRequested()) {
+            while(opModeIsActive()) {
                 // Position prediction
                 delta_time = timer.seconds() - previous_time;
                 RealMatrix A = MatrixUtils.createRealMatrix(new double[][] {{1., 0., delta_time, 0.},
@@ -138,9 +138,9 @@ public class HermesAggregated extends LinearOpMode {
         while(opModeIsActive()) {
             RealVector position = filter.get_state();
 
-            double strafe = PID.constrain(xpid.getPID(x - position.getEntry(0)), -1./3., 1./3.);
-            double forward = PID.constrain(ypid.getPID(y - position.getEntry(1)), -1./3., 1./3.);
-            double turn = PID.constrain(angpid.getPID(angle - background_tracker.current_dheading), -1./3., 1./3.);
+            double strafe = PID.constrain(xpid.getPID((x - position.getEntry(0)) / 144), -1./3., 1./3.);
+            double forward = PID.constrain(ypid.getPID((y - position.getEntry(1)) / 144), -1./3., 1./3.);
+            double turn = PID.constrain(angpid.getPID((angle - background_tracker.current_dheading) / 360), -1./3., 1./3.);
 
             robot.FrontRight.setPower(forward - strafe - turn);
             robot.BackRight.setPower(forward + strafe - turn);

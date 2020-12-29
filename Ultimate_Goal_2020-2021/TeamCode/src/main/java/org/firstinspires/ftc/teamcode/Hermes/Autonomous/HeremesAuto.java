@@ -11,6 +11,6 @@ public class HeremesAuto extends HermesAggregated {
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
 
-        runTo(3, 3, 0, new double[] {0.5, 0, 0}, new double[] {0.5, 0, 0}, new double[] {0.5, 0, 0});
+        runTo(3, 3, 0, new double[] {1, 0, 0}, new double[] {1, 0, 0}, new double[] {0.2, 0, 0});
     }
 }
