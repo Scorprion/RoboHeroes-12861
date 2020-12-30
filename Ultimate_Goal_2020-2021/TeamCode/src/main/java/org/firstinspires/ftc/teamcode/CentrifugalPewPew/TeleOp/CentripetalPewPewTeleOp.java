@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name= "CentripetalTeleOp", group= "MainBot")
-public class CentrifugalPewPewTeleOp extends OpMode{
+public class CentripetalPewPewTeleOp extends OpMode{
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor ShooterL, ShooterR;
@@ -63,7 +63,7 @@ public class CentrifugalPewPewTeleOp extends OpMode{
         WobbleSet = hardwareMap.get(DcMotor.class, "WobbleSet");
         WobbleSet.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        WobbleClipR = hardwareMap.get(Servo.class, "WobbleClipR");
+        //WobbleClipR = hardwareMap.get(Servo.class, "WobbleClipR");
 
         //Twitching = hardwareMap.get(Servo.class, "Twitching");
 
@@ -121,14 +121,14 @@ public class CentrifugalPewPewTeleOp extends OpMode{
             */
             shootingControlSpeed = 0.5;
 
-        //}else if(gamepad2.x){
+        }else if(gamepad2.x){
 
             //Testing
             /*
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            //shootingControlSpeed = 0.6;
+            shootingControlSpeed = 0.4;
 
         //}else if(gamepad2.y){
 
@@ -166,20 +166,18 @@ public class CentrifugalPewPewTeleOp extends OpMode{
             WobbleGrab.setPower(0.05);
         }
 
-        //Wobble Goal Clip
+        //Wobble Goal Clip NONFUNCTIONAL
 
-        if(gamepad2.left_trigger > 0.5){
-            WobbleClipR.setPosition(0.25);
+        /*if(gamepad2.left_trigger > 0){
+            WobbleClipR.setPosition(0.9);
         }else{
-            WobbleClipR.setPosition(0.85);
-        }
+            WobbleClipR.setPosition(1);
+        }*/
 
         //Wobble goal main Arm
 
-        if(gamepad2.x){
-            WobbleSet.setPower(0.5);
-        }else if (gamepad2.y){
-            WobbleSet.setPower(-0.5);
+        if(gamepad2.left_stick_y != 0){
+            WobbleSet.setPower(gamepad2.left_stick_y);
         }else{
             WobbleSet.setPower(0);
         }
