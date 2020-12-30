@@ -52,7 +52,8 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
 @Config
 @Autonomous(group = "drive")
 public class DriveVelocityPIDTuner extends LinearOpMode {
-    public static double DISTANCE = 72; // in
+    public static double DISTANCE = 30; // in
+    public static double total_error = 0;
 
     enum Mode {
         DRIVER_MODE,
@@ -118,6 +119,8 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                         movingForwards = !movingForwards;
                         activeProfile = generateProfile(movingForwards);
                         profileStart = clock.seconds();
+                        telemetry.addData("Sum squared error", total_error);
+                        total_error = 0;
                     }
 
                     MotionState motionState = activeProfile.get(profileTime);
@@ -134,7 +137,10 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
                                 "error" + i,
                                 motionState.getV() - velocities.get(i)
                         );
+                        total_error += Math.pow(motionState.getV() - velocities.get(i), 2);
                     }
+
+
                     break;
                 case DRIVER_MODE:
                     if (gamepad1.a) {

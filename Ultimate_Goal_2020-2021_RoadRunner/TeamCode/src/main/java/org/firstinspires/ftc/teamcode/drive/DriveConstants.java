@@ -32,7 +32,9 @@ public class DriveConstants {
      * from DriveVelocityPIDTuner.
      */
     public static final boolean RUN_USING_ENCODER = true;  // 36 1 4 0 (Hermes)
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(26, 1.5, 14, getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+
+    // 26 1.5 14 Old
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(44, 0.4, 16, getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     /*
      * These are physical constants that can be determined from your robot (including the track
@@ -67,6 +69,12 @@ public class DriveConstants {
     public static double MAX_ACCEL = 30;
     public static double MAX_ANG_VEL = Math.toRadians(180);
     public static double MAX_ANG_ACCEL = Math.toRadians(180);
+
+    public static enum RingPosition {
+        NONE,
+        SINGLE,
+        FOUR
+    }
 
 
     public static double encoderTicksToInches(double ticks) {

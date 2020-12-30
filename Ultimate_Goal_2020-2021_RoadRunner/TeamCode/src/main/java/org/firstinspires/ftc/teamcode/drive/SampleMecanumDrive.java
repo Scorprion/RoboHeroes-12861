@@ -31,6 +31,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -95,9 +96,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     private LinkedList<Pose2d> poseHistory;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
-    private DcMotorEx shooterR, shooterL, intake, wobbleSet;
-    private CRServo wobbleGrab;
-    private Servo wobbleClipR;
+    public DcMotorEx shooterR, shooterL, intake;
+    public DcMotor wobbleSet;
+    public CRServo wobbleGrab, ringArm;
+    public DistanceSensor ringSensor;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
 
@@ -144,12 +146,21 @@ public class SampleMecanumDrive extends MecanumDrive {
         // TODO: if your hub is mounted vertically, remap the IMU axes so that the z-axis points
         // upward (normal to the floor) using a command like the following:
         // BNO055IMUUtil.remapAxes(imu, AxesOrder.XYZ, AxesSigns.NPN);
+        wobbleSet = hardwareMap.get(DcMotor.class, "WobbleSet");
+        intake = hardwareMap.get(DcMotorEx.class, "Intake");
+        shooterL = hardwareMap.get(DcMotorEx.class, "ShooterL");
+        shooterR = hardwareMap.get(DcMotorEx.class, "ShooterR");
+
+        wobbleGrab = hardwareMap.get(CRServo.class, "WobbleGrab");
+        ringArm = hardwareMap.get(CRServo.class, "RingArm");
+
+        ringSensor = hardwareMap.get(DistanceSensor.class, "RingSensor");
+
 
         leftFront = hardwareMap.get(DcMotorEx.class, "FrontLeft");
         leftRear = hardwareMap.get(DcMotorEx.class, "BackLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "BackRight");
         rightFront = hardwareMap.get(DcMotorEx.class, "FrontRight");
-
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
