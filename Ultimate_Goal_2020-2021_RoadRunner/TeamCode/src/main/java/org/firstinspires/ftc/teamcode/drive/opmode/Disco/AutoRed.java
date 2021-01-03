@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Autonomous(group="Disco")
-public class AutoA extends LinearOpMode {
+public class AutoRed extends LinearOpMode {
     double distance;
     Double minDistance = Double.POSITIVE_INFINITY;
     ElapsedTime timer = new ElapsedTime();
@@ -21,9 +21,10 @@ public class AutoA extends LinearOpMode {
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
 
         waitForStart();
-
-        // Move towards rings
+        /*
+        // Lowers the distance sensor
         driveTrain.ringArm.setPower(-1.0);
+        // Move towards rings
         strafe(driveTrain, -33);
 
         // TODO Run continuously while moving?
@@ -38,11 +39,13 @@ public class AutoA extends LinearOpMode {
         telemetry.addData("Current min", minDistance);
         telemetry.update();
 
+        // Raises the distance sensor
         driveTrain.ringArm.setPower(1.0);
         sleep(1250);
         driveTrain.ringArm.setPower(0);
 
 
+        // Scans the rings for the wobble goal placement
         if(minDistance >= 5.5) {  // None
             telemetry.addLine("NONE");
         } else if (minDistance >= 3) {  // SINGLE
@@ -51,34 +54,41 @@ public class AutoA extends LinearOpMode {
             telemetry.addLine("FOUR");
         }
         telemetry.update();
+        */
 
+        // Set
+       /*driveTrain.wobbleSet.setPower(0.5);
+        sleep(900);
+        driveTrain.wobbleGrab.setPower(-0.6);
+        sleep(1000);
+        goForward(driveTrain, 15);
+        driveTrain.wobbleGrab.setPower(0.6);
+        sleep(1000);*/
         // 41 and go 90
-        /*
-        Trajectory centering = driveTrain.trajectoryBuilder(new Pose2d(0, 0, 0))
+       /* Trajectory centering = driveTrain.trajectoryBuilder(new Pose2d(0, 0, 0))
                 .lineToLinearHeading(new Pose2d(0, -41, Math.toRadians(90)))
                 .build();
-        driveTrain.followTrajectory(centering);
-        */
-        strafe(driveTrain, -41);
-        driveTrain.turn(90);
+        driveTrain.followTrajectory(centering);*/
 
-        sleep(3000);
-
-
-        // Based on rings, go to a certain position
-
-
+        driveTrain.intake.setPower(-1);
+        goForward(driveTrain, 17);
+        driveTrain.intake.setPower(1);
+        goForward(driveTrain, 38);
+        goForward(driveTrain, -57);
+        driveTrain.shooterL.setPower(-1);
+        driveTrain.shooterR.setPower(1);
+        sleep(5000);
     }
 
     private void goForward(SampleMecanumDrive robot, double distance) {
-        Trajectory move = robot.trajectoryBuilder(new Pose2d(0, 0, 0))
+        Trajectory move = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .forward(distance)
                 .build();
         robot.followTrajectory(move);
     }
 
     private void strafe(SampleMecanumDrive robot, double distance) {
-        Trajectory strafeLeft = robot.trajectoryBuilder(new Pose2d(0, 0, 0))
+        Trajectory strafeLeft = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .strafeTo(new Vector2d(0, distance))
                 .build();
         robot.followTrajectory(strafeLeft);
