@@ -8,18 +8,16 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
 import org.firstinspires.ftc.teamcode.KalmanFilter;
 import org.firstinspires.ftc.teamcode.PID;
-
-import static org.firstinspires.ftc.teamcode.Hermes.HermesConstants.*;
-
 
 @TeleOp(name = "KalmanFilter", group = "Hermes")
 public class FullLocalization extends OpMode {
 
     private double turnspeed, strafespeed, speed;
-
+    private final double robotControlSpeed = 0.7;
 
     // Localization with encoders
     private double x_enc = 0, y_enc = 0, x_prev = 0, y_prev = 0;
@@ -32,6 +30,13 @@ public class FullLocalization extends OpMode {
 
     // Weight Average Parameter - weight (percentage) given to the encoders compared to the motor speed prediction method
     private final double weight = 0.75;
+
+    final double wheel_radius = Math.PI * 75 * 5 / 127;  // wheel radius (inch)
+    final double countsPerInch = 560 * (1 / wheel_radius); // 560 counts per rev
+    final double wheel_rad_per_second = 3.042 * wheel_radius * robotControlSpeed;   // (300 is theoretical max) assuming 182.5 is the max load rpm of the motors (based on estimate) -> 3.042 rps
+
+    final double avg_rad = 1 / (4 * countsPerInch);  // Added the division of counts per inch to avoid the extra calculation
+
 
     HardwareHermes robot = new HardwareHermes();
     PID angle_tracker = new PID(0, 0, 0, 0.0);
@@ -89,10 +94,10 @@ public class FullLocalization extends OpMode {
                                                                             {-1., 1., -1., 1.},
                                                                             {1., 1., 1., 1.}});
                 B.transpose().operate(new double[] {
-                                        WHEEL_RAD_PER_SECOND * delta_time,
-                                        WHEEL_RAD_PER_SECOND * delta_time,
-                                        WHEEL_RAD_PER_SECOND,
-                                        WHEEL_RAD_PER_SECOND
+                                        wheel_rad_per_second * delta_time,
+                                        wheel_rad_per_second * delta_time,
+                                        wheel_rad_per_second,
+                                        wheel_rad_per_second
                 });
 
                 RealVector U = new ArrayRealVector(new double[] {motor_v1, motor_v2, motor_v3, motor_v4});
@@ -106,16 +111,16 @@ public class FullLocalization extends OpMode {
                 w3 = robot.BackLeft.getCurrentPosition();
                 w4 = robot.BackRight.getCurrentPosition();
 
-                x_enc = AVG_RAD * (-w1 + w2 + -w3 + w4);
-                y_enc = AVG_RAD * (w1 + w2 + w3 + w4);
+                x_enc = avg_rad * (-w1 + w2 + -w3 + w4);
+                y_enc = avg_rad * (w1 + w2 + w3 + w4);
 
-                x_veloc = 0.25 * (1 / COUNTS_PER_INCH) *
+                x_veloc = 0.25 * (1 / countsPerInch) *
                         (-robot.FrontRight.getVelocity() +
                          robot.FrontLeft.getVelocity() +
                          -robot.BackLeft.getVelocity() +
                          robot.BackRight.getVelocity());
 
-                y_veloc = 0.25 * (1 / COUNTS_PER_INCH) *
+                y_veloc = 0.25 * (1 / countsPerInch) *
                         (robot.FrontRight.getVelocity() +
                          robot.FrontLeft.getVelocity() +
                          robot.BackLeft.getVelocity() +
@@ -144,9 +149,9 @@ public class FullLocalization extends OpMode {
 
     @Override
     public void loop() {
-        turnspeed = -gamepad1.right_stick_x * ROBOT_CONTROL_SPEED;
-        strafespeed = gamepad1.left_stick_x * ROBOT_CONTROL_SPEED;
-        speed = gamepad1.left_stick_y * -ROBOT_CONTROL_SPEED;
+        turnspeed = -gamepad1.right_stick_x * robotControlSpeed;
+        strafespeed = gamepad1.left_stick_x * robotControlSpeed;
+        speed = gamepad1.left_stick_y * -robotControlSpeed;
 
         motor_v1 = speed - strafespeed - turnspeed;
         motor_v2 = speed + strafespeed + turnspeed;
