@@ -62,7 +62,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  * Simple mecanum drive hardware implementation for REV hardware.
  */
 @Config
-public class SampleMecanumDrive extends MecanumDrive {
+public class DiscoDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(3, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(3.8, 0, 0);
 
@@ -98,7 +98,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     public DcMotorEx shooterR, shooterL, intake;
     public DcMotor wobbleSet;
-    public CRServo wobbleGrab, ringArm;
+    public CRServo ringArm;
+    public Servo wobbleGrab;
     public DistanceSensor ringSensor;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
@@ -107,7 +108,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     private Pose2d lastPoseOnTurn;
 
-    public SampleMecanumDrive(HardwareMap hardwareMap) {
+    public DiscoDrive(HardwareMap hardwareMap) {
         super(kV, kA, kStatic, TRACK_WIDTH, TRACK_WIDTH, LATERAL_MULTIPLIER);
 
         dashboard = FtcDashboard.getInstance();
@@ -151,7 +152,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         shooterL = hardwareMap.get(DcMotorEx.class, "ShooterL");
         shooterR = hardwareMap.get(DcMotorEx.class, "ShooterR");
 
-        wobbleGrab = hardwareMap.get(CRServo.class, "WobbleGrab");
+        wobbleGrab = hardwareMap.get(Servo.class, "WobbleGrab");
         ringArm = hardwareMap.get(CRServo.class, "RingArm");
 
         ringSensor = hardwareMap.get(DistanceSensor.class, "RingSensor");

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Disco;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -8,34 +7,35 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.drive.DiscoDrive;
 
 @Autonomous(group="Disco")
 public class AutoRed extends LinearOpMode {
     double distance;
+
     Double minDistance = Double.POSITIVE_INFINITY;
     ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
+        DiscoDrive driveTrain = new DiscoDrive(hardwareMap);
 
         waitForStart();
-        /*
+
         // Lowers the distance sensor
         driveTrain.ringArm.setPower(-1.0);
         // Move towards rings
-        strafe(driveTrain, -33);
+        strafe(driveTrain, 0, -30);
 
         // TODO Run continuously while moving?
+        // Using distance sensor to scan for the ring counts
         timer.reset();
-        while(timer.seconds() < 1) {
+        while (timer.seconds() < 1) {
             distance = driveTrain.ringSensor.getDistance(DistanceUnit.INCH);
-            if(distance < minDistance) {
+            if (distance < minDistance) {
                 minDistance = distance;
             }
         }
-
         telemetry.addData("Current min", minDistance);
         telemetry.update();
 
@@ -44,53 +44,130 @@ public class AutoRed extends LinearOpMode {
         sleep(1250);
         driveTrain.ringArm.setPower(0);
 
-
         // Scans the rings for the wobble goal placement
-        if(minDistance >= 5.5) {  // None
+        if (minDistance >= 4.5) {  // None
             telemetry.addLine("NONE");
-        } else if (minDistance >= 3) {  // SINGLE
+            A(driveTrain);
+        } else if (minDistance >= 4) {  // SINGLE
             telemetry.addLine("SINGLE");
+            B(driveTrain);
         } else {  // FOUR
             telemetry.addLine("FOUR");
+            C(driveTrain);
         }
         telemetry.update();
-        */
-
-        // Set
-       /*driveTrain.wobbleSet.setPower(0.5);
-        sleep(900);
-        driveTrain.wobbleGrab.setPower(-0.6);
-        sleep(1000);
-        goForward(driveTrain, 15);
-        driveTrain.wobbleGrab.setPower(0.6);
-        sleep(1000);*/
-        // 41 and go 90
-       /* Trajectory centering = driveTrain.trajectoryBuilder(new Pose2d(0, 0, 0))
-                .lineToLinearHeading(new Pose2d(0, -41, Math.toRadians(90)))
-                .build();
-        driveTrain.followTrajectory(centering);*/
-
-        driveTrain.intake.setPower(-1);
-        goForward(driveTrain, 17);
-        driveTrain.intake.setPower(1);
-        goForward(driveTrain, 38);
-        goForward(driveTrain, -57);
-        driveTrain.shooterL.setPower(-1);
-        driveTrain.shooterR.setPower(1);
-        sleep(5000);
     }
 
-    private void goForward(SampleMecanumDrive robot, double distance) {
+    // Method that drops the wobble goal in zone A and shoots the rings
+    private void A(DiscoDrive robot){
+        // Driving to Zone A
+        robot.turn(Math.toRadians(90));
+        strafe(robot, -40, -100);
+
+        // Dropping the wobble goal
+        robot.wobbleSet.setPower(0.5);
+        sleep(900);
+        robot.wobbleGrab.setPosition(0);
+        sleep(1000);
+        robot.wobbleGrab.setPosition(1);
+        sleep(1000);
+        goForward(robot, 15);
+        robot.wobbleSet.setPower(-0.4);
+        sleep(700);
+
+        // Grab the 2nd Wobble Goal
+    }
+
+    private void B(DiscoDrive robot){
+        // Driving to Zone B
+        robot.turn(Math.toRadians(90));
+        strafe(robot, 10, -150);
+
+        // Dropping the wobble goal
+        robot.wobbleSet.setPower(0.5);
+        sleep(900);
+        robot.wobbleGrab.setPosition(0);
+        sleep(1000);
+        robot.wobbleGrab.setPosition(1);
+        sleep(1000);
+        goForward(robot, 15);
+        robot.wobbleSet.setPower(-0.4);
+        sleep(700);
+
+        // Head over to the ring on the map
+
+        strafe(robot,0,-60);
+
+        // Collection and shooting of the 4 rings on the map
+        robot.intake.setPower(-1);
+        goForward(robot, 20);
+        robot.intake.setPower(1);
+        goForward(robot, 22);
+        goForward(robot, -45);
+        ringshot(robot);
+    }
+
+    private void C(DiscoDrive robot){
+        // Driving to Zone A
+        robot.turn(Math.toRadians(90));
+        strafe(robot, 40, -125);
+
+        // Dropping the wobble goal
+        robot.wobbleSet.setPower(0.5);
+        sleep(900);
+        robot.wobbleGrab.setPosition(0);
+        sleep(1000);
+        robot.wobbleGrab.setPosition(1);
+        sleep(1000);
+        goForward(robot, 15);
+        robot.wobbleSet.setPower(-0.4);
+        sleep(700);
+
+        // Head over to the ring on the map
+        strafe(robot, 10, -41);
+
+        // Collection and shooting of the 4 rings on the map
+        robot.intake.setPower(-1);
+        goForward(robot, 20);
+        robot.intake.setPower(1);
+        goForward(robot, 22);
+        goForward(robot, -45);
+        ringshot(robot);
+        ringshot(robot);
+        ringshot(robot);
+    }
+
+    private void goForward(DiscoDrive robot, double distance) {
         Trajectory move = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .forward(distance)
                 .build();
         robot.followTrajectory(move);
     }
 
-    private void strafe(SampleMecanumDrive robot, double distance) {
+    private void strafe(DiscoDrive robot, double x, double y) {
         Trajectory strafeLeft = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .strafeTo(new Vector2d(0, distance))
+                .strafeTo(new Vector2d(x, y))
                 .build();
         robot.followTrajectory(strafeLeft);
+    }
+
+    private void ringout(DiscoDrive robot, double power, long time) {
+        robot.shooterL.setPower(power);
+        robot.shooterR.setPower(-power);
+        sleep(time);
+    }
+
+    private void ringreverse(DiscoDrive robot, double power, long time) {
+        robot.shooterL.setPower(-power);
+        robot.shooterR.setPower(power);
+        sleep(time);
+    }
+
+    private void ringshot(DiscoDrive driveTrain) {
+        driveTrain.intake.setPower(0);
+        ringreverse(driveTrain, 0.4, 800);
+        ringout(driveTrain, 0.7, 1000);
+        driveTrain.intake.setPower(1);
+        sleep(2000);
     }
 }
