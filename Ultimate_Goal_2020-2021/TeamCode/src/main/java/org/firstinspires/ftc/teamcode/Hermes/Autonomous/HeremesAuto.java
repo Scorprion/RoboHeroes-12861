@@ -1,28 +1,25 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HermesAggregated;
 import org.firstinspires.ftc.teamcode.PIDCoeffs;
 
-@Config
-@Autonomous(name="HermesAuto", group="Hermes")
-public class HeremesAuto extends HermesAggregated {
-    PIDCoeffs xPID = new PIDCoeffs(1, 0, 0);
-    PIDCoeffs yPID = new PIDCoeffs(1, 0, 0);
-    PIDCoeffs angPID = new PIDCoeffs(1, 0, 0);
+import static org.firstinspires.ftc.teamcode.Hermes.HermesConstants.*;
 
-    public static double newX = 3, newY = 3, newAng = 0, time = 2;
+@Config
+@Autonomous(group="Hermes")
+public class HeremesAuto extends HermesAggregated {
+    public static double newX = 0, newY = 0, newAng = 90, time = 2;
 
     @Override
     public void runOpMode() throws InterruptedException {
         super.runOpMode();
 
-        runTo(newX, newY, newAng, time, xPID, yPID, angPID);
-
+        while(opModeIsActive()) {
+            runTo(newX, newY, newAng, time, xPID, yPID, angPID);
+            runTo(0, 0, 0, time, xPID, yPID, angPID);
+        }
     }
 }

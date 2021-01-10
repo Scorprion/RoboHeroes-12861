@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -25,11 +27,8 @@ public class HermesAggregated extends LinearOpMode {
 
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    TelemetryPacket packet = new TelemetryPacket();
-    Canvas fieldOverlay = packet.fieldOverlay();
-
     // Localization
-    HermesAggregated.PositionPrediction backgroundTracker = new HermesAggregated.PositionPrediction();
+    public HermesAggregated.PositionPrediction backgroundTracker = new HermesAggregated.PositionPrediction();
     Thread thread = new Thread(backgroundTracker, "PosPred");
 
     private RealVector X = new ArrayRealVector(new double[] {0., 0., 0., 0.});  // Initial state {X, Y, Xdot, Ydot}
@@ -39,7 +38,9 @@ public class HermesAggregated extends LinearOpMode {
 
     private ElapsedTime timer = new ElapsedTime();
     public double motorV1, motorV2, motorV3, motorV4;  // Velocities of the motors
-    public volatile double x_enc, y_enc, x_veloc, y_veloc;
+    public volatile double xEnc, yEnc, xVeloc, yVeloc;
+
+    ElapsedTime moveTimer = new ElapsedTime();
 
 
 
@@ -47,14 +48,13 @@ public class HermesAggregated extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         dashboard.setTelemetryTransmissionInterval(25);
-        fieldOverlay.setStroke("#4CAF50");
 
         waitForStart();
 
         thread.start();
     }
 
-    private class PositionPrediction implements Runnable {
+    public class PositionPrediction implements Runnable {
         private boolean stopRequested = false;
         private double currentDheading = 0;  // Current angle in degrees
         private double currentHeading = 0;  // Current angle in radians
@@ -83,6 +83,19 @@ public class HermesAggregated extends LinearOpMode {
             this.previousAngle = angle;
         }
 
+        public void reset() {
+            this.currentDheading = 0;
+            this.previousAngle = 0;
+            previousTime = 0;
+
+            for(DcMotorEx motor : robot.motorList) {
+                motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            }
+
+            timer.reset();
+        }
+
 
         @Override
         public void run() {
@@ -104,33 +117,33 @@ public class HermesAggregated extends LinearOpMode {
                         WHEEL_RAD_PER_SECOND
                 });
 
-                RealVector U = new ArrayRealVector(new double[] {motorV1, motorV2, motorV3, motorV4});
+                RealVector U = new ArrayRealVector(new double[] {robot.FrontRight.getPower(),
+                        robot.FrontLeft.getPower(),
+                        robot.BackLeft.getPower(),
+                        robot.BackRight.getPower()});
 
                 //  Can't transpose after the operation for B?
                 filter.predict(A, B.transpose(), U, Q);
 
 
-                double w1 = robot.FrontRight.getCurrentPosition();
-                double w2 = robot.FrontLeft.getCurrentPosition();
-                double w3 = robot.BackLeft.getCurrentPosition();
-                double w4 = robot.BackRight.getCurrentPosition();
-
-                x_enc = AVG_RAD * (-w1 + w2 + -w3 + w4);
-                y_enc = AVG_RAD * (w1 + w2 + w3 + w4);
-
-                x_veloc = 0.25 * (1 / COUNTS_PER_INCH) *
+                xVeloc = AVG_RAD *
                         (-robot.FrontRight.getVelocity() +
                                 robot.FrontLeft.getVelocity() +
                                 -robot.BackLeft.getVelocity() +
                                 robot.BackRight.getVelocity());
 
-                y_veloc = 0.25 * (1 / COUNTS_PER_INCH) *
+                yVeloc = AVG_RAD *
                         (robot.FrontRight.getVelocity() +
                                 robot.FrontLeft.getVelocity() +
                                 robot.BackLeft.getVelocity() +
                                 robot.BackRight.getVelocity());
 
-                RealVector Z = new ArrayRealVector(new double[] {x_enc, y_enc, x_veloc, y_veloc});
+                deltaTime = timer.seconds() - previousTime;  // Update deltaTime between calculations
+                double[] newVeloc = rotate(new double[] {xVeloc, yVeloc}, new double[] {0, 0}, this.currentHeading);
+                xEnc += newVeloc[0] * deltaTime;
+                yEnc += newVeloc[1] * deltaTime;
+
+                RealVector Z = new ArrayRealVector(new double[] {xEnc, yEnc, xVeloc, yVeloc});
 
                 // Only using Q here to avoid creating another identity matrix (has no other meaning)
                 filter.update(Z, Q, Q);
@@ -143,36 +156,51 @@ public class HermesAggregated extends LinearOpMode {
     }
 
     public void runTo(double x, double y, double angle, double allotedSec, PIDCoeffs xPIDCoeffs, PIDCoeffs yPIDCoeffs, PIDCoeffs angPIDCoeffs) {
-        ElapsedTime timer = new ElapsedTime();
-
         PID xpid = new PID(xPIDCoeffs.getP(), xPIDCoeffs.getI(), xPIDCoeffs.getD(),0.3);
         PID ypid = new PID(yPIDCoeffs.getP(), yPIDCoeffs.getI(), yPIDCoeffs.getD(),0.3);
         PID angpid = new PID(angPIDCoeffs.getP(), angPIDCoeffs.getI(), angPIDCoeffs.getD(),0.3);
 
-        timer.reset();
-        while(opModeIsActive() && allotedSec < timer.seconds()) {
+        moveTimer.reset();
+        while(opModeIsActive() && allotedSec > moveTimer.seconds()) {
+            TelemetryPacket packet = new TelemetryPacket();
+            Canvas fieldOverlay = packet.fieldOverlay();
+            fieldOverlay.setStroke("#4CAF50");
+
             RealVector position = filter.get_state();
 
-            double strafe = PID.constrain(xpid.getPID((x - position.getEntry(0)) / 144), -1./3., 1./3.);
-            double forward = PID.constrain(ypid.getPID((y - position.getEntry(1)) / 144), -1./3., 1./3.);
-            double turn = PID.constrain(angpid.getPID((angle - backgroundTracker.currentDheading) / 360), -1./3., 1./3.);
+            double strafe = xpid.getPID(x - position.getEntry(0));
+            double forward = ypid.getPID(y - position.getEntry(1));
+            double turn = angpid.getPID(angle - backgroundTracker.currentDheading);
 
             robot.FrontRight.setPower(forward - strafe - turn);
             robot.BackRight.setPower(forward + strafe - turn);
             robot.FrontLeft.setPower(forward + strafe + turn);
             robot.BackLeft.setPower(forward - strafe + turn);
 
-            drawRobot(fieldOverlay, position.getEntry(0), position.getEntry(1), backgroundTracker.currentDheading);
+            // Swapped x and y to fit intuition
+            drawRobot(fieldOverlay, position.getEntry(1), -position.getEntry(0), backgroundTracker.currentDheading);
 
-            telemetry.addData("X:", position.getEntry(0));
-            telemetry.addData("Y", position.getEntry(1));
-            telemetry.addData("Heading", backgroundTracker.currentDheading);
-            telemetry.addData("Outputs:", "%.2f, %.2f, %.2f", (forward), (strafe), (turn));
-            telemetry.update();
+            packet.put("X:", position.getEntry(0));
+            packet.put("X error", x - position.getEntry(0));
+            packet.put("Y", position.getEntry(1));
+            packet.put("Y error", y - position.getEntry(1));
+            packet.put("Heading", backgroundTracker.currentDheading);
+            packet.put("Heading setpoint", angle);
+            packet.put("Heading error", angle - backgroundTracker.currentDheading);
+
+
+            packet.put("Time", moveTimer.seconds());
+
+            packet.put("Forward output", forward);
+            packet.put("Strafe output", strafe);
+            packet.put("Turn output", turn);
+            // packet.putAll("Outputs:", "%.2f, %.2f, %.2f", (forward), (strafe), (turn));
+
+            dashboard.sendTelemetryPacket(packet);
         }
     }
 
-    public void drawRobot(Canvas can, double x, double y, double heading) {
+    public static void drawRobot(Canvas can, double x, double y, double heading) {
         can.strokeCircle(x, y, RADIUS_X);
 
         double[] direcLine1 = new double[] {x, y};
@@ -181,7 +209,16 @@ public class HermesAggregated extends LinearOpMode {
         can.strokeLine(direcLine1[0], direcLine1[1], direcLine2[0], direcLine2[1]);
     }
 
-    public double round(double value, int places) {
+    public static double[] rotate(double[] toRotate, double[] around, double radAngle) {
+        double[] rotation = new double[toRotate.length];
+
+        // Shift, rotate, shift back
+        rotation[0] = -around[0] + toRotate[0] * Math.cos(radAngle) + toRotate[1] * Math.sin(radAngle) + around[0];
+        rotation[1] = -around[1] + toRotate[0] * -Math.sin(radAngle) + toRotate[1] * Math.cos(radAngle) + around[1];
+        return rotation;
+    }
+
+    public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
         BigDecimal bd = new BigDecimal(value);
@@ -189,11 +226,11 @@ public class HermesAggregated extends LinearOpMode {
         return bd.doubleValue();
     }
 
-    public boolean inrange(double value, double min, double max) {
+    public static boolean inrange(double value, double min, double max) {
         return value >= min && value <= max;
     }
 
-    public double likeallelse(double angle) {
+    public static double likeallelse(double angle) {
         if (angle < -180)
             angle += 360;
         else if (angle > 180)

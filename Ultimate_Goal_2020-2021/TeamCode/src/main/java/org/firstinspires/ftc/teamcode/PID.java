@@ -1,14 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.BNO055IMUImpl;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -18,22 +9,16 @@ public class PID {
 
     public double error;
     public double delta_error = 0;
-    public double delta_time;
 
     public double Poutput, Ioutput, Doutput;
-    public double P, I, D, lasterror, time, lasttime, iminmax;
+    public double P, I, D, lasterror, iminmax;
 
-    public ElapsedTime timer;
 
     public PID(double P, double I, double D, Double minmax) {
         this.P = P;
         this.I = I;
         this.D = D;
-        this.error = 0;
-        this.lasterror = 0;  // For the derivative part of the calculation
-        this.time = 0;
-        this.lasttime = 0;
-        this.timer = new ElapsedTime();
+        this.lasterror = 0;
 
         this.iminmax = minmax == null ? 1 : minmax;  // Integral wind-up guard
 
@@ -47,28 +32,18 @@ public class PID {
     }
 
     private double calcPID(double error) {
-        this.error = error;
-        this.time = this.timer.milliseconds() / 1000;
-        this.error = error;
-
-        delta_time = this.time - this.lasttime;
         delta_error = error - this.lasterror;
 
         // Integral
-        this.Ioutput += this.error * this.delta_time;
+        this.Ioutput += error;
 
-        if(this.Ioutput > this.iminmax) {
-            this.Ioutput = this.iminmax;
-        } else if(this.Ioutput < -this.iminmax) {
-            this.Ioutput = -this.iminmax;
-        }
+        this.Ioutput = constrain(this.Ioutput, -this.iminmax, this.iminmax);
 
         // Derivative
-        this.Doutput = delta_error / delta_time;
+        this.Doutput = delta_error;
 
         // Storing the saved this.error value for the derivative calculation later
         this.lasterror = error;
-        this.lasttime = this.time;
 
         this.Poutput = this.P * error;
         this.Ioutput = this.I * this.Ioutput;
@@ -77,10 +52,7 @@ public class PID {
     }
 
     public void setParams(double P, double I, double D, Double minmax) {
-        this.timer.reset();
-        this.time = timer.milliseconds() / 1000;
         this.iminmax = minmax == null ? 1 : minmax;
-        this.lasttime = 0;
         this.P = P;
         this.I = I;
         this.D = D;
@@ -169,12 +141,7 @@ public class PID {
      * @return the constrained value
      */
     public static double constrain(double value, double min, double max) {
-        if (value > max) {
-            return max;
-        } else if (value < min) {
-            return min;
-        }
-        return value;
+        return Math.min(Math.max(value, min), max);
     }
 
     public double likeallelse(double angle) {

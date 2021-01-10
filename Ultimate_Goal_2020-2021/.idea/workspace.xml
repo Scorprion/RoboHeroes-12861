@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4be886a0-cfca-434d-9dda-3611497799ff" name="Default Changelist" comment="">
@@ -12,7 +20,6 @@
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/IMUCalibration.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/NaiveCopyInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/PIDTesting.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/MiniPID.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/HermesMovement.java" afterDir="false" />
@@ -21,17 +28,24 @@
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/commons-math3-3.6.1.jar" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_RoadRunner/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/util/BayesOpt.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FtcRobotController/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FtcRobotController/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/build.release.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build.release.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HeremesAuto.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HeremesAuto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/PIDTesting.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/PIDTesting.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/KalmanFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/KalmanFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.common.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.github/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.github/CONTRIBUTING.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.github/PULL_REQUEST_TEMPLATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.github/PULL_REQUEST_TEMPLATE.md" afterDir="false" />
@@ -165,7 +179,7 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[cc33bf53e18c47f8]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[192.168.43.1:5555]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -194,6 +208,7 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
+    <option name="compactDirectories" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
@@ -205,7 +220,11 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Variables" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -273,6 +292,7 @@
       </method>
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -290,6 +310,18 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="847" y="356" key="#Notifications" timestamp="1610232284676">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="847" y="356" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1610232284676" />
+    <state x="477" y="266" key="#PSD" timestamp="1610231905872">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="477" y="266" key="#PSD/0.0.1920.1040@0.0.1920.1040" timestamp="1610231905872" />
+    <state x="768" y="383" key="#Updates" timestamp="1610232302228">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="768" y="383" key="#Updates/0.0.1920.1040@0.0.1920.1040" timestamp="1610232302228" />
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607212605202">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -302,35 +334,47 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1023" y="521" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1608407552617" />
-    <state x="686" y="225" key="FileChooserDialogImpl" timestamp="1609629420610">
+    <state x="744" y="276" key="AndroidCreateXmlResourceDialog" timestamp="1609633694634">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="744" y="276" key="AndroidCreateXmlResourceDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1609633694634" />
+    <state x="686" y="225" key="FileChooserDialogImpl" timestamp="1609633602953">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1609177469809" />
-    <state x="686" y="225" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1609629420610" />
-    <state width="1877" height="275" key="GridCell.Tab.0.bottom" timestamp="1609632906040">
+    <state x="686" y="225" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1609633602953" />
+    <state width="1877" height="465" key="GridCell.Tab.0.bottom" timestamp="1609635750132">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1476" height="213" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="275" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1609632906040" />
-    <state width="1877" height="275" key="GridCell.Tab.0.center" timestamp="1609632906039">
+    <state width="1877" height="465" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
+    <state width="1877" height="465" key="GridCell.Tab.0.center" timestamp="1609635750132">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1476" height="213" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="275" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1609632906039" />
-    <state width="1877" height="275" key="GridCell.Tab.0.left" timestamp="1609632906039">
+    <state width="1877" height="465" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
+    <state width="1877" height="465" key="GridCell.Tab.0.left" timestamp="1609635750132">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1476" height="213" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="275" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1609632906039" />
-    <state width="1877" height="275" key="GridCell.Tab.0.right" timestamp="1609632906039">
+    <state width="1877" height="465" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
+    <state width="1877" height="465" key="GridCell.Tab.0.right" timestamp="1609635750132">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1476" height="213" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="275" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1609632906039" />
+    <state width="1877" height="465" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
+    <state x="461" y="164" key="SettingsEditor" timestamp="1610231914981">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1610231914981" />
     <state width="300" height="100" key="javadoc.popup.new" timestamp="1609030114444">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state width="300" height="100" key="javadoc.popup.new/0.0.1536.864@0.0.1536.864" timestamp="1609030114444" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1609720833826">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1609720833826" />
     <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1607214818800">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
