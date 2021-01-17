@@ -63,7 +63,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class DiscoDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(3, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1.4, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(3.8, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1;
