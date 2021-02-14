@@ -15,7 +15,7 @@ public class CentripetalPewPewTeleOp extends OpMode{
     DcMotor ShooterL, ShooterR;
     DcMotor Intake, WobbleSet;
 
-    Servo WobbleClipR,Twitching;
+    Servo WobbleClipR,Twitching, WobbleGrabL, WobbleGrabR;
 
     CRServo WobbleGrab;
 
@@ -67,8 +67,8 @@ public class CentripetalPewPewTeleOp extends OpMode{
 
         //Twitching = hardwareMap.get(Servo.class, "Twitching");
 
-        WobbleGrab = hardwareMap.get(CRServo.class, "WobbleGrab");
-
+        WobbleGrabL = hardwareMap.get(Servo.class, "WobbleGrabL");
+        WobbleGrabR = hardwareMap.get(Servo.class, "WobbleGrabR");
         //*/
         CRconfigZero = WobbleGrab.getPower();
     }
@@ -180,6 +180,14 @@ public class CentripetalPewPewTeleOp extends OpMode{
             WobbleSet.setPower(gamepad2.left_stick_y);
         }else{
             WobbleSet.setPower(0);
+        }
+
+        if(gamepad2.b){
+            WobbleGrabL.setPosition(1);
+            WobbleGrabR.setPosition(0);
+        }else{
+            WobbleGrabL.setPosition(0);
+            WobbleGrabR.setPosition(1);
         }
 
         /*if(gamepad2.b && !usedRecently){
