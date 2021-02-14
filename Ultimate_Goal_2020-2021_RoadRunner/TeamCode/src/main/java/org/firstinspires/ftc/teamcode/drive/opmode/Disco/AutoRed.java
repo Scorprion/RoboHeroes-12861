@@ -28,7 +28,7 @@ public class AutoRed extends LinearOpMode {
         // Lowers the distance sensor
         driveTrain.ringArm.setPower(-1.0);
         // Move towards rings
-        strafe(driveTrain, 0, -33, 0);
+        strafe(driveTrain, 1, -33, 0);
 
         // TODO Run continuously while moving?
         // Using distance sensor to scan for the ring counts
@@ -44,10 +44,10 @@ public class AutoRed extends LinearOpMode {
 
 
         // Scans the rings for the wobble goal placement
-        if (minDistance >= 4.6) {  // None
+        if (minDistance >= 4.4) {  // None
             telemetry.addLine("NONE");
             A(driveTrain);
-        } else if (minDistance >= 3) {  // SINGLE
+        } else if (minDistance >= 3.3) {  // SINGLE
             telemetry.addLine("SINGLE");
             B(driveTrain);
         } else {  // FOUR
@@ -68,29 +68,32 @@ public class AutoRed extends LinearOpMode {
         robot.wobbleSet.setPower(0);
 
         // Dropping the wobble goal
-        robot.wobbleGrab.setPosition(1);
-        sleep(500);
         robot.wobbleGrab.setPosition(0);
+        sleep(500);
+        robot.wobbleGrab.setPosition(1);
         sleep(500);
 
         // Reposition to the shooting position
         strafe(robot, -30, -60, 90);
-        strafe(robot, -15, -60, 90);
+        strafe(robot, -13, -56, 90);
 
         // Shooting the preloaded rings out
         ringreverse(robot,-0.3,500);
-        ringout(robot, 0.52);
+        ringout(robot, 0.525);
+        sleep(500);
         ringshot(robot);
         ringshot(robot);
         ringshot(robot);
         sleep(500);
         robot.intake.setPower(0);
-        ringout(robot, 0);
 
+        ringout(robot, 0);
         strafe(robot, -40, -20, 270);
-        strafe(robot,-40, -5, 270);
+        strafe(robot,-40, -7, 270);
         sleep(500);
         robot.wobbleGrab.setPosition(1);
+        sleep(500);
+        robot.wobbleGrab.setPosition(0);
         sleep(500);
         robot.wobbleSet.setPower(-0.7);
         sleep(1000);
@@ -105,13 +108,15 @@ public class AutoRed extends LinearOpMode {
         // Dropping the wobble goal
         robot.wobbleGrab.setPosition(0);
         sleep(500);
+        robot.wobbleGrab.setPosition(1);
+        sleep(500);
         strafe(robot, 0, -75, 0);
 
 
     }
 
     private void B(DiscoDrive robot) {
-        // Driving to Zone A
+        // Driving to Zone B
         robot.ringArm.setPower(1.0);
         robot.turn(Math.toRadians(90));
         strafe(robot, 0, -95, 90);
@@ -120,17 +125,18 @@ public class AutoRed extends LinearOpMode {
         robot.wobbleSet.setPower(0);
 
         // Dropping the wobble goal
-        robot.wobbleGrab.setPosition(1);
-        sleep(500);
         robot.wobbleGrab.setPosition(0);
+        sleep(500);
+        robot.wobbleGrab.setPosition(1);
         sleep(500);
 
         // Reposition to the shooting position
-        strafe(robot, -15, -60, 90);
+        strafe(robot, -13, -56, 90);
 
         // Shooting the preloaded rings out
         ringreverse(robot,-0.3,500);
         ringout(robot, 0.52);
+        sleep(500);
         ringshot(robot);
         ringshot(robot);
         ringshot(robot);
@@ -140,21 +146,23 @@ public class AutoRed extends LinearOpMode {
 
         // Collecting the ring on the mat and shoot it
         robot.intake.setPower(1);
-        strafe(robot, -15, -40, 90);
+        strafe(robot, -17, -25, 90);
         robot.intake.setPower(0);
 
         // Reposition the robot to the shooting position
-        ringout(robot, 0.5);
-        strafe(robot, -13, -60, 90);
+        ringout(robot, 0.52);
+        strafe(robot, -13, -56, 90);
         ringshot(robot);
         ringout(robot, 0);
         sleep(500);
         robot.intake.setPower(0);
 
         strafe(robot, -44, -20, 270);
-        strafe(robot,-44, -11, 270);
+        strafe(robot,-44, -9, 270);
         sleep(750);
         robot.wobbleGrab.setPosition(1);
+        sleep(500);
+        robot.wobbleGrab.setPosition(0);
         sleep(500);
         robot.wobbleSet.setPower(-0.7);
         sleep(1000);
@@ -169,32 +177,35 @@ public class AutoRed extends LinearOpMode {
         // Dropping the wobble goal
         robot.wobbleGrab.setPosition(0);
         sleep(500);
+        robot.wobbleGrab.setPosition(1);
+        sleep(500);
         strafe(robot, 0, -75, 0);
 
     }
 
     private void C(DiscoDrive robot){
-        // Driving to Zone A
+        // Driving to Zone C
         robot.ringArm.setPower(1.0);
         robot.turn(Math.toRadians(90));
         strafe(robot, -0, -50, 90);
         strafe(robot, -30, -115, 90);
         robot.wobbleSet.setPower(1);
-        sleep(200);
+        sleep(400);
         robot.wobbleSet.setPower(0);
 
         // Dropping the wobble goal
-        robot.wobbleGrab.setPosition(1);
-        sleep(500);
         robot.wobbleGrab.setPosition(0);
+        sleep(500);
+        robot.wobbleGrab.setPosition(1);
         sleep(500);
 
         // Reposition to the shooting position
-        strafe(robot, -15, -60, 90);
+        strafe(robot, -13, -56, 90);
 
         // Shooting the preloaded rings out
         ringreverse(robot,-0.3,500);
         ringout(robot, 0.52);
+        sleep(500);
         ringshot(robot);
         ringshot(robot);
         ringshot(robot);
@@ -204,13 +215,16 @@ public class AutoRed extends LinearOpMode {
 
         // Collecting the ring on the mat and shoot it
         robot.intake.setPower(1);
-        strafe(robot, -15, -30, 90);
+        strafe(robot, -13, -5, 90);
+        strafe(robot, -13, -15,90);
+        strafe(robot,-13,-5,90);
         robot.intake.setPower(0);
 
         // Reposition the robot to the shooting position
-        strafe(robot, -15, -60, 90);
-        ringreverse(robot,-0.3,500);
+        strafe(robot, -13, -58, 90);
+        ringreverse(robot,0.5,500);
         ringout(robot, 0.52);
+        sleep(500);
         ringshot(robot);
         ringshot(robot);
         ringshot(robot);

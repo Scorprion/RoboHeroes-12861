@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive.opmode.Disco;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -8,8 +10,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.drive.DiscoDrive;
+
 @TeleOp(name= "DiscoTeleOp", group= "Disco")
-public class DiscoTeleOp extends OpMode{
+public class DiscoTeleOp extends OpMode {
+    DiscoDrive driveTrain;
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor ShooterL, ShooterR;
@@ -119,7 +124,7 @@ public class DiscoTeleOp extends OpMode{
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            shootingControlSpeed = 0.5;
+            shootingControlSpeed = 0.525;
 
         }else if(gamepad2.x){
 

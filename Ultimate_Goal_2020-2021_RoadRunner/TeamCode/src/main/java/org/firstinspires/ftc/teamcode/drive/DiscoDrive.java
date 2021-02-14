@@ -95,7 +95,7 @@ public class DiscoDrive extends MecanumDrive {
 
     private LinkedList<Pose2d> poseHistory;
 
-    private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    public DcMotorEx leftFront, leftRear, rightRear, rightFront;
     public DcMotorEx shooterR, shooterL, intake;
     public DcMotor wobbleSet;
     public CRServo ringArm;
