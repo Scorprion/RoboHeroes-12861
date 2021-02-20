@@ -15,7 +15,9 @@ public class CentripetalPewPewTeleOp extends OpMode{
     DcMotor ShooterL, ShooterR;
     DcMotor Intake, WobbleSet;
 
-    Servo WobbleClipR,Twitching, WobbleGrabL, WobbleGrabR;
+    Servo WobbleClipR,Twitching;
+
+    CRServo WobbleGrabL, WobbleGrabR;
 
     CRServo WobbleGrab;
 
@@ -67,10 +69,10 @@ public class CentripetalPewPewTeleOp extends OpMode{
 
         //Twitching = hardwareMap.get(Servo.class, "Twitching");
 
-        WobbleGrabL = hardwareMap.get(Servo.class, "WobbleGrabL");
-        WobbleGrabR = hardwareMap.get(Servo.class, "WobbleGrabR");
+        WobbleGrabL = hardwareMap.get(CRServo.class, "WobbleGrabL");
+        WobbleGrabR = hardwareMap.get(CRServo.class, "WobbleGrabR");
         //*/
-        CRconfigZero = WobbleGrab.getPower();
+        //CRconfigZero = WobbleGrab.getPower();
     }
 
     public void loop(){
@@ -159,11 +161,17 @@ public class CentripetalPewPewTeleOp extends OpMode{
         //Wobble Goal Hand
 
         if(gamepad2.left_bumper){
-            WobbleGrab.setPower(0.5);
+            //WobbleGrab.setPower(0.5);
+            WobbleGrabL.setPower(-1);
+            WobbleGrabR.setPower(1);
         }else if(gamepad2.right_bumper){
-            WobbleGrab.setPower(-0.5);
+            //WobbleGrab.setPower(-0.5);
+            WobbleGrabL.setPower(1);
+            WobbleGrabR.setPower(-1);
         }else if(gamepad2.right_trigger>0){
-            WobbleGrab.setPower(0.05);
+            //WobbleGrab.setPower(0.05);
+            WobbleGrabL.setPower(0);
+            WobbleGrabR.setPower(0);
         }
 
         //Wobble Goal Clip NONFUNCTIONAL
@@ -183,11 +191,11 @@ public class CentripetalPewPewTeleOp extends OpMode{
         }
 
         if(gamepad2.b){
-            WobbleGrabL.setPosition(1);
-            WobbleGrabR.setPosition(0);
+            //WobbleGrabL.setPosition(0);
+            //WobbleGrabR.setPosition(1);
         }else{
-            WobbleGrabL.setPosition(0);
-            WobbleGrabR.setPosition(1);
+            //WobbleGrabL.setPosition(1);
+            //WobbleGrabR.setPosition(0);
         }
 
         /*if(gamepad2.b && !usedRecently){
