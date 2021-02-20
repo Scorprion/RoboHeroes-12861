@@ -10,28 +10,29 @@ public class PID {
     public double error;
     public double delta_error = 0;
 
-    public double Poutput, Ioutput, Doutput;
-    public double P, I, D, lasterror, iminmax;
+    public double Poutput, Ioutput, Doutput, Foutput;
+    public double P, I, D, F, lasterror, iminmax;
 
 
-    public PID(double P, double I, double D, Double minmax) {
+    public PID(double P, double I, double D, double F, Double minmax) {
         this.P = P;
         this.I = I;
         this.D = D;
+        this.F = F;
         this.lasterror = 0;
 
-        this.iminmax = minmax == null ? 1 : minmax;  // Integral wind-up guard
+        this.iminmax = minmax == null ? Double.POSITIVE_INFINITY : minmax;  // Integral wind-up guard
 
         this.Poutput = 0;
         this.Ioutput = 0;
         this.Doutput = 0;
     }
 
-    public double getPID(double error) {
-        return calcPID(error);
+    public double getPID(double current, double setpoint) {
+        return calcPID(current - setpoint, setpoint);
     }
 
-    private double calcPID(double error) {
+    public double calcPID(double error, double setpoint) {
         delta_error = error - this.lasterror;
 
         // Integral
@@ -47,7 +48,8 @@ public class PID {
 
         this.Poutput = this.P * error;
         this.Ioutput = this.I * this.Ioutput;
-        this.Doutput = this.D * this.Doutput;
+        this.Doutput = -this.D * this.Doutput;
+        this.Foutput = this.F * setpoint;
         return this.Poutput + this.Ioutput + this.Doutput;
     }
 

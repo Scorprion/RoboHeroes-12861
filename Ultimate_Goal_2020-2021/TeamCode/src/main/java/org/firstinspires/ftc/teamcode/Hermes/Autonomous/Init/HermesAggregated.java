@@ -12,9 +12,8 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
+import org.firstinspires.ftc.teamcode.Profiles.TriangleProfile;
 import org.firstinspires.ftc.teamcode.KalmanFilter;
-import org.firstinspires.ftc.teamcode.PID;
-import org.firstinspires.ftc.teamcode.PIDCoeffs;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -59,6 +58,7 @@ public class HermesAggregated extends LinearOpMode {
         private double currentDheading = 0;  // Current angle in degrees
         private double currentHeading = 0;  // Current angle in radians
         private double previousTime = 0, deltaTime = 0, deltaAngle = 0, previousAngle = 0;
+        private double angVeloc = 0;
 
 
         public synchronized void requestStop() {
@@ -151,14 +151,18 @@ public class HermesAggregated extends LinearOpMode {
                 update_heading(robot.imu.getAngularOrientation().firstAngle);
 
                 previousTime = timer.seconds();  // Update previous time
+                this.angVeloc = Math.toDegrees(AVG_RAD * (1. / 6.347) * (-robot.FrontRight.getVelocity() + robot.FrontLeft.getVelocity() + robot.BackLeft.getVelocity() - robot.BackRight.getVelocity()));
             }
         }
     }
 
-    public void runTo(double x, double y, double angle, double allotedSec, PIDCoeffs xPIDCoeffs, PIDCoeffs yPIDCoeffs, PIDCoeffs angPIDCoeffs) {
-        PID xpid = new PID(xPIDCoeffs.getP(), xPIDCoeffs.getI(), xPIDCoeffs.getD(),0.3);
-        PID ypid = new PID(yPIDCoeffs.getP(), yPIDCoeffs.getI(), yPIDCoeffs.getD(),0.3);
-        PID angpid = new PID(angPIDCoeffs.getP(), angPIDCoeffs.getI(), angPIDCoeffs.getD(),0.3);
+    public void runTo(double x, double y, double angle, double allotedSec) {
+        RealVector position = filter.get_state();
+
+        TriangleProfile xProfile = new TriangleProfile(x - position.getEntry(0), allotedSec);
+        TriangleProfile yProfile = new TriangleProfile(y - position.getEntry(1), allotedSec);
+        TriangleProfile angProfile = new TriangleProfile(angle - backgroundTracker.currentDheading, allotedSec);
+
 
         moveTimer.reset();
         while(opModeIsActive() && allotedSec > moveTimer.seconds()) {
@@ -166,28 +170,32 @@ public class HermesAggregated extends LinearOpMode {
             Canvas fieldOverlay = packet.fieldOverlay();
             fieldOverlay.setStroke("#4CAF50");
 
-            RealVector position = filter.get_state();
+            position = filter.get_state();
 
-            double strafe = xpid.getPID(x - position.getEntry(0));
-            double forward = ypid.getPID(y - position.getEntry(1));
-            double turn = angpid.getPID(angle - backgroundTracker.currentDheading);
+            double strafe = xProfile.calculate(moveTimer.seconds()) * COUNTS_PER_INCH;
+            double forward = yProfile.calculate(moveTimer.seconds()) * COUNTS_PER_INCH;
+            double turn = angProfile.calculate(moveTimer.seconds()) * COUNTS_PER_INCH;
 
-            robot.FrontRight.setPower(forward - strafe - turn);
-            robot.BackRight.setPower(forward + strafe - turn);
-            robot.FrontLeft.setPower(forward + strafe + turn);
-            robot.BackLeft.setPower(forward - strafe + turn);
+            robot.FrontRight.setVelocity(forward - strafe - turn);
+            robot.BackRight.setVelocity(forward + strafe - turn);
+            robot.FrontLeft.setVelocity(forward + strafe + turn);
+            robot.BackLeft.setVelocity(forward - strafe + turn);
 
             // Swapped x and y to fit intuition
             drawRobot(fieldOverlay, position.getEntry(1), -position.getEntry(0), backgroundTracker.currentDheading);
 
-            packet.put("X:", position.getEntry(0));
+            packet.put("X", robot.BackRight.getVelocity());
+            packet.put("X setpoint", strafe);
             packet.put("X error", x - position.getEntry(0));
-            packet.put("Y", position.getEntry(1));
-            packet.put("Y error", y - position.getEntry(1));
-            packet.put("Heading", backgroundTracker.currentDheading);
-            packet.put("Heading setpoint", angle);
-            packet.put("Heading error", angle - backgroundTracker.currentDheading);
+            packet.put("X position", position.getEntry(0));
 
+
+            packet.put("Y", position.getEntry(3));
+            packet.put("Y setpoint", forward);
+            packet.put("Y error", forward - position.getEntry(3));
+            packet.put("Heading", backgroundTracker.angVeloc);
+            packet.put("Heading setpoint", turn);
+            packet.put("Heading error", turn - backgroundTracker.angVeloc);
 
             packet.put("Time", moveTimer.seconds());
 

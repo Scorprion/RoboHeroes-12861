@@ -13,7 +13,6 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init.HardwareHermes;
 import org.firstinspires.ftc.teamcode.KalmanFilter;
 
@@ -31,7 +30,7 @@ public class FullLocalization extends OpMode {
     private double xEnc = 0, yEnc = 0, x_prev = 0, y_prev = 0;
 
     // Localizations with powers/motor inputs
-    private volatile double x_veloc, y_veloc, deltaTime = 0;
+    private volatile double xVeloc, yVeloc, deltaTime = 0, angleEst = 0;
     private double motorV1 = 0, motorV2 = 0, motorV3 = 0, motorV4 = 0;  // Motor velocities (more accurately the powers though) labelled the same way as quadrants on the cartesian plane
     private ElapsedTime timer = new ElapsedTime();
 
@@ -57,6 +56,7 @@ public class FullLocalization extends OpMode {
         private double currentDheading = 0;  // Current angle in degrees
         private double currentHeading = 0;  // Current angle in radians
         private double previousTime = 0, deltaAngle = 0, previousAngle = 0;
+        private double currentDeriv = 0;
 
 
         public synchronized void requestStop() {
@@ -68,7 +68,7 @@ public class FullLocalization extends OpMode {
         }
 
 
-        public synchronized void update_heading(double angle) {
+        public synchronized void update_heading(double angle, double deltaT) {
             this.deltaAngle = angle - this.previousAngle;
 
             if (deltaAngle < -180)
@@ -78,6 +78,7 @@ public class FullLocalization extends OpMode {
 
             this.currentDheading += deltaAngle;
             this.currentHeading = Math.toRadians(this.currentDheading);
+            this.currentDeriv = this.deltaAngle / deltaT;
             this.previousAngle = angle;
         }
 
@@ -100,11 +101,13 @@ public class FullLocalization extends OpMode {
             while(!this.isStopRequested()) {
                 // Position prediction
                 deltaTime = timer.seconds() - previousTime;
-                RealMatrix A = MatrixUtils.createRealMatrix(new double[][] {{1., 0., deltaTime, 0.},
+                RealMatrix A = MatrixUtils.createRealMatrix(new double[][]
+                        {{1., 0., deltaTime, 0.},
                         {0., 1., 0., deltaTime},
                         {0., 0., 1., 0.},
                         {0., 0., 0., 1.}});
-                RealMatrix B = MatrixUtils.createRealMatrix(new double[][] {{-1., 1., -1., 1.},
+                RealMatrix B = MatrixUtils.createRealMatrix(new double[][]
+                        {{-1., 1., -1., 1.},
                         {1., 1., 1., 1.},
                         {-1., 1., -1., 1.},
                         {1., 1., 1., 1.}});
@@ -117,23 +120,15 @@ public class FullLocalization extends OpMode {
 
                 RealVector U = new ArrayRealVector(new double[] {motorV1, motorV2, motorV3, motorV4});
 
-                //  Can't transpose after the operation for B?
                 filter.predict(A, B.transpose(), U, Q);
 
-                /*
-                List<Integer> pos = Arrays.asList(robot.FrontRight.getCurrentPosition(), robot.FrontLeft.getCurrentPosition(), robot.BackLeft.getCurrentPosition(), robot.BackRight.getCurrentPosition());
-                xEnc = AVG_RAD * (-pos.get(0) + pos.get(1) + -pos.get(2) + pos.get(3));
-                yEnc = AVG_RAD * (pos.stream().mapToInt(Integer::intValue).sum());
-                */
-
-
-                x_veloc = highPassFilter(AVG_RAD *
+                xVeloc = highPassFilter(AVG_RAD *
                         (-robot.FrontRight.getVelocity() +
                          robot.FrontLeft.getVelocity() +
                          -robot.BackLeft.getVelocity() +
                          robot.BackRight.getVelocity()), 1e-3);
 
-                y_veloc = highPassFilter(AVG_RAD *
+                yVeloc = highPassFilter(AVG_RAD *
                         (robot.FrontRight.getVelocity() +
                                 robot.FrontLeft.getVelocity() +
                                 robot.BackLeft.getVelocity() +
@@ -141,16 +136,19 @@ public class FullLocalization extends OpMode {
 
 
                 deltaTime = timer.seconds() - previousTime;  // Update deltaTime between calculations
-                double[] newVeloc = rotate(new double[] {x_veloc, y_veloc}, new double[] {0, 0}, this.currentHeading);
+                double[] newVeloc = rotate(new double[] {xVeloc, yVeloc}, new double[] {0, 0}, this.currentHeading);
                 xEnc += newVeloc[0] * deltaTime;
                 yEnc += newVeloc[1] * deltaTime;
 
                 RealVector Z = new ArrayRealVector(new double[] {xEnc, yEnc, newVeloc[0], newVeloc[1]});
 
+                // 6.125 is theoretical (?)
+                angleEst += Math.toDegrees(AVG_RAD * (1. / 6.347) * (-robot.FrontRight.getVelocity() + robot.FrontLeft.getVelocity() + robot.BackLeft.getVelocity() - robot.BackRight.getVelocity())) * deltaTime;
+
                 // Only using Q here to avoid creating another identity matrix (has no other meaning)
                 filter.update(Z, Q, Q);
 
-                update_heading(robot.imu.getAngularOrientation().firstAngle);
+                update_heading(robot.imu.getAngularOrientation().firstAngle, deltaTime);
 
                 previousTime = timer.seconds();  // Update previous time
             }
@@ -230,7 +228,8 @@ public class FullLocalization extends OpMode {
         packet.put("Enc X", xEnc);
         packet.put("Enc Y", yEnc);
         packet.put("Heading", backgroundTracker.currentDheading);
-
+        packet.put("Heading est", backgroundTracker.currentDeriv);
+        packet.put("Angle est", angleEst);
         dashboard.sendTelemetryPacket(packet);
     }
 }
