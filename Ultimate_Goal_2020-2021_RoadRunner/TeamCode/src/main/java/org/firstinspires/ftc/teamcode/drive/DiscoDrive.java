@@ -98,8 +98,7 @@ public class DiscoDrive extends MecanumDrive {
     public DcMotorEx leftFront, leftRear, rightRear, rightFront;
     public DcMotorEx shooterR, shooterL, intake;
     public DcMotor wobbleSet;
-    public CRServo ringArm;
-    public Servo wobbleGrab;
+    public CRServo ringArm, WobbleGrabL, WobbleGrabR;
     public DistanceSensor ringSensor;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
@@ -152,7 +151,8 @@ public class DiscoDrive extends MecanumDrive {
         shooterL = hardwareMap.get(DcMotorEx.class, "ShooterL");
         shooterR = hardwareMap.get(DcMotorEx.class, "ShooterR");
 
-        wobbleGrab = hardwareMap.get(Servo.class, "WobbleGrab");
+        WobbleGrabL = hardwareMap.get(CRServo.class, "WobbleGrabL");
+        WobbleGrabR = hardwareMap.get(CRServo.class, "WobbleGrabR");
         ringArm = hardwareMap.get(CRServo.class, "RingArm");
 
         ringSensor = hardwareMap.get(DistanceSensor.class, "RingSensor");

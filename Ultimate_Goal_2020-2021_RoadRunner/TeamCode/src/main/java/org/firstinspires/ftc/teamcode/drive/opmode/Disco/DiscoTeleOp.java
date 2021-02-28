@@ -22,7 +22,7 @@ public class DiscoTeleOp extends OpMode {
 
     Servo WobbleClipR,Twitching;
 
-    Servo WobbleGrab;
+    CRServo WobbleGrabL, WobbleGrabR, ringArm;
 
     private double turnspeed = 0;
     private double strafespeed = 0;
@@ -72,7 +72,9 @@ public class DiscoTeleOp extends OpMode {
 
         //Twitching = hardwareMap.get(Servo.class, "Twitching");
 
-        WobbleGrab = hardwareMap.get(Servo.class, "WobbleGrab");
+        WobbleGrabL = hardwareMap.get(CRServo.class, "WobbleGrabL");
+        WobbleGrabR = hardwareMap.get(CRServo.class, "WobbleGrabR");
+        ringArm = hardwareMap.get(CRServo.class, "RingArm");
 
         //*/
         //CRconfigZero = WobbleGrab.getPower();
@@ -148,6 +150,12 @@ public class DiscoTeleOp extends OpMode {
             shootingControlSpeed = 0;
         }
 
+        if(gamepad2.y){
+            ringArm.setPower(1);
+        }else{
+            ringArm.setPower(0);
+        }
+
         //Intake and transport mechanism
 
         if(gamepad2.right_stick_y != 0){
@@ -163,14 +171,6 @@ public class DiscoTeleOp extends OpMode {
 
         //Wobble Goal Hand
 
-        if(gamepad2.left_bumper){
-            WobbleGrab.setPosition(1);
-        }else if(gamepad2.right_bumper){
-            WobbleGrab.setPosition(0);
-        }else if(gamepad2.right_trigger>0){
-            WobbleGrab.setPosition(0.5);
-        }
-
         //Wobble Goal Clip NONFUNCTIONAL
 
         /*if(gamepad2.left_trigger > 0){
@@ -181,10 +181,33 @@ public class DiscoTeleOp extends OpMode {
 
         //Wobble goal main Arm
 
+        if(gamepad2.left_bumper){
+            //WobbleGrab.setPower(0.5);
+            WobbleGrabL.setPower(-1);
+            WobbleGrabR.setPower(1);
+        }else if(gamepad2.right_bumper){
+            //WobbleGrab.setPower(-0.5);
+            WobbleGrabL.setPower(1);
+            WobbleGrabR.setPower(-1);
+        }else if(gamepad2.right_trigger>0){
+            //WobbleGrab.setPower(0.05);
+            WobbleGrabL.setPower(0);
+            WobbleGrabR.setPower(0);
+        }
+
+
         if(gamepad2.left_stick_y != 0){
             WobbleSet.setPower(gamepad2.left_stick_y);
         }else{
             WobbleSet.setPower(0);
+        }
+
+        if(gamepad2.b){
+            //WobbleGrabL.setPosition(0);
+            //WobbleGrabR.setPosition(1);
+        }else{
+            //WobbleGrabL.setPosition(1);
+            //WobbleGrabR.setPosition(0);
         }
 
         /*if(gamepad2.b && !usedRecently){
@@ -206,7 +229,6 @@ public class DiscoTeleOp extends OpMode {
         telemetry.addData("Shooter Speed:",gamepad2.right_stick_y);
         telemetry.addData("HardSpeeds:","y: %.5f, x: %.5f, a: %.5f",(0.5),(0.6),(0.7));
         telemetry.addData("Value: ",gamepad2.left_trigger);
-        telemetry.addData("Value: ",WobbleGrab);
         telemetry.update();
     }
 }
