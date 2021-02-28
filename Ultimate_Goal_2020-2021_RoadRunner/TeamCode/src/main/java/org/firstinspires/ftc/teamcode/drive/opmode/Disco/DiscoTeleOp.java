@@ -126,7 +126,7 @@ public class DiscoTeleOp extends OpMode {
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            shootingControlSpeed = 0.525;
+            shootingControlSpeed = 0.5;
 
         }else if(gamepad2.x){
 
@@ -135,7 +135,7 @@ public class DiscoTeleOp extends OpMode {
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            shootingControlSpeed = 0.475;
+            shootingControlSpeed = 0.4;
 
             //}else if(gamepad2.y){
 
