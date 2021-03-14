@@ -44,7 +44,7 @@ public class AutoRed extends LinearOpMode {
 
 
         // Scans the rings for the wobble goal placement
-        if (minDistance >= 4.6) {  // None
+        if (minDistance >= 4.8) {  // None
             telemetry.addLine("NONE");
             A(driveTrain);
         } else if (minDistance >= 3.3) {  // SINGLE
@@ -74,31 +74,30 @@ public class AutoRed extends LinearOpMode {
         strafe(robot, -13, -56, 90);
 
         // Shooting the preloaded rings out
-        ringreverse(robot,-0.3,500);
+        ringreverse(robot,0.5,500);
         ringout(robot, 0.525);
         sleep(500);
+        robot.intake.setPower(-0.5);
+        sleep(400);
         ringshot(robot);
         ringshot(robot);
+        sleep(200);
         ringshot(robot);
         sleep(500);
         robot.intake.setPower(0);
 
         ringout(robot, 0);
-        strafe(robot,-5, -18, 90);
-        strafe(robot,-13,-18,90);
-        wobbleintake(robot,1200);
-        robot.wobbleSet.setPower(-0.8);
+        strafe(robot,-5, -18.5, 90);
+        strafe(robot,-13,-18.5,90);
         sleep(1000);
-        robot.wobbleSet.setPower(0);
+        wobbleintake(robot,1400);
 
         strafe(robot, -25, -75, 90);
-        robot.wobbleSet.setPower(1);
-        sleep(500);
-        robot.wobbleSet.setPower(0);
 
         // Dropping the wobble goal
-        wobbleoutput(robot,1200);
-        strafe(robot, 0, -75, 0);
+        wobbleoutput(robot,1400);
+        strafe(robot, -20, -75, 90);
+        strafe(robot, 0, -75, -90);
 
 
     }
@@ -107,50 +106,47 @@ public class AutoRed extends LinearOpMode {
         // Driving to Zone B
         robot.ringArm.setPower(1.0);
         robot.turn(Math.toRadians(90));
-        strafe(robot, 0, -95, 90);
+        strafe(robot, -3, -95, 90);
         robot.wobbleSet.setPower(1);
         sleep(750);
         robot.wobbleSet.setPower(0);
 
         // Dropping the wobble goal
-        wobbleoutput(robot,1200);
+        wobbleoutput(robot,1400);
 
         // Reposition to the shooting position
+        strafe(robot, -3, -56, 90);
         strafe(robot, -13, -56, 90);
 
         // Shooting the preloaded rings out
-        ringreverse(robot,-0.3,500);
-        ringout(robot, 0.52);
+        ringreverse(robot,0.5,500);
+        ringout(robot, 0.5);
         sleep(500);
+        robot.intake.setPower(-0.5);
+        sleep(400);
         ringshot(robot);
         ringshot(robot);
+        sleep(200);
         ringshot(robot);
         sleep(500);
-        robot.intake.setPower(0);
         ringout(robot, 0);
 
-        // Collecting the ring on the mat and shoot it
-        robot.intake.setPower(1);
-        strafe(robot, -17, -25, 90);
+        robot.shooterL.setPower(-0.5);
+        robot.shooterR.setPower(0.5);
+        strafe(robot,-5, -18.5, 90);
+        strafe(robot,-13,-18.5,90);
         robot.intake.setPower(0);
+        robot.shooterL.setPower(-0);
+        robot.shooterR.setPower(0);
+        wobbleintake(robot,1400);
 
-        ringout(robot, 0);
-        strafe(robot,-5, -18, 90);
-        strafe(robot,-13,-18,90);
-        wobbleintake(robot,1200);
-        robot.wobbleSet.setPower(-0.8);
-        sleep(1000);
-        robot.wobbleSet.setPower(0);
 
-        strafe(robot, -0, -90, 90);
-        robot.wobbleSet.setPower(1);
-        sleep(500);
-        robot.wobbleSet.setPower(0);
+        strafe(robot, 0, -90, 90);
 
         // Dropping the wobble goal
         wobbleoutput(robot,1200);
-        strafe(robot, 0, -90,90);
-        strafe(robot,0,-75,90);
+        strafe(robot, 10, -90,90);
+        strafe(robot,10,-75,90);
 
     }
 
@@ -159,17 +155,17 @@ public class AutoRed extends LinearOpMode {
         robot.turn(Math.toRadians(90));
         robot.ringArm.setPower(1.0);
         strafe(robot, -0, -50, 90);
-        robot.wobbleSet.setPower(1);
         strafe(robot, -30, -115, 90);
-        wobbleoutput(robot,1200);
+        robot.wobbleSet.setPower(1);
+        wobbleoutput(robot,1400);
         robot.wobbleSet.setPower(0);
 
         // Reposition to the shooting position
-        strafe(robot, -13, -54, 90);
+        strafe(robot, -13, -56, 90);
 
         // Shooting the preloaded rings out
-        ringreverse(robot,-0.3,500);
-        ringout(robot, 0.52);
+        ringreverse(robot,1,500);
+        ringout(robot, 0.5);
         sleep(500);
         ringshot(robot);
         ringshot(robot);
@@ -179,23 +175,30 @@ public class AutoRed extends LinearOpMode {
         ringout(robot, 0);
 
         // Collecting the ring on the mat and shoot it
-        robot.intake.setPower(-0.55);
-        strafe(robot, -11, -45, 90);
+        strafe(robot, -13, -45, 90);
         sleep(250);
+        robot.shooterL.setPower(-0.5);
+        robot.shooterR.setPower(0.5);
         robot.intake.setPower(1);
-        strafe(robot, -11, -20, 90);
         strafe(robot,-11,-5,90);
         sleep(100);
+        robot.intake.setPower(-0.5);
+        sleep(400);
         robot.intake.setPower(0);
+        robot.shooterL.setPower(0);
+        robot.shooterR.setPower(0);
 
         // Reposition the robot to the shooting position
         robot.ringArm.setPower(-1.0);
-        strafe(robot, -13, -52, 90);
+        strafe(robot, -13, -54, 90);
         ringreverse(robot,0.5,500);
-        ringout(robot, 0.52);
+        ringout(robot, 0.5);
         sleep(500);
+        robot.intake.setPower(-0.5);
+        sleep(400);
         ringshot(robot);
         ringshot(robot);
+        sleep(200);
         ringshot(robot);
         sleep(2000);
         robot.intake.setPower(0);
@@ -203,7 +206,7 @@ public class AutoRed extends LinearOpMode {
 
 
         // Park on the line
-        strafe(robot, -13, -68, 90);
+        strafe(robot, -13, -74, 90);
     }
 
     private void goForward(DiscoDrive robot, double distance) {
@@ -240,9 +243,9 @@ public class AutoRed extends LinearOpMode {
 
     private void ringshot(DiscoDrive robot) {
         robot.intake.setPower(0);
-        sleep(750);
+        sleep(1200);
         robot.intake.setPower(1);
-        sleep(125);
+        sleep(200);
     }
 
     private void wobbleintake(DiscoDrive robot, long time){

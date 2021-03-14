@@ -126,7 +126,7 @@ public class DiscoTeleOp extends OpMode {
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            shootingControlSpeed = 0.5;
+            shootingControlSpeed = 0.51;
 
         }else if(gamepad2.x){
 
@@ -135,7 +135,7 @@ public class DiscoTeleOp extends OpMode {
             FrontRight.setPower(0.8);
             BackRight.setPower(0.8);
             */
-            shootingControlSpeed = 0.4;
+            shootingControlSpeed = 0.425;
 
             //}else if(gamepad2.y){
 
@@ -150,10 +150,14 @@ public class DiscoTeleOp extends OpMode {
             shootingControlSpeed = 0;
         }
 
+        if(gamepad1.left_trigger>0){
+            Intake.setPower(-1);
+        }
+
         if(gamepad2.y){
-            ringArm.setPower(1);
-        }else{
             ringArm.setPower(0);
+        }else{
+            ringArm.setPower(1);
         }
 
         //Intake and transport mechanism
