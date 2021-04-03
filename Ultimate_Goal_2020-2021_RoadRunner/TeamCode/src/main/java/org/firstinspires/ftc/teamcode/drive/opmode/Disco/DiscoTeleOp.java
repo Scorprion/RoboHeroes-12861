@@ -12,9 +12,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.DiscoDrive;
 
-@TeleOp(name= "DiscoTeleOp", group= "Disco")
+@TeleOp(name = "DiscoTeleOp", group = "Disco")
 public class DiscoTeleOp extends OpMode {
-    DiscoDrive driveTrain;
 
     DcMotor FrontLeft, FrontRight, BackLeft, BackRight;
     DcMotor ShooterL, ShooterR;
@@ -108,45 +107,33 @@ public class DiscoTeleOp extends OpMode {
             Intake.setPower(0);
         }
 
-        /*if(gamepad1.left_bumper){
-            Twitching.setPosition(-1);
-            if(Twitching.getPosition()<=0){
-                Twitching.setPosition(1);
-            }else{
-                Twitching.setPosition(0);
-            }
-        }*/
+        /* if (gamepad1.right_trigger >= 0.1) {
+            Trajectory center = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
+                    .lineToLinearHeading(calibrated)
+                    .build();
+            driveTrain.followTrajectory(center);
+        } else if (gamepad1.dpad_left) {
+            Trajectory center = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
+                    .lineToLinearHeading(new Pose2d(-20, -20, Math.toRadians(180)))
+                    .build();
+            driveTrain.followTrajectory(center);
+        } else if (gamepad1.dpad_right) {
+            Trajectory center = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
+                    .lineToLinearHeading(new Pose2d(20, 20, Math.toRadians(0)))
+                    .build();
+            driveTrain.followTrajectory(center);
+        } else if (gamepad1.left_trigger >= 0.1) {
+            calibrated = driveTrain.getPoseEstimate();
+        } */
 
-        //Hardcoded Shooting Speeds
+        // Hardcoded Shooting Speeds
 
-        if(gamepad2.a){
-
-            //Testing
-            /*
-            FrontRight.setPower(0.8);
-            BackRight.setPower(0.8);
-            */
+        if (gamepad2.a) {
             shootingControlSpeed = 0.51;
 
         }else if(gamepad2.x){
-
-            //Testing
-            /*
-            FrontRight.setPower(0.8);
-            BackRight.setPower(0.8);
-            */
             shootingControlSpeed = 0.425;
-
-            //}else if(gamepad2.y){
-
-            //Testing
-            /*
-            FrontRight.setPower(0.8);
-            BackRight.setPower(0.8);
-            */
-            //shootingControlSpeed = 0.5;
-
-        }else{
+        }else {
             shootingControlSpeed = 0;
         }
 
@@ -173,16 +160,6 @@ public class DiscoTeleOp extends OpMode {
             ShooterR.setPower(0);
         }
 
-        //Wobble Goal Hand
-
-        //Wobble Goal Clip NONFUNCTIONAL
-
-        /*if(gamepad2.left_trigger > 0){
-            WobbleClipR.setPosition(0.9);
-        }else{
-            WobbleClipR.setPosition(1);
-        }*/
-
         //Wobble goal main Arm
 
         if(gamepad2.left_bumper){
@@ -206,33 +183,10 @@ public class DiscoTeleOp extends OpMode {
             WobbleSet.setPower(0);
         }
 
-        if(gamepad2.b){
-            //WobbleGrabL.setPosition(0);
-            //WobbleGrabR.setPosition(1);
-        }else{
-            //WobbleGrabL.setPosition(1);
-            //WobbleGrabR.setPosition(0);
-        }
-
-        /*if(gamepad2.b && !usedRecently){
-            if(shootingControlSpeed >= 1.0) {
-                shootingControlSpeed = 0;
-            }else{
-                shootingControlSpeed += 0.2;
-            }
-            runtime.reset();
-            usedRecently = true;
-        }
-
-
-        if (runtime.milliseconds() > 200) {
-            usedRecently = false;
-        }*/
-
         telemetry.addData("Speeds: ", "%.5f, %.5f, %.5f", (speed), (strafespeed), (turnspeed));
-        telemetry.addData("Shooter Speed:",gamepad2.right_stick_y);
-        telemetry.addData("HardSpeeds:","y: %.5f, x: %.5f, a: %.5f",(0.5),(0.6),(0.7));
-        telemetry.addData("Value: ",gamepad2.left_trigger);
+        telemetry.addData("Shooter Speed:", gamepad2.right_stick_y);
+        telemetry.addData("HardSpeeds:", "y: %.5f, x: %.5f, a: %.5f", (0.5), (0.6), (0.7));
+        telemetry.addData("Value: ", gamepad2.left_trigger);
         telemetry.update();
     }
 }

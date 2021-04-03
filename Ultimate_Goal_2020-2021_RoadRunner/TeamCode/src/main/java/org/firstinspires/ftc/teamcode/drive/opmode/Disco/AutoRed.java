@@ -44,7 +44,7 @@ public class AutoRed extends LinearOpMode {
 
 
         // Scans the rings for the wobble goal placement
-        if (minDistance >= 4.8) {  // None
+        if (minDistance >= 5) {  // None
             telemetry.addLine("NONE");
             A(driveTrain);
         } else if (minDistance >= 3.3) {  // SINGLE
@@ -71,25 +71,22 @@ public class AutoRed extends LinearOpMode {
         wobbleoutput(robot,1200);
 
         // Reposition to the shooting position
-        strafe(robot, -13, -56, 90);
+        strafe(robot, -13, -58, 90);
 
         // Shooting the preloaded rings out
         ringreverse(robot,0.5,500);
-        ringout(robot, 0.525);
-        sleep(500);
-        robot.intake.setPower(-0.5);
-        sleep(400);
-        ringshot(robot);
+        ringout(robot, 0.49);
+        sleep(750);
         ringshot(robot);
         sleep(200);
+        ringshot(robot);
         ringshot(robot);
         sleep(500);
         robot.intake.setPower(0);
 
         ringout(robot, 0);
-        strafe(robot,-5, -18.5, 90);
-        strafe(robot,-13,-18.5,90);
-        sleep(1000);
+        strafe(robot,-5, -17.5, 90);
+        strafe(robot,-12,-17.5,90);
         wobbleintake(robot,1400);
 
         strafe(robot, -25, -75, 90);
@@ -97,7 +94,8 @@ public class AutoRed extends LinearOpMode {
         // Dropping the wobble goal
         wobbleoutput(robot,1400);
         strafe(robot, -20, -75, 90);
-        strafe(robot, 0, -75, -90);
+        robot.ringArm.setPower(-1.0);
+        strafe(robot, -13, -56, 90);
 
 
     }
@@ -122,8 +120,6 @@ public class AutoRed extends LinearOpMode {
         ringreverse(robot,0.5,500);
         ringout(robot, 0.5);
         sleep(500);
-        robot.intake.setPower(-0.5);
-        sleep(400);
         ringshot(robot);
         ringshot(robot);
         sleep(200);
@@ -132,7 +128,7 @@ public class AutoRed extends LinearOpMode {
         ringout(robot, 0);
 
         robot.shooterL.setPower(-0.5);
-        robot.shooterR.setPower(0.5);
+        robot.shooterR.setPower(-0.5);
         strafe(robot,-5, -18.5, 90);
         strafe(robot,-13,-18.5,90);
         robot.intake.setPower(0);
@@ -141,12 +137,13 @@ public class AutoRed extends LinearOpMode {
         wobbleintake(robot,1400);
 
 
-        strafe(robot, 0, -90, 90);
+        strafe(robot, -3, -90, 90);
 
         // Dropping the wobble goal
         wobbleoutput(robot,1200);
         strafe(robot, 10, -90,90);
-        strafe(robot,10,-75,90);
+        robot.ringArm.setPower(-1.0);
+        strafe(robot, -13, -56, 90);
 
     }
 
@@ -177,13 +174,11 @@ public class AutoRed extends LinearOpMode {
         // Collecting the ring on the mat and shoot it
         strafe(robot, -13, -45, 90);
         sleep(250);
-        robot.shooterL.setPower(-0.5);
-        robot.shooterR.setPower(0.5);
+        robot.shooterL.setPower(-0.3);
+        robot.shooterR.setPower(-0.3);
         robot.intake.setPower(1);
         strafe(robot,-11,-5,90);
         sleep(100);
-        robot.intake.setPower(-0.5);
-        sleep(400);
         robot.intake.setPower(0);
         robot.shooterL.setPower(0);
         robot.shooterR.setPower(0);
@@ -192,10 +187,8 @@ public class AutoRed extends LinearOpMode {
         robot.ringArm.setPower(-1.0);
         strafe(robot, -13, -54, 90);
         ringreverse(robot,0.5,500);
-        ringout(robot, 0.5);
+        ringout(robot, 0.49);
         sleep(500);
-        robot.intake.setPower(-0.5);
-        sleep(400);
         ringshot(robot);
         ringshot(robot);
         sleep(200);
@@ -232,18 +225,18 @@ public class AutoRed extends LinearOpMode {
 
     private void ringout(DiscoDrive robot, double power) {
         robot.shooterL.setPower(power);
-        robot.shooterR.setPower(-power);
+        robot.shooterR.setPower(power);
     }
 
     private void ringreverse(DiscoDrive robot, double power, long time) {
         robot.shooterL.setPower(-power);
-        robot.shooterR.setPower(power);
+        robot.shooterR.setPower(-power);
         sleep(time);
     }
 
     private void ringshot(DiscoDrive robot) {
         robot.intake.setPower(0);
-        sleep(1200);
+        sleep(900);
         robot.intake.setPower(1);
         sleep(200);
     }
