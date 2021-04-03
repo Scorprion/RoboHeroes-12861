@@ -143,7 +143,9 @@ public class AutoRed extends LinearOpMode {
         wobbleoutput(robot,1200);
         strafe(robot, 10, -90,90);
         robot.ringArm.setPower(-1.0);
+        ringout(robot, 0.5);
         strafe(robot, -13, -56, 90);
+        ringshot(robot);    
 
     }
 
