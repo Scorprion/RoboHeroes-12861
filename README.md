@@ -4,6 +4,8 @@
 
 This repository contains the code for FTC Team #12861 RoboHeroes. Our code is organized into folders that are for each season/year. 
 
+## Last Updated Nov 2, 2019
+
 ## Current Todo:
 - Focus on implementing some basic control theory for better auto programs and control
 - Make teleop more and more intuitive and smooth
