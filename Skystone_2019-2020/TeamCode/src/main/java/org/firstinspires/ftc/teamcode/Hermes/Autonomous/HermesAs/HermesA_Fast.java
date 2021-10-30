@@ -89,7 +89,6 @@ public class HermesA_Fast extends HermesAggregated {
             encoderDrives(1, 29, 29, 5); //Park
             mecanumMove(-0.4, 90, 4, 2); //Strafe closer to the bridge
             telemetry.addLine("SECOND");
-
         } else if(pos == position.BRIDGE) { //*******************************************************************************
             //First SkyStone
             sleep(250);

@@ -63,7 +63,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class DiscoDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(1.1, 0, -0.2);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(2.5, 0, -0.4);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(3.3, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1;
@@ -98,7 +98,8 @@ public class DiscoDrive extends MecanumDrive {
     public DcMotorEx leftFront, leftRear, rightRear, rightFront;
     public DcMotorEx shooterR, shooterL, intake;
     public DcMotor wobbleSet;
-    public CRServo ringArm, WobbleGrabL, WobbleGrabR;
+    public Servo ringArm;
+    public CRServo WobbleGrabL, WobbleGrabR;
     public DistanceSensor ringSensor;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
@@ -153,7 +154,7 @@ public class DiscoDrive extends MecanumDrive {
 
         WobbleGrabL = hardwareMap.get(CRServo.class, "WobbleGrabL");
         WobbleGrabR = hardwareMap.get(CRServo.class, "WobbleGrabR");
-        ringArm = hardwareMap.get(CRServo.class, "RingArm");
+        ringArm = hardwareMap.get(Servo.class, "RingArm");
 
         ringSensor = hardwareMap.get(DistanceSensor.class, "RingSensor");
 
@@ -184,6 +185,7 @@ public class DiscoDrive extends MecanumDrive {
         // TODO: reverse any motors using DcMotor.setDirection()
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooterR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));

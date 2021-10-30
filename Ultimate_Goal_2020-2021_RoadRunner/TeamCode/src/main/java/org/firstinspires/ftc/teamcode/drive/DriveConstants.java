@@ -34,7 +34,7 @@ public class DriveConstants {
     public static final boolean RUN_USING_ENCODER = true;  // 36 1 4 0 (Hermes)
 
     // 26 1.5 14 Old
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(44, 0.4, 16, getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(36, 0.2, 13, getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     /*
      * These are physical constants that can be determined from your robot (including the track
