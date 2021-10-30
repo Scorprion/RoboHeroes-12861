@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="TeleOpPractice", group="Pushbot")
@@ -17,8 +18,11 @@ public class TeleOpPractice extends OpMode {
         private double strafespeed = 0;
         private double speed = 0;
 
+        private boolean baseClaw = false;
+        private boolean Clamp = false;
+
         DcMotor BackLeft, BackRight, FrontLeft, FrontRight, Gate;
-        CRServo FoundationClaw, Clamper, HeadDrop;
+        Servo FoundationClaw, Clamper, HeadDrop;
 
         public void init(){
             FrontRight = hardwareMap.get(DcMotor.class, "FrontRight");
@@ -35,11 +39,11 @@ public class TeleOpPractice extends OpMode {
             BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
             BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-           Gate = hardwareMap.get(DcMotor.class, "Gate");
+            //Gate = hardwareMap.get(DcMotor.class, "Gate");
 
-            FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
-            Clamper = hardwareMap.get(CRServo.class, "Clamper");
-            HeadDrop = hardwareMap.get(CRServo.class, "HeadDrop");
+            FoundationClaw = hardwareMap.get(Servo.class, "Arm");
+            Clamper = hardwareMap.get(Servo.class, "Pincher");
+            //HeadDrop = hardwareMap.get(CRServo.class, "HeadDrop");
 
 
         }
@@ -54,6 +58,44 @@ public class TeleOpPractice extends OpMode {
         FrontLeft.setPower(speed + turnspeed);
         BackLeft.setPower(speed + turnspeed);
 
+        if(gamepad2.x && baseClaw){
+            baseClaw = false;
+            used_recently = true;
+            timer.reset();
 
+        }else if(gamepad2.x){
+            baseClaw = true;
+            used_recently = true;
+            timer.reset();
+        }
+
+        if(gamepad2.y && Clamp){
+            Clamp = false;
+            used_recently = true;
+            timer.reset();
+        }else if(gamepad2.y){
+            Clamp = true;
+            used_recently = true;
+            timer.reset();
+        }
+
+        if(used_recently) {
+            if(timer.milliseconds() > 1500) {
+                used_recently = false;
+            }
+        }
+
+        if(baseClaw) {
+            FoundationClaw.setPosition(1);
+        }else{
+            FoundationClaw.setPosition(0);
+        }
+
+        if(Clamp) {
+            Clamper.setPosition(0);
+        }else{
+            Clamper.setPosition(1);
+        }
     }
+
 }
