@@ -19,15 +19,17 @@ public class DiscoTeleOp extends OpMode {
     DcMotor ShooterL, ShooterR;
     DcMotor Intake, WobbleSet;
 
-    Servo WobbleClipR,Twitching;
+    Servo WobbleClipR,Twitching, ringArm;
 
-    CRServo WobbleGrabL, WobbleGrabR, ringArm;
+    CRServo WobbleGrabL, WobbleGrabR
+;
 
     private double turnspeed = 0;
     private double strafespeed = 0;
     private double speed = 0;
     private double robotControlSpeed = 1;
     private double shootingControlSpeed = 0.8;
+    private boolean battery_low = false;
 
     private double CRconfigZero = 0.0;
 
@@ -73,7 +75,7 @@ public class DiscoTeleOp extends OpMode {
 
         WobbleGrabL = hardwareMap.get(CRServo.class, "WobbleGrabL");
         WobbleGrabR = hardwareMap.get(CRServo.class, "WobbleGrabR");
-        ringArm = hardwareMap.get(CRServo.class, "RingArm");
+        ringArm = hardwareMap.get(Servo.class, "RingArm");
 
         //*/
         //CRconfigZero = WobbleGrab.getPower();
@@ -128,24 +130,36 @@ public class DiscoTeleOp extends OpMode {
 
         // Hardcoded Shooting Speeds
 
-        if (gamepad2.a) {
-            shootingControlSpeed = 0.51;
+        if (gamepad1.dpad_up) {
+            battery_low = true;
+        } else if (gamepad1.dpad_right) {
+            battery_low = false;
+        }
 
-        }else if(gamepad2.x){
-            shootingControlSpeed = 0.425;
+        if (gamepad2.a) {
+            if (battery_low) {
+                shootingControlSpeed = 0.53;
+            } else {
+                shootingControlSpeed = 0.51;
+            }
+
+        }else if (gamepad2.x){
+            shootingControlSpeed = 0.45;
         }else {
             shootingControlSpeed = 0;
         }
 
-        if(gamepad1.left_trigger>0){
+        if (gamepad1.left_trigger>0){
             Intake.setPower(-1);
         }
 
-        if(gamepad2.y){
-            ringArm.setPower(0);
-        }else{
-            ringArm.setPower(1);
+        if (gamepad2.y){
+            ringArm.setPosition(0.3);
+        }else {
+            ringArm.setPosition(1);
         }
+
+
 
         //Intake and transport mechanism
 
@@ -187,6 +201,7 @@ public class DiscoTeleOp extends OpMode {
         telemetry.addData("Shooter Speed:", gamepad2.right_stick_y);
         telemetry.addData("HardSpeeds:", "y: %.5f, x: %.5f, a: %.5f", (0.5), (0.6), (0.7));
         telemetry.addData("Value: ", gamepad2.left_trigger);
+        telemetry.addData("Power Togger", battery_low);
         telemetry.update();
     }
 }

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name= "TeleOp Hermes", group= "Pushbot")
+@TeleOp(name= "TeleOpHermes", group= "Pushbot")
 public class TeleOpHermes extends OpMode {
     private double robotControlSpeed = 0.7;
     private boolean used_recently = false, xbutton = false;
@@ -35,14 +35,11 @@ public class TeleOpHermes extends OpMode {
         BackLeft = hardwareMap.get(DcMotor.class, "BackLeft");
         BackLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
         Gate = hardwareMap.get(DcMotor.class, "Gate");
 
         FoundationClaw = hardwareMap.get(CRServo.class, "FoundationClaw");
         Clamper = hardwareMap.get(CRServo.class, "Clamper");
         HeadDrop = hardwareMap.get(CRServo.class, "HeadDrop");
-
-
     }
 
     @Override
