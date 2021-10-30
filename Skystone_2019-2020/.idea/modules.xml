@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Skystone_2019-2020.iml" filepath="$PROJECT_DIR$/Skystone_2019-2020.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Skystone_2019-2020.iml" filepath="$PROJECT_DIR$/.idea/Skystone_2019-2020.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcDashboard/Skystone_2019-2020.FtcDashboard.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcDashboard/Skystone_2019-2020.FtcDashboard.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/FtcRobotController/Skystone_2019-2020.FtcRobotController.iml" filepath="$PROJECT_DIR$/.idea/modules/FtcRobotController/Skystone_2019-2020.FtcRobotController.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/TeamCode/Skystone_2019-2020.TeamCode.iml" filepath="$PROJECT_DIR$/.idea/modules/TeamCode/Skystone_2019-2020.TeamCode.iml" />
