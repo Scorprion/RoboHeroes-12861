@@ -1,4 +1,4 @@
-# FTC #12861 RoboHeroes
+# FTC team #12861 RoboHeroes
 
 <img src= "https://github.com/Scorprion/RoboHeroes-12861/blob/master/FTC%20RoboHeroes%20-%20%20logo%20final_ext.jpg" height="200px" width="200px">
 
