@@ -105,7 +105,6 @@ public class FullLocalization extends OpMode {
                 //  Can't transpose after the operation for B?
                 filter.predict(A, B.transpose(), U, Q);
 
-
                 w1 = robot.FrontRight.getCurrentPosition();
                 w2 = robot.FrontLeft.getCurrentPosition();
                 w3 = robot.BackLeft.getCurrentPosition();

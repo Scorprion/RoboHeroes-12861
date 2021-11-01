@@ -13,162 +13,79 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4be886a0-cfca-434d-9dda-3611497799ff" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/HermesConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PIDCoeffs.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HeremesAuto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/AccelerationIntegrator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/IMUCalibration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/NaiveCopyInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/MiniPID.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/HermesMovement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/RPMTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/KalmanFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/commons-math3-3.6.1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_RoadRunner/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/util/BayesOpt.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/checksums/sha1-checksums.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/KalmanLibrary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PathBuilder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PathCreator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/Ultimate_Goal_2020-2021_NoLibraries.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle___tensorflow_lite_0_0_0_nightly__aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle___tfod_release__aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_annotation_annotation_1_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_2_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_2_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_arch_core_core_common_2_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_collection_collection_1_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_core_core_1_3_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_fragment_fragment_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_common_2_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_Blocks_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_FtcCommon_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_Hardware_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_Inspection_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_OnBotJava_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_RobotCore_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_RobotServer_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/modules/FtcRobotController/Ultimate_Goal_2020-2021_NoLibraries.FtcRobotController.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/modules/TeamCode/Ultimate_Goal_2020-2021_NoLibraries.TeamCode.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Relic_Recovery_2017-2018/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Relic_Recovery_2017-2018/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/Rover_Ruckus_2018-2019.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/Rover_Ruckus_2018-2019.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Skystone_2019-2020/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByEncoder_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Skystone_2019-2020/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByEncoder_Linear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/TeleOpHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/TeleOpHermes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FtcRobotController/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FtcRobotController/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/build.release.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build.release.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HeremesAuto.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HeremesAuto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/PIDTesting.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/PIDTesting.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/KalmanFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/KalmanFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.common.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.github/CONTRIBUTING.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.github/CONTRIBUTING.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.github/PULL_REQUEST_TEMPLATE.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.github/PULL_REQUEST_TEMPLATE.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/runConfigurations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.release.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/FTC_2016-17.dat" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/FTC_2016-17.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/FTC_2016-17.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/FTC_2016-17.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/RelicVuMark.dat" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/RelicVuMark.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/RelicVuMark.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/RelicVuMark.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/StonesAndChips.dat" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/StonesAndChips.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/StonesAndChips.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/StonesAndChips.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/UltimateGoal.dat" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/UltimateGoal.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/UltimateGoal.tflite" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/UltimateGoal.tflite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/assets/UltimateGoal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/assets/UltimateGoal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Iterative.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Iterative.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/BasicOpMode_Linear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptCompassCalibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptCompassCalibration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptDIMAsIndicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptDIMAsIndicator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptI2cAddressChange.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptI2cAddressChange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptMotorBulkRead.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptMotorBulkRead.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptNullOp.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptNullOp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptRampMotorSpeed.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptRampMotorSpeed.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptRevSPARKMini.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptRevSPARKMini.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptScanServo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptScanServo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsASJava.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsASJava.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsOnBotJava.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsOnBotJava.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsSKYSTONE.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptSoundsSKYSTONE.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTelemetry.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTelemetry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTensorFlowObjectDetection.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTensorFlowObjectDetection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTensorFlowObjectDetectionSwitchableCameras.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTensorFlowObjectDetectionSwitchableCameras.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTensorFlowObjectDetectionWebcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptTensorFlowObjectDetectionWebcam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuMarkIdentification.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuMarkIdentification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuMarkIdentificationWebcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuMarkIdentificationWebcam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaNavigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaNavigation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaNavigationWebcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaNavigationWebcam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaUltimateGoalNavigation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaUltimateGoalNavigation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaUltimateGoalNavigationWebcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptVuforiaUltimateGoalNavigationWebcam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptWebcam.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/ConceptWebcam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/HardwarePushbot.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/HardwarePushbot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByEncoder_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByEncoder_Linear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByGyro_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByGyro_Linear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByTime_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByTime_Linear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveToLine_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveToLine_Linear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotTeleopPOV_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotTeleopPOV_Linear.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotTeleopTank_Iterative.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotTeleopTank_Iterative.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SampleRevBlinkinLedDriver.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SampleRevBlinkinLedDriver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorAdafruitRGB.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorAdafruitRGB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorBNO055IMU.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorBNO055IMU.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorBNO055IMUCalibration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorBNO055IMUCalibration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorDIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorDIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorDigitalTouch.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorDigitalTouch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorKLNavxMicro.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorKLNavxMicro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRColor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRCompass.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRCompass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRGyro.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRGyro.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRIrSeeker.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRIrSeeker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMROpticalDistance.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMROpticalDistance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRRangeSensor.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorMRRangeSensor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorREV2mDistance.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/SensorREV2mDistance.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/sample_conventions.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/sample_conventions.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcOpModeRegister.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcOpModeRegister.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/FtcRobotControllerActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/PermissionValidatorWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/internal/PermissionValidatorWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/drawable-xhdpi/icon_menu.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/drawable-xhdpi/icon_menu.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/drawable-xhdpi/icon_robotcontroller.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/drawable-xhdpi/icon_robotcontroller.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/layout/activity_ftc_controller.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/layout/activity_ftc_controller.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/menu/ftc_robot_controller.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/menu/ftc_robot_controller.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/raw/gold.wav" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/raw/gold.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/raw/silver.wav" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/raw/silver.wav" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/values/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/values/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/xml/app_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/xml/app_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/FtcRobotController/src/main/res/xml/device_filter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/src/main/res/xml/device_filter.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/build.release.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/lib/OpModeAnnotationProcessor.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/lib/OpModeAnnotationProcessor.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/HermesA.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HardwareHermes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/PID.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/HermesMovement.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/TeleOpHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/TeleOpHermes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/res/raw/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/res/raw/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/TeamCode/src/main/res/xml/teamwebcamcalibrations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/res/xml/teamwebcamcalibrations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/build.common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/build.common.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/legal/AudioBlocksSounds.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/legal/AudioBlocksSounds.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/legal/Exhibit A - LEGO Open Source License Agreement.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/legal/Exhibit A - LEGO Open Source License Agreement.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/legal/LEGO Open Source License.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/legal/LEGO Open Source License.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/PullRequest.PNG" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/PullRequest.PNG" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/chips.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/chips.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/stones.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/stones.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/target_chips_A4.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/target_chips_A4.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/target_chips_USLetter.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/target_chips_USLetter.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/target_stones_A4.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/target_stones_A4.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/doc/media/target_stones_USLetter.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/doc/media/target_stones_USLetter.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/README.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/Vuforia.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/Vuforia.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/arm64-v8a/libVuforia.so" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/arm64-v8a/libVuforia.so" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/armeabi-v7a/libVuforia.so" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/armeabi-v7a/libVuforia.so" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/ftc.debug.keystore" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/ftc.debug.keystore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/tensorflow-lite-0.0.0-nightly.aar" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/tensorflow-lite-0.0.0-nightly.aar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/libs/tfod-release.aar" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/libs/tfod-release.aar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_RoadRunner/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleMecanumDrive.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_RoadRunner/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/drive/SampleMecanumDrive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.release.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +96,7 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[192.168.43.1:5555]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -219,12 +136,21 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Variables" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.17" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="gradle.compiler" />
+  </component>
+  <component name="PsdUISettings">
+    <option name="MODULE_TAB" value="Signing Configs" />
+    <option name="BUILD_VARIANTS_TAB" value="Build Types" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.firstinspires.ftc.teamcode" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -310,74 +236,13 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="847" y="356" key="#Notifications" timestamp="1610232284676">
+    <state x="477" y="266" key="#PSD" timestamp="1633817204420">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="847" y="356" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1610232284676" />
-    <state x="477" y="266" key="#PSD" timestamp="1610231905872">
+    <state x="477" y="266" key="#PSD/0.0.1920.1040@0.0.1920.1040" timestamp="1633817204420" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1633817221051">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="477" y="266" key="#PSD/0.0.1920.1040@0.0.1920.1040" timestamp="1610231905872" />
-    <state x="768" y="383" key="#Updates" timestamp="1610232302228">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="768" y="383" key="#Updates/0.0.1920.1040@0.0.1920.1040" timestamp="1610232302228" />
-    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607212605202">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1607212605202" />
-    <state x="574" y="135" key="#com.intellij.ide.util.MemberChooser" timestamp="1609030785011">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state x="574" y="135" key="#com.intellij.ide.util.MemberChooser/0.0.1536.864@0.0.1536.864" timestamp="1609030785011" />
-    <state x="1023" y="521" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1608407552617">
-      <screen x="0" y="0" width="2560" height="1400" />
-    </state>
-    <state x="1023" y="521" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1608407552617" />
-    <state x="744" y="276" key="AndroidCreateXmlResourceDialog" timestamp="1609633694634">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="744" y="276" key="AndroidCreateXmlResourceDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1609633694634" />
-    <state x="686" y="225" key="FileChooserDialogImpl" timestamp="1609633602953">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1609177469809" />
-    <state x="686" y="225" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1609633602953" />
-    <state width="1877" height="465" key="GridCell.Tab.0.bottom" timestamp="1609635750132">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1476" height="213" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="465" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
-    <state width="1877" height="465" key="GridCell.Tab.0.center" timestamp="1609635750132">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1476" height="213" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="465" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
-    <state width="1877" height="465" key="GridCell.Tab.0.left" timestamp="1609635750132">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1476" height="213" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="465" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
-    <state width="1877" height="465" key="GridCell.Tab.0.right" timestamp="1609635750132">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="1476" height="213" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1608419420961" />
-    <state width="1877" height="465" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1609635750132" />
-    <state x="461" y="164" key="SettingsEditor" timestamp="1610231914981">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1610231914981" />
-    <state width="300" height="100" key="javadoc.popup.new" timestamp="1609030114444">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state width="300" height="100" key="javadoc.popup.new/0.0.1536.864@0.0.1536.864" timestamp="1609030114444" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1609720833826">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1609720833826" />
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1607214818800">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1607214818800" />
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1633817221051" />
   </component>
 </project>
