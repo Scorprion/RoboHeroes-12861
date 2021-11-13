@@ -96,7 +96,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private LinkedList<Pose2d> poseHistory;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
-    public DcMotorEx elbow;
+    public DcMotorEx elbow, carousel;
     public Servo clamp, wrist;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
@@ -147,6 +147,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         clamp = hardwareMap.get(Servo.class, "Clamp");
         wrist = hardwareMap.get(Servo.class, "Wrist");
 
+        carousel = hardwareMap.get(DcMotorEx.class, "Carousel");
         elbow = hardwareMap.get(DcMotorEx.class, "Elbow");
 
         leftFront = hardwareMap.get(DcMotorEx.class, "FrontLeft");
