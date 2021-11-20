@@ -30,7 +30,7 @@ public class MercuryAutoRedCarousel extends LinearOpMode {
         driveTrain.followTrajectory(move);
 
         Trajectory move2 = driveTrain.trajectoryBuilder(move.end())
-                .lineToLinearHeading(new Pose2d(-62, -56, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-62, -58, Math.toRadians(90)))
                 .build();
         driveTrain.followTrajectory(move2);
 
@@ -44,15 +44,15 @@ public class MercuryAutoRedCarousel extends LinearOpMode {
         driveTrain.carousel.setPower(0);
 
         Trajectory move3 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(-12, -42, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-10, -42, Math.toRadians(180)))
                 .build();
         driveTrain.followTrajectory(move3);
 
         // Depositing
         driveTrain.elbow.setPower(-0.5);
+        driveTrain.clamp.setPosition(1);
         sleep(1000);
         driveTrain.elbow.setPower(0);
-        driveTrain.clamp.setPosition(1);
         sleep(500);
         driveTrain.elbow.setPower(0.5);
         sleep(1000);
@@ -64,7 +64,7 @@ public class MercuryAutoRedCarousel extends LinearOpMode {
         driveTrain.followTrajectory(move4);
 
         Trajectory move5 = driveTrain.trajectoryBuilder(move4.end())
-                .lineToLinearHeading(new Pose2d(42, -50, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(46, -50, Math.toRadians(180)))
                 .build();
         driveTrain.followTrajectory(move5);
 

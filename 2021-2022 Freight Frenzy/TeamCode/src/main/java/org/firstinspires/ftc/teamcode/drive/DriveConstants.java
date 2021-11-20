@@ -55,8 +55,8 @@ public class DriveConstants {
      * motor encoders or have elected not to use them for velocity control, these values should be
      * empirically tuned.
      */
-    public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
-    public static double kA = 0;
+    public static double kV = 0.0223; // 1.0 / rpmToVelocity(MAX_RPM);
+    public static double kA = 0.003;
     public static double kStatic = 0;
 
     /*
@@ -89,7 +89,7 @@ public class DriveConstants {
      */
     public static double MAX_VEL = 39.4224324932042;
     public static double MAX_ACCEL = 39.4224324932042;
-    public static double MAX_ANG_VEL = Math.toRadians(164.27192727272728);
+    public static double MAX_ANG_VEL = Math.toRadians(183.6);
     public static double MAX_ANG_ACCEL = Math.toRadians(164.27192727272728);
 
 
