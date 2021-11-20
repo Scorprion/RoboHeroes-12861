@@ -19,8 +19,6 @@ public class MercuryAutoBlueDepot extends LinearOpMode {
 
         waitForStart();
 
-        driveTrain.wrist.setPosition(0);
-
         Trajectory move = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-12, 42, 0))
                 .build();

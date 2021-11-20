@@ -22,8 +22,6 @@ public class MercuryAutoRedDepot extends LinearOpMode {
 
         waitForStart();
 
-        driveTrain.wrist.setPosition(0);
-
         Trajectory move = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-12, -42, Math.toRadians(180)))
                 .build();

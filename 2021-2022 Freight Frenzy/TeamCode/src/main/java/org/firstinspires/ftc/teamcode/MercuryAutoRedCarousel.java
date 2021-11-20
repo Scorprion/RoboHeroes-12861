@@ -24,8 +24,6 @@ public class MercuryAutoRedCarousel extends LinearOpMode {
 
         waitForStart();
 
-        driveTrain.wrist.setPosition(0);
-
         Trajectory move = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-62, -50, Math.toRadians(90)))
                 .build();
