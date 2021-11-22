@@ -39,7 +39,7 @@ public class HermesMovement extends OpMode {
 
 
     HardwareHermes robot = new HardwareHermes();
-    PID angle_tracker = new PID(0, 0, 0, 0.0);
+    PID angle_tracker = new PID(0, 0, 0, 0.0, 0.0);
     PositionPrediction background_tracker = new PositionPrediction();
     Thread thread = new Thread(background_tracker, "PosPred");
 

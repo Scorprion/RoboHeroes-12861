@@ -41,7 +41,7 @@ public class KalmanFilter {
      * @param A State Transition Matrix (n x n)
      * @param B Actuation Matrix (n x p)
      * @param U Input Vector (p x 1)
-     * @param Q
+     * @param Q Environmental Uncertainty (n x n)
      */
     public void predict(RealMatrix A, RealMatrix B, RealVector U, RealMatrix Q) {
         // TODO: It may be post (just multiply), double check (transition matrix may be a param too)

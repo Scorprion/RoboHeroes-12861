@@ -1,10 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="AndroidLogFilters">
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="4be886a0-cfca-434d-9dda-3611497799ff" name="Default Changelist" comment="" />
+    <list default="true" id="4be886a0-cfca-434d-9dda-3611497799ff" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/KalmanLibrary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PathBuilder.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/PathCreator.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/6.1.1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/Ultimate_Goal_2020-2021_NoLibraries.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle___tensorflow_lite_0_0_0_nightly__aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle___tfod_release__aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_annotation_annotation_1_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_2_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_appcompat_appcompat_resources_1_2_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_arch_core_core_common_2_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_collection_collection_1_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_core_core_1_3_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_fragment_fragment_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_common_2_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_savedstate_savedstate_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_1_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_Blocks_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_FtcCommon_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_Hardware_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_Inspection_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_OnBotJava_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_RobotCore_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/libraries/Gradle__org_firstinspires_ftc_RobotServer_6_0_1_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/modules/FtcRobotController/Ultimate_Goal_2020-2021_NoLibraries.FtcRobotController.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/modules/TeamCode/Ultimate_Goal_2020-2021_NoLibraries.TeamCode.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries/local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Relic_Recovery_2017-2018/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Relic_Recovery_2017-2018/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/Rover_Ruckus_2018-2019.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/Rover_Ruckus_2018-2019.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Rover_Ruckus_2018-2019/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Skystone_2019-2020/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByEncoder_Linear.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Skystone_2019-2020/FtcRobotController/src/main/java/org/firstinspires/ftc/robotcontroller/external/samples/PushbotAutoDriveByEncoder_Linear.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/Autonomous/Init/HermesAggregated.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/TeleOpHermes.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Skystone_2019-2020/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/TeleOpHermes.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FtcRobotController/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/FtcRobotController/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamCode/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/TeamCode/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.common.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.common.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.release.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/FtcRobotController/build.release.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Hermes/TeleOp/FullLocalization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoDashboard/build.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +117,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -47,17 +130,32 @@
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
+    <option name="compactDirectories" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="cc33bf53e18c47f8" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-12-06T00:11:12.086Z" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Skystone_2019-2020" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Ultimate_Goal_2020-2021_NoLibraries" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="gradle.compiler" />
+  </component>
+  <component name="PsdUISettings">
+    <option name="MODULE_TAB" value="Signing Configs" />
+    <option name="BUILD_VARIANTS_TAB" value="Build Types" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.firstinspires.ftc.teamcode" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -125,6 +223,7 @@
       </method>
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -138,14 +237,17 @@
     </task>
     <servers />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="414" y="195" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1630791191140">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="477" y="266" key="#PSD" timestamp="1633817204420">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="414" y="195" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1630791191140" />
-    <state x="740" y="295" key="FileChooserDialogImpl" timestamp="1630792882323">
-      <screen x="0" y="0" width="1920" height="1080" />
+    <state x="477" y="266" key="#PSD/0.0.1920.1040@0.0.1920.1040" timestamp="1633817204420" />
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1633817221051">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="295" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1630792882323" />
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1633817221051" />
   </component>
 </project>

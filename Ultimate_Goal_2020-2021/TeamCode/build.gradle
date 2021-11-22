@@ -13,12 +13,22 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+apply plugin: 'kotlin-android'
 
 repositories {
     maven { url = "https://dl.bintray.com/first-tech-challenge/ftcsdk/" }
+    mavenCentral()
 }
 
 dependencies {
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
     implementation files('../libs/commons-math3-3.6.1.jar')
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+
+android {
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }

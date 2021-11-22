@@ -1,44 +1,42 @@
 package org.firstinspires.ftc.teamcode.Hermes.Autonomous.Init;
 
-import android.graphics.Color;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.hardware.bosch.NaiveAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.ColorRangeSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.firstinspires.ftc.teamcode.Hermes.HermesConstants.*;
 
 
 @SuppressWarnings({"WeakerAccess"})
 public class HardwareHermes {
-    //Right motors
+    // Right motors
     public DcMotorEx FrontRight;
     public DcMotorEx BackRight;
 
-    //Left motors
+    // Left motors
     public DcMotorEx FrontLeft;
     public DcMotorEx BackLeft;
 
-    //The latching down boi
+    public List<DcMotorEx> motorList;
+
+    // The latching down boi
     public DcMotorEx Gate;
 
-    //Foundation Grabber
+    // Foundation Grabber
     public CRServo FoundationClaw;
     public CRServo Clamper;
 
     // Distance Sensor
     public DistanceSensor ds;
-
-    // Color Sensors (if you cant read)
-    public ColorSensor ringcs;
 
     //IMU sensor
     public BNO055IMU imu;
@@ -49,7 +47,6 @@ public class HardwareHermes {
 
 
     public void init(HardwareMap ahwMap) {
-        ringcs = ahwMap.get(ColorSensor.class, "RingColorSensor");
         ds = ahwMap.get(DistanceSensor.class, "DistanceSensor");
 
         //IMU sensor
@@ -81,15 +78,15 @@ public class HardwareHermes {
         FoundationClaw = ahwMap.get(CRServo.class, "FoundationClaw");
         Clamper = ahwMap.get(CRServo.class, "Clamper");
 
-        FrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        FrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorList = Arrays.asList(FrontRight, FrontLeft, BackLeft, BackRight);
 
-        FrontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BackRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        FrontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        BackLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        for(DcMotorEx motor : motorList) {
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coeffs);
+            motor.setPositionPIDFCoefficients(5.0);
+        }
 
         // Make the motors not use encoders by default but you can set it to use encoders in the
         // program manually with "RUN_USING_ENCODER" and "STOP_AND_RESET_ENCODER"
