@@ -30,7 +30,7 @@ public class MercuryAutoRedCarousel extends LinearOpMode {
         driveTrain.followTrajectory(move);
 
         Trajectory move2 = driveTrain.trajectoryBuilder(move.end())
-                .lineToLinearHeading(new Pose2d(-62, -58, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-62, -60, Math.toRadians(90)))
                 .build();
         driveTrain.followTrajectory(move2);
 
