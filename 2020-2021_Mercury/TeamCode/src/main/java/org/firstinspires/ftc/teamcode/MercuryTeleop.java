@@ -72,6 +72,12 @@ public class MercuryTeleop extends LinearOpMode {
                 activated = false;
             }
 
+            if (gamepad2.right_stick_y != 0) {
+                driveTrain.capDrop.setPower(gamepad2.right_stick_y);
+            } else {
+                driveTrain.capDrop.setPower(0);
+            }
+
             if ((gamepad2.left_stick_y >= 0.1 || gamepad2.left_stick_y <= -0.1)) {
                 driveTrain.elbow.setPower(gamepad2.left_stick_y * 0.4);
             } else {

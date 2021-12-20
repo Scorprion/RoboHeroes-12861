@@ -35,7 +35,7 @@ public class MercuryAutoBlueDepot extends LinearOpMode {
         driveTrain.elbow.setPower(0);
 
         Trajectory move2 = driveTrain.trajectoryBuilder(move.end())
-                .lineToLinearHeading(new Pose2d(42, 48, 0))
+                .lineToLinearHeading(new Pose2d(46, 48, 0))
                 .build();
         driveTrain.followTrajectory(move2);
 
