@@ -98,6 +98,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     public DcMotorEx elbow, carousel;
     public Servo clamp, wrist;
+    public CRServo capDrop;
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
 
@@ -154,6 +155,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         leftRear = hardwareMap.get(DcMotorEx.class, "BackLeft");
         rightRear = hardwareMap.get(DcMotorEx.class, "BackRight");
         rightFront = hardwareMap.get(DcMotorEx.class, "FrontRight");
+
+        capDrop = hardwareMap.get(CRServo.class, "CapDrop");
+
+        //setZeroPowerBehavior(CRServo.ZeroPowerBehavior.BRAKE);
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
