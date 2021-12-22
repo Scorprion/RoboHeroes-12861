@@ -4,43 +4,48 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.stream.CameraStreamServer;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-import java.nio.channels.Pipe;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.firstinspires.ftc.teamcode.Point;
+
 @Autonomous
-public class CVCode extends LinearOpMode {
-    WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam");
+public class BarcodeScanner extends LinearOpMode {
+    WebcamName webcamName;
 
     @Override
     public void runOpMode() throws InterruptedException {
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam");
+
         // Adds live view port for the driver hub
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvWebcam camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+        // camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED); // this may need to be removed, but I left it in for testing
 
+
+        ColorScanner pipeline = new ColorScanner();
+        camera.setPipeline(pipeline);
+
+        waitForStart();
         // Opening async. to avoid the thread from waiting for camera
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                FindColors pipeline = new FindColors();
-                camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED); // this may need to be removed, but I left it in for testing
                 camera.startStreaming(1280, 720);
-                camera.setPipeline(pipeline);
-                List<MatOfPoint> contours = pipeline.getContourList();
             }
             @Override
             public void onError(int errorCode)
@@ -50,25 +55,9 @@ public class CVCode extends LinearOpMode {
                  */
             }
         });
-    }
-}
-
-class FindColors extends OpenCvPipeline {
-    Mat hsv = new Mat();
-    Mat bitEdges = new Mat();
-    List<MatOfPoint> contours;
-
-    @Override
-    public Mat processFrame(Mat input) {
-        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
-        // Detects Red
-        Core.inRange(hsv, new Scalar(4, 123, 0), new Scalar(11, 255, 255), bitEdges);
-
-        Imgproc.findContours(bitEdges, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
-        return null;
-    }
-
-    public List<MatOfPoint> getContourList() {
-        return contours;
+        while (opModeIsActive()) {
+            telemetry.addData("Position", pipeline.getLocation());
+            telemetry.update();
+        }
     }
 }
