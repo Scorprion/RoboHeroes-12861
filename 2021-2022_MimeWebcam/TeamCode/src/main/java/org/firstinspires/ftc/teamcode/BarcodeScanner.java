@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -12,6 +13,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
@@ -33,19 +35,19 @@ public class BarcodeScanner extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         OpenCvWebcam camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         // camera.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED); // this may need to be removed, but I left it in for testing
-
+        FtcDashboard.getInstance().startCameraStream(camera, 0);
 
         ColorScanner pipeline = new ColorScanner();
         camera.setPipeline(pipeline);
 
-        waitForStart();
+
         // Opening async. to avoid the thread from waiting for camera
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                camera.startStreaming(1280, 720);
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
             @Override
             public void onError(int errorCode)
@@ -55,6 +57,8 @@ public class BarcodeScanner extends LinearOpMode {
                  */
             }
         });
+
+        waitForStart();
         while (opModeIsActive()) {
             telemetry.addData("Position", pipeline.getLocation());
             telemetry.update();

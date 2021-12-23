@@ -19,15 +19,15 @@ public class ColorScanner extends OpenCvPipeline {
     Mat markerEdges = new Mat();
     Mat combinedEdges = new Mat();
 
-    List<MatOfPoint> barcode;
-    List<MatOfPoint> marker;
-    List<Point> centers;
+    List<MatOfPoint> barcode = new ArrayList<>();
+    List<MatOfPoint> marker = new ArrayList<>();
+    List<Point> centers = new ArrayList<>();
 
-    Scalar lowerBlue = new Scalar(100, 110, 0);
-    Scalar upperBlue = new Scalar(11, 255, 255);
+    Scalar lowerBlue = new Scalar(100, 100, 75);
+    Scalar upperBlue = new Scalar(120, 255, 255);
 
-    Scalar lowerWheelGreen = new Scalar(47, 37, 0);
-    Scalar upperWheelGreen = new Scalar(84, 255, 255);
+    Scalar lowerWheelGreen = new Scalar(40, 100, 100);
+    Scalar upperWheelGreen = new Scalar(60, 255, 255);
 
     enum Location {
         LEFT,
@@ -42,8 +42,7 @@ public class ColorScanner extends OpenCvPipeline {
     @Override
     public Mat processFrame(Mat input) {
         // Converts image to HSV
-        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
-
+        Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
 
         // Detects Blue (just blue for testing)
         Core.inRange(hsv, lowerBlue, upperBlue, blueEdges);
@@ -54,9 +53,9 @@ public class ColorScanner extends OpenCvPipeline {
         Imgproc.findContours(markerEdges, marker, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
 
-        List<Moments> mu = new ArrayList<Moments>(barcode.size());
+        List<Moments> mu = new ArrayList<>(barcode.size());
 
-        if (marker.size() > 0 && centers.size()  > 0) {
+        if (marker.size() > 0 && centers.size() > 0) {
             // Add all contours detected from the inRange
             for (int i = 0; i < barcode.size(); i++) {
                 mu.add(i, Imgproc.moments(barcode.get(i), false));
@@ -70,7 +69,7 @@ public class ColorScanner extends OpenCvPipeline {
             centers.add(centers.get(0).plus(centers.get(1).div(2.0)));
 
             // Sort the centers list based on their x value
-            Collections.sort(centers, (c1, c2) -> { return c1.getX() < c2.getX() ? 0 : 1; });
+            Collections.sort(centers, (c1, c2) ->  c1.getX() < c2.getX() ? 0 : 1 );
 
             Moments mark = Imgproc.moments(marker.get(0), false);
             Point markerPoint = new Point((int) (mark.get_m10() / mark.get_m00()), (int) (mark.get_m01() / mark.get_m00()));
@@ -100,8 +99,9 @@ public class ColorScanner extends OpenCvPipeline {
         }
 
         Core.add(blueEdges, markerEdges, combinedEdges);
-
-        return combinedEdges;
+        hsv.release();
+        markerEdges.release();
+        return blueEdges;
     }
 
     public Location getLocation() { return scan; }
