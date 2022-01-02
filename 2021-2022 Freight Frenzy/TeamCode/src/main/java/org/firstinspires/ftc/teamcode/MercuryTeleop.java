@@ -73,9 +73,11 @@ public class MercuryTeleop extends LinearOpMode {
             }
 
             if(gamepad2.right_stick_y != 0){
-                driveTrain.capDrop.setPower(gamepad2.right_stick_y);
+                driveTrain.capDrop.setPower(gamepad2.right_stick_y*0.25);
             }else{
                 driveTrain.capDrop.setPower(0);
+                //driveTrain.capDrop.setPosition(0);
+
             }
 
             if ((gamepad2.left_stick_y >= 0.1 || gamepad2.left_stick_y <= -0.1)) {
