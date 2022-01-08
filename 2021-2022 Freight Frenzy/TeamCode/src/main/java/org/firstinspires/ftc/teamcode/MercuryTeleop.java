@@ -18,8 +18,11 @@ public class MercuryTeleop extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime reverseTimer = new ElapsedTime();
     boolean activated = false;
+    double robotControlSpeed = 0.7;
+    ElapsedTime runtime = new ElapsedTime();
+    boolean usedRecently = false;
 
-    @Override
+
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
         driveTrain.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -86,7 +89,21 @@ public class MercuryTeleop extends LinearOpMode {
                 driveTrain.elbow.setPower(0);
             }
 
-            driveTrain.setWeightedDrivePower(new Pose2d(gamepad1.left_stick_y * 0.7, gamepad1.left_stick_x * 0.7, -gamepad1.right_stick_x * 0.7));
+            if(gamepad2.b && !usedRecently){
+                if(robotControlSpeed == 0.7) {
+                    robotControlSpeed = 0.5;
+                }else{
+                    robotControlSpeed = 0.7;
+                }
+                runtime.reset();
+                usedRecently = true;
+            }
+
+            if (runtime.milliseconds() > 200) {
+                usedRecently = false;
+            }
+
+            driveTrain.setWeightedDrivePower(new Pose2d(gamepad1.left_stick_y * robotControlSpeed, gamepad1.left_stick_x * robotControlSpeed, -gamepad1.right_stick_x * robotControlSpeed));
             driveTrain.update();
 
             telemetry.addData("Activated: ", activated);
