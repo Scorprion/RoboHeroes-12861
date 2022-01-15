@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.drive.opmode;
+package org.firstinspires.ftc.teamcode;
 
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,7 +12,6 @@ import org.opencv.imgproc.Moments;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -114,8 +113,6 @@ public class ColorScanner extends OpenCvPipeline {
 
             // Sort the centers list based on their x value
             centers.sort(Comparator.comparing(Point::getX));
-
-            // Collections.sort(centers, (c1, c2) ->  c1.getX() < c2.getX() ? 0 : 1);
 
             for(int i = 1; i < marker.size(); i++) {
                 if(Imgproc.contourArea(marker.get(i)) > Imgproc.contourArea(marker.get(largestMarker))) {
