@@ -89,7 +89,7 @@ public class MercuryTeleop extends LinearOpMode {
                 driveTrain.elbow.setPower(0);
             }
 
-            if(gamepad2.b && !usedRecently){
+            if(gamepad1.y && !usedRecently){
                 if(robotControlSpeed == 0.7) {
                     robotControlSpeed = 0.5;
                 }else{

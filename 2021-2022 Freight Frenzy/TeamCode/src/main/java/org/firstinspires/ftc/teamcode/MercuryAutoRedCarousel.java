@@ -38,7 +38,7 @@ public class MercuryAutoRedCarousel extends LinearOpMode {
         double t = timer.seconds();
         while (t <= spinTime && opModeIsActive()) {
             if (t < riseTime) driveTrain.carousel.setPower(-Math.sqrt(1 - (1.0 / (riseTime * riseTime)) * Math.pow(t - riseTime, 2)));
-            else driveTrain.carousel.setPower(-1);
+            else driveTrain.carousel.setPower(-0.75);
             t = timer.seconds();
         }
         driveTrain.carousel.setPower(0);

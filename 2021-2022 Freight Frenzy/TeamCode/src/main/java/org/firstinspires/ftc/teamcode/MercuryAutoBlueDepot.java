@@ -27,7 +27,7 @@ public class MercuryAutoBlueDepot extends LinearOpMode {
         // Depositing
         driveTrain.elbow.setPower(-0.5);
         driveTrain.clamp.setPosition(1);
-        sleep(1000);
+        sleep(10000);
         driveTrain.elbow.setPower(0);
         sleep(500);
         driveTrain.elbow.setPower(0.5);

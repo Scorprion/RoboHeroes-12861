@@ -49,24 +49,29 @@ public class MicroTeleop extends LinearOpMode {
                 activated = false;
             }
 
-            if(gamepad2.b){
+            if (gamepad2.b) {
                 driveTrain.sort.setPosition(0);
             }
-            if(gamepad2.x){
+            if (gamepad2.x) {
                 driveTrain.sort.setPosition(0.55);
             }
-            if(gamepad2.y){
+            if (gamepad2.y) {
                 driveTrain.sort.setPosition(1);
             }
             if (gamepad2.a) {
-                driveTrain.clamp.setPosition(0);
+                //driveTrain.clamp.setPosition(0);
                 //externalContServoControl();
-                //driveTrain.clamp.setPower(1);
-            } else {
-                driveTrain.clamp.setPosition(0.5);
-                //driveTrain.clamp.setPower(-1);
+                driveTrain.clamp.setPower(-1);
+            } else if (gamepad2.right_bumper){
+
+                driveTrain.clamp.setPower(1);
+            }else {
+
+                //driveTrain.clamp.setPosition(0.5);
+                driveTrain.clamp.setPower(0);
 
             }
+
 
             if ((gamepad2.left_stick_y >= 0.1 || gamepad2.left_stick_y <= -0.1)) {
                 driveTrain.deposit.setPower(gamepad2.left_stick_y * 0.4);

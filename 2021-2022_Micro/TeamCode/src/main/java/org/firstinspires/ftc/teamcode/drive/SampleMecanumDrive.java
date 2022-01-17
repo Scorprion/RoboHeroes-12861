@@ -100,7 +100,9 @@ public class SampleMecanumDrive extends MecanumDrive {
     private List<DcMotorEx> motors;
     private BNO055IMU imu;
 
-    public Servo clamp, stop, sort;
+    public Servo stop, sort;
+    //public Servo clamp;
+    public CRServo clamp;
     public CRServo capDrop;
 
     private VoltageSensor batteryVoltageSensor;
@@ -155,7 +157,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         carousel = hardwareMap.get(DcMotorEx.class, "Carousel");
         //intake = hardwareMap.get(DcMotorEx.class, "Intake");
 
-        clamp = hardwareMap.get(Servo.class, "Clamp");
+        clamp = hardwareMap.get(CRServo.class, "Clamp");
         stop = hardwareMap.get(Servo.class, "Stop");
         sort = hardwareMap.get(Servo.class, "Sort");
 
