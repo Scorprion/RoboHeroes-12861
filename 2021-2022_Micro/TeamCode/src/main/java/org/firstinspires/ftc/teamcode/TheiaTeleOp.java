@@ -59,7 +59,7 @@ public class TheiaTeleOp extends LinearOpMode {
             backRight.setPower( speed + turnspeed + strafespeed);
             backLeft.setPower(  speed - turnspeed - strafespeed);
 
-            outtake.setPower(gamepad2.right_stick_y);
+            outtake.setPower(gamepad2.right_stick_y * 0.2);
 
             if(gamepad1.a) {
                 spintake.setPower(1.0);
@@ -69,7 +69,7 @@ public class TheiaTeleOp extends LinearOpMode {
                 spintake.setPower(0.0);
             }
 
-            intakearm.setPower(0.7 * (gamepad1.right_trigger - gamepad1.left_trigger));
+            intakearm.setPower(0.3 * (gamepad1.right_trigger - gamepad1.left_trigger));
 
             if(gamepad2.a) {
                 sorter.setPosition(0.0);

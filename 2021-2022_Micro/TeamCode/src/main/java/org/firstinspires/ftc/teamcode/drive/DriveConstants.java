@@ -19,11 +19,12 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 @Config
 public class DriveConstants {
 
-    /*
+    /*w
      * These are motor constants that should be listed online for your motors.
      */
     public static final double TICKS_PER_REV = 560;
     public static final double MAX_RPM = 300;
+
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -46,8 +47,8 @@ public class DriveConstants {
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
     public static double WHEEL_RADIUS = 1.4763; // in
-    public static double GEAR_RATIO = 1.0 / 16; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 10.5; // in
+    public static double GEAR_RATIO = (10.0 / 8); // output (wheel) speed / input (motor) speed
+    public static double TRACK_WIDTH = 13.75; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
