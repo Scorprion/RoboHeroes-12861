@@ -25,7 +25,7 @@ public class BarcodeScanner extends LinearOpMode {
         OpenCvWebcam camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(camera, 0);
 
-        ColorScanner pipeline = new ColorScanner(telemetry);
+        ColorScanner pipeline = new ColorScanner(telemetry, true);
         camera.setPipeline(pipeline);
 
         // Opening async. to avoid the thread from waiting for camera

@@ -38,8 +38,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.util.DashboardUtil;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,6 +102,9 @@ public class TheiaDrive extends MecanumDrive {
     public DcMotorEx carousel, outtake, intakearm;
     public Servo preload, sorter;
     public CRServo spintake, release;
+
+    public WebcamName webcamName;
+    public OpenCvWebcam camera;
 
     public List<DcMotorEx> motors;
     private BNO055IMU imu;
@@ -160,6 +166,13 @@ public class TheiaDrive extends MecanumDrive {
         spintake = hardwareMap.get(CRServo.class, "Spintake");
         release = hardwareMap.get(CRServo.class, "Release");
         sorter = hardwareMap.get(Servo.class, "Sorter");
+
+        webcamName = hardwareMap.get(WebcamName.class, "Webcam");
+
+        // Adds live view port for the driver hub
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
+        FtcDashboard.getInstance().startCameraStream(camera, 0);
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 

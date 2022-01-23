@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Point;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -31,20 +30,20 @@ public class ColorScanner extends OpenCvPipeline {
     List<MatOfPoint> largestBars = new ArrayList<>();
     int largestMarker = 0;
 
-    Scalar lowerBlue = new Scalar(100, 70, 0);
-    Scalar upperBlue = new Scalar(115, 255, 255);
+    Scalar lowerSide;
+    Scalar upperSide;
 
     Scalar lowerGreen = new Scalar(45, 75, 0);
     Scalar upperGreen = new Scalar(100, 255, 255);
 
-    enum Location {
+    public enum MarkerLocation {
         LEFT,
         MIDDLE,
         RIGHT,
         UNKNOWN
     }
 
-    Location scan = Location.UNKNOWN;
+    MarkerLocation scan = MarkerLocation.UNKNOWN;
 
 
     @Override
@@ -61,7 +60,7 @@ public class ColorScanner extends OpenCvPipeline {
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
 
         // Detects Blue
-        Core.inRange(hsv, lowerBlue, upperBlue, blueEdges);
+        Core.inRange(hsv, lowerSide, upperSide, blueEdges);
         Imgproc.findContours(blueEdges, barcode, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Detects marker color
@@ -136,16 +135,16 @@ public class ColorScanner extends OpenCvPipeline {
 
             switch(argmin) {
                 case -1:
-                    scan = Location.UNKNOWN;
+                    scan = MarkerLocation.UNKNOWN;
                     break;
                 case 0:
-                    scan = Location.LEFT;
+                    scan = MarkerLocation.LEFT;
                     break;
                 case 1:
-                    scan = Location.MIDDLE;
+                    scan = MarkerLocation.MIDDLE;
                     break;
                 case 2:
-                    scan = Location.RIGHT;
+                    scan = MarkerLocation.RIGHT;
                     break;
                 default:
                     break;
@@ -154,9 +153,13 @@ public class ColorScanner extends OpenCvPipeline {
 
         return output;
     }
-    public ColorScanner(Telemetry t) {
+    public ColorScanner(Telemetry t, boolean isBlueSide) {
         telemetry = t;
+        if(isBlueSide) {
+            lowerSide  = new Scalar(100, 70, 0);
+            upperSide = new Scalar(115, 255, 255);
+        }
     }
-    public Location getLocation() { return scan; }
+    public MarkerLocation getLocation() { return scan; }
 
 }
