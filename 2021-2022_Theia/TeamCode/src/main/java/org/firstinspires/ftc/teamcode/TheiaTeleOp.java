@@ -7,13 +7,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(group="Theia")
 public class TheiaTeleOp extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
-    DcMotorEx carousel, outtake, intakearm;
+    DcMotorEx carousel, outtake, intakearm, caparm;
     Servo preload, sorter;
     CRServo spintake, release;
+
+    ElapsedTime timer = new ElapsedTime();
+    ElapsedTime reverseTimer = new ElapsedTime();
+    boolean activated = false;
+    private double spinTime = 2.0, riseTime = 1.75;
 
 
     @Override
@@ -28,6 +34,7 @@ public class TheiaTeleOp extends LinearOpMode {
         carousel = hardwareMap.get(DcMotorEx.class, "Carousel");
         outtake = hardwareMap.get(DcMotorEx.class, "Outtake");
         intakearm = hardwareMap.get(DcMotorEx.class, "IntakeArm");
+        caparm = hardwareMap.get(DcMotorEx.class, "CapArm");
 
         preload = hardwareMap.get(Servo.class, "Preload");
         spintake = hardwareMap.get(CRServo.class, "Spintake");
@@ -55,17 +62,18 @@ public class TheiaTeleOp extends LinearOpMode {
             backRight.setPower( speed + turnspeed + strafespeed);
             backLeft.setPower(  speed - turnspeed - strafespeed);
 
-            outtake.setPower(gamepad2.right_stick_y * 0.5);
+            outtake.setPower(0.35 * (gamepad2.right_stick_y));
+            caparm.setPower(0.4 * -gamepad2.left_stick_y);
 
-            if(gamepad1.a) {
+            if(gamepad1.b) {
                 spintake.setPower(1.0);
-            } else if(gamepad1.b) {
+            } else if(gamepad1.a) {
                 spintake.setPower(-1.0);
             } else {
                 spintake.setPower(0.0);
             }
 
-            intakearm.setPower(0.3 * (gamepad1.right_trigger - gamepad1.left_trigger));
+            intakearm.setPower(0.4 * (gamepad1.right_trigger - gamepad1.left_trigger));
 
             if(gamepad2.a) {
                 sorter.setPosition(0.0);
@@ -82,6 +90,32 @@ public class TheiaTeleOp extends LinearOpMode {
             } else {
                 release.setPower(0.0);
             }
+
+            if (gamepad1.x && !activated) {
+                activated = true;
+                timer.reset();
+            } else if (gamepad1.x && activated && timer.seconds() <= riseTime) {
+                double t = timer.seconds();
+                carousel.setPower(Math.sqrt(1 - (1 / Math.pow(riseTime, 2)) * Math.pow(t - riseTime, 2)));
+            } else if (gamepad1.x && activated && timer.seconds() > riseTime) {
+                carousel.setPower(1.0);
+            }
+
+            if (gamepad1.b && !activated) {
+                activated = true;
+                reverseTimer.reset();
+            } else if (gamepad1.b && activated && reverseTimer.seconds() <= riseTime) {
+                double t = reverseTimer.seconds();
+                carousel.setPower(-1 * Math.sqrt(1 - (1 / Math.pow(riseTime, 2)) * Math.pow(t - riseTime, 2)));
+            } else if (gamepad1.b && activated && reverseTimer.seconds() > riseTime) {
+                carousel.setPower(-1.0);
+            }
+
+            if (!gamepad1.x && !gamepad1.b) {
+                carousel.setPower(0);
+                activated = false;
+            }
+
 
         }
     }
