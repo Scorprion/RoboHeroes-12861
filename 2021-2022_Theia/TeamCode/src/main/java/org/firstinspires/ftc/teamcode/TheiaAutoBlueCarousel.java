@@ -65,8 +65,6 @@ public class TheiaAutoBlueCarousel extends LinearOpMode{
                 .lineToLinearHeading(new Pose2d(42, 48, 0))
                 .build();
         driveTrain.followTrajectory(move5);
-
-        PoseStorage.currentPose = driveTrain.getPoseEstimate();
     }
 }
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autoprograms;
+package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.ColorScanner;
-import org.firstinspires.ftc.teamcode.ColorScanner.MarkerLocation;
+import org.firstinspires.ftc.teamcode.MarkerLocation;
 import org.firstinspires.ftc.teamcode.drive.TheiaDrive;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;

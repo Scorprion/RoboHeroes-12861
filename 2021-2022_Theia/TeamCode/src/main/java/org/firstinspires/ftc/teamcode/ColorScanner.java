@@ -36,13 +36,6 @@ public class ColorScanner extends OpenCvPipeline {
     Scalar lowerGreen = new Scalar(45, 75, 0);
     Scalar upperGreen = new Scalar(100, 255, 255);
 
-    public enum MarkerLocation {
-        LEFT,
-        MIDDLE,
-        RIGHT,
-        UNKNOWN
-    }
-
     MarkerLocation scan = MarkerLocation.UNKNOWN;
 
 
