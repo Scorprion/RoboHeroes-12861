@@ -23,15 +23,15 @@ public class MercuryAutoRedDepot extends LinearOpMode {
         waitForStart();
 
         Trajectory move = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(-12, -42, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-8, -42, Math.toRadians(180)))
                 .build();
         driveTrain.followTrajectory(move);
 
         // Depositing
         driveTrain.elbow.setPower(-0.5);
+        driveTrain.clamp.setPosition(1);
         sleep(1000);
         driveTrain.elbow.setPower(0);
-        driveTrain.clamp.setPosition(1);
         sleep(500);
         driveTrain.elbow.setPower(0.5);
         sleep(1000);
@@ -43,7 +43,7 @@ public class MercuryAutoRedDepot extends LinearOpMode {
         driveTrain.followTrajectory(move2);
 
         Trajectory move3 = driveTrain.trajectoryBuilder(move2.end())
-                .lineToLinearHeading(new Pose2d(42, -50, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(46, -50, Math.toRadians(180)))
                 .build();
         driveTrain.followTrajectory(move3);
 

@@ -48,9 +48,9 @@ public class MercuryAutoBlueCarousel extends LinearOpMode {
 
         // Depositing
         driveTrain.elbow.setPower(-0.5);
+        driveTrain.clamp.setPosition(1);
         sleep(1000);
         driveTrain.elbow.setPower(0);
-        driveTrain.clamp.setPosition(1);
         sleep(500);
         driveTrain.elbow.setPower(0.5);
         sleep(1000);
