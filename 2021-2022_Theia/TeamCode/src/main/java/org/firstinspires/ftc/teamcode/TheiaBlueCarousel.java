@@ -13,7 +13,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Autonomous(group="Theia")
-public class BlueCarousel extends LinearOpMode {
+public class TheiaBlueCarousel extends LinearOpMode {
     MarkerLocation position = MarkerLocation.UNKNOWN;
     private double riseTime = 1.75;
     private double spinTime = riseTime + 0.25;
@@ -44,6 +44,19 @@ public class BlueCarousel extends LinearOpMode {
         });
 
         waitForStart();
+
+        // Release intakearm
+        robot.preload.setPower(0.7);
+        robot.intakearm.setPower(-0.7);
+        sleep(1000);
+
+        robot.intakearm.setPower(0.4);
+        sleep(700);
+
+        robot.caparm.setPower(0.5);
+        sleep(500);
+
+        // Start Scanning
         while(opModeIsActive() && position == MarkerLocation.UNKNOWN) {
             position = pipeline.getLocation();
         }
@@ -71,10 +84,10 @@ public class BlueCarousel extends LinearOpMode {
         robot.carousel.setPower(0);
 
         // Move to alliance hub
-        Trajectory move3 = robot.trajectoryBuilder(robot.getPoseEstimate())
+        /*Trajectory move3 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-16, 42, 0))
                 .build();
-        robot.followTrajectory(move3);
+        robot.followTrajectory(move3);*/
 
 
     }

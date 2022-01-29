@@ -75,9 +75,9 @@ public class TheiaDrive extends MecanumDrive {
     private TrajectoryFollower follower;
 
     public DcMotorEx leftFront, leftRear, rightRear, rightFront;
-    public DcMotorEx carousel, outtake, intakearm;
-    public Servo preload, sorter;
-    public CRServo spintake, release;
+    public DcMotorEx carousel, outtake, intakearm, caparm;
+    public Servo sorter;
+    public CRServo preload, spintake, release;
 
     public WebcamName webcamName;
     public OpenCvWebcam camera;
@@ -133,11 +133,12 @@ public class TheiaDrive extends MecanumDrive {
         rightRear = hardwareMap.get(DcMotorEx.class, "BackRight");
         rightFront = hardwareMap.get(DcMotorEx.class, "FrontRight");
 
+        caparm = hardwareMap.get(DcMotorEx.class, "CapArm");
         carousel = hardwareMap.get(DcMotorEx.class, "Carousel");
         outtake = hardwareMap.get(DcMotorEx.class, "Outtake");
         intakearm = hardwareMap.get(DcMotorEx.class, "IntakeArm");
 
-        preload = hardwareMap.get(Servo.class, "Preload");
+        preload = hardwareMap.get(CRServo.class, "Preload");
         spintake = hardwareMap.get(CRServo.class, "Spintake");
         release = hardwareMap.get(CRServo.class, "Release");
         sorter = hardwareMap.get(Servo.class, "Sorter");
