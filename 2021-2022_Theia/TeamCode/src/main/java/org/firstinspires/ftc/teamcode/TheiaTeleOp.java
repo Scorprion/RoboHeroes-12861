@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class TheiaTeleOp extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
     DcMotorEx carousel, outtake, intakearm, caparm;
-    Servo preload, sorter;
-    CRServo spintake, release;
+    Servo sorter;
+    CRServo preload, spintake, release;
 
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime reverseTimer = new ElapsedTime();
@@ -36,7 +36,7 @@ public class TheiaTeleOp extends LinearOpMode {
         intakearm = hardwareMap.get(DcMotorEx.class, "IntakeArm");
         caparm = hardwareMap.get(DcMotorEx.class, "CapArm");
 
-        preload = hardwareMap.get(Servo.class, "Preload");
+        preload = hardwareMap.get(CRServo.class, "Preload");
         spintake = hardwareMap.get(CRServo.class, "Spintake");
         release = hardwareMap.get(CRServo.class, "Release");
         sorter = hardwareMap.get(Servo.class, "Sorter");
