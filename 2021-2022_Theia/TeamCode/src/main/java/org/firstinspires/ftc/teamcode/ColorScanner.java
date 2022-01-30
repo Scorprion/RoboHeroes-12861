@@ -124,7 +124,6 @@ public class ColorScanner extends OpenCvPipeline {
                     argmin = i;
                 }
             }
-            telemetry.update();
 
             switch(argmin) {
                 case -1:
@@ -141,7 +140,10 @@ public class ColorScanner extends OpenCvPipeline {
                     break;
                 default:
                     break;
+
             }
+            telemetry.addData("Pos", scan);
+            telemetry.update();
         }
 
         return output;
