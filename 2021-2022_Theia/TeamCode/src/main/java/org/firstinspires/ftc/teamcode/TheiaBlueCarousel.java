@@ -121,7 +121,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Prepare to move into depot
         Trajectory move5 = robot.trajectoryBuilder(move4.end())
-                .lineToLinearHeading(new Pose2d(0, 61, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(0, 63, Math.toRadians(0)))
                 .addTemporalMarker(0, () -> {
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.45);
@@ -135,7 +135,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Slowly move in depot + spin intake
         Trajectory move6 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(37, 61, Math.toRadians(0)),
+                .lineToLinearHeading(new Pose2d(37, 63, Math.toRadians(0)),
                         TheiaDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         TheiaDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(1, () -> {
@@ -150,7 +150,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Move out of depot and move to hub
         Trajectory move7 = robot.trajectoryBuilder(move6.end())
-                .lineToLinearHeading(new Pose2d(0, 61, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(0, 63, Math.toRadians(0)))
                 .splineToSplineHeading(new Pose2d(-9, 38, Math.toRadians(90)), Math.toRadians(-90))
                 .addTemporalMarker(0.5, () -> {
                     robot.intakearm.setPower(0.5);
@@ -173,7 +173,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         Trajectory move10 = robot.trajectoryBuilder(move7.end())
                 .splineToSplineHeading(new Pose2d(0, 61, Math.toRadians(0)), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(43, 61, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(43, 63, Math.toRadians(0)))
                 .addTemporalMarker(0.5, () ->{
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.35);
