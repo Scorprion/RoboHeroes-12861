@@ -96,9 +96,9 @@ public class SampleMecanumDrive extends MecanumDrive {
     private LinkedList<Pose2d> poseHistory;
 
     public DcMotorEx leftFront, leftRear, rightRear, rightFront;
-    public DcMotorEx carousel, outtake, intakearm;
-    public Servo preload, sorter;
-    public CRServo spintake, release;
+    public DcMotorEx carousel, outtake, intakearm, caparm;
+    public Servo sorter;
+    public CRServo spintake, release, preload;
 
     public List<DcMotorEx> motors;
     private BNO055IMU imu;
@@ -155,8 +155,9 @@ public class SampleMecanumDrive extends MecanumDrive {
         carousel = hardwareMap.get(DcMotorEx.class, "Carousel");
         outtake = hardwareMap.get(DcMotorEx.class, "Outtake");
         intakearm = hardwareMap.get(DcMotorEx.class, "IntakeArm");
+        caparm = hardwareMap.get(DcMotorEx.class, "CapArm");
 
-        preload = hardwareMap.get(Servo.class, "Preload");
+        preload = hardwareMap.get(CRServo.class, "Preload");
         spintake = hardwareMap.get(CRServo.class, "Spintake");
         release = hardwareMap.get(CRServo.class, "Release");
         sorter = hardwareMap.get(Servo.class, "Sorter");

@@ -17,8 +17,11 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 @Autonomous(group="Theia")
 public class TheiaBlueCarousel extends LinearOpMode {
     MarkerLocation position = MarkerLocation.UNKNOWN;
-    private double riseTime = 2.25;
+    private double riseTime = 2.75;
     private double spinTime = riseTime + 0.25;
+    public double hubdistance = 40.0;
+    public double hubXDistance = -7;
+
     ElapsedTime timer = new ElapsedTime();
 
     @Override
@@ -58,9 +61,13 @@ public class TheiaBlueCarousel extends LinearOpMode {
         if(position == MarkerLocation.LEFT) {
             // Level 1
             robot.sorter.setPosition(0.0);
+            hubdistance = 39.0;
+            hubXDistance = -6.0;
         } else if(position == MarkerLocation.MIDDLE) {
             // Level 2
-            robot.sorter.setPosition(0.5);
+            robot.sorter.setPosition(0.4);
+            hubdistance = 39;
+            hubXDistance = -7;
         } else {
             // Level 3
             robot.sorter.setPosition(1.0);
@@ -75,11 +82,8 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         robot.preload.setPower(0.65);
         robot.intakearm.setPower(0.4);
-        sleep(1000);
-        robot.caparm.setPower(0.7);
-        sleep(500);
+        sleep(1500);
         robot.preload.setPower(0);
-        robot.caparm.setPower(0);
         robot.intakearm.setPower(0);
 
         // Move into carousel (to spin)
@@ -101,19 +105,22 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Move to alliance hub
         Trajectory move3 = robot.trajectoryBuilder(move2.end())
-                .lineToLinearHeading(new Pose2d(-9, 42, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-7, 48, Math.toRadians(90)))
                 .build();
         robot.followTrajectory(move3);
 
         // Move forward to hub
         Trajectory move4 = robot.trajectoryBuilder(move3.end())
-                .lineToLinearHeading(new Pose2d(-9, 36, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(hubXDistance, hubdistance, Math.toRadians(90)))
                 .build();
         robot.followTrajectory(move4);
 
         // Depositing
+        robot.caparm.setPower(0.6);
         robot.outtake.setPower(0.25);
-        sleep(1000);
+        sleep(500);
+        robot.caparm.setPower(0);
+        sleep(500);
         robot.outtake.setPower(0);
         robot.release.setPower(-1);
         sleep(500);
@@ -121,7 +128,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Prepare to move into depot
         Trajectory move5 = robot.trajectoryBuilder(move4.end())
-                .lineToLinearHeading(new Pose2d(0, 63, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(0, 64, Math.toRadians(0)))
                 .addTemporalMarker(0, () -> {
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.45);
@@ -130,40 +137,48 @@ public class TheiaBlueCarousel extends LinearOpMode {
                 .build();
         robot.followTrajectory(move5);
 
-        robot.release.setPower(0);
         robot.outtake.setPower(0);
+        sleep(300);
+        robot.release.setPower(0);
 
+
+        robot.spintake.setPower(-1);
         // Slowly move in depot + spin intake
         Trajectory move6 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(37, 63, Math.toRadians(0)),
-                        TheiaDrive.getVelocityConstraint(15, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(41, 64, Math.toRadians(0)),
+                        TheiaDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         TheiaDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(1, () -> {
                     robot.intakearm.setPower(-0.5);
                 })
                 .addTemporalMarker(2, () -> {
-                    robot.spintake.setPower(-1);
                     robot.intakearm.setPower(0);
                 })
                 .build();
         robot.followTrajectory(move6);
 
-        // Move out of depot and move to hub
-        Trajectory move7 = robot.trajectoryBuilder(move6.end())
-                .lineToLinearHeading(new Pose2d(0, 63, Math.toRadians(0)))
-                .splineToSplineHeading(new Pose2d(-9, 38, Math.toRadians(90)), Math.toRadians(-90))
+        // Slowly move out of depot and move to hub
+        Trajectory move7 = robot.trajectoryBuilder(robot.getPoseEstimate())
+                .lineToLinearHeading(new Pose2d(0, 64, Math.toRadians(0)),
+                        TheiaDrive.getVelocityConstraint(19, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        TheiaDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .build();
+        robot.followTrajectory(move7);
+
+        Trajectory move8 = robot.trajectoryBuilder(move7.end())
+                .lineToLinearHeading(new Pose2d(-11, 40, Math.toRadians(90)))
                 .addTemporalMarker(0.5, () -> {
-                    robot.intakearm.setPower(0.5);
+                    robot.intakearm.setPower(0.4);
                 })
-                .addTemporalMarker(1.5, () -> {
+                .addTemporalMarker(2.5, () -> {
                     robot.spintake.setPower(0);
                     robot.intakearm.setPower(0);
                 })
                 .build();
-        robot.followTrajectory(move7);
 
+        robot.followTrajectory(move8);
         // Depositing
-        robot.outtake.setPower(0.25);
+        robot.outtake.setPower(0.35);
         sleep(1000);
         robot.outtake.setPower(0);
         robot.release.setPower(-1);
@@ -171,15 +186,28 @@ public class TheiaBlueCarousel extends LinearOpMode {
         robot.release.setPower(0);
 
 
-        Trajectory move10 = robot.trajectoryBuilder(move7.end())
+        Trajectory move9 = robot.trajectoryBuilder(move8.end())
                 .splineToSplineHeading(new Pose2d(0, 61, Math.toRadians(0)), Math.toRadians(0))
-                .lineToLinearHeading(new Pose2d(43, 63, Math.toRadians(0)))
                 .addTemporalMarker(0.5, () ->{
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.35);
                 })
                 .build();
+        robot.followTrajectory(move9);
+
+        robot.spintake.setPower(-1);
+        Trajectory move10 = robot.trajectoryBuilder(move9.end())
+                .lineToLinearHeading(new Pose2d(43, 63, Math.toRadians(0)))
+                .addTemporalMarker(1, () -> {
+                    robot.intakearm.setPower(-0.5);
+                })
+                .addTemporalMarker(2, () -> {
+                    robot.intakearm.setPower(0);
+                })
+                .build();
+
         robot.followTrajectory(move10);
+        robot.spintake.setPower(0);
         robot.release.setPower(0);
         robot.outtake.setPower(0);
     }

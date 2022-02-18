@@ -7,7 +7,6 @@
 configurations {
     doc { transitive false }
 }
-
 buildscript {
     ext.kotlin_version = "1.4.32"
 

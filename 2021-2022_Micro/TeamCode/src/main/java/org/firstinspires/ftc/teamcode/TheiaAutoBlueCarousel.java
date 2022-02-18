@@ -18,11 +18,25 @@ public class TheiaAutoBlueCarousel extends LinearOpMode{
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive driveTrain = new SampleMecanumDrive(hardwareMap);
 
+
+
         driveTrain.setPoseEstimate(new Pose2d(-36, 64, 0));
 
         waitForStart();
 
-        Trajectory move = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
+        driveTrain.preload.setPower(0.7);
+        driveTrain.intakearm.setPower(-0.7);
+        sleep(1000);
+
+        driveTrain.intakearm.setPower(0.4);
+        sleep(700);
+
+        driveTrain.caparm.setPower(0.5);
+        sleep(500);
+
+
+
+        /*Trajectory move = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-62, 56, 0))
                 .build();
         driveTrain.followTrajectory(move);
@@ -54,7 +68,7 @@ public class TheiaAutoBlueCarousel extends LinearOpMode{
         sleep(500);
         driveTrain.elbow.setPower(0.5);
         sleep(1000);
-        driveTrain.elbow.setPower(0); */
+        driveTrain.elbow.setPower(0);
 
         Trajectory move4 = driveTrain.trajectoryBuilder(driveTrain.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-14, 50, 0))
@@ -64,7 +78,7 @@ public class TheiaAutoBlueCarousel extends LinearOpMode{
         Trajectory move5 = driveTrain.trajectoryBuilder(move4.end())
                 .lineToLinearHeading(new Pose2d(42, 48, 0))
                 .build();
-        driveTrain.followTrajectory(move5);
+        driveTrain.followTrajectory(move5); */
 
         PoseStorage.currentPose = driveTrain.getPoseEstimate();
     }
