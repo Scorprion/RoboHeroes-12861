@@ -19,6 +19,7 @@ public class TheiaTeleOp extends LinearOpMode {
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime reverseTimer = new ElapsedTime();
     boolean activated = false;
+    boolean reverseTrue = false;
     private double spinTime = 2.0, riseTime = 1.75;
 
 
@@ -53,16 +54,33 @@ public class TheiaTeleOp extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive() && !isStopRequested()) {
-            speed = gamepad1.left_stick_y;
-            turnspeed = gamepad1.right_stick_x;
-            strafespeed = -gamepad1.left_stick_x;
+            if (reverseTrue) {
+                speed = -gamepad1.left_stick_y;
+                turnspeed = gamepad1.right_stick_x;
+                strafespeed = gamepad1.left_stick_x;
 
-            frontRight.setPower(speed + turnspeed - strafespeed);
-            frontLeft.setPower( speed - turnspeed + strafespeed);
-            backRight.setPower( speed + turnspeed + strafespeed);
-            backLeft.setPower(  speed - turnspeed - strafespeed);
+                frontRight.setPower((speed + turnspeed - strafespeed));
+                frontLeft.setPower((speed - turnspeed + strafespeed));
+                backRight.setPower((speed + turnspeed + strafespeed));
+                backLeft.setPower((speed - turnspeed - strafespeed));
+            } else {
+                speed = gamepad1.left_stick_y;
+                turnspeed = gamepad1.right_stick_x;
+                strafespeed = -gamepad1.left_stick_x;
 
-            outtake.setPower(0.35 * (gamepad2.right_stick_y));
+                frontRight.setPower(speed + turnspeed - strafespeed);
+                frontLeft.setPower(speed - turnspeed + strafespeed);
+                backRight.setPower(speed + turnspeed + strafespeed);
+                backLeft.setPower(speed - turnspeed - strafespeed);
+            }
+
+            if (gamepad1.dpad_down) {
+                reverseTrue = false;
+            } else if (gamepad1.dpad_up) {
+                reverseTrue = true;
+            }
+
+            outtake.setPower(0.25 * (gamepad2.right_stick_y));
             caparm.setPower(0.4 * -gamepad2.left_stick_y);
 
             if(gamepad1.b) {
@@ -78,7 +96,7 @@ public class TheiaTeleOp extends LinearOpMode {
             if(gamepad2.a) {
                 sorter.setPosition(0.0);
             } else if(gamepad2.b) {
-                sorter.setPosition(0.5);
+                sorter.setPosition(0.4);
             } else {
                 sorter.setPosition(1.0);
             }
@@ -106,7 +124,7 @@ public class TheiaTeleOp extends LinearOpMode {
                 reverseTimer.reset();
             } else if (gamepad1.b && activated && reverseTimer.seconds() <= riseTime) {
                 double t = reverseTimer.seconds();
-                carousel.setPower(-1 * Math.sqrt(1 - (1 / Math.pow(riseTime, 2)) * Math.pow(t - riseTime, 2)));
+                carousel.setPower(-0.95 * Math.sqrt(1 - (1 / Math.pow(riseTime, 2)) * Math.pow(t - riseTime, 2)));
             } else if (gamepad1.b && activated && reverseTimer.seconds() > riseTime) {
                 carousel.setPower(-1.0);
             }

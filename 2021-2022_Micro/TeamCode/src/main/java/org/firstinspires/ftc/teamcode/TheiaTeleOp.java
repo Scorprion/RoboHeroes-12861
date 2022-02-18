@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @TeleOp(group="Theia")
 public class TheiaTeleOp extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
-    DcMotorEx carousel, outtake, intakearm;
+    DcMotorEx carousel, outtake, intakearm, caparm;
     Servo preload, sorter;
     CRServo spintake, release;
 
@@ -32,6 +32,7 @@ public class TheiaTeleOp extends LinearOpMode {
         carousel = hardwareMap.get(DcMotorEx.class, "Carousel");
         outtake = hardwareMap.get(DcMotorEx.class, "Outtake");
         intakearm = hardwareMap.get(DcMotorEx.class, "IntakeArm");
+        caparm = hardwareMap.get(DcMotorEx.class, "CapArm");
 
         preload = hardwareMap.get(Servo.class, "Preload");
         spintake = hardwareMap.get(CRServo.class, "Spintake");
