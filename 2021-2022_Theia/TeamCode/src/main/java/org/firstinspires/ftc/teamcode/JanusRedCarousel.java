@@ -10,12 +10,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.ColorScanner;
 import org.firstinspires.ftc.teamcode.MarkerLocation;
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
-import org.firstinspires.ftc.teamcode.drive.TheiaDrive;
+import org.firstinspires.ftc.teamcode.drive.JanusDrive;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(group="Theia")
-public class TheiaBlueCarousel extends LinearOpMode {
+@Autonomous(group = "Theia")
+public class JanusRedCarousel extends LinearOpMode {
     MarkerLocation position = MarkerLocation.UNKNOWN;
     private double riseTime = 2.75;
     private double spinTime = riseTime + 0.25;
@@ -26,22 +26,20 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        TheiaDrive robot = new TheiaDrive(hardwareMap);
+        JanusDrive robot = new JanusDrive(hardwareMap);
         ColorScanner pipeline = new ColorScanner(telemetry, true);
         robot.camera.setPipeline(pipeline);
-        robot.setPoseEstimate(new Pose2d(-30, 64, Math.toRadians(0)));
+        robot.setPoseEstimate(new Pose2d(-30, -64, Math.toRadians(180)));
 
         // Opening async. to avoid the thread from waiting for camera
-        robot.camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        robot.camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
+            public void onOpened() {
                 robot.camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
+
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
                 /*
                  * This will be called if the camera could not be opened
                  */
@@ -51,19 +49,19 @@ public class TheiaBlueCarousel extends LinearOpMode {
         waitForStart();
 
         // Start Scanning
-        while(opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+        while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
             position = pipeline.getLocation();
         }
 
         robot.camera.stopStreaming();
 
         robot.intakearm.setPower(-0.7);
-        if(position == MarkerLocation.LEFT) {
+        if (position == MarkerLocation.LEFT) {
             // Level 1
             robot.sorter.setPosition(0.0);
             hubdistance = 39.0;
             hubXDistance = -6.0;
-        } else if(position == MarkerLocation.MIDDLE) {
+        } else if (position == MarkerLocation.MIDDLE) {
             // Level 2
             robot.sorter.setPosition(0.4);
             hubdistance = 39;
@@ -76,7 +74,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Move to carousel
         Trajectory move = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(-62, 50, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-62, -50, Math.toRadians(180)))
                 .build();
         robot.followTrajectory(move);
 
@@ -88,7 +86,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Move into carousel (to spin)
         Trajectory move2 = robot.trajectoryBuilder(move.end())
-                .lineToLinearHeading(new Pose2d(-62, 58, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(-62, -58, Math.toRadians(0)))
                 .build();
         robot.followTrajectory(move2);
 
@@ -97,15 +95,16 @@ public class TheiaBlueCarousel extends LinearOpMode {
         timer.reset();
         double t = timer.seconds();
         while (t <= spinTime && opModeIsActive()) {
-            if (t < riseTime) robot.carousel.setPower(-Math.sqrt(1 - (1.0 / (riseTime * riseTime)) * Math.pow(t - riseTime, 2)));
-            else robot.carousel.setPower(-1);
+            if (t < riseTime)
+                robot.carousel.setPower(Math.sqrt(1 - (1.0 / (riseTime * riseTime)) * Math.pow(t - riseTime, 2)));
+            else robot.carousel.setPower(1);
             t = timer.seconds();
         }
         robot.carousel.setPower(0);
 
         // Move to alliance hub
         Trajectory move3 = robot.trajectoryBuilder(move2.end())
-                .lineToLinearHeading(new Pose2d(-7, 48, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-7, -48, Math.toRadians(90)))
                 .build();
         robot.followTrajectory(move3);
 
@@ -128,7 +127,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Prepare to move into depot
         Trajectory move5 = robot.trajectoryBuilder(move4.end())
-                .lineToLinearHeading(new Pose2d(0, 64, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(0, -64, Math.toRadians(0)))
                 .addTemporalMarker(0, () -> {
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.45);
@@ -145,9 +144,9 @@ public class TheiaBlueCarousel extends LinearOpMode {
         robot.spintake.setPower(-1);
         // Slowly move in depot + spin intake
         Trajectory move6 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(41, 64, Math.toRadians(0)),
-                        TheiaDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        TheiaDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(41, -64, Math.toRadians(0)),
+                        JanusDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .addTemporalMarker(1, () -> {
                     robot.intakearm.setPower(-0.5);
                 })
@@ -159,14 +158,14 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         // Slowly move out of depot and move to hub
         Trajectory move7 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(0, 64, Math.toRadians(0)),
-                        TheiaDrive.getVelocityConstraint(19, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                        TheiaDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToLinearHeading(new Pose2d(0, -64, Math.toRadians(0)),
+                        JanusDrive.getVelocityConstraint(19, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .build();
         robot.followTrajectory(move7);
 
         Trajectory move8 = robot.trajectoryBuilder(move7.end())
-                .lineToLinearHeading(new Pose2d(-11, 40, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-11, -40, Math.toRadians(90)))
                 .addTemporalMarker(0.5, () -> {
                     robot.intakearm.setPower(0.4);
                 })
@@ -187,8 +186,8 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
 
         Trajectory move9 = robot.trajectoryBuilder(move8.end())
-                .splineToSplineHeading(new Pose2d(0, 61, Math.toRadians(0)), Math.toRadians(0))
-                .addTemporalMarker(0.5, () ->{
+                .lineToLinearHeading(new Pose2d(0, -61, Math.toRadians(0)))
+                .addTemporalMarker(0.5, () -> {
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.35);
                 })
@@ -197,7 +196,7 @@ public class TheiaBlueCarousel extends LinearOpMode {
 
         robot.spintake.setPower(-1);
         Trajectory move10 = robot.trajectoryBuilder(move9.end())
-                .lineToLinearHeading(new Pose2d(43, 63, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(43, -63, Math.toRadians(0)))
                 .addTemporalMarker(1, () -> {
                     robot.intakearm.setPower(-0.5);
                 })

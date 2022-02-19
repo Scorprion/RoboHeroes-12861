@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.drive.TheiaDrive;
+import org.firstinspires.ftc.teamcode.drive.JanusDrive;
 
 import java.util.Objects;
 
@@ -46,7 +46,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    private TheiaDrive drive;
+    private JanusDrive drive;
 
     enum Mode {
         DRIVER_MODE,
@@ -70,7 +70,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
-        drive = new TheiaDrive(hardwareMap);
+        drive = new JanusDrive(hardwareMap);
 
         mode = Mode.TUNING_MODE;
 

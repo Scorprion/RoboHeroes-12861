@@ -151,9 +151,17 @@ public class ColorScanner extends OpenCvPipeline {
     public ColorScanner(Telemetry t, boolean isBlueSide) {
         telemetry = t;
         if(isBlueSide) {
-            lowerSide  = new Scalar(100, 70, 0);
+            lowerSide  = new Scalar(100, 70, 150);
             upperSide = new Scalar(115, 255, 255);
+        } else {
+            lowerSide = new Scalar(0, 100, 0);
+            upperSide = new Scalar(10, 255, 255);
         }
+    }
+
+    public void updateColor(Scalar lower, Scalar upper) {
+        lowerSide = lower;
+        upperSide = upper;
     }
     public MarkerLocation getLocation() { return scan; }
 

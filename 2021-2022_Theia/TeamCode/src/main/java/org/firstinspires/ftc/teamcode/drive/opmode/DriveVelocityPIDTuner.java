@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.RobotLog;
 
-import org.firstinspires.ftc.teamcode.drive.TheiaDrive;
+import org.firstinspires.ftc.teamcode.drive.JanusDrive;
 
 import java.util.List;
 
@@ -72,7 +72,7 @@ public class DriveVelocityPIDTuner extends LinearOpMode {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        TheiaDrive drive = new TheiaDrive(hardwareMap);
+        JanusDrive drive = new JanusDrive(hardwareMap);
 
         Mode mode = Mode.TUNING_MODE;
 

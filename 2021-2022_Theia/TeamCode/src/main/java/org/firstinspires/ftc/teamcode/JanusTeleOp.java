@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(group="Theia")
-public class TheiaTeleOp extends LinearOpMode {
+@TeleOp(group="Janus")
+public class JanusTeleOp extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
     DcMotorEx carousel, outtake, intakearm, caparm;
     Servo sorter;
@@ -18,8 +18,10 @@ public class TheiaTeleOp extends LinearOpMode {
 
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime reverseTimer = new ElapsedTime();
+    ElapsedTime breakTimer = new ElapsedTime();
     boolean activated = false;
     boolean reverseTrue = false;
+    boolean armPowered = false;
     private double spinTime = 2.0, riseTime = 1.75;
 
 
@@ -52,7 +54,7 @@ public class TheiaTeleOp extends LinearOpMode {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
-
+        breakTimer.reset();
         while(opModeIsActive() && !isStopRequested()) {
             if (reverseTrue) {
                 speed = -gamepad1.left_stick_y;
@@ -133,7 +135,6 @@ public class TheiaTeleOp extends LinearOpMode {
                 carousel.setPower(0);
                 activated = false;
             }
-
 
         }
     }

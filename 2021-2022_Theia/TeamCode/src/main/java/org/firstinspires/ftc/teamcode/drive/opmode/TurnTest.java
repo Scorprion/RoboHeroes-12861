@@ -1,13 +1,10 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.drive.TheiaDrive;
+import org.firstinspires.ftc.teamcode.drive.JanusDrive;
 
 /*
  * This is a simple routine to test turning capabilities.
@@ -19,7 +16,7 @@ public class TurnTest extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        TheiaDrive drive = new TheiaDrive(hardwareMap);
+        JanusDrive drive = new JanusDrive(hardwareMap);
 
         waitForStart();
 
