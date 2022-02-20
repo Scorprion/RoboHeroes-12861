@@ -18,10 +18,10 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.Vector;
 
 @Autonomous(group="Janus")
-public class JanusRedDepot extends LinearOpMode {
+public class JanusRedDepotShared extends LinearOpMode {
    MarkerLocation position = MarkerLocation.UNKNOWN;
    public double hubdistance = 40.0;
-   public double hubXDistance = -13;
+   public double hubXDistance = -5;
    public double depotDistance = 30;
 
    ElapsedTime timer = new ElapsedTime();
@@ -62,12 +62,12 @@ public class JanusRedDepot extends LinearOpMode {
          // Level 1
          robot.sorter.setPosition(0.0);
          hubdistance = 39.0;
-         hubXDistance = -13;
+         hubXDistance = -4.0;
       } else if (position == MarkerLocation.MIDDLE) {
          // Level 2
          robot.sorter.setPosition(0.4);
          hubdistance = 39;
-         hubXDistance = -13;
+         hubXDistance = -4.5;
       } else {
          // Level 3
          robot.sorter.setPosition(1.0);
@@ -79,14 +79,12 @@ public class JanusRedDepot extends LinearOpMode {
               .build();
       robot.followTrajectory(move);
 
+      robot.preload.setPower(0.35);
       Trajectory move1 = robot.trajectoryBuilder(robot.getPoseEstimate())
-              .lineToLinearHeading(new Pose2d(hubXDistance, -38, Math.toRadians(270)))
+              .lineToLinearHeading(new Pose2d(-7, -42, Math.toRadians(270)))
               .addDisplacementMarker(pathLength -> pathLength * 0.1, () -> {
                  robot.intakearm.setPower(-0.5);
               })
-              .addDisplacementMarker(p -> p * 0.8, () -> {
-                  robot.preload.setPower(0.8);
-               })
               .build();
       robot.followTrajectory(move1);
       sleep(500);
@@ -108,12 +106,12 @@ public class JanusRedDepot extends LinearOpMode {
          robot.intakearm.setPower(0.55);
          // Drive into the depot and spin the intake
          Trajectory move3 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                 .splineTo(new Vector2d(5, -62), Math.toRadians(0))
+                 .splineTo(new Vector2d(15, -64), Math.toRadians(0))
                  .addDisplacementMarker(pathLength -> pathLength * 0.05,  () -> {
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.4);
                  })
-                 .splineToConstantHeading(new Vector2d(hubdistance + 15, -62  ), Math.toRadians(0))
+                 .splineTo(new Vector2d(depotDistance + 15, -64), Math.toRadians(0))
                  .addDisplacementMarker(pathLength -> pathLength * 0.4, () -> {
                     robot.release.setPower(0);
                     robot.spintake.setPower(-1);
@@ -127,7 +125,7 @@ public class JanusRedDepot extends LinearOpMode {
                  .back(depotDistance - 10,
                          JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                          JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                 .splineTo(new Vector2d(hubXDistance , -38), Math.toRadians(90),
+                 .splineTo(new Vector2d(-5.5 , -45), Math.toRadians(90),
                          JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                          JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                  .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
@@ -152,8 +150,17 @@ public class JanusRedDepot extends LinearOpMode {
               .addDisplacementMarker(pathLength -> pathLength * 0.01, () -> {
                  robot.outtake.setPower(-0.4);
               })
+              .splineToConstantHeading(new Vector2d(45, -38), Math.toRadians(0))
               .build();
       robot.followTrajectory(move8);
+
+      Trajectory move9 = robot.trajectoryBuilder(robot.getPoseEstimate())
+              .splineToLinearHeading(new Pose2d(60, -40, Math.toRadians(270)), Math.toRadians(270))
+              .addDisplacementMarker(pathLength -> pathLength * 0.9, () -> {
+                 robot.intakearm.setPower(-0.3);
+              })
+              .build();
+      robot.followTrajectory(move9);
       robot.outtake.setPower(0);
    }
 }

@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Point;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -15,8 +14,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ColorScanner extends OpenCvPipeline {
+    private boolean isBlue;
+
     Mat hsv = new Mat();
-    Mat blueEdges = new Mat();
+    Mat subEdges1 = new Mat();
+    Mat subEdges2 = new Mat();
+    Mat allianceEdges = new Mat();
     Mat markerEdges = new Mat();
     Mat combinedEdges = new Mat();
     Mat output = new Mat();
@@ -30,8 +33,13 @@ public class ColorScanner extends OpenCvPipeline {
     List<MatOfPoint> largestBars = new ArrayList<>();
     int largestMarker = 0;
 
-    Scalar lowerSide;
-    Scalar upperSide;
+    Scalar lowerBlue = new Scalar(100, 70, 150);
+    Scalar upperBlue = new Scalar(115, 255, 255);;
+
+    Scalar lowerRed1 = new Scalar(0, 100, 100);
+    Scalar upperRed1 = new Scalar(15, 255, 255);
+    Scalar lowerRed2 = new Scalar(170, 100, 100);
+    Scalar upperRed2 = new Scalar(190, 255, 255);
 
     Scalar lowerGreen = new Scalar(45, 75, 0);
     Scalar upperGreen = new Scalar(100, 255, 255);
@@ -52,23 +60,32 @@ public class ColorScanner extends OpenCvPipeline {
         // Converts image to HSV
         Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);
 
-        // Detects Blue
-        Core.inRange(hsv, lowerSide, upperSide, blueEdges);
-        Imgproc.findContours(blueEdges, barcode, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
+        // Detects alliance color
+        if(isBlue) {
+            // Blue is only a single range
+            Core.inRange(hsv, lowerBlue, upperBlue, allianceEdges);
+        } else {
+            // Red has two ranges on opposite ends of the color spectrum
+            Core.inRange(hsv, lowerRed1, upperRed1, subEdges1);
+            Core.inRange(hsv, lowerRed2, upperRed2, subEdges2);
+            Core.add(subEdges1, subEdges2, allianceEdges);
+        }
+
+        Imgproc.findContours(allianceEdges, barcode, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Detects marker color
         Core.inRange(hsv, lowerGreen, upperGreen, markerEdges);
         Imgproc.findContours(markerEdges, marker, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_NONE);
 
         // Create output matrix
-        Core.add(markerEdges, blueEdges, combinedEdges);
+        Core.add(markerEdges, allianceEdges, combinedEdges);
         Core.bitwise_and(input, input, output, combinedEdges);
 
         // List of the largest 2 contours detected from the inRange on the barcode
         List<Moments> mu = new ArrayList<>(2);
         if (marker.size() > 0 && barcode.size() > 1) {
 
-            // Find the two largest by first adding the first two contours and replacing them if there exists another larger contour
+            // Find the two largest by first adding the first two contours...
             if(Imgproc.contourArea(barcode.get(0)) > Imgproc.contourArea(barcode.get(1))) {
                 largestBars.add(barcode.get(0));
                 largestBars.add(barcode.get(1));
@@ -77,6 +94,7 @@ public class ColorScanner extends OpenCvPipeline {
                 largestBars.add(barcode.get(0));
             }
 
+            // ...and replacing them if there exists another larger contour
             for(int i = 2; i < barcode.size(); i++) {
                 if(Imgproc.contourArea(barcode.get(i)) > Imgproc.contourArea(largestBars.get(1))) {
                     if(Imgproc.contourArea(barcode.get(i)) > Imgproc.contourArea(largestBars.get(0))) {
@@ -150,18 +168,7 @@ public class ColorScanner extends OpenCvPipeline {
     }
     public ColorScanner(Telemetry t, boolean isBlueSide) {
         telemetry = t;
-        if(isBlueSide) {
-            lowerSide  = new Scalar(100, 70, 150);
-            upperSide = new Scalar(115, 255, 255);
-        } else {
-            lowerSide = new Scalar(0, 100, 0);
-            upperSide = new Scalar(10, 255, 255);
-        }
-    }
-
-    public void updateColor(Scalar lower, Scalar upper) {
-        lowerSide = lower;
-        upperSide = upper;
+        isBlue = isBlueSide;
     }
     public MarkerLocation getLocation() { return scan; }
 

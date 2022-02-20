@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -16,6 +17,14 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class BarcodeScanner extends LinearOpMode {
     WebcamName webcamName;
 
+    public static int UPPER_H = 0;
+    public static int UPPER_S = 0;
+    public static int UPPER_V = 0;
+    public static int LOWER_H = 0;
+    public static int LOWER_S = 0;
+    public static int LOWER_V = 0;
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         webcamName = hardwareMap.get(WebcamName.class, "Webcam");
@@ -25,7 +34,7 @@ public class BarcodeScanner extends LinearOpMode {
         OpenCvWebcam camera = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         FtcDashboard.getInstance().startCameraStream(camera, 0);
 
-        ColorScanner pipeline = new ColorScanner(telemetry, true);
+        ColorScanner pipeline = new ColorScanner(telemetry, false);
         camera.setPipeline(pipeline);
 
         // Opening async. to avoid the thread from waiting for camera
