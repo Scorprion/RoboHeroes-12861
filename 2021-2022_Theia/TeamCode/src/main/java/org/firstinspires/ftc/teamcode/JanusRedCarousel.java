@@ -82,14 +82,15 @@ public class JanusRedCarousel extends LinearOpMode {
                 .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
                     robot.preload.setPower(0.6);
                 })
+                .addDisplacementMarker(p -> p * 0.9, () -> {
+                    robot.preload.setPower(0);
+                })
                 .build();
         robot.followTrajectory(move);
 
-        robot.preload.setPower(0);
-
         // Move into carousel (to spin)
         Trajectory move2 = robot.trajectoryBuilder(move.end())
-                .lineToLinearHeading(new Pose2d(-62, -58, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-62, -60, Math.toRadians(90)))
                 .build();
         robot.followTrajectory(move2);
 
@@ -147,9 +148,16 @@ public class JanusRedCarousel extends LinearOpMode {
 
         Trajectory move11 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-60, -40, Math.toRadians(0)))
+                .addDisplacementMarker(p -> p * 0.5, () -> {
+                    robot.release.setPower(1);
+                })
                 .build();
         robot.followTrajectory(move11);
-
+        robot.release.setPower(0);
+        robot.sorter.setPosition(0.9);
+        robot.preload.setPower(-0.4);
+        sleep(250);
+        robot.preload.setPower(0);
         sleep(100000);  // to keep the arm up
     }
 }

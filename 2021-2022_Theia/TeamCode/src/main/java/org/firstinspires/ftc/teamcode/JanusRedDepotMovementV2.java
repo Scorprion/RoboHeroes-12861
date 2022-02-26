@@ -76,6 +76,7 @@ public class JanusRedDepotMovementV2 extends LinearOpMode {
                 .build();
         robot.followTrajectory(move1);
         sleep(250);
+
         // Depositing the cube
         robot.preload.setPower(0);
         robot.intakearm.setPower(0);
