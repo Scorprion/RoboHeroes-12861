@@ -134,8 +134,8 @@ public class JanusRedDepot extends LinearOpMode {
                  })
                  .build();
          robot.followTrajectory(move4);
-
          sleep(250);
+
          robot.release.setPower(-1);
          sleep(1000);
          robot.spintake.setPower(0);

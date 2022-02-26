@@ -87,12 +87,12 @@ public class JanusBlueDepot extends LinearOpMode {
         })
                 .build();
         robot.followTrajectory(move1);
-        sleep(500);
+        sleep(250);
         // Depositing the cube
         robot.preload.setPower(0);
         robot.intakearm.setPower(0);
         robot.caparm.setPower(0.5);
-        robot.outtake.setPower(0.35);
+        robot.outtake.setPower(0.25);
         sleep(500);
         robot.caparm.setPower(0);
         sleep(500);
@@ -119,6 +119,7 @@ public class JanusBlueDepot extends LinearOpMode {
                     })
                     .build();
             robot.followTrajectory(move3);
+            sleep(250);
 
             // Slowly move out of the the depot with cube
             Trajectory move4 = robot.trajectoryBuilder(robot.getPoseEstimate())
@@ -136,9 +137,9 @@ public class JanusBlueDepot extends LinearOpMode {
                     })
                     .build();
             robot.followTrajectory(move4);
-            sleep(250);
+            sleep(500);
             robot.release.setPower(-1);
-            sleep(1000);
+            sleep(500);
             robot.spintake.setPower(0);
             depotDistance += 5;
         }
@@ -147,11 +148,14 @@ public class JanusBlueDepot extends LinearOpMode {
         Trajectory move8 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .splineTo(new Vector2d(15, 66), Math.toRadians(0))
                 .forward(35)
-                .addDisplacementMarker(pathLength -> pathLength * 0.8, () -> {
+                .addDisplacementMarker(pathLength -> pathLength * 0.4, () -> {
                     robot.intakearm.setPower(-0.3);
+                    robot.outtake.setPower(-0.4);
+                    robot.release.setPower(1);
                 })
                 .build();
         robot.followTrajectory(move8);
         robot.outtake.setPower(0);
+        robot.release.setPower(0);
     }
 }
