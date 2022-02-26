@@ -111,6 +111,14 @@ public class JanusTeleOp extends LinearOpMode {
                 release.setPower(0.0);
             }
 
+            if(gamepad2.dpad_up) {
+                preload.setPower(-1);
+            } else if(gamepad2.dpad_down) {
+                preload.setPower(1);
+            } else {
+                preload.setPower(0);
+            }
+
             if (gamepad1.x && !activated) {
                 activated = true;
                 timer.reset();
