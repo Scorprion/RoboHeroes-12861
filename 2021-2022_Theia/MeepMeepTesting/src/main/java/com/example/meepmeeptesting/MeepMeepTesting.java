@@ -15,20 +15,21 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(39.4224324932042, 39.4224324932042, Math.toRadians(183.6), Math.toRadians(162.272), 10.75)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(-13, -40, Math.toRadians(270)))
-                                .splineToSplineHeading(new Pose2d(-5, -55, Math.toRadians(0)), Math.toRadians(-45))
-                                .splineToLinearHeading(new Pose2d(14, -64, Math.toRadians(0)), Math.toRadians(0))
-
-                                .splineToConstantHeading(new Vector2d(45, -64), Math.toRadians(0))
-                                .lineToLinearHeading(new Pose2d(24, -63.5, Math.toRadians(0)))
-                                .splineTo(new Vector2d(-13, -38), Math.toRadians(90))
+                        drive.trajectorySequenceBuilder(new Pose2d(-12, -40, Math.toRadians(270)))
+                                .splineToSplineHeading(new Pose2d(-6, -60, Math.toRadians(0)), Math.toRadians(-30))
+                                .splineToLinearHeading(new Pose2d(20, -64, Math.toRadians(0)), Math.toRadians(0))
+                                .splineToConstantHeading(new Vector2d(55, -64), Math.toRadians(0))
 
                                 /*
-                                .splineToConstantHeading(new Vector2d(30 + 15, -64), Math.toRadians(0))
-                                .back(30 - 10)
-                                .splineTo(new Vector2d(-14 , -38), Math.toRadians(90))
-                                .splineTo(new Vector2d(15, -66), Math.toRadians(0))
-                                .splineTo(new Vector2d(45, -64), Math.toRadians(0))
+                                .splineToSplineHeading(new Pose2d(-5, -58, Math.toRadians(0)), Math.toRadians(-45))
+                                .splineToLinearHeading(new Pose2d(12, -64, Math.toRadians(0)), Math.toRadians(0),
+                                        JanusDrive.getVelocityConstraint(30, 25, DriveConstants.TRACK_WIDTH),
+                                        JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                                .lineToLinearHeading(new Pose2d(24, -64, Math.toRadians(0)))
+                                .splineTo(new Vector2d(-12, -40), Math.toRadians(90))
+                                .splineToSplineHeading(new Pose2d(-10, -55, Math.toRadians(0)), Math.toRadians(-45))
+                                .splineToLinearHeading(new Pose2d(5, -64, Math.toRadians(0)), Math.toRadians(0))
+                                .splineToConstantHeading(new Vector2d(45, -64), Math.toRadians(0))
                                 */
 
 
