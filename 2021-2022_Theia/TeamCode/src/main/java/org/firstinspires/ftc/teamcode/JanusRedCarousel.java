@@ -72,6 +72,7 @@ public class JanusRedCarousel extends LinearOpMode {
         }
         sleep(1000);
 
+
         // Move to carousel
         robot.intakearm.setPower(0.4);
         Trajectory move = robot.trajectoryBuilder(robot.getPoseEstimate())
@@ -88,10 +89,11 @@ public class JanusRedCarousel extends LinearOpMode {
 
         // Move into carousel (to spin)
         Trajectory move2 = robot.trajectoryBuilder(move.end())
-                .lineToLinearHeading(new Pose2d(-62, -59, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(-62, -58, Math.toRadians(90)))
                 .build();
         robot.followTrajectory(move2);
 
+        robot.setPoseEstimate(new Pose2d(-62, -56, Math.toRadians(90)));
 
         // Spin carousel
         timer.reset();
@@ -104,6 +106,10 @@ public class JanusRedCarousel extends LinearOpMode {
         }
         robot.carousel.setPower(0);
 
+        robot.release.setPower(1);
+        sleep(500);
+        robot.release.setPower(0);
+
         Trajectory move20 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-55, -20, Math.toRadians(90)))
                 .build();
@@ -111,9 +117,9 @@ public class JanusRedCarousel extends LinearOpMode {
 
         // Move to alliance hub
         Trajectory move3 = robot.trajectoryBuilder(move20.end())
-                .lineToLinearHeading(new Pose2d(-25, -20, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-27, -22    , Math.toRadians(180)))
                 .addDisplacementMarker(p -> p * 0.7, () -> {
-                    robot.outtake.setPower(0.25);
+                    robot.outtake.setPower(0.2);
                 })
                 .build();
         robot.followTrajectory(move3);
@@ -124,6 +130,7 @@ public class JanusRedCarousel extends LinearOpMode {
         robot.caparm.setPower(0);
         sleep(500);
         robot.outtake.setPower(0);
+        sleep(1000);
         robot.release.setPower(-1);
         sleep(500);
         robot.release.setPower(0);
@@ -131,13 +138,18 @@ public class JanusRedCarousel extends LinearOpMode {
         // Park in the freightDepot
         robot.intakearm.setPower(0.4);
         Trajectory move10 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .splineToSplineHeading(new Pose2d(-58, -35, Math.toRadians(0)), Math.toRadians(270))
-                .splineToConstantHeading(new Vector2d(-62, -35), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-58, -22, Math.toRadians(0)))
                 .addDisplacementMarker(p -> p * 0.05, () -> {
                     robot.outtake.setPower(-0.4);
         })
                 .build();
         robot.followTrajectory(move10);
 
+        Trajectory move11 = robot.trajectoryBuilder(robot.getPoseEstimate())
+                .lineToLinearHeading(new Pose2d(-60, -40, Math.toRadians(0)))
+                .build();
+        robot.followTrajectory(move11);
+
+        sleep(100000);  // to keep the arm up
     }
 }

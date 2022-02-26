@@ -21,8 +21,8 @@ import java.util.Vector;
 public class JanusRedDepot extends LinearOpMode {
    MarkerLocation position = MarkerLocation.UNKNOWN;
    public double hubdistance = 40.0;
-   public double hubXDistance = -13;
-   public double depotDistance = 30;
+   public double hubXDistance = -10;
+   public double depotDistance = 45;
 
    ElapsedTime timer = new ElapsedTime();
 
@@ -62,34 +62,28 @@ public class JanusRedDepot extends LinearOpMode {
          // Level 1
          robot.sorter.setPosition(0.0);
          hubdistance = 39.0;
-         hubXDistance = -13;
+         hubXDistance = -10;
       } else if (position == MarkerLocation.MIDDLE) {
          // Level 2
          robot.sorter.setPosition(0.4);
          hubdistance = 39;
-         hubXDistance = -13;
+         hubXDistance = -10;
       } else {
          // Level 3
          robot.sorter.setPosition(1.0);
       }
-      sleep(1000);
-
-      Trajectory move = robot.trajectoryBuilder(robot.getPoseEstimate())
-              .strafeRight(10)
-              .build();
-      robot.followTrajectory(move);
+      sleep(500);
 
       Trajectory move1 = robot.trajectoryBuilder(robot.getPoseEstimate())
-              .lineToLinearHeading(new Pose2d(hubXDistance, -38, Math.toRadians(270)))
+              .lineToLinearHeading(new Pose2d(hubXDistance, -40, Math.toRadians(270)))
               .addDisplacementMarker(pathLength -> pathLength * 0.1, () -> {
                  robot.intakearm.setPower(-0.5);
               })
-              .addDisplacementMarker(p -> p * 0.8, () -> {
+              .addDisplacementMarker(p -> p * 0.7, () -> {
                   robot.preload.setPower(0.8);
                })
               .build();
       robot.followTrajectory(move1);
-      sleep(500);
       // Depositing the cube
       robot.preload.setPower(0);
       robot.intakearm.setPower(0);
@@ -108,12 +102,15 @@ public class JanusRedDepot extends LinearOpMode {
          robot.intakearm.setPower(0.55);
          // Drive into the depot and spin the intake
          Trajectory move3 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                 .splineTo(new Vector2d(5, -62), Math.toRadians(0))
+                 .splineToSplineHeading(new Pose2d(-5, -55, Math.toRadians(0)), Math.toRadians(-45))
+                 .splineToLinearHeading(new Pose2d(12, -64, Math.toRadians(0)), Math.toRadians(0),
+                         JanusDrive.getVelocityConstraint(30, 25, DriveConstants.TRACK_WIDTH),
+                         JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                  .addDisplacementMarker(pathLength -> pathLength * 0.05,  () -> {
                     robot.release.setPower(1);
                     robot.outtake.setPower(-0.4);
                  })
-                 .splineToConstantHeading(new Vector2d(hubdistance + 15, -62  ), Math.toRadians(0))
+                 .splineToConstantHeading(new Vector2d(depotDistance, -64), Math.toRadians(0))
                  .addDisplacementMarker(pathLength -> pathLength * 0.4, () -> {
                     robot.release.setPower(0);
                     robot.spintake.setPower(-1);
@@ -123,11 +120,11 @@ public class JanusRedDepot extends LinearOpMode {
          robot.followTrajectory(move3);
 
          // Slowly move out of the the depot with cube
-         Trajectory move4 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                 .back(depotDistance - 10,
+         Trajectory move4 = robot.trajectoryBuilder(move3.end())
+                 .lineToLinearHeading(new Pose2d(24, -64, Math.toRadians(0)),
                          JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                          JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                 .splineTo(new Vector2d(hubXDistance , -38), Math.toRadians(90),
+                 .splineTo(new Vector2d(hubXDistance, -38), Math.toRadians(90),
                          JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                          JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                  .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
@@ -142,13 +139,14 @@ public class JanusRedDepot extends LinearOpMode {
          robot.release.setPower(-1);
          sleep(1000);
          robot.spintake.setPower(0);
-         depotDistance += 5;
+         depotDistance += 3;
       }
 
       robot.intakearm.setPower(0.3);
       Trajectory move8 = robot.trajectoryBuilder(robot.getPoseEstimate())
-              .splineTo(new Vector2d(15, -66), Math.toRadians(0))
-              .splineTo(new Vector2d(45, -64), Math.toRadians(0))
+              .splineToSplineHeading(new Pose2d(-10, -55, Math.toRadians(0)), Math.toRadians(-45))
+              .splineToLinearHeading(new Pose2d(5, -64, Math.toRadians(0)), Math.toRadians(0))
+              .splineToConstantHeading(new Vector2d(45, -64), Math.toRadians(0))
               .addDisplacementMarker(pathLength -> pathLength * 0.01, () -> {
                  robot.outtake.setPower(-0.4);
               })
