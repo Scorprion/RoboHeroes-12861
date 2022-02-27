@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.net.wifi.p2p.WifiP2pManager;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -9,8 +11,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.JanusDrive;
+import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+
+import java.util.Vector;
 
 @Autonomous(group="Janus")
 public class JanusBlueDepotShared extends LinearOpMode {
@@ -82,12 +87,12 @@ public class JanusBlueDepotShared extends LinearOpMode {
                 })
                 .build();
         robot.followTrajectory(move1);
-        sleep(500);
+        sleep(250);
         // Depositing the cube
         robot.preload.setPower(0);
         robot.intakearm.setPower(0);
-        robot.caparm.setPower(0.6);
-        robot.outtake.setPower(0.35);
+        robot.caparm.setPower(0.5);
+        robot.outtake.setPower(0.25);
         sleep(500);
         robot.caparm.setPower(0);
         sleep(500);
@@ -101,12 +106,12 @@ public class JanusBlueDepotShared extends LinearOpMode {
             robot.intakearm.setPower(0.55);
             // Drive into the depot and spin the intake
             Trajectory move3 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                    .splineTo(new Vector2d(15, 65), Math.toRadians(0))
+                    .splineTo(new Vector2d(15, 64), Math.toRadians(0))
                     .addDisplacementMarker(pathLength -> pathLength * 0.05,  () -> {
                         robot.release.setPower(1);
                         robot.outtake.setPower(-0.4);
                     })
-                    .splineTo(new Vector2d(depotDistance + 15, 65), Math.toRadians(0))
+                    .splineTo(new Vector2d(depotDistance + 15, 64), Math.toRadians(0))
                     .addDisplacementMarker(pathLength -> pathLength * 0.4, () -> {
                         robot.release.setPower(0);
                         robot.spintake.setPower(-1);
@@ -114,13 +119,14 @@ public class JanusBlueDepotShared extends LinearOpMode {
                     })
                     .build();
             robot.followTrajectory(move3);
+            sleep(250);
 
             // Slowly move out of the the depot with cube
             Trajectory move4 = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .back(depotDistance - 10,
-                    JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                    JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                    .splineTo(new Vector2d(-5.5 , 45), Math.toRadians(270),
+                            JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                            JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                    .splineTo(new Vector2d(-5.5, 43), Math.toRadians(270),
                             JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
@@ -131,9 +137,9 @@ public class JanusBlueDepotShared extends LinearOpMode {
                     })
                     .build();
             robot.followTrajectory(move4);
-            sleep(250);
+            sleep(500);
             robot.release.setPower(-1);
-            sleep(1000);
+            sleep(500);
             robot.spintake.setPower(0);
             depotDistance += 5;
         }
@@ -141,21 +147,22 @@ public class JanusBlueDepotShared extends LinearOpMode {
         robot.intakearm.setPower(0.3);
         Trajectory move8 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .splineTo(new Vector2d(15, 66), Math.toRadians(0))
-                .splineTo(new Vector2d(30 + 15, 64), Math.toRadians(0))
-                .addDisplacementMarker(pathLength -> pathLength * 0.01, () -> {
+                .forward(15)
+                .addDisplacementMarker(pathLength -> pathLength * 0.4, () -> {
+                    robot.intakearm.setPower(-0.3);
                     robot.outtake.setPower(-0.4);
+                    robot.release.setPower(1);
                 })
                 .splineToConstantHeading(new Vector2d(45, 38), Math.toRadians(0))
                 .build();
         robot.followTrajectory(move8);
 
-        Trajectory move9 = robot.trajectoryBuilder(robot.getPoseEstimate())
+        Trajectory move9 = robot.trajectoryBuilder(move8.end())
                 .splineToLinearHeading(new Pose2d(60, 40, Math.toRadians(90)), Math.toRadians(90))
-                .addDisplacementMarker(pathLength -> pathLength * 0.9, () -> {
-                    robot.intakearm.setPower(-0.3);
-                })
                 .build();
         robot.followTrajectory(move9);
+
         robot.outtake.setPower(0);
+        robot.release.setPower(0);
     }
 }

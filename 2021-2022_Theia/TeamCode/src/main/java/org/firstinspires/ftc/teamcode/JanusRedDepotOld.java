@@ -1,22 +1,29 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.net.wifi.p2p.WifiP2pManager;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.JanusDrive;
+import org.opencv.core.Mat;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+import java.util.Vector;
+
+@Disabled
 @Autonomous(group="Janus")
-public class JanusRedDepotShared extends LinearOpMode {
+public class JanusRedDepotOld extends LinearOpMode {
    MarkerLocation position = MarkerLocation.UNKNOWN;
    public double hubXDistance = -12;
-   public double depotDistance = 47;
+   public double depotDistance = 50;
 
    ElapsedTime timer = new ElapsedTime();
 
@@ -62,23 +69,25 @@ public class JanusRedDepotShared extends LinearOpMode {
          // Level 3
          robot.sorter.setPosition(1.0);
       }
+      sleep(500);
 
       Trajectory move1 = robot.trajectoryBuilder(robot.getPoseEstimate())
-              .lineToLinearHeading(new Pose2d(1, -39, Math.toRadians(315)))
+              .lineToLinearHeading(new Pose2d(hubXDistance, -41, Math.toRadians(270)))
               .addDisplacementMarker(pathLength -> pathLength * 0.1, () -> {
-                 robot.intakearm.setPower(-0.6);
+                 robot.intakearm.setPower(-0.5);
               })
               .addDisplacementMarker(p -> p * 0.5, () -> {
-                 robot.preload.setPower(0.8);
-              })
+                  robot.preload.setPower(0.8);
+               })
               .build();
       robot.followTrajectory(move1);
-      sleep(250);
-
       // Depositing the cube
       robot.preload.setPower(0);
       robot.intakearm.setPower(0);
+      robot.caparm.setPower(0.5);
       robot.outtake.setPower(0.25);
+      sleep(500);
+      robot.caparm.setPower(0);
       sleep(500);
       robot.outtake.setPower(0);
       robot.release.setPower(-1);
@@ -88,79 +97,63 @@ public class JanusRedDepotShared extends LinearOpMode {
       while (opModeIsActive() && timer.seconds() <= 20) {
          robot.sorter.setPosition(0.9);
          robot.intakearm.setPower(0.55);
-
-         // Move in front of depot
-         Trajectory move2 = robot.trajectoryBuilder(move1.end())
-                 .lineToLinearHeading(new Pose2d(15, -65, Math.toRadians(0)))
-                 .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
-                    robot.outtake.setPower(-0.3);
+         // Drive into the depot and spin the intake
+         Trajectory move3 = robot.trajectoryBuilder(move1.end())
+                 .splineToSplineHeading(new Pose2d(-6, -60, Math.toRadians(0)), Math.toRadians(-30))
+                 .splineToLinearHeading(new Pose2d(20, -65, Math.toRadians(0)), Math.toRadians(0),
+                         JanusDrive.getVelocityConstraint(30, 25, DriveConstants.TRACK_WIDTH),
+                         JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                 .addDisplacementMarker(pathLength -> pathLength * 0.05,  () -> {
                     robot.release.setPower(1);
+                    robot.outtake.setPower(-0.4);
                  })
-                 .addDisplacementMarker(pathLength -> pathLength * 0.6, () -> {
+                 .splineToConstantHeading(new Vector2d(depotDistance, -65), Math.toRadians(0),
+                         JanusDrive.getVelocityConstraint(30, 25, DriveConstants.TRACK_WIDTH),
+                         JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                 .addDisplacementMarker(pathLength -> pathLength * 0.4, () -> {
                     robot.release.setPower(0);
                     robot.spintake.setPower(-1);
                     robot.intakearm.setPower(-0.3);
                  })
                  .build();
-         robot.followTrajectory(move2);
-
-         robot.outtake.setPower(0);
-         robot.release.setPower(0);
-
-         // Move into depot
-         Trajectory move = robot.trajectoryBuilder(move2.end())
-                 .splineToConstantHeading(new Vector2d(depotDistance, -65), Math.toRadians(0),
-                         JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                         JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                 .build();
-         robot.followTrajectory(move);
-         sleep(500);
-
-         // Move out of depot
-         Trajectory move3 = robot.trajectoryBuilder(move.end())
-                 .lineToLinearHeading(new Pose2d(15, -65, Math.toRadians(0)),
-                         JanusDrive.getVelocityConstraint(25, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
-                         JanusDrive.getAccelerationConstraint(40))
-                 .build();
          robot.followTrajectory(move3);
 
-         // Move back to hub
+         // Slowly move out of the the depot with cube
          Trajectory move4 = robot.trajectoryBuilder(move3.end())
-                 .lineToLinearHeading(new Pose2d(1, -39, Math.toRadians(315)))
+                 .lineToLinearHeading(new Pose2d(24, -65, Math.toRadians(0)),
+                         JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                         JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                 .splineTo(new Vector2d(hubXDistance, -41), Math.toRadians(90),
+                         JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                         JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                  .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
                     robot.intakearm.setPower(0.45);
                  })
+                 .addDisplacementMarker(pathLength -> pathLength * 0.99, () -> {
+                    robot.outtake.setPower(0.25);
+                 })
                  .build();
          robot.followTrajectory(move4);
+         sleep(250);
 
-         // Deposit
-         sleep(500);
-         robot.outtake.setPower(0.25);
-         sleep(500);
          robot.release.setPower(-1);
          sleep(1000);
          robot.spintake.setPower(0);
-         robot.outtake.setPower(0);
          depotDistance += 3;
       }
 
-      Trajectory move5 = robot.trajectoryBuilder(robot.getPoseEstimate())
-              .lineToLinearHeading(new Pose2d(15, -65, Math.toRadians(0)))
-              .addDisplacementMarker(pathLength -> pathLength * 0.99, () -> {
-                 robot.outtake.setPower(-0.25);
+      robot.intakearm.setPower(0.3);
+      Trajectory move8 = robot.trajectoryBuilder(robot.getPoseEstimate())
+              .splineToSplineHeading(new Pose2d(-6, -60, Math.toRadians(0)), Math.toRadians(-30))
+              .splineToLinearHeading(new Pose2d(16, -65, Math.toRadians(0)), Math.toRadians(0),
+                      JanusDrive.getVelocityConstraint(30, 25, DriveConstants.TRACK_WIDTH),
+                      JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+              .splineToConstantHeading(new Vector2d(45, -65), Math.toRadians(0))
+              .addDisplacementMarker(pathLength -> pathLength * 0.01, () -> {
+                 robot.outtake.setPower(-0.4);
               })
               .build();
-      robot.followTrajectory(move5);
-
-      Trajectory move6 = robot.trajectoryBuilder(move5.end())
-              .splineToConstantHeading(new Vector2d(45, -65), Math.toRadians(0))
-              .build();
-      robot.followTrajectory(move6);
-
-      Trajectory move7 = robot.trajectoryBuilder(move6.end())
-              .splineToConstantHeading(new Vector2d(45, -42), Math.toRadians(0))
-              .build();
-      robot.followTrajectory(move7);
-
+      robot.followTrajectory(move8);
+      robot.outtake.setPower(0);
    }
 }
