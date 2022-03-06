@@ -46,7 +46,7 @@ public class JanusRedDepotShared extends LinearOpMode {
       timer.reset();
 
       // Start Scanning
-      while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+      while (opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {
          position = pipeline.getLocation();
       }
 
@@ -87,7 +87,7 @@ public class JanusRedDepotShared extends LinearOpMode {
 
       while (opModeIsActive() && timer.seconds() <= 20) {
          robot.sorter.setPosition(0.9);
-         robot.intakearm.setPower(0.55);
+         robot.intakearm.setPower(0.37);
 
          // Move in front of depot
          Trajectory move2 = robot.trajectoryBuilder(move1.end())
@@ -128,7 +128,7 @@ public class JanusRedDepotShared extends LinearOpMode {
          Trajectory move4 = robot.trajectoryBuilder(move3.end())
                  .lineToLinearHeading(new Pose2d(1, -39, Math.toRadians(315)))
                  .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
-                    robot.intakearm.setPower(0.45);
+                    robot.intakearm.setPower(0.37);
                  })
                  .build();
          robot.followTrajectory(move4);

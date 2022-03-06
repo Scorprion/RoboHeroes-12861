@@ -46,9 +46,9 @@ public class JanusBlueCarouselRemote extends LinearOpMode {
         });
 
         waitForStart();
-
+        timer.reset();
         // Start Scanning
-        while(opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+        while(opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {
             position = pipeline.getLocation();
         }
 
@@ -78,7 +78,7 @@ public class JanusBlueCarouselRemote extends LinearOpMode {
         robot.followTrajectory(move);
 
         robot.preload.setPower(0.65);
-        robot.intakearm.setPower(0.4);
+        robot.intakearm.setPower(0.3);
         sleep(1500);
         robot.preload.setPower(0);
         robot.intakearm.setPower(0);
@@ -165,7 +165,7 @@ public class JanusBlueCarouselRemote extends LinearOpMode {
         Trajectory move8 = robot.trajectoryBuilder(move7.end())
                 .lineToLinearHeading(new Pose2d(-11, 40, Math.toRadians(90)))
                 .addTemporalMarker(0.5, () -> {
-                    robot.intakearm.setPower(0.4);
+                    robot.intakearm.setPower(0.3);
                 })
                 .addTemporalMarker(2.5, () -> {
                     robot.spintake.setPower(0);

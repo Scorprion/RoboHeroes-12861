@@ -44,9 +44,9 @@ public class JanusBlueCarousel extends LinearOpMode {
         });
 
         waitForStart();
-
+        timer.reset();
         // Start Scanning
-        while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+        while (opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {
             position = pipeline.getLocation();
         }
 
