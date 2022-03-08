@@ -46,7 +46,7 @@ public class JanusRedDepot extends LinearOpMode {
         timer.reset();
 
         // Start Scanning
-        while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+        while (opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {
             position = pipeline.getLocation();
         }
 
@@ -64,7 +64,7 @@ public class JanusRedDepot extends LinearOpMode {
         }
 
         Trajectory move1 = robot.trajectoryBuilder(robot.getPoseEstimate())
-                .lineToLinearHeading(new Pose2d(1, -39, Math.toRadians(315)))
+                .lineToLinearHeading(new Pose2d(1, -37.5, Math.toRadians(315)))
                 .addDisplacementMarker(pathLength -> pathLength * 0.1, () -> {
                     robot.intakearm.setPower(-0.6);
                 })
@@ -87,7 +87,7 @@ public class JanusRedDepot extends LinearOpMode {
 
         while (opModeIsActive() && timer.seconds() <= 20) {
             robot.sorter.setPosition(0.9);
-            robot.intakearm.setPower(0.55);
+            robot.intakearm.setPower(0.37);
 
             // Move in front of depot
             Trajectory move2 = robot.trajectoryBuilder(move1.end())
@@ -126,9 +126,9 @@ public class JanusRedDepot extends LinearOpMode {
 
             // Move back to hub
             Trajectory move4 = robot.trajectoryBuilder(move3.end())
-                    .lineToLinearHeading(new Pose2d(1, -39, Math.toRadians(315)))
+                    .lineToLinearHeading(new Pose2d(1, -37.5, Math.toRadians(315)))
                     .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
-                        robot.intakearm.setPower(0.45);
+                        robot.intakearm.setPower(0.37);
                     })
                     .build();
             robot.followTrajectory(move4);
@@ -148,6 +148,7 @@ public class JanusRedDepot extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(15, -65, Math.toRadians(0)))
                 .addDisplacementMarker(pathLength -> pathLength * 0.99, () -> {
                     robot.outtake.setPower(-0.25);
+                    robot.release.setPower(1);
                 })
                 .build();
         robot.followTrajectory(move5);

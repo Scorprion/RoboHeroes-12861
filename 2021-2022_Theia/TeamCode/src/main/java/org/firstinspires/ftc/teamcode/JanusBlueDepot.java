@@ -52,7 +52,7 @@ public class JanusBlueDepot extends LinearOpMode {
         timer.reset();
 
         // Start Scanning
-        while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+        while (opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {
             position = pipeline.getLocation();
         }
 
@@ -103,7 +103,7 @@ public class JanusBlueDepot extends LinearOpMode {
 
         while (opModeIsActive() && timer.seconds() <= 20) {
             robot.sorter.setPosition(0.9);
-            robot.intakearm.setPower(0.55);
+            robot.intakearm.setPower(0.37);
             // Drive into the depot and spin the intake
             Trajectory move3 = robot.trajectoryBuilder(robot.getPoseEstimate())
                     .splineTo(new Vector2d(15, 64), Math.toRadians(0))
@@ -126,11 +126,11 @@ public class JanusBlueDepot extends LinearOpMode {
                     .back(depotDistance - 10,
                     JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                     JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                    .splineTo(new Vector2d(-5.5 , 45), Math.toRadians(270),
+                    .splineTo(new Vector2d(-5.5 , 42), Math.toRadians(270),
                             JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
-                        robot.intakearm.setPower(0.45);
+                        robot.intakearm.setPower(0.37);
                     })
                     .addDisplacementMarker(pathLength -> pathLength * 0.99, () -> {
                         robot.outtake.setPower(0.25);

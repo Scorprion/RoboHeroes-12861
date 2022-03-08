@@ -47,9 +47,9 @@ public class JanusRedCarousel extends LinearOpMode {
         });
 
         waitForStart();
-
+        timer.reset();
         // Start Scanning
-        while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
+        while (opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {
             position = pipeline.getLocation();
         }
 
@@ -74,7 +74,7 @@ public class JanusRedCarousel extends LinearOpMode {
 
 
         // Move to carousel
-        robot.intakearm.setPower(0.4);
+        robot.intakearm.setPower(0.37);
         Trajectory move = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-62, -50, Math.toRadians(90)),
                         JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
@@ -137,7 +137,7 @@ public class JanusRedCarousel extends LinearOpMode {
         robot.release.setPower(0);
 
         // Park in the freightDepot
-        robot.intakearm.setPower(0.4);
+        robot.intakearm.setPower(0.37);
         Trajectory move10 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-58, -22, Math.toRadians(0)))
                 .addDisplacementMarker(p -> p * 0.05, () -> {
