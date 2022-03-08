@@ -44,6 +44,7 @@ public class JanusBlueCarouselPark extends LinearOpMode {
         });
 
         waitForStart();
+        timer.reset();
 
         // Start Scanning
         while (opModeIsActive() && position == MarkerLocation.UNKNOWN) {
@@ -132,18 +133,18 @@ public class JanusBlueCarouselPark extends LinearOpMode {
         robot.release.setPower(-1);
         sleep(500);
         robot.release.setPower(0);
-
-        // Park in the freightDepot
         robot.intakearm.setPower(0.4);
+        robot.outtake.setPower(-0.4);
+        sleep(100);
+
+        // Move back to depot
         Trajectory move10 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-58, 22, Math.toRadians(0)))
-                .addDisplacementMarker(p -> p * 0.05, () -> {
-                    robot.outtake.setPower(-0.4);
-        })
                 .build();
         robot.followTrajectory(move10);
 
-        Trajectory move11 = robot.trajectoryBuilder(robot.getPoseEstimate())
+        // Move around barcode
+        Trajectory move11 = robot.trajectoryBuilder(move10.end())
                 .lineToLinearHeading(new Pose2d(-54, 48, Math.toRadians(0)))
                 .addDisplacementMarker(p -> p * 0.5, () -> {
                     robot.release.setPower(1);
@@ -161,6 +162,7 @@ public class JanusBlueCarouselPark extends LinearOpMode {
             continue;
         }
 
+        // Wait until 27 seconds and then move to warehouse
         Trajectory move12 = robot.trajectoryBuilder(move11.end())
                 .forward(68)
                 .build();

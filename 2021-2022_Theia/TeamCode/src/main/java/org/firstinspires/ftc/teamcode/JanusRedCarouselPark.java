@@ -46,8 +46,8 @@ public class JanusRedCarouselPark extends LinearOpMode {
             }
         });
 
-        timer.reset();
         waitForStart();
+        timer.reset();
 
         // Start Scanning
         while (opModeIsActive() && position == MarkerLocation.UNKNOWN && timer.seconds() < 1) {

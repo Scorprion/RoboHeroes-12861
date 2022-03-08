@@ -132,18 +132,17 @@ public class JanusBlueCarousel extends LinearOpMode {
         robot.release.setPower(-1);
         sleep(500);
         robot.release.setPower(0);
+        robot.intakearm.setPower(0.4);
+        robot.outtake.setPower(-0.4);
+        sleep(100);
 
         // Park in the freightDepot
-        robot.intakearm.setPower(0.4);
         Trajectory move10 = robot.trajectoryBuilder(robot.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-58, 22, Math.toRadians(0)))
-                .addDisplacementMarker(p -> p * 0.05, () -> {
-                    robot.outtake.setPower(-0.4);
-        })
                 .build();
         robot.followTrajectory(move10);
 
-        Trajectory move11 = robot.trajectoryBuilder(robot.getPoseEstimate())
+        Trajectory move11 = robot.trajectoryBuilder(move10.end())
                 .lineToLinearHeading(new Pose2d(-60, 36, Math.toRadians(0)))
                 .addDisplacementMarker(p -> p * 0.5, () -> {
                     robot.release.setPower(1);
