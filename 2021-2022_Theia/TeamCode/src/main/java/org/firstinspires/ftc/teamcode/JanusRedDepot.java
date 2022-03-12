@@ -78,7 +78,7 @@ public class JanusRedDepot extends LinearOpMode {
         // Depositing the cube
         robot.preload.setPower(0);
         robot.intakearm.setPower(0);
-        robot.outtake.setPower(0.25);
+        robot.outtake.setPower(0.3);
         sleep(500);
         robot.outtake.setPower(0);
         robot.release.setPower(-1);
@@ -128,16 +128,16 @@ public class JanusRedDepot extends LinearOpMode {
             Trajectory move4 = robot.trajectoryBuilder(move3.end())
                     .lineToLinearHeading(new Pose2d(1, -37.5, Math.toRadians(315)))
                     .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {
-                        robot.intakearm.setPower(0.37);
+                        robot.intakearm.setPower(0.41);
                     })
                     .build();
             robot.followTrajectory(move4);
 
             // Deposit
             sleep(500);
-            robot.outtake.setPower(0.25);
+            robot.outtake.setPower(0.3);
             sleep(500);
-            robot.release.setPower(-1);
+            robot.release.setPower(-0.5);
             sleep(1000);
             robot.spintake.setPower(0);
             robot.outtake.setPower(0);

@@ -83,7 +83,7 @@ public class JanusTeleOp extends LinearOpMode {
             }
 
             outtake.setPower(0.25 * (gamepad2.right_stick_y));
-            caparm.setPower(0.4 * -gamepad2.left_stick_y);
+            caparm.setPower(0.6 * -gamepad2.left_stick_y);
 
             if(gamepad1.b) {
                 spintake.setPower(1.0);

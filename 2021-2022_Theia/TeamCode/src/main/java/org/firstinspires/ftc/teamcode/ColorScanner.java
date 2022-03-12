@@ -136,7 +136,7 @@ public class ColorScanner extends OpenCvPipeline {
             int argmin = -1;
             for (int i = 0; i < centers.size(); i++) {
                 double currentDist = markerPoint.dist(centers.get(i));
-                telemetry.addData("Current dist", currentDist);
+                // telemetry.addData("Current dist", currentDist);
                 if (minDist > currentDist) {
                     minDist = currentDist;
                     argmin = i;
@@ -160,7 +160,7 @@ public class ColorScanner extends OpenCvPipeline {
                     break;
 
             }
-            telemetry.addData("Pos", scan);
+            telemetry.addLine("Press > to start");
             telemetry.update();
         }
 

@@ -135,6 +135,9 @@ public class JanusRedCarousel extends LinearOpMode {
         robot.release.setPower(-1);
         sleep(500);
         robot.release.setPower(0);
+        robot.intakearm.setPower(0.4);
+        robot.outtake.setPower(-0.4);
+        sleep(500);
 
         // Park in the freightDepot
         robot.intakearm.setPower(0.37);

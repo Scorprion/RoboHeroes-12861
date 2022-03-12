@@ -135,7 +135,7 @@ public class JanusBlueCarouselPark extends LinearOpMode {
         robot.release.setPower(0);
         robot.intakearm.setPower(0.4);
         robot.outtake.setPower(-0.4);
-        sleep(100);
+        sleep(500);
 
         // Move back to depot
         Trajectory move10 = robot.trajectoryBuilder(robot.getPoseEstimate())
@@ -157,6 +157,7 @@ public class JanusBlueCarouselPark extends LinearOpMode {
         robot.preload.setPower(-0.4);
         sleep(100);
         robot.preload.setPower(0);
+
 
         while(opModeIsActive() && timer.seconds() <= 27) {
             continue;
