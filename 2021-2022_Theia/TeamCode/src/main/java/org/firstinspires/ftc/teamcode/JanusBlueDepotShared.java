@@ -126,7 +126,7 @@ public class JanusBlueDepotShared extends LinearOpMode {
                     .back(depotDistance - 10,
                             JanusDrive.getVelocityConstraint(20, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
-                    .splineTo(new Vector2d(-5.5, 43), Math.toRadians(270),
+                    .splineTo(new Vector2d(-5.5 , 42), Math.toRadians(270),
                             JanusDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                             JanusDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                     .addDisplacementMarker(pathLength -> pathLength * 0.3, () -> {

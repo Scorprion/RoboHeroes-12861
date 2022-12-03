@@ -136,6 +136,9 @@ public class JanusRedCarouselPark extends LinearOpMode {
         robot.release.setPower(-1);
         sleep(500);
         robot.release.setPower(0);
+        robot.intakearm.setPower(0.4);
+        robot.outtake.setPower(-0.4);
+        sleep(500);
 
         // Move away from depot
         robot.intakearm.setPower(0.4);
@@ -161,9 +164,13 @@ public class JanusRedCarouselPark extends LinearOpMode {
         sleep(250);
         robot.preload.setPower(0);
 
-        while(opModeIsActive() && timer.seconds() <= 27) {
-            continue;
+        double currentTime = timer.seconds();
+        if(currentTime < 27) {
+            sleep((long) (27 - currentTime) * 1000);
         }
+
+        telemetry.addData("Sleep", (27 - timer.seconds()) * 1000);
+        telemetry.update();
 
         Trajectory move12 = robot.trajectoryBuilder(move11.end())
                 .forward(68)
