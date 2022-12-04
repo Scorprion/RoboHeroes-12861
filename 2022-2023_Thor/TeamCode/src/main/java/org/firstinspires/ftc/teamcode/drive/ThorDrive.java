@@ -25,6 +25,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -74,6 +75,7 @@ public class ThorDrive extends MecanumDrive {
     public List<DcMotorEx> motors;
 
     public DcMotorEx lift, pivot;
+    public Servo clampRight, clampLeft;
 
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
@@ -127,6 +129,9 @@ public class ThorDrive extends MecanumDrive {
 
         lift = hardwareMap.get(DcMotorEx.class, "Lift");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
+
+        clampLeft = hardwareMap.get(Servo.class, "ClampLeft");
+        clampRight = hardwareMap.get(Servo.class, "ClampRight");
 
         motors = Arrays.asList(frontLeft, backLeft, backRight, frontRight);
 
