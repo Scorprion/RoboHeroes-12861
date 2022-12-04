@@ -8,16 +8,23 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import org.firstinspires.ftc.teamcode.util.Encoder;
+
+import org.firstinspires.ftc.teamcode.util.Encoder;
 
 @TeleOp
 public class ThorTeleop extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
     DcMotorEx lift, pivot;
+    Encoder parallelEncoder, perpendicularEncoder;
     Servo clampLeft, clampRight;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
         double speed, turnspeed, strafespeed, liftspeed, pivotspeed;
+        double autoPivotSpeed = 0.17;
+        boolean setPosition = false;
 
         frontLeft = hardwareMap.get(DcMotorEx.class, "FrontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "FrontRight");
@@ -26,6 +33,9 @@ public class ThorTeleop extends LinearOpMode {
 
         lift = hardwareMap.get(DcMotorEx.class, "Lift");
         pivot = hardwareMap.get(DcMotorEx.class, "Pivot");
+
+        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "LeftDead"));
+        perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "CenterDead"));
 
         clampLeft = hardwareMap.get(Servo.class, "ClampLeft");
         clampRight = hardwareMap.get(Servo.class, "ClampRight");
@@ -40,15 +50,12 @@ public class ThorTeleop extends LinearOpMode {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         pivot.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-            speed = -gamepad1.left_stick_y;
-            turnspeed = gamepad1.right_stick_x;
-            strafespeed = gamepad1.left_stick_x;
+            speed = -gamepad1.left_stick_y * 0.7;
+            turnspeed = gamepad1.right_stick_x * 0.7;
+            strafespeed = gamepad1.left_stick_x * 0.7;
 
             liftspeed = -gamepad2.left_stick_y;
             pivotspeed = gamepad2.right_stick_x * 0.2;
@@ -75,25 +82,39 @@ public class ThorTeleop extends LinearOpMode {
                 // Front
                 pivot.setTargetPosition(0);
                 pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                pivot.setPower(0.2);
+                setPosition = true;
             } else if (gamepad2.dpad_down) {
                 // Back
                 pivot.setTargetPosition(300);
                 pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                pivot.setPower(0.2);
+                setPosition = true;
             } else if (gamepad2.dpad_right) {
                 // Side
                 pivot.setTargetPosition(150);
                 pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                pivot.setPower(0.2);
-            } else {
+                setPosition = true;
+            } else if (gamepad2.dpad_left) {
                 // Manual
                 pivot.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                setPosition = false;
+            }
+
+            if (setPosition) {
+                pivot.setPower(0.15);
+            } else {
                 pivot.setPower(pivotspeed);
+            }
+
+            if (gamepad2.y) {
+                // Reset encoder counts from the front
+                pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
 
             telemetry.addData("Counts", pivot.getCurrentPosition());
+            telemetry.addData("Center count", perpendicularEncoder.getCurrentPosition());
+            telemetry.addData("Left count", parallelEncoder.getCurrentPosition());
             telemetry.update();
         }
     }
