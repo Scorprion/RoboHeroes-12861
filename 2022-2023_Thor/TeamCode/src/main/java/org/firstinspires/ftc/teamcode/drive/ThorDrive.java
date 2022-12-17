@@ -29,10 +29,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
 import org.firstinspires.ftc.teamcode.util.LynxModuleUtil;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,6 +79,9 @@ public class ThorDrive extends MecanumDrive {
 
     public DcMotorEx lift, pivot;
     public Servo clampRight, clampLeft;
+
+    public WebcamName webcam;
+    public OpenCvCamera camera;
 
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
@@ -132,6 +138,10 @@ public class ThorDrive extends MecanumDrive {
 
         clampLeft = hardwareMap.get(Servo.class, "ClampLeft");
         clampRight = hardwareMap.get(Servo.class, "ClampRight");
+
+        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(webcam, cameraMonitorViewId);
 
         motors = Arrays.asList(frontLeft, backLeft, backRight, frontRight);
 
