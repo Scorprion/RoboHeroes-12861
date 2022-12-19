@@ -26,6 +26,7 @@ import android.annotation.SuppressLint;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -37,8 +38,8 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@TeleOp
-public class ThorRightRed extends LinearOpMode
+@Autonomous
+public class ThorRedRight extends LinearOpMode
 {
    AprilTagDetectionPipeline aprilTagDetectionPipeline;
    ThorDrive drive;
@@ -154,14 +155,16 @@ public class ThorRightRed extends LinearOpMode
       }
 
 
-      Trajectory center = drive.trajectoryBuilder(new Pose2d())
-           .lineToLinearHeading(new Pose2d(37,-32, Math.toRadians(90)))
+
+      // Forward 27 inches, strafe 23 inches to sides
+      Trajectory center = drive.trajectoryBuilder(drive.getPoseEstimate())
+           .lineToLinearHeading(new Pose2d(37,-37, Math.toRadians(90)))
            .build();
-      Trajectory strafeLeft = drive.trajectoryBuilder(new Pose2d())
-           .lineToLinearHeading(new Pose2d(61,-32, Math.toRadians(90)))
+      Trajectory strafeLeft = drive.trajectoryBuilder(center.end())
+           .lineToLinearHeading(new Pose2d(14,-37, Math.toRadians(90)))
            .build();
-      Trajectory strafeRight = drive.trajectoryBuilder(new Pose2d())
-           .lineToLinearHeading(new Pose2d(61,-32, Math.toRadians(90)))
+      Trajectory strafeRight = drive.trajectoryBuilder(center.end())
+           .lineToLinearHeading(new Pose2d(60,-37, Math.toRadians(90)))
            .build();
 
       // Default to the center if nothing was detected
@@ -172,7 +175,6 @@ public class ThorRightRed extends LinearOpMode
          if(tagOfInterest.id == 0) {
             drive.followTrajectory(center);
             drive.followTrajectory(strafeLeft);
-
          // Right position
          } else if(tagOfInterest.id == 2) {
             drive.followTrajectory(center);
