@@ -106,15 +106,20 @@ public class ThorTeleop extends LinearOpMode {
             }
 
             if (gamepad2.y) {
-                // Reset encoder counts from the front
+                // Reset pivot encoder counts to the front
                 pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                // Reset lift counts
+                lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
 
 
-            telemetry.addData("Counts", pivot.getCurrentPosition());
-            telemetry.addData("Center count", perpendicularEncoder.getCurrentPosition());
-            telemetry.addData("Left count", parallelEncoder.getCurrentPosition());
+            telemetry.addData("Pivot Counts", pivot.getCurrentPosition());
+            telemetry.addData("Lift Counts", lift.getCurrentPosition());
+            telemetry.addData("Center Counts", perpendicularEncoder.getCurrentPosition());
+            telemetry.addData("Left Counts", parallelEncoder.getCurrentPosition());
             telemetry.update();
         }
     }

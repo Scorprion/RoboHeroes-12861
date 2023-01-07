@@ -27,6 +27,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.teamcode.drive.ThorDrive;
@@ -152,10 +153,47 @@ public class ThorBlueRight extends LinearOpMode
          telemetry.update();
       }
 
+      drive.clampLeft.setPosition(0);
+      drive.clampRight.setPosition(1);
 
+      // Stop and reset encoders
+      // Set target position (1680?)
+      drive.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      drive.lift.setTargetPosition(1700);
+      drive.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+      drive.pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      drive.pivot.setTargetPosition(150);
+      drive.pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+      sleep(2500);
+
+      drive.lift.setPower(0.4);
+      // Deliver preload
+      Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
+              .lineToLinearHeading(new Pose2d(-37,26, Math.toRadians(-90)))
+              .build();
+      drive.followTrajectory(startToPole);
+
+      // Possibly add a section to wait until its up to the correct height
+      // Rotate pivot to the side, waiting 500 ms for it to do so
+      drive.pivot.setPower(0.15);
+      sleep(1500);
+      drive.pivot.setPower(0);
+      drive.lift.setPower(0);
+
+      // Open clamp
+      drive.clampLeft.setPosition(1);
+      drive.clampRight.setPosition(0);
+
+      sleep(1500);
+
+
+      drive.pivot.setTargetPosition(0);
+      drive.lift.setTargetPosition(0);
 
       // Forward 27 inches, strafe 23 inches to sides
-      Trajectory center = drive.trajectoryBuilder(drive.getPoseEstimate())
+      Trajectory center = drive.trajectoryBuilder(startToPole.end())
            .lineToLinearHeading(new Pose2d(-37,37, Math.toRadians(-90)))
            .build();
       Trajectory strafeLeft = drive.trajectoryBuilder(center.end())
@@ -195,7 +233,10 @@ public class ThorBlueRight extends LinearOpMode
 
 
       /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
-      while (opModeIsActive()) {sleep(20);}
+      while (opModeIsActive()) {
+         drive.pivot.setPower(0.15);
+         drive.lift.setPower(0.4);
+      }
    }
 
    @SuppressLint("DefaultLocale")

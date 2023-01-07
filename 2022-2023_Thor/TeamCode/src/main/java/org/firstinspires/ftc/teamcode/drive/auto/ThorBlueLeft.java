@@ -152,7 +152,8 @@ public class ThorBlueLeft extends LinearOpMode
          telemetry.update();
       }
 
-
+      drive.clampLeft.setPosition(0);
+      drive.clampRight.setPosition(1);
 
       // Forward 27 inches, strafe 23 inches to sides
       Trajectory center = drive.trajectoryBuilder(drive.getPoseEstimate())
