@@ -156,44 +156,8 @@ public class ThorBlueRight extends LinearOpMode
       drive.clampLeft.setPosition(0);
       drive.clampRight.setPosition(1);
 
-      // Stop and reset encoders
-      // Set target position (4000 counts high with starting position calibration) (0 with extended calibration, -4000 for the starting position)
-      drive.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      drive.lift.setTargetPosition(1850);
-      drive.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-      drive.pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      drive.pivot.setTargetPosition(150);
-      drive.pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-      sleep(2500);
-
-      drive.lift.setPower(0.4);
-      // Deliver preload
-      Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
-              .forward(38)
-      //        .lineToLinearHeading(new Pose2d(-37,26, Math.toRadians(-90)))
-              .build();
-      drive.followTrajectory(startToPole);
-
-      // Possibly add a section to wait until its up to the correct height
-      // Rotate pivot to the side, waiting 500 ms for it to do so
-      drive.pivot.setPower(0.15);
-      sleep(1500);
-      drive.pivot.setPower(0);
-      drive.lift.setPower(0);
-
-      // Open clamp
-      drive.clampLeft.setPosition(1);
-      drive.clampRight.setPosition(0);
-
-      sleep(1500);
-
-      drive.pivot.setTargetPosition(0);
-      drive.lift.setTargetPosition(0);
-
       // Forward 27 inches, strafe 23 inches to sides
-      Trajectory center = drive.trajectoryBuilder(startToPole.end())
+      Trajectory center = drive.trajectoryBuilder(drive.getPoseEstimate())
            .lineToLinearHeading(new Pose2d(-37,37, Math.toRadians(-90)))
            .build();
       Trajectory strafeLeft = drive.trajectoryBuilder(center.end())

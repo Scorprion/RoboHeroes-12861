@@ -176,18 +176,20 @@ public class ThorRedLeftDeposit extends LinearOpMode
 
       sleep(2500);
 
-      drive.lift.setPower(0.4);
+      drive.lift.setPower(0.6);
+
+      sleep(250);
 
       // Deliver preload
       Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
-              .forward(12)
+              .forward(11)
               .build();
       drive.followTrajectory(startToPole);
 
       // Possibly add a section to wait until its up to the correct height
       // Rotate pivot to the side, waiting 500 ms for it to do so
       drive.pivot.setPower(0.15);
-      sleep(1500);
+      sleep(2000);
       drive.pivot.setPower(0);
       drive.lift.setPower(0);
 
