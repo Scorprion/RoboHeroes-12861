@@ -38,8 +38,17 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class ThorBlueRight extends LinearOpMode
+public class ThorBlueLeftDeposit extends LinearOpMode
 {
+
+   // Reminder:
+   //                front
+   // blue                               red
+   //                back
+   //        ^ +x
+   //  +y <-
+   // +x is towards the front
+   // +y is towards the blue side
    AprilTagDetectionPipeline aprilTagDetectionPipeline;
    ThorDrive drive;
 
@@ -65,8 +74,8 @@ public class ThorBlueRight extends LinearOpMode
    public void runOpMode()
    {
       drive = new ThorDrive(hardwareMap);
-      drive.setPoseEstimate(new Pose2d(-37, 64, Math.toRadians(-90)));
-      
+      drive.setPoseEstimate(new Pose2d(37, 64, Math.toRadians(-90)));
+
       aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
       drive.camera.setPipeline(aprilTagDetectionPipeline);
@@ -157,7 +166,6 @@ public class ThorBlueRight extends LinearOpMode
       drive.clampRight.setPosition(1);
 
       // Stop and reset encoders
-      // Set target position (4000 counts high with starting position calibration) (0 with extended calibration, -4000 for the starting position)
       drive.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
       drive.lift.setTargetPosition(1850);
       drive.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -169,10 +177,10 @@ public class ThorBlueRight extends LinearOpMode
       sleep(2500);
 
       drive.lift.setPower(0.4);
+
       // Deliver preload
       Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
-              .forward(38)
-      //        .lineToLinearHeading(new Pose2d(-37,26, Math.toRadians(-90)))
+              .forward(12)
               .build();
       drive.followTrajectory(startToPole);
 
@@ -194,14 +202,14 @@ public class ThorBlueRight extends LinearOpMode
 
       // Forward 27 inches, strafe 23 inches to sides
       Trajectory center = drive.trajectoryBuilder(startToPole.end())
-           .lineToLinearHeading(new Pose2d(-37,37, Math.toRadians(-90)))
-           .build();
+              .lineToLinearHeading(new Pose2d(37,37, Math.toRadians(-90)))
+              .build();
       Trajectory strafeLeft = drive.trajectoryBuilder(center.end())
-           .lineToLinearHeading(new Pose2d(-14,37, Math.toRadians(-90)))
-           .build();
+              .lineToLinearHeading(new Pose2d(60,37, Math.toRadians(-90)))
+              .build();
       Trajectory strafeRight = drive.trajectoryBuilder(center.end())
-           .lineToLinearHeading(new Pose2d(-60,37, Math.toRadians(-90)))
-           .build();
+              .lineToLinearHeading(new Pose2d(14,37, Math.toRadians(-90)))
+              .build();
 
       // Default to the center if nothing was detected
       if(tagOfInterest == null) {
@@ -211,11 +219,11 @@ public class ThorBlueRight extends LinearOpMode
          if(tagOfInterest.id == 0) {
             drive.followTrajectory(center);
             drive.followTrajectory(strafeLeft);
-         // Right position
+            // Right position
          } else if(tagOfInterest.id == 2) {
             drive.followTrajectory(center);
             drive.followTrajectory(strafeRight);
-         // Again, default to the center in any other case
+            // Again, default to the center in any other case
          } else {
             drive.followTrajectory(center);
          }

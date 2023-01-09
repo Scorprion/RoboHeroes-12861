@@ -38,7 +38,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class ThorBlueRight extends LinearOpMode
+public class ThorRedRightDeposit extends LinearOpMode
 {
    AprilTagDetectionPipeline aprilTagDetectionPipeline;
    ThorDrive drive;
@@ -65,7 +65,7 @@ public class ThorBlueRight extends LinearOpMode
    public void runOpMode()
    {
       drive = new ThorDrive(hardwareMap);
-      drive.setPoseEstimate(new Pose2d(-37, 64, Math.toRadians(-90)));
+      drive.setPoseEstimate(new Pose2d(37, -64, Math.toRadians(90)));
       
       aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
@@ -172,7 +172,7 @@ public class ThorBlueRight extends LinearOpMode
       // Deliver preload
       Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
               .forward(38)
-      //        .lineToLinearHeading(new Pose2d(-37,26, Math.toRadians(-90)))
+      //        .lineToLinearHeading(new Pose2d(37,-26, Math.toRadians(90)))
               .build();
       drive.followTrajectory(startToPole);
 
@@ -194,13 +194,13 @@ public class ThorBlueRight extends LinearOpMode
 
       // Forward 27 inches, strafe 23 inches to sides
       Trajectory center = drive.trajectoryBuilder(startToPole.end())
-           .lineToLinearHeading(new Pose2d(-37,37, Math.toRadians(-90)))
+           .lineToLinearHeading(new Pose2d(37,-37, Math.toRadians(90)))
            .build();
       Trajectory strafeLeft = drive.trajectoryBuilder(center.end())
-           .lineToLinearHeading(new Pose2d(-14,37, Math.toRadians(-90)))
+           .lineToLinearHeading(new Pose2d(14,-37, Math.toRadians(90)))
            .build();
       Trajectory strafeRight = drive.trajectoryBuilder(center.end())
-           .lineToLinearHeading(new Pose2d(-60,37, Math.toRadians(-90)))
+           .lineToLinearHeading(new Pose2d(60,-37, Math.toRadians(90)))
            .build();
 
       // Default to the center if nothing was detected

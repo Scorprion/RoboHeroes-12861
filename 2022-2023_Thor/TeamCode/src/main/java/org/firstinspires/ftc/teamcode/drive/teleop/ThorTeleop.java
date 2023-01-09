@@ -109,7 +109,8 @@ public class ThorTeleop extends LinearOpMode {
                 // Reset pivot encoder counts to the front
                 pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 pivot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+            }
+            if (gamepad2.x) {
                 // Reset lift counts
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
