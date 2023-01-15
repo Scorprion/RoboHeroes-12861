@@ -30,6 +30,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.drive.ThorDrive;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -241,6 +242,7 @@ public class ThorBlueLeftDeposit extends LinearOpMode
          }*/
       }
 
+      PoseStorage.endOfAutoPose = drive.getPoseEstimate();
 
       /* You wouldn't have this in your autonomous, this is just to prevent the sample from ending */
       while (opModeIsActive()) {

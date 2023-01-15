@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.drive.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -9,23 +9,28 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.drive.PoseStorage;
 import org.firstinspires.ftc.teamcode.util.Encoder;
 
 import org.firstinspires.ftc.teamcode.util.Encoder;
 
-@Disabled
 @TeleOp
-public class ThorTeleop extends LinearOpMode {
+public class ThorTeleopRed extends LinearOpMode {
     DcMotorEx frontLeft, frontRight, backLeft, backRight;
     DcMotorEx lift, pivot;
     Encoder parallelEncoder, perpendicularEncoder;
     Servo clampLeft, clampRight;
+    BNO055IMU imu;
 
 
     @Override
     public void runOpMode() throws InterruptedException {
         double speed, turnspeed, strafespeed, liftspeed, pivotspeed;
         boolean setPosition = false;
+        boolean override = false;
+        double forwardAngle = Math.toRadians(90) - PoseStorage.endOfAutoPose.getHeading();
+        double angle;
 
         frontLeft = hardwareMap.get(DcMotorEx.class, "FrontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "FrontRight");
@@ -41,6 +46,11 @@ public class ThorTeleop extends LinearOpMode {
         clampLeft = hardwareMap.get(Servo.class, "ClampLeft");
         clampRight = hardwareMap.get(Servo.class, "ClampRight");
 
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
+        imu.initialize(parameters);
+
         DcMotorEx[] motors = { frontLeft, frontRight, backLeft, backRight, lift, pivot };
 
         for(DcMotorEx motor : motors) {
@@ -51,12 +61,17 @@ public class ThorTeleop extends LinearOpMode {
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         pivot.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        // TODO: Read angle pose information from autonomous programs
+        // Otherwise, pressing a certain button will set the current angle to be the initial angle
+
         waitForStart();
 
         while (opModeIsActive() && !isStopRequested()) {
-            speed = -gamepad1.left_stick_y * 0.7;
+            angle = imu.getAngularOrientation().firstAngle - forwardAngle;
+
+            speed = override ? -gamepad1.left_stick_y * 0.7 : -gamepad1.left_stick_y * Math.cos(angle) - gamepad1.left_stick_x * Math.sin(angle);
             turnspeed = gamepad1.right_stick_x * 0.7;
-            strafespeed = gamepad1.left_stick_x * 0.7;
+            strafespeed = override ? gamepad1.left_stick_x * 0.7 : -gamepad1.left_stick_y * Math.sin(angle) + gamepad1.left_stick_x * Math.cos(angle);
 
             liftspeed = -gamepad2.left_stick_y;
             pivotspeed = gamepad2.right_stick_x * 0.2;
@@ -100,12 +115,20 @@ public class ThorTeleop extends LinearOpMode {
                 setPosition = false;
             }
 
-
-            // Pivot will run to encoder target position when instructed to, otherwise, set to the joystick power
             if (setPosition) {
                 pivot.setPower(0.15);
             } else {
                 pivot.setPower(pivotspeed);
+            }
+
+            if (gamepad1.a) {
+                override = false;
+            }
+            if (gamepad1.b) {
+                override = true;
+            }
+            if (gamepad1.y) {
+                forwardAngle = imu.getAngularOrientation().firstAngle;
             }
 
             if (gamepad2.y) {
@@ -122,8 +145,9 @@ public class ThorTeleop extends LinearOpMode {
 
             telemetry.addData("Pivot Counts", pivot.getCurrentPosition());
             telemetry.addData("Lift Counts", lift.getCurrentPosition());
-            telemetry.addData("Center Counts", perpendicularEncoder.getCurrentPosition());
-            telemetry.addData("Left Counts", parallelEncoder.getCurrentPosition());
+            telemetry.addData("Relative angle", angle);
+            telemetry.addData("Forward speed", speed);
+            telemetry.addData("Strafe speed", strafespeed);
             telemetry.update();
         }
     }
