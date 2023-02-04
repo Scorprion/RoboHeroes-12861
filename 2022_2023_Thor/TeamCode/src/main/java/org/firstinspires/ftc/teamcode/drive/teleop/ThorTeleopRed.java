@@ -23,7 +23,6 @@ public class ThorTeleopRed extends LinearOpMode {
     Servo clampLeft, clampRight;
     BNO055IMU imu;
 
-
     @Override
     public void runOpMode() throws InterruptedException {
         double speed, turnspeed, strafespeed, liftspeed, pivotspeed;
@@ -116,7 +115,7 @@ public class ThorTeleopRed extends LinearOpMode {
             }
 
             if (setPosition) {
-                pivot.setPower(0.15);
+                pivot.setPower(0.1);
             } else {
                 pivot.setPower(pivotspeed);
             }

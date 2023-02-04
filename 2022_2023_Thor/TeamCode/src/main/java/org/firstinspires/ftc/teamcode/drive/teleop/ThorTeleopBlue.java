@@ -109,7 +109,7 @@ public class ThorTeleopBlue extends LinearOpMode {
             }
 
             if (setPosition) {
-                pivot.setPower(0.15);
+                pivot.setPower(0.1);
             } else {
                 pivot.setPower(pivotspeed);
             }

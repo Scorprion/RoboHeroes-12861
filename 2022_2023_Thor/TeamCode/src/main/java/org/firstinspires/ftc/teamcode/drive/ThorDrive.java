@@ -82,6 +82,7 @@ public class ThorDrive extends MecanumDrive {
 
     public WebcamName webcam;
     public OpenCvCamera camera;
+    public int cameraMonitorViewId;
 
     private BNO055IMU imu;
     private VoltageSensor batteryVoltageSensor;
@@ -140,7 +141,7 @@ public class ThorDrive extends MecanumDrive {
         clampRight = hardwareMap.get(Servo.class, "ClampRight");
 
         webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(webcam, cameraMonitorViewId);
 
         motors = Arrays.asList(frontLeft, backLeft, backRight, frontRight);

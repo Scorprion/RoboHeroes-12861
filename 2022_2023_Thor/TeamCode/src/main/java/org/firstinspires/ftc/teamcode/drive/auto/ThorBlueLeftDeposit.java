@@ -183,7 +183,7 @@ public class ThorBlueLeftDeposit extends LinearOpMode
 
       // Deliver preload
       Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
-              .forward(11)
+              .forward(13)
               .build();
       drive.followTrajectory(startToPole);
 
