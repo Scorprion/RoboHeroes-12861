@@ -98,14 +98,9 @@ public class ThorTeleopRed extends LinearOpMode {
                 pivot.setTargetPosition(0);
                 pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 setPosition = true;
-            } else if (gamepad2.dpad_down) {
-                // Back
-                pivot.setTargetPosition(300);
-                pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                setPosition = true;
             } else if (gamepad2.dpad_right) {
                 // Side
-                pivot.setTargetPosition(150);
+                pivot.setTargetPosition(133);
                 pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 setPosition = true;
             } else if (gamepad2.dpad_left) {

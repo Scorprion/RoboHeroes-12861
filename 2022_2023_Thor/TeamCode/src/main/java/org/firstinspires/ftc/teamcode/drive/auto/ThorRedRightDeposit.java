@@ -164,7 +164,7 @@ public class ThorRedRightDeposit extends LinearOpMode
       drive.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
       drive.pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      drive.pivot.setTargetPosition(150);
+      drive.pivot.setTargetPosition(133);
       drive.pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
       sleep(2500);
