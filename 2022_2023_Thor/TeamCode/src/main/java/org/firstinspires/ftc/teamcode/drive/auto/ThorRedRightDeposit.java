@@ -171,21 +171,18 @@ public class ThorRedRightDeposit extends LinearOpMode
 
       drive.lift.setPower(0.6);
 
-      sleep(250);
+      sleep(1000);
 
       // Deliver preload
       Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
               .forward(38)
-      //        .lineToLinearHeading(new Pose2d(37,-26, Math.toRadians(90)))
               .build();
       drive.followTrajectory(startToPole);
 
-      // Possibly add a section to wait until its up to the correct height
-      // Rotate pivot to the side, waiting 500 ms for it to do so
+      // Rotate pivot to the side, waiting 2000 ms for it to do so
       drive.pivot.setPower(0.15);
       sleep(2000);
       drive.pivot.setPower(0);
-      drive.lift.setPower(0);
 
       // Open clamp
       drive.clampLeft.setPosition(1);
@@ -214,10 +211,22 @@ public class ThorRedRightDeposit extends LinearOpMode
          // Left position
          if(tagOfInterest.id == 0) {
             drive.followTrajectory(center);
+            sleep(500);
+
+            drive.pivot.setPower(0.15);
+            drive.lift.setPower(0.4);
+            sleep(1000);
+
             drive.followTrajectory(strafeLeft);
          // Right position
          } else if(tagOfInterest.id == 2) {
             drive.followTrajectory(center);
+            sleep(500);
+
+            drive.pivot.setPower(0.15);
+            drive.lift.setPower(0.4);
+            sleep(1000);
+
             drive.followTrajectory(strafeRight);
          // Again, default to the center in any other case
          } else {

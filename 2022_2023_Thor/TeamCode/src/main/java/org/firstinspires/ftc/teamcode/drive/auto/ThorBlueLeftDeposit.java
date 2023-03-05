@@ -166,20 +166,22 @@ public class ThorBlueLeftDeposit extends LinearOpMode
       drive.clampLeft.setPosition(0);
       drive.clampRight.setPosition(1);
 
+      drive.pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+      drive.pivot.setTargetPosition(0);
+      drive.pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+      drive.pivot.setPower(0.2);
+
       // Stop and reset encoders
       drive.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      drive.lift.setTargetPosition(1850);
+      drive.lift.setTargetPosition(1900);
       drive.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-      drive.pivot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-      drive.pivot.setTargetPosition(133);
-      drive.pivot.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
       sleep(2500);
 
       drive.lift.setPower(0.6);
 
-      sleep(250);
+      sleep(1000);
 
       // Deliver preload
       Trajectory startToPole = drive.trajectoryBuilder(drive.getPoseEstimate())
@@ -187,12 +189,11 @@ public class ThorBlueLeftDeposit extends LinearOpMode
               .build();
       drive.followTrajectory(startToPole);
 
-      // Possibly add a section to wait until its up to the correct height
+      drive.pivot.setTargetPosition(133);
       // Rotate pivot to the side, waiting 2000 ms for it to do so
       drive.pivot.setPower(0.15);
       sleep(2000);
       drive.pivot.setPower(0);
-      drive.lift.setPower(0);
 
       // Open clamp
       drive.clampLeft.setPosition(1);
@@ -202,6 +203,9 @@ public class ThorBlueLeftDeposit extends LinearOpMode
 
       drive.pivot.setTargetPosition(0);
       drive.lift.setTargetPosition(0);
+
+      drive.pivot.setPower(0.4);
+      drive.lift.setPower(0.15);
 
       // Forward 27 inches, strafe 23 inches to sides
       Trajectory center = drive.trajectoryBuilder(startToPole.end())
@@ -221,10 +225,12 @@ public class ThorBlueLeftDeposit extends LinearOpMode
          // Left position
          if(tagOfInterest.id == 0) {
             drive.followTrajectory(center);
+            sleep(1000);
             drive.followTrajectory(strafeLeft);
             // Right position
          } else if(tagOfInterest.id == 2) {
             drive.followTrajectory(center);
+            sleep(1000);
             drive.followTrajectory(strafeRight);
             // Again, default to the center in any other case
          } else {
