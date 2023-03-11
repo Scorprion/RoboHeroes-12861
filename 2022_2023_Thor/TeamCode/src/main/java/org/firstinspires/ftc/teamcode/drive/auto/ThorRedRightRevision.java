@@ -184,7 +184,7 @@ public class ThorRedRightRevision extends LinearOpMode
         sleep(500);
 
         Trajectory startToCenter = drive.trajectoryBuilder(drive.getPoseEstimate())
-                .forward(15)
+                .forward(38)
                 .build();
         drive.followTrajectory(startToCenter);
 
